@@ -1,0 +1,16 @@
+type Mode='opening'|'village'|'forest'|'combat';
+const melody:Record<Mode,number[]>={opening:[0,2,4,7,9,7,4,2],village:[0,2,4,7,9,7,4,2],forest:[0,-1,4,-1,7,-1,2,-1],combat:[0,4,7,4,2,7,9,7]};
+const base=220;
+export class MusicDirector {
+  private ctx:AudioContext|null=null;private mode:Mode='opening';private next=0;private step=0;private master:GainNode|null=null;private lastBird=0;
+  constructor(private volumes:()=>{master:number;music:number;sfx:number}){}
+  start(){if(this.ctx){this.ctx.resume();return}this.ctx=new AudioContext();this.master=this.ctx.createGain();this.master.gain.value=0;this.master.connect(this.ctx.destination);this.next=this.ctx.currentTime+.12}
+  setMode(mode:Mode){if(mode===this.mode)return;this.mode=mode;this.step=0;this.next=(this.ctx?.currentTime||0)+.05}
+  private note(freq:number,at:number,length:number,kind:'pluck'|'flute'|'pad',volume:number){if(!this.ctx||!this.master)return;let osc=this.ctx.createOscillator(),gain=this.ctx.createGain(),filter=this.ctx.createBiquadFilter();osc.type=kind==='pluck'?'triangle':kind==='flute'?'sine':'sawtooth';osc.frequency.value=freq;filter.type='lowpass';filter.frequency.value=kind==='pad'?650:kind==='pluck'?2200:1500;gain.gain.setValueAtTime(.0001,at);gain.gain.exponentialRampToValueAtTime(volume,at+(kind==='pad'?.16:.012));gain.gain.exponentialRampToValueAtTime(.0001,at+length);osc.connect(filter).connect(gain).connect(this.master);osc.start(at);osc.stop(at+length+.03)}
+  private noise(at:number,length:number,volume:number,cutoff:number){if(!this.ctx||!this.master)return;let buffer=this.ctx.createBuffer(1,Math.ceil(this.ctx.sampleRate*length),this.ctx.sampleRate),data=buffer.getChannelData(0);for(let i=0;i<data.length;i++)data[i]=(Math.random()*2-1)*Math.sin(Math.PI*i/data.length);let source=this.ctx.createBufferSource(),filter=this.ctx.createBiquadFilter(),gain=this.ctx.createGain();source.buffer=buffer;filter.type='lowpass';filter.frequency.value=cutoff;gain.gain.value=volume;source.connect(filter).connect(gain).connect(this.master);source.start(at)}
+  update(zone:'village'|'forest'|'combat',position:{x:number;z:number}){if(!this.ctx||!this.master)return;let wanted:Mode=this.mode==='opening'?'opening':zone;this.setMode(wanted);let v=this.volumes();this.master.gain.setTargetAtTime(v.master*v.music*.48,this.ctx.currentTime,.7);const interval=this.mode==='combat'?.27:.43;while(this.next<this.ctx.currentTime+.25){let at=this.next,index=this.step%8,n=melody[this.mode][index];if(n>=0){let freq=base*Math.pow(2,n/12);this.note(freq,at,this.mode==='forest'?.9:.38,this.mode==='forest'?'flute':'pluck',this.mode==='combat'?.16:.11)}if(index%4===0)this.note(base/2,at,interval*3.6,'pad',.035);if(this.mode==='combat'&&index%2===0)this.noise(at,.09,.07,250);if(this.mode==='village'&&index===6)this.note(base*Math.pow(2,12/12),at,.8,'flute',.045);this.next+=interval;this.step++}
+    if(this.ctx.currentTime-this.lastBird>6&&this.mode==='village'){this.lastBird=this.ctx.currentTime;let at=this.ctx.currentTime;this.note(1200,at,.13,'flute',.018);this.note(1500,at+.16,.1,'flute',.014)}
+    if(Math.abs(position.x-35)<15&&Math.random()<.002)this.noise(this.ctx.currentTime,.7,.012,450);
+  }
+  releaseOpening(){if(this.mode==='opening')this.setMode('village')}
+}

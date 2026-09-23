@@ -3,7 +3,7 @@ type Particle={mesh:T.Mesh;velocity:T.Vector3;life:number;max:number};
 const material=(color:number,emissive=0)=>new T.MeshStandardMaterial({color,metalness:emissive?0:.55,roughness:emissive?.25:.32,emissive,emissiveIntensity:emissive?1.8:0,transparent:!!emissive,opacity:1,flatShading:true});
 export class Effects {
   private holder=new T.Group();private sword=new T.Group();private staff=new T.Group();private particles:Particle[]=[];private swingTime=0;private castTime=0;private recoil=0;private spell=0;private equip=0;private trail:T.Mesh;
-  constructor(private scene:T.Scene,private camera:T.Camera){scene.add(camera);camera.add(this.holder);this.holder.position.set(.48,-.52,-.85);this.holder.add(this.sword,this.staff);
+  constructor(private scene:T.Scene,private camera:T.Camera){scene.add(camera);camera.add(this.holder);this.holder.position.set(.48,-.52,-.85);this.holder.scale.setScalar(.72);this.holder.add(this.sword,this.staff);
     const grip=material(0x453224),steel=material(0xc9d9da),edge=material(0xe5eef0),gold=material(0xb9a373);
     const add=(parent:T.Group,g:T.BufferGeometry,m:T.Material,x:number,y:number,z:number)=>{let o=new T.Mesh(g,m);o.position.set(x,y,z);parent.add(o);return o};
     add(this.sword,new T.CylinderGeometry(.055,.065,.42,7),grip,0,-.38,0);add(this.sword,new T.BoxGeometry(.52,.065,.12),gold,0,-.13,0);add(this.sword,new T.BoxGeometry(.1,.83,.09),steel,0,.32,0);add(this.sword,new T.ConeGeometry(.075,.31,4),edge,0,.89,0);add(this.sword,new T.IcosahedronGeometry(.09,1),material(0x8cc8c6,0x4ba9ad),0,-.12,0);
