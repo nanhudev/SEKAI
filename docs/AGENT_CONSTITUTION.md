@@ -1,5 +1,7 @@
 # Chat2Blender Production Rule
 
+除非用户明确解除，否则所有新 Blender 资产必须通过网页版 ChatGPT → GPT-5.6 Sol → Blender Python → 可见 Blender → GLB → 游戏的流程制作。适用于建筑、角色、武器、手、家具、植物、遗迹和怪物。
+
 本项目的 Blender 几何资产采用固定生产线。除非用户明确解除此规则，后续所有开发 Agent 必须遵守。
 
 1. 由 SEKAI Agent 分析当前游戏真正缺少的资产，写明用途、尺寸、风格、拓扑、材质、碰撞、动画、拆件、发光、LOD、GLB 导出与性能预算。
