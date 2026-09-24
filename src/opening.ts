@@ -14,8 +14,8 @@ export class Opening {
   }
   private once(at:number,text:string){if(this.elapsed>=at&&!this.said.has(at)){this.said.add(at);this.line(text);this.caption.textContent=text}}
   update(dt:number){if(this.complete)return;this.elapsed+=dt;const e=this.elapsed;
-    if(e<4){this.veil.style.background='#030507';this.veil.style.opacity='1';this.camera.position.set(-7,.35,65);this.camera.rotation.set(1.2,0,0);if(e>1)this.cue('city');return}
-    if(e<5.4){this.veil.style.background='#e9fff7';this.veil.style.opacity='1';this.cue('flash');return}
+    if(e<4){this.veil.style.background='#030507';this.veil.style.opacity='1';this.camera.position.set(-7,.35,65);this.camera.rotation.set(1.2,0,0);if(e>1&&!this.said.has(1)){this.said.add(1);this.cue('city')}return}
+    if(e<5.4){this.veil.style.background='#e9fff7';this.veil.style.opacity='1';if(!this.said.has(4)){this.said.add(4);this.cue('flash')}return}
     this.veil.style.background='#030507';this.veil.style.opacity=String(Math.max(0,1-(e-5.4)/5));
     if(e<41){const blink=e<13?Math.max(0,.75-(e-6)*.1):0;this.veil.style.opacity=String(Math.max(Number(this.veil.style.opacity),blink));this.camera.position.set(-7,.38+Math.sin(e*.3)*.015,65);this.camera.rotation.x=T.MathUtils.lerp(1.15,.47,T.MathUtils.smoothstep(e,10,31));this.camera.rotation.y=-.03;
       if(e>15&&e<32){let k=T.MathUtils.smoothstep(e,15,27);this.lia.root.position.set(T.MathUtils.lerp(-13,-7.8,k),0,T.MathUtils.lerp(44,61,k));this.lia.root.rotation.y=2.8;this.lia.left.rotation.x=Math.sin(e*11)*.4;this.lia.right.rotation.x=-Math.sin(e*11)*.4}

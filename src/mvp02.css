@@ -4,3 +4,11 @@
 #soft-objective{position:absolute;top:55px;left:25px;font-size:13px;letter-spacing:.1em;color:#faf1d8c9;text-shadow:0 1px 8px #000}
 #journal{display:none;position:absolute;inset:12% 26%;z-index:11;background:#142425ed;border:1px solid #c2b18c;padding:45px;color:#f6ecd6;box-shadow:0 20px 90px #0009}
 #journal p{font-size:17px;line-height:2}#journal button{background:#ffffff14;color:#f6ecd6;border:1px solid #c2b18c;padding:8px 22px}
+#overlay{background:linear-gradient(90deg,#071a1ee5 0%,#102b2da6 42%,#0e2a1f25 100%),linear-gradient(0deg,#071519a0,transparent 50%)}
+#overlay h1{font-size:clamp(65px,9vw,118px);letter-spacing:.23em;text-shadow:0 8px 30px #0006}
+#overlay .sub{font-size:13px;letter-spacing:.28em;color:#e6dfc5}
+#overlay .menu{min-width:260px;gap:5px;margin-top:55px}
+#overlay .menu button{border:0;border-left:2px solid transparent;background:transparent;padding:11px 18px;color:#e9e2cd;letter-spacing:.19em;transition:background .2s,border-color .2s,transform .2s}
+#overlay .menu button:not(:disabled):hover{background:#e3dbc522;border-left-color:#d9bf8d;transform:translateX(5px)}
+#hud #bars{opacity:.82;transition:opacity .4s}#hud #weapon{color:#f2e9d2ba;letter-spacing:.1em}
+#prompt{border-bottom:1px solid #f5e8c48e;padding:4px 10px;color:#fff9e9}

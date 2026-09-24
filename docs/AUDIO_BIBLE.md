@@ -19,4 +19,4 @@
 
 ## 当前实现
 
-`src/music.ts` 在本地用 WebAudio 实时合成四种不同状态的原创简谱。它是音乐骨架，尚未替代正式录制或 Suno 候选选曲。游戏音效仍为简单合成，后续需要现场试听与混音。
+`src/music.ts` 现播放四首已选 Suno 原创 MP3，并按 Opening、Village、Forest、Combat 状态淡入淡出；音量随设置变化，暂停时停止。曲目与候选见 `docs/SUNO_LOG.md`。游戏音效目前仍以程序合成为主，需要独立的空间环境声与战斗分层混音。
