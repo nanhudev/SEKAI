@@ -1,4 +1,5 @@
 import * as T from 'three';
+import {buildTownBlockout} from './townBlockout';
 export type Person={id:string;name:string;root:T.Group;home:T.Vector3;phase:number;left:T.Group;right:T.Group;head:T.Object3D;activity:string};
 export type Foe={root:T.Group;home:T.Vector3;hp:number;frost:number;frozen:number;burn:number;alive:boolean;attack:number;awareness:number};
 export const scene=new T.Scene(); scene.background=new T.Color(0x9ac1bd);scene.fog=new T.FogExp2(0x9ac1bd,.008);
@@ -9,7 +10,7 @@ export const observer=new T.Group();
 export const solids:{minX:number;maxX:number;minZ:number;maxZ:number}[]=[];
 const smoke:T.Mesh[]=[];const clouds:T.Mesh[]=[];let miraStart=-1;
 const mat=(c:number,roughness=1)=>new T.MeshStandardMaterial({color:c,roughness,flatShading:true});
-const grass=mat(0x718960),earth=mat(0x987e5d),stone=mat(0x929990),wood=mat(0x634b37),roof=mat(0x6a5655),leaf=mat(0x496f55),water=new T.MeshStandardMaterial({color:0x5a9fad,roughness:.2,metalness:.1,transparent:true,opacity:.8});
+const grass=mat(0x718960),earth=mat(0x987e5d),stone=mat(0x929990),wood=mat(0x634b37),roof=mat(0x435e59),leaf=mat(0x496f55),water=new T.MeshStandardMaterial({color:0x5a9fad,roughness:.2,metalness:.1,transparent:true,opacity:.8});
 function mesh(g:T.BufferGeometry,m:T.Material,x:number,y:number,z:number,parent:T.Object3D=scene){let a=new T.Mesh(g,m);a.position.set(x,y,z);a.castShadow=true;a.receiveShadow=true;parent.add(a);return a}
 function box(w:number,h:number,d:number,m:T.Material,x:number,y:number,z:number,p:T.Object3D=scene){return mesh(new T.BoxGeometry(w,h,d),m,x,y,z,p)}
 function cyl(rt:number,rb:number,h:number,m:T.Material,x:number,y:number,z:number,p:T.Object3D=scene){return mesh(new T.CylinderGeometry(rt,rb,h,7),m,x,y,z,p)}
@@ -29,8 +30,12 @@ export function buildWorld(){
  box(18,.5,6,wood,35,.4,15);for(let i=0;i<7;i++){box(.25,1,6,wood,27+i*2.6,1,15)}let wheel=cyl(3,3,.5,wood,43,2,10);wheel.rotation.z=Math.PI/2;wheel.userData.wheel=true;
  for(let i=0;i<16;i++){let x=-190+i*25;let h=25+rand()*26;cyl(h*.16,h*.3,h,mat(0x688077),x,h/2,-210-rand()*20)}
  for(let i=0;i<10;i++){let x=-210+i*46,h=35+rand()*26;let m=mesh(new T.ConeGeometry(34,h,5),mat(0x7f9c93),x,h*.35,-285-rand()*30);m.rotation.y=rand()*2}
+ // The battle leaves a permanent cut across the near mountain silhouette.
+ let mountainScar=mesh(new T.BoxGeometry(59,.8,.6),new T.MeshBasicMaterial({color:0xd8e9dc}),-28,28,-256);mountainScar.rotation.z=.07;mountainScar.userData.landmark='mountain-scar';
+ buildTownBlockout(scene);
  const house=(x:number,z:number,w:number,d:number,label:string,enter=false)=>{let g=new T.Group();g.position.set(x,0,z);scene.add(g);let plaster=mat(0xb8a887);if(enter){box(w,.14,d,wood,0,.07,0,g);box(w,4,.28,plaster,0,2,-d/2,g);box(.28,4,d,plaster,-w/2,2,0,g);box(.28,4,d,plaster,w/2,2,0,g);box((w-2)/2,4,.28,plaster,-(w+2)/4,2,d/2,g);box((w-2)/2,4,.28,plaster,(w+2)/4,2,d/2,g);box(w,1.2,.28,plaster,0,3.4,d/2,g);box(2,.16,1.2,wood,-w*.25,.65,-d*.15,g);box(1.7,.75,1,wood,w*.23,.4,-d*.2,g);box(.3,1,.3,wood,0,.5,-d*.35,g);interactables.push({name:label,position:new T.Vector3(x,0,z+d/2+1.5),action:'place'});let wall=(cx:number,cz:number,ww:number,dd:number)=>solids.push({minX:x+cx-ww/2,maxX:x+cx+ww/2,minZ:z+cz-dd/2,maxZ:z+cz+dd/2});wall(0,-d/2,w,.28);wall(-w/2,0,.28,d);wall(w/2,0,.28,d);wall(-(w+2)/4,d/2,(w-2)/2,.28);wall((w+2)/4,d/2,(w-2)/2,.28)}else{box(w,4,d,plaster,0,2,0,g);solids.push({minX:x-w/2,maxX:x+w/2,minZ:z-d/2,maxZ:z+d/2})}let r=mesh(new T.ConeGeometry(Math.max(w,d)*.75,3,4),roof,0,5.5,0,g);r.rotation.y=Math.PI/4;for(let sx of [-1,1])box(.8,.8,.14,mat(0xdac9a1),sx*w*.3,2.5,d/2+.09,g);return g};
- house(-17,-10,11,9,'旅馆',true);house(15,4,9,8,'铁匠铺',true);house(-12,34,8,7,'暂住的小屋',true);house(-29,15,8,7,'杂货铺');house(17,-28,8,7,'仓库');house(-36,-19,8,7,'民居');solids.push({minX:15,maxX:21,minZ:32.8,maxZ:37.2});house(-64,9,9,8,'老剑士住所');
+ for(const [x,z,w,d,label,enter] of [[-17,-10,11,9,'公会酒馆',true],[15,4,9,8,'铁匠铺',true],[-12,34,8,7,'暂住的小屋',true],[-29,15,8,7,'杂货铺',false],[17,-28,8,7,'仓库',false],[-36,-19,8,7,'民居',false],[-64,9,9,8,'老剑士住所',false]] as [number,number,number,number,string,boolean][])house(x,z,w,d,label,enter).visible=[-17,15].includes(x)?false:true;
+ solids.push({minX:15,maxX:21,minZ:32.8,maxZ:37.2});
  // Arrival gate and roadside planters place the village on an intentional axis.
  for(let x of [-4.6,4.6]){box(.42,5,.42,wood,x,2.5,54);ball(.3,mat(0xffd28b),x,5.1,54);for(let z of [47,61]){box(1.4,.5,1.4,stone,x,.25,z);ball(.6,mat(0x73966a),x,.8,z)}}box(10,.42,.55,wood,0,5,54);box(3.7,1,.18,mat(0x557365),0,4.35,54.3);
  for(let i=0;i<6;i++){let x=i%2?6:-6,z=36+i*6;ball(.25+rand()*.2,mat(i%2?0xbeb08c:0x8a9d76),x,.25,z)}
@@ -60,7 +65,7 @@ export function buildWorld(){
  const lower=new T.InstancedMesh(canopyGeo,canopyMat,520),upper=new T.InstancedMesh(canopyGeo,canopyMat,520);
  const dummy=new T.Object3D(),leafColors=[0x486b50,0x58775b,0x638260,0x3e6554,0x718b64].map(c=>new T.Color(c));let treeCount=0;
  for(const [cx,cz,r,n] of stands)for(let j=0;j<n;j++){let a=rand()*Math.PI*2,d=Math.sqrt(rand())*r,x=cx+Math.cos(a)*d,z=cz+Math.sin(a)*d;
-  if(Math.abs(x)<7&&z>-140||Math.abs(x-35)<9||Math.abs(z-15)<7&&x>-95&&x<100||Math.hypot(x+15,z+107)<18||Math.hypot(x+69,z+154)<14||x>52&&x<105&&z>-65&&z<5||solids.some(s=>x>s.minX-7&&x<s.maxX+7&&z>s.minZ-7&&z<s.maxZ+7))continue;
+  if(Math.abs(x)<7&&z>-140||Math.hypot(x+7,z-65)<17||Math.abs(x-35)<9||Math.abs(z-15)<7&&x>-95&&x<100||Math.hypot(x+15,z+107)<18||Math.hypot(x+69,z+154)<14||x>52&&x<105&&z>-65&&z<5||solids.some(s=>x>s.minX-7&&x<s.maxX+7&&z>s.minZ-7&&z<s.maxZ+7))continue;
   let size=.68+rand()*.68;dummy.rotation.y=rand()*6.28;dummy.position.set(x,2.35*size,z);dummy.scale.set(size,size,size);dummy.updateMatrix();treeBody.setMatrixAt(treeCount,dummy.matrix);
   dummy.position.y=4.65*size;dummy.scale.set(size*(.85+rand()*.2),size*(.78+rand()*.22),size);dummy.updateMatrix();lower.setMatrixAt(treeCount,dummy.matrix);
   dummy.position.y=6.1*size;dummy.scale.set(size*.7,size*.68,size*.7);dummy.updateMatrix();upper.setMatrixAt(treeCount,dummy.matrix);
@@ -88,6 +93,9 @@ export function buildWorld(){
  function npc(id:string,name:string,x:number,z:number,color:number){let g=new T.Group();g.position.set(x,0,z);scene.add(g);cyl(.45,.52,1.45,mat(color),0,1.05,0,g);let head=ball(.38,mat(0xd0a783),0,2.05,0,g);box(.9,.12,.2,mat(0x3b3634),0,2.35,0,g);let left=new T.Group(),right=new T.Group();left.position.set(-.52,1.65,0);right.position.set(.52,1.65,0);g.add(left,right);cyl(.13,.15,1.05,mat(color),0,-.43,0,left);cyl(.13,.15,1.05,mat(color),0,-.43,0,right);ball(.15,mat(0xd0a783),0,-.96,0,left);ball(.15,mat(0xd0a783),0,-.96,0,right);people.push({id,name,root:g,home:g.position.clone(),phase:rand()*10,left,right,head,activity:'idle'})}
  npc('lia','莉娅',-7,0,0x77987c);npc('oren','奥伦',-57,17,0x817767);npc('mira','米拉',7,-28,0x657ca0);npc('garran','格兰',15,8,0x7f5c4d);npc('arn','阿诺',-20,25,0xb9925d);
  for(let i=0;i<3;i++){let x=-20+i*12,z=-105-i*7;let g=new T.Group();g.position.set(x,0,z);scene.add(g);cyl(.7,.9,1.2,stone,0,.8,0,g);let core=ball(.65,mat(0x75b5a9,.3),0,1.7,0,g);g.userData.core=core;for(let j=0;j<3;j++)ball(.3,stone,Math.cos(j*2.1)*.8,1.2,Math.sin(j*2.1)*.8,g);foes.push({root:g,home:g.position.clone(),hp:100,frost:0,frozen:0,burn:0,alive:true,attack:0,awareness:0})}
+ // A damaged lesser construct is visible before the first sword encounter.
+ let incident=new T.Group();incident.position.set(0,0,-25);scene.add(incident);cyl(.6,.8,1.1,stone,0,.7,0,incident);let incidentCore=ball(.5,mat(0x78b9b2,.35),0,1.55,0,incident);incident.userData.core=incidentCore;for(let j=0;j<3;j++)ball(.25,stone,Math.cos(j*2.1)*.7,1.1,Math.sin(j*2.1)*.7,incident);foes.push({root:incident,home:incident.position.clone(),hp:70,frost:0,frozen:0,burn:0,alive:true,attack:0,awareness:0});
+ let brokenCart=box(2,.2,1.2,wood,4,.55,-23);brokenCart.rotation.z=.45;box(.45,1.1,.45,wood,6,.55,-22);
  // hidden altar
  for(let i=0;i<6;i++)cyl(.55,.7,4,stone,-69+Math.cos(i)*4,2,-158+Math.sin(i)*4);ball(.9,new T.MeshStandardMaterial({color:0x72cfc6,emissive:0x3c8e89,emissiveIntensity:2}),-69,2,-158);interactables.push({name:'古老符文',position:new T.Vector3(-69,0,-158),action:'rune'});
 }

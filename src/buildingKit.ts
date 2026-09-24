@@ -20,14 +20,12 @@ const sources = {
   chimney: chimneyUrl, sign: signUrl,
 };
 
-export async function addMistvaleHouse(scene: T.Scene) {
+export async function addMistvaleTown(scene: T.Scene) {
   const loader = new GLTFLoader();
   const entries = await Promise.all(Object.entries(sources).map(async ([name, url]) => [name, (await loader.loadAsync(url)).scene] as const));
   const models = Object.fromEntries(entries) as Record<keyof typeof sources, T.Group>;
-  const house = new T.Group();
-  house.name = 'Mistvale modular house';
-  house.position.set(18, 0, 35);
-  scene.add(house);
+  for(const [hx,hz,scale,label] of [[18,35,1,'East cottage'],[-17,-10,1.8,'Guild tavern'],[15,4,1.45,'Blacksmith']] as [number,number,number,string][]){
+  const house = new T.Group();house.name='Mistvale '+label;house.position.set(hx,0,hz);house.scale.setScalar(scale);scene.add(house);
 
   const add = (key: keyof typeof sources, x: number, y: number, z: number, rotation = 0, scaleX = 1) => {
     const part = models[key].clone(true);
@@ -60,5 +58,5 @@ export async function addMistvaleHouse(scene: T.Scene) {
   add('fence', -3.8, 0, 5.4);
   add('fence', 3.8, 0, 5.4);
   add('sign', -5.3, 0, 4.4);
-  return house;
+  }
 }
