@@ -33,7 +33,7 @@ export async function addMistvaleTown(scene: T.Scene) {
     part.rotation.y = rotation;
     part.scale.x = scaleX;
     part.traverse(object => {
-      if (object instanceof T.Mesh) { object.castShadow = true; object.receiveShadow = true; }
+      if (object instanceof T.Mesh) { object.castShadow = key === 'roof'; object.receiveShadow = true; }
     });
     house.add(part);
     return part;
