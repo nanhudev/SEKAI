@@ -50,6 +50,7 @@
 - Godot version: 4.4.1 Stable, Forward+, GDScript.
 - Branch: godot-combat-mvp, based on origin/main 5c2d4c409b53a27a597193c0c807f3138c2cea1a. For the current development commit, run `git rev-parse HEAD`.
 - Migration: official full Git clone verified; reviewed Godot files moved from the isolated temporary workspace into /godot. Legacy Web prototype remains intact.
+- Boot/Menu Gate: IMPLEMENTED and TECHNICALLY VERIFIED for main menu → combat sandbox → pause → settings → title → restart. Visible desktop and human interaction remain unverified.
 - Movement Gate: IMPLEMENTED and TECHNICALLY VERIFIED; NOT VISUALLY VERIFIED or GAMEPLAY VERIFIED. WASD, sprint, jump, mouse look and dodge exist; feel remains untested.
 - Sword Gate: IMPLEMENTED and TECHNICALLY VERIFIED for Area3D light combo, heavy, block and buffered cancel. NOT GAMEPLAY VERIFIED.
 - Magic Gate: IMPLEMENTED and TECHNICALLY VERIFIED for Fire burn/damage, Frost freeze, Wind push/stagger. MagicCircle3D is a technical visual placeholder; NOT VISUALLY VERIFIED.
