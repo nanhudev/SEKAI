@@ -55,5 +55,6 @@
 - Magic Gate: IMPLEMENTED and TECHNICALLY VERIFIED for Fire burn/damage, Frost freeze, Wind push/stagger. MagicCircle3D is a technical visual placeholder; NOT VISUALLY VERIFIED.
 - Shatter Gate: IMPLEMENTED and TECHNICALLY VERIFIED through an Area3D physics integration check; NOT GAMEPLAY VERIFIED.
 - Iaido Gate: technical sequence IMPLEMENTED and TECHNICALLY VERIFIED for physical step, active-frame delayed hit, time/FOV/screen state restoration. Spatial tear, sound and visual rhythm are incomplete; NOT VISUALLY VERIFIED or GAMEPLAY VERIFIED.
+- Enemy technical gate: three Area3D attack patterns (sweep, charged heavy, physical lunge) cycle with separate anticipation and active windows; automated physics check passed. Pose/color cues are coded, but sound cues and visible telegraph readability remain pending.
 - Known bugs/limits: this execution environment starts Godot processes without visible window handles; therefore visual and hand-feel acceptance cannot be claimed. Technical enemy is a primitive test target, not the designed Lesser Ruin Sentinel. Combat SFX are pending.
 - Next immediate step: run editor import and physics integration checks in the official branch, then commit and push the stable technical foundation. Continue enemy telegraphs, audio and visual validation when a visible desktop path is available.
