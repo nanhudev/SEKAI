@@ -47,6 +47,7 @@ func _ready() -> void:
 	_bind_key("frost_cast", KEY_R)
 	_bind_key("wind_cast", KEY_C)
 	_bind_key("iaido", KEY_I)
+	_bind_key("cast_selected", KEY_E)
 	hurtbox.hit_received.connect(_on_player_hit)
 	_bind_mouse("light_attack", MOUSE_BUTTON_LEFT)
 	_bind_mouse("block", MOUSE_BUTTON_RIGHT)
@@ -86,6 +87,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		request(&"dodge")
 	elif event.is_action_pressed("iaido"):
 		request(&"iaido")
+	elif event.is_action_pressed("cast_selected"):
+		request(&"cast")
 	elif event.is_action_pressed("block"):
 		request(&"block")
 	elif event.is_action_released("block") and state == State.BLOCK:
