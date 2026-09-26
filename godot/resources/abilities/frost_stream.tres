@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="AbilityData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/abilities/ability_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"frost_stream"
+display_name = "Frost Stream"
+startup = 0.18
+active = 0.3
+recovery = 0.22
+mana_cost = 12.0
+cooldown = 0.8

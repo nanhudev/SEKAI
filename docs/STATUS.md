@@ -44,3 +44,16 @@
 1. 完成角色、手部、剑与法杖模型动画，打磨剑击、格挡、受击与 VFX。
 2. 用 Rapier 建立可进入室内与可靠碰撞，扩建地形并优化实例与加载。
 3. 补足 60–90 秒实时演出、原创音乐与环境声，并完整跑通 30 分钟体验。
+
+## GODOT COMBAT MVP · 2026-09-27
+
+- Godot version: 4.4.1 Stable, Forward+, GDScript.
+- Branch: godot-combat-mvp, based on origin/main 5c2d4c409b53a27a597193c0c807f3138c2cea1a. For the current development commit, run `git rev-parse HEAD`.
+- Migration: official full Git clone verified; reviewed Godot files moved from the isolated temporary workspace into /godot. Legacy Web prototype remains intact.
+- Movement Gate: IMPLEMENTED and TECHNICALLY VERIFIED; NOT VISUALLY VERIFIED or GAMEPLAY VERIFIED. WASD, sprint, jump, mouse look and dodge exist; feel remains untested.
+- Sword Gate: IMPLEMENTED and TECHNICALLY VERIFIED for Area3D light combo, heavy, block and buffered cancel. NOT GAMEPLAY VERIFIED.
+- Magic Gate: IMPLEMENTED and TECHNICALLY VERIFIED for Fire burn/damage, Frost freeze, Wind push/stagger. MagicCircle3D is a technical visual placeholder; NOT VISUALLY VERIFIED.
+- Shatter Gate: IMPLEMENTED and TECHNICALLY VERIFIED through an Area3D physics integration check; NOT GAMEPLAY VERIFIED.
+- Iaido Gate: technical sequence IMPLEMENTED and TECHNICALLY VERIFIED for physical step, active-frame delayed hit, time/FOV/screen state restoration. Spatial tear, sound and visual rhythm are incomplete; NOT VISUALLY VERIFIED or GAMEPLAY VERIFIED.
+- Known bugs/limits: this execution environment starts Godot processes without visible window handles; therefore visual and hand-feel acceptance cannot be claimed. Technical enemy is a primitive test target, not the designed Lesser Ruin Sentinel. Combat SFX are pending.
+- Next immediate step: run editor import and physics integration checks in the official branch, then commit and push the stable technical foundation. Continue enemy telegraphs, audio and visual validation when a visible desktop path is available.

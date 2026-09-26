@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="AbilityData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/abilities/ability_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"wind_burst"
+display_name = "Wind Burst"
+startup = 0.14
+active = 0.15
+recovery = 0.25
+mana_cost = 10.0
+cooldown = 0.7

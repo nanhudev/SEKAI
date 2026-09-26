@@ -1,0 +1,112 @@
+[gd_scene load_steps=12 format=3]
+
+[ext_resource type="Script" path="res://scripts/player/player_movement.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/camera/camera_feedback_controller.gd" id="2"]
+[ext_resource type="Script" path="res://scripts/combat/combat_controller.gd" id="3"]
+[ext_resource type="Script" path="res://scripts/combat/hitbox.gd" id="4"]
+[ext_resource type="PackedScene" path="res://scenes/combat/MagicCircle3D.tscn" id="5"]
+[ext_resource type="Script" path="res://scripts/combat/hurtbox.gd" id="6"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_1"]
+radius = 0.35
+height = 1.8
+
+[sub_resource type="BoxShape3D" id="SwordShape"]
+size = Vector3(1.4, 1.2, 1.6)
+
+[sub_resource type="BoxShape3D" id="FrostShape"]
+size = Vector3(1.8, 1.6, 4.0)
+
+[sub_resource type="BoxShape3D" id="FireShape"]
+size = Vector3(1.5, 1.5, 5.0)
+
+[sub_resource type="BoxShape3D" id="WindShape"]
+size = Vector3(3.0, 1.8, 3.5)
+
+[node name="Player" type="CharacterBody3D"]
+script = ExtResource("1")
+position = Vector3(0, 2.0, 5.0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_1")
+
+[node name="Hurtbox" type="Area3D" parent="."]
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("6")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Hurtbox"]
+shape = SubResource("CapsuleShape3D_1")
+
+[node name="CameraRig" type="Node3D" parent="."]
+position = Vector3(0, 0.65, 0)
+
+[node name="LookPivot" type="Node3D" parent="CameraRig"]
+
+[node name="MotionPivot" type="Node3D" parent="CameraRig/LookPivot"]
+
+[node name="ShakePivot" type="Node3D" parent="CameraRig/LookPivot/MotionPivot"]
+
+[node name="Camera3D" type="Camera3D" parent="CameraRig/LookPivot/MotionPivot/ShakePivot"]
+current = true
+fov = 75.0
+
+[node name="WeaponRoot" type="Node3D" parent="CameraRig/LookPivot/MotionPivot/ShakePivot"]
+
+[node name="SwordHitbox" type="Area3D" parent="CameraRig/LookPivot/MotionPivot/ShakePivot/WeaponRoot"]
+position = Vector3(0, -0.2, -1.4)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("4")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CameraRig/LookPivot/MotionPivot/ShakePivot/WeaponRoot/SwordHitbox"]
+shape = SubResource("SwordShape")
+
+[node name="VFXRoot" type="Node3D" parent="CameraRig/LookPivot/MotionPivot/ShakePivot"]
+
+[node name="MagicCircle3D" parent="CameraRig/LookPivot/MotionPivot/ShakePivot/VFXRoot" instance=ExtResource("5")]
+position = Vector3(0.6, -0.35, -0.9)
+rotation = Vector3(1.5708, 0, 0)
+
+[node name="FrostHitbox" type="Area3D" parent="CameraRig/LookPivot/MotionPivot/ShakePivot/VFXRoot"]
+position = Vector3(0, -0.2, -2.5)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("4")
+damage = 2.0
+poise_damage = 0.0
+element = &"frost"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CameraRig/LookPivot/MotionPivot/ShakePivot/VFXRoot/FrostHitbox"]
+shape = SubResource("FrostShape")
+
+[node name="FireHitbox" type="Area3D" parent="CameraRig/LookPivot/MotionPivot/ShakePivot/VFXRoot"]
+position = Vector3(0, -0.2, -3.0)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("4")
+damage = 20.0
+poise_damage = 4.0
+element = &"fire"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CameraRig/LookPivot/MotionPivot/ShakePivot/VFXRoot/FireHitbox"]
+shape = SubResource("FireShape")
+
+[node name="WindHitbox" type="Area3D" parent="CameraRig/LookPivot/MotionPivot/ShakePivot/VFXRoot"]
+position = Vector3(0, -0.2, -2.3)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("4")
+damage = 5.0
+poise_damage = 15.0
+element = &"wind"
+impulse = 3.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CameraRig/LookPivot/MotionPivot/ShakePivot/VFXRoot/WindHitbox"]
+shape = SubResource("WindShape")
+
+[node name="CameraFeedbackController" type="Node" parent="."]
+script = ExtResource("2")
+
+[node name="CombatController" type="Node" parent="."]
+script = ExtResource("3")
