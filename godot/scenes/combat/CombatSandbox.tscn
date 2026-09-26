@@ -1,10 +1,11 @@
-[gd_scene load_steps=11 format=3]
+[gd_scene load_steps=12 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/player/Player.tscn" id="1"]
 [ext_resource type="PackedScene" path="res://scenes/enemies/TechnicalDummy.tscn" id="2"]
 [ext_resource type="Script" path="res://scripts/combat/developer_panel.gd" id="3"]
 [ext_resource type="Script" path="res://scripts/combat/time_effect_manager.gd" id="4"]
 [ext_resource type="Script" path="res://scripts/combat/combat_screen_fx.gd" id="5"]
+[ext_resource type="Script" path="res://scripts/combat/combat_sandbox.gd" id="6"]
 
 [sub_resource type="BoxMesh" id="FloorMesh"]
 size = Vector3(24, 0.5, 24)
@@ -25,6 +26,7 @@ ambient_light_source = 2
 ambient_light_color = Color(0.58, 0.66, 0.7, 1)
 
 [node name="CombatSandbox" type="Node3D"]
+script = ExtResource("6")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_1")

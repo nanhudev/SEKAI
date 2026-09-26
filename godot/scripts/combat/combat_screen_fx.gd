@@ -34,6 +34,17 @@ func slash_flash(amount: float) -> void:
 	_update_shader()
 
 
+func flash_hit(amount: float) -> void:
+	flash = maxf(flash, clampf(amount, 0.0, 1.0))
+	_update_shader()
+
+
+func _process(delta: float) -> void:
+	if flash > 0.0:
+		flash = maxf(0.0, flash - delta * 2.8)
+		_update_shader()
+
+
 func reset() -> void:
 	desaturation = 0.0
 	vignette = 0.0
