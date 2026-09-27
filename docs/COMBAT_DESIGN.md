@@ -742,19 +742,57 @@ Dummy 不是展示对象，是**测量仪器**。它必须让玩家能练到每�
   哪个元素给收益写在数据里（`pull_poise_elements = [frost]`、`pull_poise_scale 1.60`），
   **没有武器被绑死到元素**（§44）。
 
+### 链头有质量：落点、回收、绷紧（**本轮新增，已实现**）
+
+**"重"不是画得更重，是链头为命中付钱。** 三条规则，全部按**目标重量**与**链头到达速度**缩放：
+
+| 规则 | 数据 | 实测 |
+| --- | --- | --- |
+| **落点代价**：命中按目标重量扣 MOMENTUM，并把弧线撞偏 | `impact_momentum_cost` × `impact_cost_by_weight` / `impact_deflect_degrees` × `impact_deflect_by_weight` | 轻目标后剩 **0.282**，重目标剩 **0.215**；弧线偏 **-106.4° vs -102.4°** |
+| **命中顿住**：hitstop 随速度与重量缩放（横缚 0.032s → 地砸 0.070s） | `impact_hitstop` × `impact_hitstop_min/max` | 与剑同级（剑 0.024–0.062） |
+| **回收跟随**：回收先过冲、再被收回来，**不是**沿原路返回 | `retract_overshoot 0.55` / `retract_out 0.45` | 外漂 **+0.13m**、过冲 **10.8°**；输入锁不变（`retract_time` 未动） |
+
+**玩法后果**：扫倒一群轻敌很便宜、链还在转；把一个投掷花在重型身体上会换来"咚"一声和一截被吃掉的势。
+`ch_orbit` 是唯一**刻意不收费**的招式——它按时定命中，按次收费会让"举着链冲进人群"变成必输的赛跑。
+
+**绷紧 = 两通道可感知**（第三通道音频未做，§49 允许占位）：
+
+| 通道 | 实现 | 实测 |
+| --- | --- | --- |
+| 线 | 满绷时链接高频微颤（2cm / 7.5Hz） | 偏离直线 **0.0059m** vs 松弛时 **0.7820m** |
+| 相机 | 绷紧瞬间抖动 + FOV 前推 + **沿链身**冲量；持续期 `sustain_fov` 收紧 | 挤压 **1.80°**，冲量 |x| < 0.06 rad |
+
+### 抛出方向跟着准心（**本轮新增，已实现**）
+
+链头曾经固定在胸口高度出手，于是**世界上所有高的东西都钩不到**。`ChainMove.aim_pitch_scale`
+（逐招式 **opt-in**，只有 `ch_hook` = 1.0）让抛掷按 `sin(俯仰) × 半径` 抬起；
+`_step_tension` 同时改为保持"绷紧时的高度"而非硬拉回 1.05m。
+横缚**不会**因为玩家抬头而飘走——这正是必须 opt-in 的原因。
+
 ### Phase 1 明确不做（§52）
 
 双链、缠身、绳结、攀爬、抓钩位移、十个技能、大招、演出签名、UE5 VFX。
+
+### 三形态与长期路线
+
+**实链只是 Form I。** 三形态（实链 WEIGHT / 游链 MOMENTUM / 律链 CONNECTION）、
+强化层、TAB 魔法灌输层、Opportunity Tags 与武器联结、技术记忆（学/忆/悟）、
+Sword Ultimate 「无间」草案、路线图与禁止清单：
+**全部在 `docs/CHAIN_DESIGN.md`（CHAIN SYSTEM DESIGN V2）。**
+
+一句话版：**三形态不是三个强度等级**，判据是"玩家会不会在某个场合主动切回去"。
+如果最后只是短链 / 长链 / 四条链，就是 FAIL。
 
 ### 验收现状
 
 | 项 | 状态 |
 | --- | --- |
-| `chain_integration` 全部检查 | 通过 |
-| 逐帧渲染演示 | 已生成（见 `.render/chain_tug`） |
+| `chain_integration` 全部检查 | 通过（含本轮 6 项新增，均已做变异测试） |
+| 逐帧渲染演示 | 已生成 `chain_tour_clean.mp4`（10 章 / 749 帧 / 41.50s / 18.05fps / 无 Debug HUD） |
 | **§51 / §53「3 分钟试玩」手感验收** | **未验收** —— 需用户可见桌面 |
-| 链的音效（金属瞬态 / 链节 / 绷紧 / 撞墙） | 未落地，见 `COMBAT_SFX_BRIEF.md` |
-| 手 / 前臂动画资产 | 未到位，当前是程序化 `ChainHandAnchor` + 占位头部 |
+| 链的音效（金属瞬态 / 链节 / 绷紧 / 撞墙） | 未落地。**时序事件已发出**：`tug(step,total,amount)` / `wall_impact(strength)` / `taut_changed`，见 `COMBAT_SFX_BRIEF.md` Priority G |
+| 手 / 前臂动画资产 | 未到位，当前是程序化 `ChainHandAnchor` + 占位头部。需求见 `COMBAT_ANIMATION_REQUIREMENTS.md` §5 |
+| Debug 读数 | **仅开发者模式**（F8 面板 / `debug_readout`）；Clean 只显示形态名（§46） |
 
 ---
 

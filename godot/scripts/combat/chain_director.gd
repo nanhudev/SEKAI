@@ -33,6 +33,12 @@ signal hit_landed(move: ChainMove, hit: Dictionary)
 signal hooked(target: Node3D, weight: StringName)
 signal bound(target: Node3D, seconds: float)
 signal taut_changed(taut: bool)
+# §49: the SOUND of the chain is not this line's, but its TIMING is. The haul's
+# rhythm and the wall's impact are events the audio line can only place correctly if
+# the weapon hands them over as events rather than leaving them to be inferred from
+# a state machine. Nothing in the game listens yet on purpose — see §50.
+signal tug(step: int, total: int, amount: float)
+signal wall_impact(strength: float)
 signal message(text: String)
 
 # Layer 1 is the world (floor, walls, pillars) and layer 2 is every hurtbox —
@@ -57,6 +63,12 @@ const PULL_TO_SPEED := 9.0
 @onready var hand: Node3D = get_parent().get_node_or_null(
 	"CameraRig/LookPivot/MotionPivot/ShakePivot/WeaponRoot/ChainHandAnchor"
 )
+# WHERE THE PLAYER IS LOOKING, in pitch. Only the moves that ask for it read this
+# (§13): a chain is thrown toward the aim, so a throw that can only ever leave the
+# hand at chest height can hook a pillar but never the top of one, and a stage with
+# a high anchor on it would be a stage nothing could reach. Negative rotation.x is
+# looking DOWN, which is why the offset below negates it.
+@onready var look_pivot: Node3D = get_parent().get_node_or_null("CameraRig/LookPivot")
 # The chain's heights (home 0.62, sweep 1.05, slam peak 2.55) are measured FROM THE
 # PLAYER'S FEET. Measured from the body's centre instead, "chest height" would land
 # at world y 2.20 while an enemy's hurtbox tops out at 1.85 — the chain would swing
@@ -126,6 +138,10 @@ var _chain_index := 0
 var _idle_time := 0.0
 var _pull_done := false
 var _tension_left := 0.0
+# The height the chain was stretched to when it went taut. §16's window is a fixed
+# LENGTH, not a fixed pose, so this is what _step_tension holds while the player
+# spends the pressure.
+var _taut_height := 1.05
 
 # -------------------------------------------------------------------- orbit
 var _orbit_hold := 0.0
@@ -151,6 +167,28 @@ var _tug_timer := 0.0
 var _was_taut := false
 # The facing the current arc was authored around; steer is measured from it.
 var _steer_base := 0.0
+# How fast the head is going ROUND the player, in radians per second. Landing an
+# impact needs to know which way the head was already travelling in order to knock
+# it off that course in the right direction (§43), and a velocity vector cannot say
+# that on its own once the head is coming straight at you.
+var _azimuth_vel := 0.0
+var _azimuth_prev := 0.0
+# How far a landing has bent the current arc, and where it is heading. Eased rather
+# than snapped: the head is deflected by a collision, and a collision that teleports
+# the arc would read as a bug in the animation rather than as weight.
+var _deflect := 0.0
+var _deflect_target := 0.0
+
+# ------------------------------------------------------------- debug readout
+# §46. The three numbers the weapon runs on are a DEVELOPER readout, not a HUD: the
+# moment the player needs a gauge to know the chain is taut, the weapon has failed
+# (§51). So the numbers are opt-in. `debug_readout` is the explicit switch, and the
+# developer panel (F8) is the project's idea of developer mode — this asks the panel
+# rather than assuming it, and never reaches into the panel's own file to do it.
+@export var debug_readout := false
+var _dev_panel: Node
+var _dev_probe_timer := 0.0
+const DEV_PROBE_INTERVAL := 0.5
 
 
 func _ready() -> void:
@@ -359,6 +397,13 @@ func reset() -> void:
 	radius = moveset.home_radius
 	_height = moveset.home_height
 	_azimuth = _facing_azimuth() + deg_to_rad(moveset.home_azimuth_degrees)
+	# The angular trace is reset with the pose, or the first frame after a reset
+	# reports one enormous turn and the very first landing would bend an arc that
+	# had not started moving yet.
+	_azimuth_prev = _azimuth
+	_azimuth_vel = 0.0
+	_deflect = 0.0
+	_deflect_target = 0.0
 	_head = _head_position()
 	_head_prev = _head
 	if camera_feedback != null:
@@ -373,18 +418,34 @@ func head_position() -> Vector3:
 
 
 func debug_state_line() -> String:
+	# §46. RADIUS / MOMENTUM / TENSION are a developer readout, not a HUD: they exist
+	# so a tester can tell a 0.40s bind from a 1.00s one without counting frames, and
+	# they are exactly the numbers the player must never need (§51 — if a bar is
+	# required to know the chain is taut, the weapon has failed). Outside developer
+	# mode this answers with what a player IS allowed to know: the form, and — once
+	# there is more than one form — nothing else. The line stays non-empty so the
+	# HUD that calls it shows a weapon name rather than a blank row.
+	if not dev_readout_on():
+		return "%s" % moveset.form_name
 	var move_name := active_move.display_name if active_move != null else "-"
 	var hook := "—"
 	if is_hooked():
 		hook = "%s / %s" % [_hook_actor.name, String(weight_of(_hook_actor))]
 	var bound := "  BOUND %.2fs" % bound_left if bound_left > 0.0 else ""
-	return "%s  ·  R=%.2fm  M=%.0f%%  T=%.0f%%%s\n%s  钩=%s" % [
-		String(State.keys()[state]), radius, momentum * 100.0, tension * 100.0, bound,
+	# §46's list, in its order: FORM first, then the three variables, then what is
+	# attached to what. ANCHORS and OPPORTUNITY TAG are not here because the forms
+	# that own them do not exist yet — a field printed as "—" forever teaches a
+	# reader to ignore the line it is on.
+	return "%s  ·  %s  ·  R=%.2fm  M=%.0f%%  T=%.0f%%%s\n%s  钩=%s" % [
+		moveset.form_name, String(State.keys()[state]),
+		radius, momentum * 100.0, tension * 100.0, bound,
 		move_name, hook,
 	]
 
 
 func debug_flags_line() -> String:
+	if not dev_readout_on():
+		return ""
 	return "绷=%s  钩=%s  命中=%d  撞墙=%d  势=%s" % [
 		str(is_taut()), str(is_hooked()), hits_landed, wall_hits,
 		"是" if momentum >= 0.5 else "否",
@@ -418,6 +479,12 @@ func step(delta: float) -> void:
 			_step_retract(delta)
 		State.HOOKED:
 			_step_hooked(delta)
+	# WHICH WAY THE HEAD IS GOING ROUND. Taken after the state has moved it, and
+	# wrapped, because "past π" and "past -π" are the same place and a raw difference
+	# would report a full turn the wrong way at exactly the moment the head crosses
+	# the seam — which is also the moment 甩星 releases toward the aim.
+	_azimuth_vel = wrapf(_azimuth - _azimuth_prev, -PI, PI) / maxf(delta, 0.0001)
+	_azimuth_prev = _azimuth
 	_update_tension()
 	_resolve_head(delta)
 	_update_feedback(delta)
@@ -448,19 +515,24 @@ func _step_move(delta: float) -> void:
 	# turn the chain agrees to. 0 = the chain has its own opinion, which is what a
 	# thrown hook wants; 1 = the player owns it completely, which no move wants.
 	var steer := wrapf(_facing_azimuth() - _steer_base, -PI, PI) * move.steer
+	# THE ARC BENDS WHERE IT LANDED (§43). A head that has just stopped against a
+	# body does not carry on down a painted line: it is knocked off course by
+	# whatever it hit, more so by something heavy. Eased, so the bend reads as the
+	# arc giving way rather than as a correction.
+	_deflect += (_deflect_target - _deflect) * minf(1.0, delta * 6.0)
 	if state_time < move.startup:
 		# STARTUP TRAVELS. The head goes to where the move begins instead of
 		# appearing there, so no technique in this weapon can teleport the chain —
 		# which is the difference between a chain and a very long sword.
 		var t := _settle(state_time / maxf(move.startup, 0.0001))
 		var travel := _lerp_pose(_pose_from, _pose_start, t)
-		travel.x += steer
+		travel.x += steer + _deflect
 		_apply_pose(travel)
 		return
 	if state_time < move.startup + _duration:
 		var t := move.eased((state_time - move.startup) / maxf(_duration, 0.0001))
 		_apply_pose(Vector3(
-			lerpf(_pose_start.x, _pose_end.x, t) + steer,
+			lerpf(_pose_start.x, _pose_end.x, t) + steer + _deflect,
 			lerpf(_pose_start.y, _pose_end.y, t),
 			lerpf(_pose_start.z, _pose_end.z, t)
 		))
@@ -471,7 +543,7 @@ func _step_move(delta: float) -> void:
 	# the window the next cut comes out of.
 	var late := state_time - _strike_end
 	_apply_pose(Vector3(
-		_pose_end.x + steer,
+		_pose_end.x + steer + _deflect,
 		maxf(moveset.min_radius, _pose_end.y - late * 1.6),
 		_pose_end.z
 	))
@@ -507,14 +579,38 @@ func _step_tension(delta: float) -> void:
 	radius = lerpf(radius, moveset.max_radius, minf(1.0, delta * 8.0))
 	var want := _facing_azimuth()
 	_azimuth += wrapf(want - _azimuth, -PI, PI) * 0.45 * delta
-	_height = lerpf(_height, 1.05, minf(1.0, delta * 5.0))
+	# The HEIGHT IT WENT TAUT AT, not a hard-coded chest height. A taut line is a
+	# fixed LENGTH, so it keeps whatever elevation it was stretched to — and with the
+	# throw aimed by the look (§13) that can be a point well above the player. Pinning
+	# it to 1.05 would drag a chain hooked to the top of a pillar down through it.
+	_height = lerpf(_height, _taut_height, minf(1.0, delta * 5.0))
 	if _tension_left <= 0.0:
 		_retract()
 
 
 func _step_retract(delta: float) -> void:
 	var t := clampf(state_time / maxf(moveset.retract_time, 0.001), 0.0, 1.0)
-	_apply_pose(_lerp_pose(_pose_from, _retract_pose(), _settle(t)))
+	var pose := _lerp_pose(_pose_from, _retract_pose(), _settle(t))
+	# 回收有重量 (§43 RETURN).
+	#
+	# Retracing the line the head came in on reads as a sprite being reset: the
+	# chain is a rope with a mass on the end, so letting go of a strike does not
+	# stop the mass, it only stops feeding it. The head therefore OVERSHOOTS —
+	# further round, a little further out — and is hauled home from there. Both
+	# bulges are zero at both ends of the retract, so the pose it starts from and
+	# the pose it settles into are untouched and nothing that waits on HELD is
+	# delayed by it.
+	var arch := sin(PI * t)
+	var home := _retract_pose()
+	# `x` is the head's azimuth. The overshoot goes PAST the gap it has to close,
+	# i.e. the way it was already travelling, which is why it is the negative of
+	# that gap — no new state, and it stays correct if the player turns mid-reel.
+	pose.x -= wrapf(home.x - _pose_from.x, -PI, PI) * moveset.retract_overshoot * arch
+	# `y` is the radius: drift out before being reeled in, but never past the
+	# chain's own length. A retract that stretched the rope would be the one bug
+	# this weapon cannot have.
+	pose.y = clampf(pose.y + moveset.retract_out * arch, moveset.min_radius, moveset.max_radius)
+	_apply_pose(pose)
 	if state_time >= moveset.retract_time:
 		_enter_held()
 
@@ -599,12 +695,18 @@ func _request_lock() -> bool:
 	if _hook_actor.has_method("apply_bound"):
 		_hook_actor.call("apply_bound", seconds)
 	if camera_feedback != null:
-		camera_feedback.add_trauma(0.12)
-		camera_feedback.fov_kick(-2.2)
-		# The chain going tight is a pull on the camera TOWARD the chain (§15),
-		# never a camera that turns to follow the head (§30).
-	var rel := wrapf(_azimuth - _facing_azimuth(), -PI, PI)
-	camera_feedback.add_impulse(Vector2(-sin(rel) * 0.05, -0.018))
+		# THE WEIGHT TABLE DRIVES THE CAMERA TOO (§43). The shares already say which
+		# body travels; the camera reads those same two numbers instead of growing a
+		# table of its own. A light target ARRIVES at you — that is an impact — while
+		# a heavy one drags YOU, which is a sustained pull along the chain and a view
+		# that leans in. So 缚 on a light enemy and 缚 on a pillar do not feel alike,
+		# even though one line of code does both.
+		var target_share := float(response.get("target_share", 0.5))
+		var player_share := float(response.get("player_share", 0.45))
+		camera_feedback.add_trauma(0.10 * (0.6 + target_share))
+		camera_feedback.fov_kick(-moveset.taut_fov * (0.5 + player_share))
+		var rel := wrapf(_azimuth - _facing_azimuth(), -PI, PI)
+		camera_feedback.add_impulse(Vector2(-sin(rel) * 0.05, -0.018) * (0.4 + player_share))
 	message.emit("缚 · BOUND %.2fs  (%s)" % [seconds, String(weight_of(_hook_actor))])
 	bound.emit(_hook_actor, seconds)
 	return true
@@ -661,6 +763,11 @@ func _start(id: StringName) -> bool:
 	_hit_targets.clear()
 	_pull_done = false
 	_idle_time = 0.0
+	# A new technique gets a clean arc: the bend a previous landing left in the last
+	# one is the last one's business, and carrying it forward would let three hits
+	# walk a 横缚 off the front of the player.
+	_deflect = 0.0
+	_deflect_target = 0.0
 	momentum = minf(moveset.momentum_max, momentum + move.momentum_gain)
 	_radius_scale = 1.0 + moveset.radius_momentum_scale * momentum
 	_duration = move.active_seconds(momentum)
@@ -746,6 +853,15 @@ func _enter_tension() -> void:
 	# whole changed input map on that boolean, so a player who presses Light on the
 	# frame the chain snaps tight would get 横缚 instead of 绷切.
 	radius = moveset.max_radius
+	_taut_height = _height
+	# §15/§43: TENSION is a taut line AND a pull on the camera. The snap itself has
+	# to be felt, so it gets the one moment of feedback a state change is allowed —
+	# a jolt ALONG the chain's own bearing, never a turn toward the head (§30).
+	var rel := wrapf(_azimuth - _facing_azimuth(), -PI, PI)
+	if camera_feedback != null:
+		camera_feedback.add_trauma(moveset.taut_snap_trauma)
+		camera_feedback.fov_kick(-moveset.taut_fov)
+		camera_feedback.add_impulse(Vector2(-sin(rel) * 0.02, -0.010))
 	message.emit("链绷紧 · TENSION")
 
 
@@ -823,7 +939,25 @@ func _apply_pose(p: Vector3) -> void:
 	# can never make the chain longer than it is, which is the rule that makes
 	# TENSION a state rather than a number that keeps growing.
 	radius = clampf(p.y * _radius_scale, moveset.min_radius * 0.35, moveset.max_radius)
-	_height = p.z
+	_height = p.z + _aim_pitch_offset(radius)
+
+
+# §13: THE THROW IS RELEASED TOWARD THE AIM.
+#
+# A chain that always leaves the hand at the same height can hook a pillar but never
+# the top of one — which makes every raised thing in the world unhookable, including
+# the high anchor §45 puts in the training ground. So a move may ask for the aim to
+# tilt it, and the offset is `sin(pitch) * reach`: the head tracks the crosshair the
+# way a thrown object would, and the amount is proportional to how far it has been
+# thrown. Opt-in per move rather than always on, because a 横缚 that drifted upward
+# whenever the player looked up would stop being a 145° sweep.
+func _aim_pitch_offset(reach: float) -> float:
+	var move := active_move
+	if move == null or is_zero_approx(move.aim_pitch_scale):
+		return 0.0
+	if look_pivot == null:
+		return 0.0
+	return sin(look_pivot.rotation.x) * reach * move.aim_pitch_scale
 
 
 func _lerp_pose(a: Vector3, b: Vector3, t: float) -> Vector3:
@@ -907,7 +1041,8 @@ func _decay_momentum(delta: float) -> void:
 		_radius_scale = 1.0 + moveset.radius_momentum_scale * momentum
 
 
-func _update_feedback(_delta: float) -> void:
+func _update_feedback(delta: float) -> void:
+	_probe_dev_mode(delta)
 	if camera_feedback == null:
 		return
 	# FOV PRESSURE, not a camera orbit (§30/§31). The view widens as the chain
@@ -916,8 +1051,45 @@ func _update_feedback(_delta: float) -> void:
 	# weapon unplayable.
 	if state == State.ORBITING:
 		camera_feedback.sustain_fov = moveset.orbit_fov * momentum
+	elif tension >= moveset.taut_feel_threshold:
+		# A LOADED LINE LEANS IN. The squeeze is negative — the view tightens while
+		# the chain is at its limit and lets go when the pressure is spent, which is
+		# the sustained half of §43's camera channel (the snap in _enter_tension is
+		# the transient half). Small on purpose: this must be felt, not read.
+		camera_feedback.sustain_fov = -moveset.taut_fov
 	else:
 		camera_feedback.sustain_fov = 0.0
+
+
+# §46: is a developer looking? Cached, and re-probed on a slow timer rather than
+# every frame — this runs sixty times a second and a full tree search does not
+# belong in a frame budget for a debug label.
+func _probe_dev_mode(delta: float) -> void:
+	if debug_readout:
+		return
+	_dev_probe_timer -= delta
+	if _dev_panel != null and is_instance_valid(_dev_panel):
+		return
+	if _dev_probe_timer > 0.0:
+		return
+	_dev_probe_timer = DEV_PROBE_INTERVAL
+	var tree := get_tree()
+	if tree == null:
+		return
+	_dev_panel = tree.root.find_child("DeveloperPanel", true, false)
+
+
+# The panel's own container is what F8 shows and hides, so this asks THAT rather
+# than the panel node — which is present and invisible whenever the panel is closed.
+func dev_readout_on() -> bool:
+	if debug_readout:
+		return true
+	if _dev_panel == null or not is_instance_valid(_dev_panel):
+		return false
+	var container: Variant = _dev_panel.get("panel")
+	if container is Control:
+		return (container as Control).visible
+	return false
 
 
 func _nudge_camera(direction: Vector2, trauma: float) -> void:
@@ -1010,10 +1182,72 @@ func _deliver(actor: Node3D, area: CombatHurtbox, profile: ChainMove) -> void:
 	hits_landed += 1
 	area.receive_hit(hit)
 	hit_landed.emit(profile, hit)
+	_pay_for_the_impact(profile, weight_of(actor))
+
+
+# HOW HARD THE HEAD ARRIVED, as a ratio: 0 at a crawl, 1 at impact_speed_ref, more
+# beyond it. Everything about a landing reads off this, which is what keeps "the
+# chain has weight" a property of the physics rather than a table of juice values.
+func _impact_strength(profile: ChainMove) -> float:
+	return clampf(_head_velocity.length() / maxf(0.001, moveset.impact_speed_ref), 0.0, 1.6)
+
+
+# THE HEAD HAS MASS, SO LANDING ON SOMETHING COSTS IT (§43 IMPACT).
+#
+# A whip does not care what it hits. This does: it hands momentum to whatever it
+# lands on, so it keeps less of its own, it is knocked off its arc, and the world
+# stops for a beat that is longer the faster it arrived. All three are scaled by the
+# WEIGHT of the thing it hit — the same table the pull uses, because how heavy
+# something is is a fact about that thing and there is only one place that says so.
+#
+# The consequence in play is the point: mowing down light enemies is cheap and keeps
+# the chain spinning, while spending a throw on a heavy body takes the spin and
+# gives back a thud. 实链's currency is momentum (§12), so this is where the weapon
+# charges for its power.
+func _pay_for_the_impact(profile: ChainMove, weight: StringName) -> void:
+	var strength := _impact_strength(profile)
+	var speed_share := minf(1.0, strength)
+	var cost_scale := float(moveset.impact_cost_by_weight.get(weight, 1.0))
+	if profile.impact_momentum_cost > 0.0 and cost_scale > 0.0:
+		momentum = maxf(
+			0.0,
+			momentum - profile.impact_momentum_cost * cost_scale * lerpf(0.6, 1.0, speed_share)
+		)
+		_radius_scale = 1.0 + moveset.radius_momentum_scale * momentum
+	var deflect_scale := float(moveset.impact_deflect_by_weight.get(weight, 1.0))
+	if profile.impact_deflect_degrees > 0.0 and deflect_scale > 0.0:
+		# Off the arc, the way it was already going. A head with no angular travel
+		# to speak of (a straight thrust) has no line to be knocked off, so it gets
+		# nothing rather than an invented direction.
+		var side := signf(_azimuth_vel)
+		if not is_zero_approx(side):
+			_deflect_target += side * deg_to_rad(profile.impact_deflect_degrees * deflect_scale)
+	var hitstop_scale := _hitstop_scale()
+	if profile.impact_hitstop > 0.0 and hitstop_scale > 0.0 and time_effects != null:
+		time_effects.request_hitstop(
+			profile.impact_hitstop
+				* lerpf(moveset.impact_hitstop_min, moveset.impact_hitstop_max, speed_share)
+				* hitstop_scale
+		)
 	if camera_feedback != null:
-		camera_feedback.add_trauma(profile.camera_trauma * 0.5)
-		if profile.impulse >= 2.6:
-			camera_feedback.add_impulse(Vector2(0.008, -0.012))
+		# The camera admits the impact rather than the technique: the same 横缚 that
+		# rolls off a light enemy lands differently when it stops against a heavy one.
+		camera_feedback.add_trauma(profile.camera_trauma * lerpf(0.7, 1.7, speed_share))
+		if profile.impulse >= 2.0 and strength > 0.5:
+			camera_feedback.add_impulse(Vector2(0.008, -0.012) * lerpf(0.6, 1.3, speed_share))
+
+
+# The developer panel's hitstop preset belongs to the PLAYER, not to a weapon, so the
+# chain honours it too — asked for rather than copied, exactly like the weight
+# contract. 0 means "no hitstop at all", which is how that control already reads.
+func _hitstop_scale() -> float:
+	var combat := get_parent().get_node_or_null("CombatController")
+	if combat == null:
+		return 1.0
+	var value: Variant = combat.get("hitstop_scale")
+	if value == null:
+		return 1.0
+	return float(value)
 
 
 # MAGIC x CHAIN, interaction 2 of 2. A pull is the best way to apply force to
@@ -1051,6 +1285,7 @@ func _on_wall_hit() -> void:
 	momentum = maxf(0.0, momentum * 0.30)
 	if camera_feedback != null:
 		camera_feedback.add_trauma(0.07 * last_wall_impact)
+	wall_impact.emit(last_wall_impact)
 	if active_move != null and active_move.deflects:
 		# A guard arc stays a guard arc. Clamping is enough; retracting would turn
 		# standing near a wall into losing your defence.
@@ -1139,6 +1374,7 @@ func _deliver_tug(amount: float) -> void:
 	var target_move := _tug_dir * _tug_total * _tug_target_share * amount
 	var player_move := -_tug_dir * _tug_total * _tug_player_share * amount
 	var moved_something := false
+	tug.emit(_tug_step + 1, moveset.pull_tugs, amount)
 	if target_move.length_squared() > 0.0 and actor != null and is_instance_valid(actor) \
 			and actor.has_method("chain_pull"):
 		# A body that takes a displacement takes it whole: no compensation, no

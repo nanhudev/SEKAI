@@ -42,6 +42,28 @@ const BRIDGE_FROM_Z := -12.0
 
 const ENTRY := Vector3(0.0, 0.9, -22.0)
 const ANCHOR_POSITION := Vector3(6.5, 0.0, -26.0)
+
+# THE HIGH ANCHOR (brief §45). The pillar above is a fixed point at ground level —
+# it answers "hook something that will not move", which is §20's tension. This one
+# answers a different question: "hook something OVER YOUR HEAD", which is the whole
+# subject of 游链 (§6–§9: swing, redirect, orbit) and the reason the training ground
+# needs a point above the player rather than only one in front of them.
+#
+# It is a crossbar on a post, and only the BAR is hookable: the anchor's own volume
+# hangs below the arm, so a throw aimed up meets the bar and attaches instead of
+# being stopped by it as a wall. That distinction is why this is not just a second
+# pillar with a taller height — a solid post is something the chain bounces off.
+#
+# THE HEIGHT IS A REACHABILITY NUMBER, not a decoration. The head travels in polar
+# coordinates, so a hook aimed upward lands at `radius = horizontal distance` and
+# `height = 1.15 + sin(pitch) * radius`; the bar's centre is therefore placed where a
+# player standing a natural throwing distance away has to look up about 28°. Higher
+# than this and hooking it becomes a precision stunt, which a training ground fixture
+# must never be.
+const HIGH_ANCHOR_POSITION := Vector3(-6.4, 2.30, -26.6)
+const GANTRY_POST := Vector3(-8.6, 0.0, -26.6)
+const GANTRY_ARM_Y := 3.42
+const GANTRY_RADIUS := 0.22
 const CRATE_STARTS: Array[Vector3] = [
 	Vector3(4.0, 0.5, -23.6),
 	Vector3(4.9, 0.5, -24.7),
@@ -61,6 +83,7 @@ const SLOTS: Array[Dictionary] = [
 
 var targets: Array[Node3D] = []
 var anchor: ChainAnchor
+var high_anchor: ChainAnchor
 var crates: Array[ChainCrate] = []
 
 
@@ -71,6 +94,7 @@ func _ready() -> void:
 	_bridge()
 	_wall()
 	_anchor()
+	_high_anchor()
 	_crates()
 	_spawn_targets()
 	_clear_overlapping_dressing()
@@ -227,6 +251,42 @@ func _anchor() -> void:
 	anchor.height = 4.4
 	anchor.position = ANCHOR_POSITION
 	add_child(anchor)
+
+
+func _high_anchor() -> void:
+	# The structure is REAL geometry (it can be walked into and thrown past), and the
+	# hookable part is only the bar. A two-post gantry rather than a cantilever so the
+	# arm is not floating: one post takes the load, the second sits where the player
+	# can see that the span is a span.
+	_solid(
+		Vector3(GANTRY_RADIUS * 2.0, GANTRY_ARM_Y - 0.13, GANTRY_RADIUS * 2.0),
+		KERB_TINT,
+		GANTRY_POST + Vector3(0.0, (GANTRY_ARM_Y - 0.13) * 0.5, 0.0)
+	)
+	var arm_len := absf(GANTRY_POST.x - HIGH_ANCHOR_POSITION.x) + 0.6
+	var arm_mid := (GANTRY_POST.x + HIGH_ANCHOR_POSITION.x) * 0.5 + 0.3
+	_solid(
+		Vector3(arm_len, 0.26, GANTRY_RADIUS * 2.0),
+		KERB_TINT,
+		Vector3(arm_mid, GANTRY_ARM_Y, GANTRY_POST.z)
+	)
+	# The bar the chain catches, hanging under the arm. Its volume stops BELOW the
+	# arm's underside on purpose: the sweep ray tests the solid world first, so a
+	# hookable box that overlapped the arm would never be reached — the head would
+	# register a wall hit on the arm it was aimed at.
+	high_anchor = ChainAnchor.new()
+	high_anchor.name = "ChainHighAnchor"
+	high_anchor.radius = 0.26
+	high_anchor.height = 0.95
+	high_anchor.position = HIGH_ANCHOR_POSITION
+	add_child(high_anchor)
+	# A mark on the bar so the one hookable thing overhead is FINDABLE (§32).
+	for side in [-1.0, 1.0]:
+		_flat(
+			Vector3(0.13, 0.13, 0.13),
+			INTERVAL_TINT,
+			HIGH_ANCHOR_POSITION + Vector3(side * 0.27, 0.0, 0.0)
+		)
 
 
 func _crates() -> void:

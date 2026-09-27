@@ -77,6 +77,9 @@ var seg_fp := false
 var seg_pitch := -2.3
 # "review" (outside camera) or "fp" (the player's own eyes); see _run_segment.
 var cam_mode := "review"
+# "clean" (default) or "hud": whether the developer status column is drawn. See the
+# note in _initialize — the film is meant to be judged without it (§46/§51).
+var hud_mode := "clean"
 # The spells this take claims to be showing. The overlay prints what is ACTUALLY
 # armed next to it, so a caption that drifts from the code is visible in the very
 # frame that makes the claim — which is how the fire takes were caught promising
@@ -119,6 +122,13 @@ func _initialize() -> void:
 	# "fp" shoots every take from the player's eyes unless the take overrides it;
 	# "review" (the default) reproduces the sword tour's outside camera.
 	cam_mode = String(args[4]) if args.size() > 4 else "review"
+	# §46/§51: the acceptance clip is a CLEAN artefact. The status column is the
+	# developer readout — radius, momentum, tension, hook target — and a clip that
+	# needs those numbers on screen to make its point is a clip that has not made its
+	# point: "重 / 拉 / 绷紧 / 不同重量反应" have to be visible in the picture. The
+	# captions stay, because they are the film's voice rather than a debug dump, and
+	# `hud` puts the numbers back for the times when a take is being diagnosed.
+	hud_mode = String(args[5]) if args.size() > 5 else "clean"
 	DirAccess.make_dir_recursive_absolute(output_dir)
 	_clear_existing_frames()
 
@@ -167,6 +177,10 @@ func _initialize() -> void:
 	foreground_layer = sandbox.get_node_or_null("ForegroundWeaponLayer") as CanvasLayer
 	if foreground_layer != null:
 		foreground_layer.visible = false
+	# The dev readout follows the same switch as the overlay that draws it: a clean
+	# take has no numbers anywhere, and a hud take has all of them.
+	if chain != null:
+		chain.debug_readout = hud_mode == "hud"
 	player.unlimited_resources = true
 	# The dummy attacking on its own would poison every take that is not about
 	# being attacked.
@@ -507,9 +521,9 @@ func _build_chain_segments() -> void:
 				_stand_in_lab(0.0, stand_z)
 				_chain_target(ElementLibrary.WEIGHT_LIGHT, 3.2),
 			"events": [
-				[SETTLE + 0.10, _chain_req.bind(&"light")],
-				[SETTLE + 0.50, _chain_req.bind(&"light")],
-				[SETTLE + 0.90, _chain_req.bind(&"light")],
+				[SETTLE + 0.10, _chain_req_expect.bind(&"light", &"ch_sweep")],
+				[SETTLE + 0.50, _chain_req_expect.bind(&"light", &"ch_return")],
+				[SETTLE + 0.90, _chain_req_expect.bind(&"light", &"ch_slam")],
 			],
 			"duration": SETTLE + 2.6,
 		},
@@ -524,7 +538,7 @@ func _build_chain_segments() -> void:
 				_chain_target(ElementLibrary.WEIGHT_LIGHT, 3.0, -1.5)
 				_chain_target(ElementLibrary.WEIGHT_MEDIUM, 3.0, 1.5),
 			"events": [
-				[SETTLE + 0.10, _chain_req.bind(&"light")],
+				[SETTLE + 0.10, _chain_req_expect.bind(&"light", &"ch_sweep")],
 			],
 			"duration": SETTLE + 2.0,
 		},
@@ -537,14 +551,14 @@ func _build_chain_segments() -> void:
 				_enter_lab([])
 				_stand_in_lab(0.0, stand_z),
 			"events": [
-				[SETTLE + 0.10, _chain_req.bind(&"heavy")],
+				[SETTLE + 0.10, _chain_req_expect.bind(&"heavy", &"ch_orbit")],
 				# Released with a margin on purpose. The orbit throws ITSELF at
 				# orbit_max_hold (1.30s), and this event used to sit 0.10s inside that
 				# cap — which is fine at 20fps and refused at 8fps, because a frame is
 				# then 0.12s of game time and the event lands after the window has
 				# already closed. A take may not depend on the frame rate.
-				[SETTLE + 1.08, _chain_release],
-				[SETTLE + 2.60, _chain_req.bind(&"light")],
+				[SETTLE + 1.08, _chain_release_expect.bind(&"ch_launch")],
+				[SETTLE + 2.60, _chain_req_expect.bind(&"light", &"ch_snap")],
 			],
 			"duration": SETTLE + 4.0,
 		},
@@ -559,7 +573,7 @@ func _build_chain_segments() -> void:
 				_stand_in_lab(0.0, stand_z)
 				_chain_target(ElementLibrary.WEIGHT_LIGHT, 3.6),
 			"events": [
-				[SETTLE + 0.10, _chain_req.bind(&"chain_hook")],
+				[SETTLE + 0.10, _chain_req_expect.bind(&"chain_hook", &"ch_hook")],
 				[SETTLE + 1.05, _chain_req.bind(&"chain_lock")],
 				# THE EXIT HAS TO LAND INSIDE THE WINDOW IT EXITS. 缚 opens 1.00s here and
 				# the haul it starts runs for ~1.2s, so the tempting move — delay the exit
@@ -568,7 +582,7 @@ func _build_chain_segments() -> void:
 				# this was caught). The haul outliving the bind is the DESIGN (see
 				# `_release_hook` in chain_director.gd); the exit is a separate deadline.
 				# 0.75s into a 1.00s window, which also survives an 8fps frame.
-				[SETTLE + 1.80, _chain_req.bind(&"light")],
+				[SETTLE + 1.80, _chain_req_expect.bind(&"light", &"ch_pull_cut")],
 			],
 			# Longer than the events need, on purpose: the SECOND haul (拉近斩 is 拉且松,
 			# so it re-arms the sequence) is where the 顿挫 rhythm is actually watched.
@@ -585,14 +599,14 @@ func _build_chain_segments() -> void:
 				_stand_in_lab(0.0, stand_z)
 				_chain_target(ElementLibrary.WEIGHT_HEAVY, 3.6),
 			"events": [
-				[SETTLE + 0.10, _chain_req.bind(&"chain_hook")],
+				[SETTLE + 0.10, _chain_req_expect.bind(&"chain_hook", &"ch_hook")],
 				[SETTLE + 1.05, _chain_req.bind(&"chain_lock")],
 				# 0.25s into a 0.40s window. This is the tightest timing in the whole tour:
 				# a heavy is given the SHORTEST bind on purpose (§18's counterplay), so the
 				# exit has almost no room — and when it missed, this take did not fail, it
 				# silently played 蓄势回旋 → 甩星 instead of 地砸. The caption and the
 				# animation disagreed and nothing in the log said so.
-				[SETTLE + 1.30, _chain_req.bind(&"heavy")],
+				[SETTLE + 1.30, _chain_req_expect.bind(&"heavy", &"ch_ground_slam")],
 			],
 			"duration": SETTLE + 4.2,
 		},
@@ -607,8 +621,8 @@ func _build_chain_segments() -> void:
 				_stand_in_lab(0.0, stand_z)
 				_chain_target(ElementLibrary.WEIGHT_MEDIUM, 3.8),
 			"events": [
-				[SETTLE + 0.10, _chain_req.bind(&"chain_hook")],
-				[SETTLE + 1.05, _chain_req.bind(&"heavy")],
+				[SETTLE + 0.10, _chain_req_expect.bind(&"chain_hook", &"ch_hook")],
+				[SETTLE + 1.05, _chain_req_expect.bind(&"heavy", &"ch_yank")],
 			],
 			"duration": SETTLE + 3.8,
 		},
@@ -627,10 +641,29 @@ func _build_chain_segments() -> void:
 				# move toward the lens, which is the whole claim of the shot.
 				_stand_in_lab(ChainLab.ANCHOR_POSITION.x, -30.0, 180.0),
 			"events": [
-				[SETTLE + 0.10, _chain_req.bind(&"chain_hook")],
+				[SETTLE + 0.10, _chain_req_expect.bind(&"chain_hook", &"ch_hook")],
 				[SETTLE + 1.05, _chain_req.bind(&"chain_lock")],
 			],
 			"duration": SETTLE + 3.8,
+		},
+		{
+			"name": "缚星链 · 钩住头顶横杆 (瞄哪打哪)",
+			"note": "抛出方向跟着准心走 —— 抬头 28°，链头就从自己头顶上方飞出去，钩住横杆。没有这一条，世界里所有高的东西（横杆、废墟环、树杈）都钩不到，游链以后也就没有锚点。横杆是重的，所以被拉过去的还是你。",
+			# §13: the throw is released TOWARD THE AIM, and this is the take that says
+			# so — the one claim that cannot be filmed from the outside camera, because
+			# it is about where the player was looking.
+			"fov": 62.0,
+			"pitch": 28.6,
+			"setup": func() -> void:
+				_enter_lab([])
+				_stand_in_lab(
+					ChainLab.HIGH_ANCHOR_POSITION.x, ChainLab.HIGH_ANCHOR_POSITION.z + 3.4
+				),
+			"events": [
+				[SETTLE + 0.10, _chain_req_expect.bind(&"chain_hook", &"ch_hook")],
+				[SETTLE + 1.05, _chain_req.bind(&"chain_lock")],
+			],
+			"duration": SETTLE + 2.8,
 		},
 		{
 			"name": "缚星链 · 撞墙",
@@ -641,7 +674,7 @@ func _build_chain_segments() -> void:
 				_enter_lab([])
 				_stand_in_lab(0.0, -38.0),
 			"events": [
-				[SETTLE + 0.10, _chain_req.bind(&"chain_hook")],
+				[SETTLE + 0.10, _chain_req_expect.bind(&"chain_hook", &"ch_hook")],
 			],
 			"duration": SETTLE + 2.6,
 		},
@@ -655,14 +688,14 @@ func _build_chain_segments() -> void:
 				_stand_in_lab(0.0, stand_z)
 				_spell(&"wind_step"),
 			"events": [
-				[SETTLE + 0.10, _chain_req.bind(&"heavy")],
+				[SETTLE + 0.10, _chain_req_expect.bind(&"heavy", &"ch_orbit")],
 				# Cast as early as the orbit allows. 风 is a boost to the SPIN, so it
 				# only pays for the seconds it is actually held — cast at 0.55s against
 				# a release at 1.05s it bought three points of launch, which is not an
 				# argument, it is noise. Take 2 holds for exactly the same 0.95s with no
 				# spell, so the only difference between the two takes is the wind.
 				[SETTLE + 0.20, _req.bind(&"cast")],
-				[SETTLE + 1.05, _chain_release],
+				[SETTLE + 1.05, _chain_release_expect.bind(&"ch_launch")],
 			],
 			"duration": SETTLE + 3.4,
 		},
@@ -1078,14 +1111,54 @@ func _chain_target(weight: StringName, distance: float, lateral := 0.0) -> Node3
 # technique the player has no button for — and a refusal is printed rather than
 # silently producing a caption about something that never happened.
 func _chain_req(action: StringName) -> void:
+	_request_chain(action, &"")
+
+
+# THE CAPTION AND THE ANIMATION HAVE TO BE THE SAME CLAIM.
+#
+# `request()` returning true only means "SOMETHING happened", which is not the same as
+# "the thing this take is about happened". The heavy bind take fired its exit 0.15s
+# outside 缚's 0.40s window; the request was ACCEPTED and the take rendered happily —
+# it just played 蓄势回旋 → 甩星 instead of 地砸, while the caption on screen said 地砸.
+# Nothing in the log disagreed, because nothing was asked.
+#
+# So any input whose meaning depends on a WINDOW (taut, bound, hooked) has to declare
+# which technique it meant, and the renderer checks it against what actually started.
+func _chain_req_expect(action: StringName, expect: StringName) -> void:
+	_request_chain(action, expect)
+
+
+func _request_chain(action: StringName, expect: StringName) -> void:
 	if not chain.request(action):
 		print("    !! %s refused at %.2fs in %s"
 			% [String(action), chain.state_time, seg_name])
+		return
+	var played := _played_move()
+	if expect != &"" and played != expect:
+		print("    !! %s played %s, but this take claims %s  (%s)"
+			% [String(action), String(played), String(expect), seg_name])
+
+
+func _played_move() -> StringName:
+	return chain.active_move.id if chain.active_move != null else &""
 
 
 func _chain_release() -> void:
 	if not chain.release_heavy():
 		print("    !! 释 refused in %s" % seg_name)
+		return
+
+
+# 释 is only reachable from a spin, and a spin only ever releases into the throw — so
+# this one expect is not a window check, it is the take's whole claim ("松手甩出去").
+func _chain_release_expect(expect: StringName) -> void:
+	if not chain.release_heavy():
+		print("    !! 释 refused in %s" % seg_name)
+		return
+	var played := _played_move()
+	if played != expect:
+		print("    !! 释 played %s, but this take claims %s  (%s)"
+			% [String(played), String(expect), seg_name])
 
 
 func _place(player_pos: Vector3, distance: float) -> void:
@@ -1197,10 +1270,17 @@ func _build_overlay() -> void:
 	title_label = Label.new()
 	title_label.add_theme_font_size_override("font_size", 21)
 	title_label.modulate = Color(0.94, 0.95, 0.98, 1.0)
+	# WRAPPING, not clipping. The captions are the film's voice — they are the only
+	# thing explaining what a take is claiming — and a note that runs off the right
+	# edge is a claim half the viewer cannot read. `WORD_SMART` because these are
+	# Chinese notes with latin terms in them: a word-only wrap would push a whole
+	# sentence to the next line and a character-only wrap would break "CHAIN LAB".
+	title_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	column.add_child(title_label)
 
 	note_label = Label.new()
 	note_label.add_theme_font_size_override("font_size", 14)
+	note_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	note_label.modulate = Color(0.62, 0.72, 0.84, 0.95)
 	column.add_child(note_label)
 
@@ -1213,9 +1293,11 @@ func _build_overlay() -> void:
 func _update_overlay(t: float) -> void:
 	title_label.text = "%s      t = %.2f s" % [seg_name, t]
 	note_label.text = seg_note
-	status_label.text = "%s\n%s\n%s\n%s\n%s" % [
-		_spell_line(), _move_line(), combat.debug_state_line(), _enemy_line(), _chain_line()
-	]
+	status_label.visible = hud_mode == "hud"
+	if status_label.visible:
+		status_label.text = "%s\n%s\n%s\n%s\n%s" % [
+			_spell_line(), _move_line(), combat.debug_state_line(), _enemy_line(), _chain_line()
+		]
 
 
 # §38. State / Radius / Momentum / Tension / Hook target / Weight class, on screen.

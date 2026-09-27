@@ -37,6 +37,16 @@ const SAG_LIMIT := 0.95
 const BOW_PER_SPEED := 0.055
 const BOW_LIMIT := 0.85
 const TRAIL_POINTS := 26
+# A LOADED LINE HUMS. At full tension the chain shivers: it is the visual half of
+# §43's "tension must be perceptible", and it is the one cue that says "at the
+# limit" while a straight line alone only says "far away". Deliberately TINY — 13mm
+# at full load — because §33 forbids the chain looking like a rubber band, and a
+# taut rope that whips around is exactly that. It reads as metal under strain, not
+# as slack, and 7.5Hz is above the sway of the idle pose so the two never argue.
+const TREMOR_PER_TENSION := 0.013
+const TREMOR_HZ := 7.5
+# Below this much tension the line is merely out there rather than loaded.
+const TREMOR_MIN_TENSION := 0.82
 
 var links := 28
 var link_length := 0.17
@@ -50,6 +60,12 @@ var _trail: MeshInstance3D
 var _trail_mesh: ImmediateMesh
 var _trail_points: Array[Vector3] = []
 var _handle: Node3D
+var _tremor_time := 0.0
+# The polyline as last drawn, hand → head. Kept and exposed because "the chain looks
+# like a chain" is a claim about these numbers: how far the drawn line strays from a
+# straight rope is exactly what separates sag, bow and vibration, and a test that
+# cannot ask where the links ARE can only assert that something was drawn.
+var _points: Array[Vector3] = []
 
 
 func _ready() -> void:
@@ -160,15 +176,58 @@ func update_chain(
 	if flat.length() > 0.05:
 		bow = -flat.normalized() * minf(BOW_LIMIT, flat.length() * BOW_PER_SPEED) * (1.0 - taut)
 
+	# THE HUM. Perpendicular to the line, horizontal, zero when the chain is not
+	# loaded. It rides the same arch as sag and bow so the ends stay pinned: a chain
+	# that vibrated at the hand would look like the PLAYER was shaking.
+	_tremor_time += delta
+	var tremor := Vector3.ZERO
+	var load := clampf((taut - TREMOR_MIN_TENSION) / maxf(0.001, 1.0 - TREMOR_MIN_TENSION), 0.0, 1.0)
+	if load > 0.0:
+		var axis := head - hand
+		axis.y = 0.0
+		if axis.length() > 0.05:
+			axis = axis.normalized()
+			tremor = (
+				Vector3(-axis.z, 0.0, axis.x)
+				* TREMOR_PER_TENSION
+				* load
+				* sin(_tremor_time * TAU * TREMOR_HZ)
+			)
+
 	var points: Array[Vector3] = []
 	points.resize(links + 1)
 	for i in range(links + 1):
 		var t := float(i) / float(links)
 		var arch := sin(PI * t)
-		points[i] = hand.lerp(head, t) + Vector3.DOWN * sag * arch + bow * arch
+		points[i] = hand.lerp(head, t) + Vector3.DOWN * sag * arch + (bow + tremor) * arch
+	_points = points
 	_place_links(points)
 	_place_head(head, points)
 	_update_trail(head, delta)
+
+
+# Where the links were last drawn, as a copy: hand → head, one point per link seam.
+func drawn_points() -> Array[Vector3]:
+	return _points.duplicate()
+
+
+# How far the drawn chain strays from the straight line between its own ends, in
+# metres. This single number is the difference between a rope under load and a rope
+# hanging — and it is bounded on purpose: §33 forbids the rubber band.
+func drawn_slack() -> float:
+	if _points.size() < 3:
+		return 0.0
+	var a := _points[0]
+	var b := _points[_points.size() - 1]
+	var span := b - a
+	var length := span.length()
+	if length < 0.0001:
+		return 0.0
+	var worst := 0.0
+	for i in range(1, _points.size() - 1):
+		var offset := _points[i] - a
+		worst = maxf(worst, (offset - span * (offset.dot(span) / (length * length))).length())
+	return worst
 
 
 func _build_links() -> void:

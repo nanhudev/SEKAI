@@ -34,9 +34,18 @@ var chain: ChainDirector
 var weapon: WeaponSlot
 var lab: ChainLab
 var moveset: ChainMoveset
+# The chain's own aim reference. The test sets its pitch directly, because a headless
+# run has no mouse to look up with — and the pitch IS the input this check is about.
+var look_pivot: Node3D
 var failures: Array[String] = []
 var started: Array[StringName] = []
 var landed: Array[Dictionary] = []
+# Every yank the weapon announces, and every wall it announces hitting. These are the
+# events §49 says the audio line needs as EVENTS — a rhythm inferred from a state
+# machine is not a rhythm, and nothing would notice if the weapon stopped emitting
+# them until the day someone tried to place a sound against one.
+var tugs_seen: Array[int] = []
+var walls_seen: Array[float] = []
 
 
 func _initialize() -> void:
@@ -54,6 +63,7 @@ func _run() -> void:
 	combat = player.get_node("CombatController")
 	weapon = player.get_node("WeaponSlot")
 	chain = player.get_node("ChainDirector")
+	look_pivot = player.get_node("CameraRig/LookPivot") as Node3D
 	lab = world.get("chain_lab") as ChainLab
 	if lab == null:
 		_fail("The sandbox has no ChainLab, so the chain has no stage (§39)")
@@ -64,6 +74,8 @@ func _run() -> void:
 	chain.manual_step = true
 	chain.move_started.connect(_on_move_started)
 	chain.hit_landed.connect(_on_hit_landed)
+	chain.tug.connect(_on_tug)
+	chain.wall_impact.connect(_on_wall_impact)
 	_park_everything()
 
 	# --- what the weapon is, before how it feels ----------------------------
@@ -77,7 +89,11 @@ func _run() -> void:
 	await _check_sweep_hits_two_and_is_wide()
 	await _check_the_second_cut_carries_the_first()
 	await _check_a_whiff_costs_the_spin()
+	# --- §43 THE FEEL PASS --------------------------------------------------
+	await _check_landing_costs_the_head_its_spin()
+	await _check_the_return_swings_before_it_comes_home()
 	await _check_the_throw_ends_taut()
+	await _check_tension_is_in_the_line_and_the_camera()
 	await _check_tension_deletes_the_normal_inputs()
 	await _check_the_weight_table()
 	await _check_the_bind_is_a_window()
@@ -91,6 +107,8 @@ func _run() -> void:
 	# --- the stage ----------------------------------------------------------
 	await _check_the_lab_is_reachable_on_foot()
 	_check_the_lab_can_drive_every_action()
+	_check_the_numbers_are_a_developer_readout()
+	await _check_the_high_anchor_can_be_hooked()
 
 	# --- what the player actually sees --------------------------------------
 	await _check_the_chain_is_drawn_where_it_is()
@@ -387,6 +405,208 @@ func _measure_arc_progress(spin: float) -> float:
 	var offset := chain.head_position() - chain._origin()
 	var az := atan2(offset.x, offset.z)
 	return absf(wrapf(az - start_az, -PI, PI))
+
+
+# ============================================================================
+#  §43 · THE FEEL PASS — WHAT MAKES THE CHAIN READ AS A MASS
+# ============================================================================
+
+# THE HEAD HAS WEIGHT, SO LANDING ON SOMETHING COSTS IT (§43 IMPACT).
+#
+# The same sweep, the same target slot, the same distance — only the weight differs.
+# A whip behaves identically in all three cases; a mass does not. This is the whole
+# distinction between 实链 and "a very long sword", so it is measured on the arc AND
+# on the spin rather than asserted on the data:
+#
+#   spin   the head keeps less of it after stopping against something heavy
+#   arc    the sweep is knocked further off course by something heavy
+func _check_landing_costs_the_head_its_spin() -> void:
+	var light := await _measure_landing(&"light")
+	var heavy := await _measure_landing(&"heavy")
+	if light.is_empty() or heavy.is_empty():
+		return
+	_check(
+		int(light["hits"]) > 0 and int(heavy["hits"]) > 0,
+		"a landing was never measured, so the cost of one means nothing"
+	)
+	_check(
+		int(light["hits"]) == int(heavy["hits"]),
+		"the two runs did not land the same number of times (%d vs %d)"
+			% [int(light["hits"]), int(heavy["hits"])]
+	)
+	_check(
+		float(heavy["momentum"]) < float(light["momentum"]) - 0.04,
+		"stopping against a heavy body left %.3f spin against %.3f for a light one — \
+the head does not care what it lands on"
+			% [float(heavy["momentum"]), float(light["momentum"])]
+	)
+	# And the arc bends further, because a collision is a collision and the heavier
+	# thing takes more of the head's course away from it.
+	_check(
+		float(heavy["azimuth"]) > float(light["azimuth"]) + deg_to_rad(1.5),
+		"the heavy landing bent the arc to %.3f rad against %.3f for the light one — \
+the head went through it, it did not hit it"
+			% [float(heavy["azimuth"]), float(light["azimuth"])]
+	)
+	# Printed, not only asserted: "the head has weight" is a claim about MAGNITUDE, and
+	# a threshold failure says nothing about whether the numbers are on the right side.
+	print("    落点代价      轻 势=%.3f 偏=%.1f°   重 势=%.3f 偏=%.1f°" % [
+		float(light["momentum"]), rad_to_deg(float(light["azimuth"])),
+		float(heavy["momentum"]), rad_to_deg(float(heavy["azimuth"])),
+	])
+
+
+# Sampled at the END OF THE ACTIVE PHASE, not at rest: the return now bends by design
+# (§43), so a reading taken after the head is home would be measuring the reel rather
+# than the landing.
+func _measure_landing(weight: StringName, with_target := true) -> Dictionary:
+	await _park_everything()
+	if with_target:
+		_place_target(weight, Vector3(0.0, 0.0, -24.9))
+	await _stand(Vector3(0.0, 1.0, -22.0), Vector3(0.0, 0.0, -1.0))
+	chain.reset()
+	chain.hits_landed = 0
+	if not chain.request(&"light"):
+		_fail("横缚 was refused while measuring a %s landing" % String(weight))
+		return {}
+	await _tick(19)
+	var offset := chain.head_position() - chain._origin()
+	return {
+		"momentum": chain.momentum,
+		"azimuth": atan2(offset.x, offset.z),
+		"hits": chain.hits_landed,
+	}
+
+
+# 回收不许瞬回 (§43 RETURN). A mass released from a strike keeps going for a beat —
+# the chain stops feeding it, it does not stop it — so the reel swings PAST where the
+# head stopped and drifts further out before it is hauled home. Retracing the line the
+# head came in on is the difference between a rope and a sprite being reset.
+func _check_the_return_swings_before_it_comes_home() -> void:
+	await _park_everything()
+	await _stand(Vector3(0.0, 1.0, -22.0), Vector3(0.0, 0.0, -1.0))
+	chain.reset()
+	if not chain.request(&"light"):
+		_fail("横缚 was refused while measuring the return")
+		return
+	var guard := 0
+	while chain.state != ChainDirector.State.RETRACTING and guard < 240:
+		guard += 1
+		await _tick(1)
+	if chain.state != ChainDirector.State.RETRACTING:
+		_fail("the sweep never started reeling in, so there is no return to measure")
+		return
+	var start_radius := chain.radius
+	var start_az := chain._azimuth
+	# Which way "past it" is: the head has to close the gap to the home pose, so
+	# overshooting means moving against the sign of that gap. Derived rather than
+	# assumed, so this cannot quietly pass by measuring a turn in the wrong direction.
+	var gap := wrapf(chain._retract_pose().x - start_az, -PI, PI)
+	var outward := 0.0
+	var past := 0.0
+	var frames := 0
+	while chain.state == ChainDirector.State.RETRACTING and frames < 120:
+		frames += 1
+		await _tick(1)
+		outward = maxf(outward, chain.radius - start_radius)
+		past = maxf(past, -signf(gap) * wrapf(chain._azimuth - start_az, -PI, PI))
+	_check(
+		outward > 0.05,
+		"the head came straight home (%.3fm of drift out) — the reel has no weight" % outward
+	)
+	_check(
+		past > deg_to_rad(2.0),
+		"the head stopped turning the instant the strike ended (%.2f°) — that is a \
+sprite being reset, not a mass on a rope"
+			% rad_to_deg(past)
+	)
+	# And it must never overrun the chain's own length on the way out.
+	_check(
+		chain.radius <= moveset.max_radius + 0.001,
+		"the reel took the head to %.2fm, past the %.2fm the chain is long"
+			% [chain.radius, moveset.max_radius]
+	)
+	print("    回收跟随      外漂 +%.2fm   过冲 %.1f°  (%d 帧 / %.2fs)" % [
+		outward, rad_to_deg(past), frames, float(frames) * DT,
+	])
+
+
+# §43 asks for tension in three channels and this checks the two that belong to the
+# weapon: the LINE and the CAMERA. The third is AUDIO, and §49 is explicit that it
+# stays a placeholder — the events are emitted (and counted here), the sounds are not
+# this line's to make.
+func _check_tension_is_in_the_line_and_the_camera() -> void:
+	var visual := chain.chain_visual
+	if visual == null:
+		_fail("the chain has no ChainVisual, so tension has no visual channel")
+		return
+	var hand := player.global_position + Vector3.UP * 1.4
+	var far := hand + Vector3(0.0, 0.0, -moveset.max_radius)
+	# FULLY LOADED: straight, and ALIVE. Both halves matter — a perfectly straight
+	# line is what a rigid bar looks like, and the tremor is what says "loaded"
+	# rather than "far away".
+	visual.update_chain(hand, far, Vector3(0.0, 0.0, -6.0), 1.0, DT)
+	var taut_slack := visual.drawn_slack()
+	var first := visual.drawn_points()
+	visual.update_chain(hand, far, Vector3(0.0, 0.0, -6.0), 1.0, DT)
+	var second := visual.drawn_points()
+	var alive := 0.0
+	for i in mini(first.size(), second.size()):
+		alive = maxf(alive, first[i].distance_to(second[i]))
+	_check(
+		alive > 0.002,
+		"a chain at full tension does not move at all (%.4fm per frame) — nothing on \
+screen says it is loaded"
+			% alive
+	)
+	# §33: and it must never read as a rubber band. 6cm of stray at full stretch.
+	_check(
+		taut_slack < 0.06,
+		"a chain at full tension strays %.3fm from straight — that is a rubber band (§33)"
+			% taut_slack
+	)
+	# The same rope, slack, hangs: the two states are different pictures, which is the
+	# only reason the taut one is legible.
+	var near := hand + Vector3(0.0, 0.0, -2.4)
+	visual.update_chain(hand, near, Vector3.ZERO, 0.0, DT)
+	var slack_slack := visual.drawn_slack()
+	_check(
+		slack_slack > taut_slack + 0.15,
+		"a slack chain strays %.3fm against %.3fm taut — the two states look the same"
+			% [slack_slack, taut_slack]
+	)
+
+	# ------------------------------- the camera channel -----------------------
+	await _park_everything()
+	await _stand(Vector3(0.0, 1.0, -22.0), Vector3(0.0, 0.0, -1.0))
+	var feedback := player.get_node_or_null("CameraFeedbackController") as CameraFeedbackController
+	if feedback == null:
+		_fail("the player has no camera feedback, so tension has no camera channel")
+		return
+	chain.reset()
+	if not chain.request(&"chain_hook"):
+		_fail("缠锁 was refused while measuring tension's camera channel")
+		return
+	await _tick(70)
+	_check(chain.is_taut(), "the throw did not go taut, so there is no tension to feel")
+	feedback.sustain_fov = 0.0
+	chain.step(DT)
+	_check(
+		feedback.sustain_fov < -0.5,
+		"a loaded chain leaves the camera untouched (sustain_fov %.2f) — the squeeze is \
+§43's camera half" % feedback.sustain_fov
+	)
+	# §30/§31: a PULL along the chain, never a turn toward the head. The impulse is a
+	# nudge and the assertion is that it stays one.
+	_check(
+		absf(feedback.impulse.x) < 0.06,
+		"the tension snap turned the camera by %.3f rad — the view must not follow the head"
+			% feedback.impulse.x
+	)
+	print("    绷紧通道      线：抖 %.4fm/帧 离直 %.4fm（松时 %.4fm）   相机：%.2f° 挤压" % [
+		alive, taut_slack, slack_slack, -feedback.sustain_fov,
+	])
+
 
 
 # ============================================================================
@@ -688,6 +908,16 @@ func _check_the_wall_stops_the_head() -> void:
 		"the head ended at z=%.2f, past the wall face at %.2f (§21)" % [chain.head_position().z, front]
 	)
 	_check(chain.momentum < 0.6, "hitting a wall cost no spin at all")
+	# §49: metal on stone is an event, not a state. The audio line reads this one to
+	# place the impact, and the strength is carried rather than re-derived from the
+	# head's speed by whoever listens — a listener that recomputes it will one day
+	# recompute it differently.
+	_check(walls_seen.size() > 0, "the wall impact was never announced")
+	if not walls_seen.is_empty():
+		_check(
+			walls_seen[walls_seen.size() - 1] > 0.0,
+			"the wall impact was announced with no strength (%.3f)" % walls_seen[walls_seen.size() - 1]
+		)
 
 
 # §24: the only two magic interactions in phase 1, and they must be STRUCTURAL.
@@ -788,6 +1018,9 @@ func _check_the_pull_is_a_haul_not_a_magnet() -> void:
 	var before := target.global_position
 	var previous := before
 	var yanks := 0
+	# Only THIS haul's announcements: the suite has run several by now, and a count
+	# that includes them would pass on a weapon that had stopped announcing entirely.
+	var announced_before := tugs_seen.size()
 	for i in 60:
 		await physics_frame
 		chain.step(DT)
@@ -814,6 +1047,19 @@ func _check_the_pull_is_a_haul_not_a_magnet() -> void:
 		"the tug curve sums to %.3f, so a pull no longer moves the distance it states" % sum
 	)
 	_check(moveset.pull_tugs >= 3, "a %d-yank haul is not a tug of war" % moveset.pull_tugs)
+	# §49: the haul ANNOUNCES every yank. The audio line can only put a sound against
+	# a rhythm that arrives as events — and an interface nobody reads rots silently, so
+	# the count is asserted rather than left to the day someone tries to use it.
+	_check(
+		tugs_seen.size() - announced_before >= 3,
+		"the haul announced %d yank(s) for %d movements — the audio line has nothing to \
+place a sound against" % [tugs_seen.size() - announced_before, yanks]
+	)
+	_check(
+		tugs_seen.size() - announced_before <= moveset.pull_tugs,
+		"the haul announced %d yanks but the curve only has %d shares"
+			% [tugs_seen.size() - announced_before, moveset.pull_tugs]
+	)
 
 
 # A heavy target is used deliberately: the weight table does not move it, so the
@@ -971,11 +1217,50 @@ func _check_the_lab_can_drive_every_action() -> void:
 		_check(move != null, "the weapon names %s but has no such technique" % String(id))
 		if move != null:
 			_check(move.display_name != "", "%s has no name, so no readout can say what is happening" % String(id))
-	# §38: the readout has to answer the questions the design turns on.
+	# §38: the readout has to answer the questions the design turns on — IN DEVELOPER
+	# MODE, which §46 makes the only place it exists.
+	chain.debug_readout = true
 	var line := chain.debug_state_line()
 	for token in ["R=", "M=", "T="]:
 		_check(token in line, "the debug readout does not report %s" % token)
 	_check(chain.debug_flags_line().length() > 0, "the debug readout has no flags line")
+	chain.debug_readout = false
+
+
+# §46: FORM / RADIUS / MOMENTUM / TENSION / ANCHORS / BOUND TARGETS / OPPORTUNITY TAG
+# are a DEVELOPER readout. Clean hides them completely.
+#
+# This is not tidiness. §51 says the weapon fails if the player needs a gauge to know
+# the chain is taut, and a HUD that prints T=87% is that gauge — it just lives in the
+# top-left instead of in the middle. What the player IS allowed to know is which form
+# is in hand, because the forms are a real choice and a choice needs a name.
+func _check_the_numbers_are_a_developer_readout() -> void:
+	chain.debug_readout = false
+	var clean := chain.debug_state_line()
+	_check(
+		clean.strip_edges() != "",
+		"the status line is empty outside developer mode, so the HUD cannot say what is in hand"
+	)
+	for token in ["R=", "M=", "T="]:
+		_check(
+			token not in clean,
+			"the status line still reports %s outside developer mode — that is the gauge §51 forbids"
+				% token
+		)
+	_check(
+		moveset.form_name in clean,
+		"the status line does not name the form (%s), which is the one thing a player \
+may be told" % moveset.form_name
+	)
+	_check(
+		chain.debug_flags_line() == "",
+		"the flags line is printed outside developer mode"
+	)
+	# And the switch is the switch: turning it on is what reveals them. Without this
+	# half the check above would pass on a weapon that had simply lost its readout.
+	chain.debug_readout = true
+	_check("R=" in chain.debug_state_line(), "the readout is missing even in developer mode")
+	chain.debug_readout = false
 
 
 # §32/§33: the chain has to be DRAWN WHERE IT IS. The links are MultiMesh instance
@@ -1016,6 +1301,80 @@ func _check_the_chain_is_drawn_where_it_is() -> void:
 	)
 
 
+# §45: the training ground owes the three forms a stage each of them can use, and
+# 游链's subject (§6–§9) is a point ABOVE the player — swing, redirect, orbit. That
+# fixture is only worth having if the weapon can reach it, so this throws at it rather
+# than checking that a node exists: a bar nothing can hook is scenery.
+#
+# It also pins §13, because reaching it is the proof: a chain released at chest height
+# can hook a pillar but never the top of one, which is why the throw follows the aim.
+func _check_the_high_anchor_can_be_hooked() -> void:
+	var bar := lab.high_anchor
+	if bar == null:
+		_fail("the lab has no high anchor, so §45's stage is missing its overhead point")
+		return
+	_check(
+		bar.weight_class() == ElementLibrary.WEIGHT_HEAVY,
+		"the high anchor answers %s instead of heavy, so it would be dragged" % String(bar.weight_class())
+	)
+	# Stand at a natural throwing distance and look up at it, as a player would.
+	var offset := ChainLab.HIGH_ANCHOR_POSITION - ChainLab.GANTRY_POST
+	var stand := Vector3(
+		ChainLab.HIGH_ANCHOR_POSITION.x, 0.0, ChainLab.HIGH_ANCHOR_POSITION.z + 3.4
+	)
+	await _park_everything()
+	await _stand(stand, Vector3(0.0, 0.0, -1.0))
+	# Measured from the DECK, which is the same origin the chain's heights use — the
+	# deck's top face is y = 0, and the player's body origin is not.
+	var bar_height := bar.hurtbox.global_position.y
+	var horizontal := Vector2(
+		bar.hurtbox.global_position.x - stand.x, bar.hurtbox.global_position.z - stand.z
+	).length()
+	_check(
+		bar_height > 1.9,
+		"the high anchor's hookable point is only %.2fm up — that is not overhead" % bar_height
+	)
+	# THE PITCH THAT HITS IT, derived from the pose model rather than guessed: the head
+	# lands at `radius = horizontal` and `height = 1.15 + sin(pitch) * radius`.
+	if look_pivot != null:
+		look_pivot.rotation.x = asin(clampf((bar_height - 1.15) / maxf(0.1, horizontal), -0.9, 0.9))
+	chain.reset()
+	_check(chain.request(&"chain_hook"), "缠锁 was refused at the high anchor")
+	var hooked_bar := await _hook_now(90)
+	_check(
+		hooked_bar and chain._hook_actor == bar,
+		"the throw could not catch the high anchor — the hook still leaves the hand at \
+one height and every raised thing in the world is unhookable"
+	)
+	if not hooked_bar:
+		return
+	# And once caught, it behaves like the pillar: it does not move, the player does.
+	# That is §20 for free, and it is what makes it usable as a swing point later.
+	var player_before := player.global_position
+	var bar_before := bar.global_position
+	chain.request(&"chain_lock")
+	await _tick(60)
+	_check(
+		bar.global_position.distance_to(bar_before) < 0.05,
+		"the high anchor moved %.2fm — an anchor that moves is not an anchor (§20)"
+			% bar.global_position.distance_to(bar_before)
+	)
+	_check(
+		player_before.distance_to(player.global_position) > 0.25,
+		"曳 on the high anchor moved the player %.2fm — pulling on an overhead point is \
+the whole reason it is in the stage" % player_before.distance_to(player.global_position)
+	)
+	_check(
+		absf(offset.x) > 1.0,
+		"the high anchor stands directly over its own post, so a throw at it is blocked by it"
+	)
+	print("    高阶锚点      横杆高 %.2fm  水平 %.2fm  需抬头 %.0f°  已钩住=%s" % [
+		bar_height, horizontal,
+		rad_to_deg(asin(clampf((bar_height - 1.15) / maxf(0.1, horizontal), -0.9, 0.9))),
+		str(hooked_bar),
+	])
+
+
 # ============================================================================
 #  HELPERS
 # ============================================================================
@@ -1026,6 +1385,14 @@ func _on_move_started(move: ChainMove) -> void:
 
 func _on_hit_landed(_move: ChainMove, hit: Dictionary) -> void:
 	landed.append(hit)
+
+
+func _on_tug(step: int, _total: int, _amount: float) -> void:
+	tugs_seen.append(step)
+
+
+func _on_wall_impact(strength: float) -> void:
+	walls_seen.append(strength)
 
 
 func _all_targets() -> Array[Node3D]:

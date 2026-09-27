@@ -231,6 +231,39 @@ like the same cue at different volumes, weight is a number again.
 **Do not add a tug sound to the chain's overhead/hold layers.** Five yanks at 0.24 s spacing sit
 inside a sequence that is otherwise mostly quiet, and that quiet is what makes the rhythm read.
 
+### G2 · the chain's emitted timing events (§49 interface — added 2026-09-28)
+
+The chain does not play audio itself. It **emits** the moments it knows about, and the AUDIO layer
+subscribes. This is the whole interface; nothing else needs to be invented per cue. If a cue below
+has no emitter, the audio has no trigger and the cue is dead weight in the table.
+
+| Emitted signal | When it fires | Payload | What AUDIO should do with it |
+| --- | --- | --- | --- |
+| `tug(step, total, amount)` | each diminishing yank of 缚 / 曳, 5 per haul | `step` 1-based, `total` = 5, `amount` = the tug's share (0.28 / 0.24 / 0.20 / 0.16 / 0.12) | pick the `ch_tug` tier from `step`, set volume from `amount`. **Never re-derive the count** — the curve lives in the moveset and the signal already carries it |
+| `wall_impact(strength)` | the head lands on solid world with nothing to hook | `strength` 0..1 from the head's speed | `ch_wall`. One shot, no rebound layer, and no `ch_hook_hard` — the wall refuses |
+
+**The tug count is asserted, not assumed.** `chain_integration` counts `tug` emissions per haul and
+fails if it does not match the length of `pull_tug_curve`. That check exists so this interface cannot
+rot silently when a later form re-authors the pull: if someone changes the curve to three tugs and
+forgets the audio, the suite tells them, not the mixer.
+
+### G3 · §43 impact weight: one cue, sized by what it hit (added 2026-09-28)
+
+The landing now pays a cost scaled by **target weight × head speed** (`COMBAT_DESIGN.md` §19):
+momentum is spent, the arc bends off the impact line, and a **hitstop** runs for
+`impact_hitstop × 0.55 … 1.35`. Measured, a light body leaves the head at 0.282 momentum with a
+−106° bend; a heavy one at 0.215 with −102°.
+
+Audio consequence, and it is a rule rather than a nicety: **do not author separate light/medium/heavy
+impact samples.** Author one landing cue whose tail can be stretched, because the difference the
+player must hear is *the head losing its spin*, not a different material. A heavy landing is not a
+new sound; it is the same sound arriving at a head that was already carrying more of it.
+
+`ch_taut` additionally now rides a **camera** event — a 1.80° FOV squeeze and a trauma snap fired the
+frame the chain reaches max radius. The sound must **lead** that frame, not follow it: if the squeeze
+lands first, the player reads "the camera is excited" instead of "the chain just became a rigid bar".
+One frame of anticipation is enough; more and the cue feels detached.
+
 ## Source and audition log template
 
 For every imported candidate record: cue ID, source/tool, creator or model, license/usage right, exact generation prompt or source URL, creation/download date, file hash, intended trigger, and audition notes. Keep rejected candidates out of the game directory. Never describe a cue as approved until it is heard in the Godot combat scene at normal gameplay volume.

@@ -23,6 +23,19 @@ class_name ChainMoveset
 @export var id: StringName = &"star_bind"
 @export var display_name := "缚星链 · STAR-BIND CHAIN"
 
+@export_group("Form")
+# WHICH CHAIN THIS IS (§1 / §6 / §12). A form is not a power level and not a skin:
+# it is a different answer to "what is a chain FOR" — 实链 controls weight, 游链
+# controls momentum, 律链 controls connection — so the three are meant to coexist
+# and be chosen, never to replace one another.
+#
+# Only 实链 exists in the prototype, and these two fields are here anyway, for the
+# same reason the phase-1 fields above are: the HUD, the debug readout and the
+# renderer all have to be able to say WHICH chain is in hand, and a name added after
+# the fact is how the second form ends up unnameable in every place that needed one.
+@export var form_name := "实链"
+@export var form_id: StringName = &"solid"
+
 @export_group("Geometry")
 @export var max_radius := 4.6
 @export var min_radius := 0.55
@@ -78,6 +91,60 @@ class_name ChainMoveset
 # How long the taut window stays open for the player to use. Unused, the head
 # comes home on its own.
 @export var tension_window := 0.90
+
+@export_group("Impact")
+# Head speed at which a landing counts as a HARD one. Below it the head is
+# arriving; above it, it is slamming. Everything about the reaction — the stop,
+# the trauma, the spin it spends — reads off this ratio (§43).
+@export var impact_speed_ref := 9.0
+# WHAT A LANDING COSTS, BY WHAT IT LANDED ON. Same shape as the weight table above
+# and for the same reason: an enemy's weight is a fact about the enemy, and every
+# rule that cares about it should read one table instead of growing its own.
+@export var impact_cost_by_weight := {
+	&"light": 0.35,
+	&"medium": 1.0,
+	&"heavy": 1.7,
+}
+# How much the arc bends when the head lands on it, by weight. Kept small: this is
+# a chain, and a head that ricochets off every target would make 横缚 unusable
+# against a crowd — which is the one thing it is for.
+@export var impact_deflect_by_weight := {
+	&"light": 0.4,
+	&"medium": 1.0,
+	&"heavy": 1.8,
+}
+# The hitstop multiplier's floor and ceiling across that speed ratio.
+@export var impact_hitstop_min := 0.55
+@export var impact_hitstop_max := 1.35
+
+@export_group("Return")
+# 回收不许瞬回 (§43). The head is a mass on a rope: released from a strike it keeps
+# going for a beat, and the chain then has to reel it back — so the return BENDS
+# rather than retracing the line it came in on. Both numbers are shares of what is
+# left, not absolutes, so a longer chain does not get a longer flourish.
+# How much further round it swings past where it stopped.
+#
+# Sized against the base lerp rather than in isolation: the head is simultaneously
+# being pulled home, so for the bulge to be visible at all it has to out-run that
+# lerp early on. At 0.55 the peak lands a little before a quarter of the way through
+# the reel — the head has gone about a fifth of the remaining gap the WRONG way and
+# is only then hauled back. Lower than ~0.4 and the reel is a straight line again,
+# which is the thing this exists to avoid.
+@export var retract_overshoot := 0.55
+# How much further out it drifts before coming home, in metres. Same argument: this
+# is what stops the radius collapsing the instant the strike ends — a whirling head
+# keeps its distance while it turns, and only then gets reeled in.
+@export var retract_out := 0.45
+
+@export_group("Tension feel")
+# §43 asks for tension in three channels. Two of them are this file's: the LINE
+# (ChainVisual trembles when loaded) and the CAMERA (a small squeeze and a nudge
+# along the chain, never an orbit — §30). The third is AUDIO, and §49 says that
+# stays a placeholder: the signals are emitted, the sounds are not this line's.
+@export var taut_fov := 1.8
+@export var taut_snap_trauma := 0.05
+# Tension at which the line counts as LOADED. Below it the chain is just out there.
+@export var taut_feel_threshold := 0.85
 
 @export_group("Chain")
 @export var light_window := 0.55

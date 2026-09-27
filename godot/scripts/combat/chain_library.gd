@@ -37,6 +37,12 @@ static func star_bind() -> ChainMoveset:
 	var chain := ChainMoveset.new()
 	chain.id = CHAIN_STAR_BIND
 	chain.display_name = "缚星链 · STAR-BIND CHAIN"
+	# FORM I · 实链. The prototype is the WEIGHT answer: it owns the weight table, the
+	# impact cost and the haul, and none of those are scaffolding to be replaced —
+	# they are what this form IS. 游链 (§6) and 律链 (§12) are separate resources,
+	# not bigger versions of this one.
+	chain.form_name = "实链"
+	chain.form_id = &"solid"
 
 	var moves: Dictionary = {}
 
@@ -54,6 +60,10 @@ static func star_bind() -> ChainMoveset:
 		"height_from": 1.20, "height_to": 1.05,
 		"ease": ChainMove.Ease.OUT, "ease_power": 2.2,
 		"momentum_gain": 0.30, "momentum_whiff_cost": 0.14, "steer": 0.35,
+		# A wide sweep is the CHEAPEST way to spend spin: it is meant to be used on
+		# crowds and light bodies, and its landing cost is small enough that a
+		# three-cut chain against light enemies still comes out ahead on momentum.
+		"impact_momentum_cost": 0.05, "impact_hitstop": 0.032, "impact_deflect_degrees": 5.0,
 		"camera_trauma": 0.04, "fov_kick": -1.0, "roll_kick": 0.9,
 	})
 
@@ -71,6 +81,7 @@ static func star_bind() -> ChainMoveset:
 		"height_from": 1.05, "height_to": 1.00,
 		"ease": ChainMove.Ease.OUT, "ease_power": 2.4,
 		"momentum_gain": 0.34, "momentum_whiff_cost": 0.12, "steer": 0.38,
+		"impact_momentum_cost": 0.05, "impact_hitstop": 0.032, "impact_deflect_degrees": 5.0,
 		"camera_trauma": 0.05, "fov_kick": -1.1, "roll_kick": -1.1,
 	})
 
@@ -88,6 +99,10 @@ static func star_bind() -> ChainMoveset:
 		"ease": ChainMove.Ease.IN, "ease_power": 2.0,
 		"momentum_gain": 0.22, "momentum_whiff_cost": 0.20, "steer": 0.18,
 		"momentum_speed_scale": 0.30,
+		# 下砸 is where the weight is: the biggest stop and the biggest bend of the
+		# three-cut chain, so the third cut is a different AXIS *and* a different
+		# kind of impact.
+		"impact_momentum_cost": 0.09, "impact_hitstop": 0.055, "impact_deflect_degrees": 7.0,
 		"camera_trauma": 0.10, "fov_kick": -2.0,
 	})
 
@@ -105,6 +120,7 @@ static func star_bind() -> ChainMoveset:
 		"height_from": 1.10, "height_to": 1.05,
 		"ease": ChainMove.Ease.OUT, "ease_power": 1.8,
 		"momentum_gain": 0.10, "momentum_whiff_cost": 0.10, "steer": 0.50,
+		"impact_momentum_cost": 0.07, "impact_hitstop": 0.050, "impact_deflect_degrees": 6.0,
 		"camera_trauma": 0.09, "fov_kick": 2.4,
 	})
 
@@ -122,6 +138,7 @@ static func star_bind() -> ChainMoveset:
 		"ease": ChainMove.Ease.IN, "ease_power": 1.6,
 		"momentum_gain": 0.16, "momentum_whiff_cost": 0.0, "steer": 0.45,
 		"requires_taut": true,
+		"impact_momentum_cost": 0.06, "impact_hitstop": 0.045, "impact_deflect_degrees": 5.5,
 		"camera_trauma": 0.07, "fov_kick": -1.6, "roll_kick": 1.4,
 	})
 
@@ -139,6 +156,7 @@ static func star_bind() -> ChainMoveset:
 		"ease": ChainMove.Ease.OUT, "ease_power": 2.0,
 		"momentum_gain": 0.0, "momentum_whiff_cost": 0.0, "steer": 0.60,
 		"requires_taut": true, "pulls": true,
+		"impact_momentum_cost": 0.04, "impact_hitstop": 0.030, "impact_deflect_degrees": 3.0,
 		"camera_trauma": 0.08, "fov_kick": -2.6,
 	})
 
@@ -158,6 +176,11 @@ static func star_bind() -> ChainMoveset:
 		"momentum_gain": 0.0, "momentum_whiff_cost": 0.0, "steer": 0.80,
 		"hooks": true,
 		"momentum_speed_scale": 0.0,
+		# THE ONLY MOVE THAT GOES WHERE YOU LOOK (§13). It is the throw: a chain is
+		# released toward the aim, so looking up has to put the head up — otherwise
+		# nothing raised (a gantry, a ruin ring, a tree limb) is ever hookable, and
+		# FORM II's whole subject is anchoring onto exactly those.
+		"aim_pitch_scale": 1.0,
 		"camera_trauma": 0.03, "fov_kick": 0.8,
 	})
 
@@ -175,6 +198,7 @@ static func star_bind() -> ChainMoveset:
 		"ease": ChainMove.Ease.IN, "ease_power": 1.5,
 		"momentum_gain": 0.18, "momentum_whiff_cost": 0.0, "steer": 0.35,
 		"releases_hook": true,
+		"impact_momentum_cost": 0.06, "impact_hitstop": 0.040, "impact_deflect_degrees": 5.0,
 		"camera_trauma": 0.08, "fov_kick": -1.8, "roll_kick": 1.0,
 	})
 
@@ -190,6 +214,7 @@ static func star_bind() -> ChainMoveset:
 		"ease": ChainMove.Ease.IN, "ease_power": 1.8,
 		"momentum_gain": 0.10, "momentum_whiff_cost": 0.16, "steer": 0.20,
 		"pulls": true, "releases_hook": true, "momentum_speed_scale": 0.25,
+		"impact_momentum_cost": 0.09, "impact_hitstop": 0.070, "impact_deflect_degrees": 7.5,
 		"camera_trauma": 0.13, "fov_kick": -2.4,
 	})
 
@@ -208,6 +233,9 @@ static func star_bind() -> ChainMoveset:
 		"ease": ChainMove.Ease.OUT, "ease_power": 2.0,
 		"momentum_gain": 0.0, "momentum_whiff_cost": 0.0, "steer": 0.20,
 		"deflects": true,
+		# A guard arc does not land on anything: it is not a strike, so it pays
+		# nothing for a contact it never makes.
+		"impact_momentum_cost": 0.0, "impact_hitstop": 0.0, "impact_deflect_degrees": 0.0,
 		"camera_trauma": 0.0, "fov_kick": -0.8, "roll_kick": 0.6,
 	})
 
@@ -223,6 +251,11 @@ static func star_bind() -> ChainMoveset:
 		"height_from": chain.orbit_height, "height_to": chain.orbit_height,
 		"ease": ChainMove.Ease.LINEAR, "ease_power": 1.0,
 		"momentum_gain": 0.0, "momentum_whiff_cost": 0.0, "steer": 0.0,
+		# THE ORBIT IS THE ONE THING THAT MUST NOT PAY FOR ITS HITS. It lands every
+		# orbit_hit_interval seconds by design, so any per-hit spin cost would turn
+		# holding Heavy against a crowd into a race the player loses. What it gets
+		# instead is a tick of stop — the grind of links across armour.
+		"impact_momentum_cost": 0.0, "impact_hitstop": 0.015, "impact_deflect_degrees": 2.0,
 		"camera_trauma": 0.0, "fov_kick": 0.0,
 	})
 	moves[&"ch_orbit"] = orbit
