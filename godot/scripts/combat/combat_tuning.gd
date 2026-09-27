@@ -79,6 +79,16 @@ class_name CombatTuning
 @export var max_stamina := 100.0
 @export var max_mana := 100.0
 @export var dodge_stamina_cost := 20.0
+# How long a dodge lasts, and how much of it the player is untouchable for.
+# Both were magic numbers buried in the controller, which is why the pose could
+# be authored as one offset and nobody noticed it never arrived: nothing else
+# knew how long the dodge was supposed to be either.
+@export var dodge_duration := 0.36
+@export var dodge_iframes := 0.20
+# The time the world spends noticing that a hit went through the space the
+# player had just left. Shorter than any hit that connects — the evade is a
+# near miss, not a blow.
+@export var evade_hitstop := 0.045
 
 @export_group("Targeting")
 # Anything a style may measure distance against joins this group (technical

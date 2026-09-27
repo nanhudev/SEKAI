@@ -35,6 +35,11 @@ signal move_started(move: SwordMove)
 signal swing_started(move: SwordMove)
 signal hit_landed(move: SwordMove, hit: Dictionary)
 signal perfect_guard_landed()
+# A hit passed through the space the player had just left. Not "the dodge was
+# pressed" — that is `state_changed`, and it happens whether or not anything was
+# ever coming. This one only fires when there was something to get out of the
+# way of, and it is the hook the audio director hangs the near-miss cue on.
+signal dodge_evaded()
 signal style_message(text: String)
 
 @export var tuning: CombatTuning = preload("res://resources/tuning/CombatTuning.tres")
@@ -95,6 +100,10 @@ var hitbox_open := false
 var dodge_direction := Vector3.FORWARD
 var dodge_speed := 11.0
 var perfect_guard_count := 0
+# How many hits have passed through the space the player was just standing in,
+# as opposed to how many dodges were pressed. The second number is meaningless
+# and the first one is the whole point of the move.
+var dodges_landed := 0
 var combo_index := 0
 var last_light_at := -10.0
 # Renamed from selected_spell, which is the name that hid a real bug: it has
@@ -446,7 +455,7 @@ func _process(delta: float) -> void:
 		State.CAST:
 			_process_cast()
 		State.DODGE:
-			if state_time >= 0.36:
+			if state_time >= tuning.dodge_duration:
 				finish_action()
 
 
@@ -1406,6 +1415,27 @@ func dodge_speed_now() -> float:
 	return dodge_speed * (1.0 - tail) * (1.0 - tail)
 
 
+# How far the hands are displaced at a given point through the dodge, in units
+# of "the offset a dodge asks for": +1 is fully dragged, 0 is home, and negative
+# is the OVERSHOOT past rest when the body slows down under the blade.
+#
+# Authored as three beats rather than a curve fitted to a shape, because the
+# three are three different things the player has to be able to see: the leave,
+# the catch-up past rest, and the settle. Collapsing them into one ease would
+# put the peak somewhere in the middle and lose the arrival entirely — which is
+# what the old one-offset pose did.
+func _dodge_pose_k(u: float) -> float:
+	if u < 0.18:
+		# LEAVE. The body has gone and the hands have not.
+		return SwordPoseSampler.ease_out(u / 0.18, 2.0)
+	if u < 0.62:
+		# CATCH UP, and past: the body is slowing and the blade keeps going,
+		# which is the only reason a stop reads as a stop rather than a pause.
+		return 1.0 - 1.35 * SwordPoseSampler.ease_in((u - 0.18) / 0.44, 2.0)
+	# SETTLE, finished before the state does, so the last frames are usable.
+	return -0.35 + 0.35 * SwordPoseSampler.ease_out((u - 0.62) / 0.38, 2.0)
+
+
 # ---------------------------------------------------------------------- pose
 
 func effective_startup() -> float:
@@ -1484,10 +1514,34 @@ func pose_snapshot() -> Dictionary:
 				rotation = guard.parry_pose_rot.lerp(moveset.idle_pose_rot, k)
 			intensity = 0.6
 		State.DODGE:
+			# A dodge is a RELOCATION, and it is the one act in the game that
+			# moves the player a couple of metres in a third of a second. It has
+			# to be possible to see that happen.
+			#
+			# This used to be one offset held for the whole state: the hands went
+			# out on the fourth frame and stayed out until the dodge ended, then
+			# came home. Measured, that reads `=*#%%%%%%%%%%%%%%%%%%` — a step,
+			# not a move. There is no arrival in it, and without an arrival a
+			# dodge is a teleport with a duration attached.
+			#
+			# So the hands are driven through three beats over the dodge's own
+			# length: they are LEFT BEHIND as the body goes (which is the only
+			# thing in first person that says *I* moved rather than the world
+			# moving), they then OVERSHOOT past rest as the body slows — the
+			# overshoot is what makes a stop read as a stop — and they are HOME
+			# before the state ends, so the player can act out of the last frames
+			# instead of waiting for the pose to snap back.
 			var side := dodge_direction.dot(player.global_basis.x)
-			position = moveset.idle_pose + Vector3(-side * 0.16, -0.12, 0.1)
-			rotation = moveset.idle_pose_rot + Vector3(-0.2, 0.0, -side * 0.28)
-			intensity = 0.3
+			var u := clampf(state_time / maxf(tuning.dodge_duration, 0.0001), 0.0, 1.0)
+			var k := _dodge_pose_k(u)
+			# Dragged BACK and against the direction of travel: -side is out to
+			# the trailing side, +z is toward the player, and the hands also dip
+			# because the body dropped into the step.
+			position = moveset.idle_pose + Vector3(-side * 0.16, -0.12, 0.10) * k
+			rotation = moveset.idle_pose_rot + Vector3(-0.2, 0.0, -side * 0.28) * k
+			# The tremor belongs to the exertion, so it rides the displacement
+			# rather than sitting at a constant hum for the whole state.
+			intensity = 0.10 + 0.28 * absf(k)
 		State.STAGGER:
 			position = moveset.idle_pose + Vector3(0.0, -0.16, 0.10)
 			rotation = moveset.idle_pose_rot + Vector3(0.30, 0.0, 0.0)
@@ -1604,7 +1658,23 @@ func _on_player_hit(hit: Dictionary) -> void:
 	if _slip_open():
 		_resolve_slip(hit)
 		return
-	if state == State.DODGE and state_time < 0.2:
+	if state == State.DODGE and state_time < tuning.dodge_iframes:
+		# The hit went through the space the player had just been standing in.
+		# That is an EVENT, and an event with no answer did not happen: without
+		# one the player cannot tell a successful evade from a whiff, so the
+		# dodge stops being something they aimed and becomes a button they
+		# press. §30 says a miss has to read as a miss — the mirror of that is
+		# that an evade has to read as an evade.
+		#
+		# Deliberately SHORTER than any hit that connects: this is a near miss,
+		# not a blow, and giving it a hit's worth of stop would make getting out
+		# of the way feel heavier than getting hit.
+		dodge_evaded.emit()
+		if hitstop_scale > 0.0:
+			time_effects.request_hitstop(tuning.evade_hitstop * hitstop_scale)
+		camera_feedback.add_trauma(0.14)
+		camera_feedback.add_impulse(Vector2(0.0, -0.03))
+		dodges_landed += 1
 		return
 	if state in [State.BLOCK, State.PARRY]:
 		var guard := moveset.guard
