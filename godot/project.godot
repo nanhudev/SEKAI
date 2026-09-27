@@ -12,4 +12,8 @@ config_version=5
 
 config/name="SEKAI Combat Prototype"
 run/main_scene="res://scenes/main/Main.tscn"
-config/features=PackedStringArray("4.4", "Forward Plus")
+config/features=PackedStringArray("4.4", "GL Compatibility")
+
+[rendering]
+
+renderer/rendering_method="gl_compatibility"

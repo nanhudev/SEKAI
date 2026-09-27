@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3]
+[gd_scene load_steps=16 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/player/Player.tscn" id="1"]
 [ext_resource type="PackedScene" path="res://scenes/enemies/TechnicalDummy.tscn" id="2"]
@@ -10,11 +10,17 @@
 [ext_resource type="Script" path="res://scripts/systems/combat_music.gd" id="8"]
 [ext_resource type="AudioStream" path="res://audio/music/first-encounter.mp3" id="9"]
 
+[sub_resource type="StandardMaterial3D" id="FloorDebugMaterial"]
+albedo_color = Color(0.82, 0.79, 0.69, 1)
+roughness = 1.0
+
 [sub_resource type="BoxMesh" id="FloorMesh"]
 size = Vector3(24, 0.5, 24)
+material = SubResource("FloorDebugMaterial")
 
 [sub_resource type="BoxShape3D" id="FloorShape"]
 size = Vector3(24, 0.5, 24)
+material = SubResource("FloorDebugMaterial")
 
 [sub_resource type="BoxMesh" id="PlatformMesh"]
 size = Vector3(5, 1.5, 5)
@@ -23,8 +29,8 @@ size = Vector3(5, 1.5, 5)
 size = Vector3(5, 1.5, 5)
 
 [sub_resource type="Environment" id="Environment_1"]
-background_mode = 2
-background_color = Color(0.14, 0.22, 0.25, 1)
+background_mode = 1
+background_color = Color(0.45, 0.65, 0.75, 1)
 ambient_light_source = 2
 ambient_light_color = Color(0.58, 0.66, 0.7, 1)
 
@@ -36,7 +42,7 @@ environment = SubResource("Environment_1")
 
 [node name="Sun" type="DirectionalLight3D" parent="."]
 rotation = Vector3(-0.8, -0.5, 0)
-light_energy = 1.6
+light_energy = 2.3
 shadow_enabled = true
 
 [node name="Floor" type="StaticBody3D" parent="."]
@@ -65,7 +71,7 @@ position = Vector3(0, 0.25, -3)
 script = ExtResource("3")
 
 [node name="CombatScreenFX" type="CanvasLayer" parent="."]
-layer = -1
+layer = 5
 script = ExtResource("5")
 
 [node name="TimeEffectManager" type="Node" parent="."]

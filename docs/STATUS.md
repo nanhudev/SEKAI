@@ -47,6 +47,8 @@
 
 ## GODOT COMBAT MVP · 2026-09-27
 
+- TEMPORARY RENDERER FALLBACK: Forward+ on this AMD Radeon RX 6650 XT shows 2D UI/background but not 3D meshes. Compatibility restores the independent RenderProbe and Main → Start combat capture. Interactive desktop click and gameplay feel remain pending. See `BLACK_SCREEN_DIAGNOSIS.md`.
+
 - Godot version: 4.4.1 Stable, Forward+, GDScript.
 - Branch: godot-combat-mvp, based on origin/main 5c2d4c409b53a27a597193c0c807f3138c2cea1a. For the current development commit, run `git rev-parse HEAD`.
 - Migration: official full Git clone verified; reviewed Godot files moved from the isolated temporary workspace into /godot. Legacy Web prototype remains intact.

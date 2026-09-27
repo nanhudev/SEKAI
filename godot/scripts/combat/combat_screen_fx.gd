@@ -12,6 +12,7 @@ var ink_slash := 0.0
 func _ready() -> void:
 	overlay = ColorRect.new()
 	overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	overlay.visible = false
 	overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	add_child(overlay)
 	var shader := Shader.new()
@@ -40,8 +41,9 @@ func flash_hit(amount: float) -> void:
 
 
 func _process(delta: float) -> void:
-	if flash > 0.0:
+	if flash > 0.0 or ink_slash > 0.0:
 		flash = maxf(0.0, flash - delta * 2.8)
+		ink_slash = maxf(0.0, ink_slash - delta * 3.5)
 		_update_shader()
 
 
@@ -60,3 +62,4 @@ func _update_shader() -> void:
 	material.set_shader_parameter("vignette", vignette)
 	material.set_shader_parameter("flash", flash)
 	material.set_shader_parameter("ink_slash", ink_slash)
+	overlay.visible = desaturation > 0.001 or vignette > 0.001 or flash > 0.001 or ink_slash > 0.001

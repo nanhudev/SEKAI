@@ -11,6 +11,8 @@ extends Node3D
 
 func _ready() -> void:
 	dummy.shattered.connect(_on_shattered)
+	screen_fx.reset()
+	call_deferred("_check_visual_state")
 
 
 func _on_shattered() -> void:
@@ -21,3 +23,10 @@ func _on_shattered() -> void:
 	camera_feedback.add_impulse(Vector2(0.025, -0.035))
 	screen_fx.flash_hit(0.22)
 	time_effects.request_hitstop(0.085)
+
+func _check_visual_state() -> void:
+	var camera: Camera3D = player.get_node("CameraRig/LookPivot/MotionPivot/ShakePivot/Camera3D")
+	if not camera.is_current():
+		camera.make_current()
+	var world_environment: WorldEnvironment = $WorldEnvironment
+	print("SEKAI VISUAL camera_current=", camera.is_current(), " camera_pos=", camera.global_position, " camera_forward=", -camera.global_basis.z, " player_pos=", player.global_position, " environment=", world_environment.environment != null, " viewport=", get_viewport().get_visible_rect().size, " sandbox_visible=", is_visible_in_tree(), " fx_visible=", screen_fx.overlay.visible)
