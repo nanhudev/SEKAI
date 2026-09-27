@@ -1,7 +1,7 @@
 extends Node3D
 class_name MagicCircle3D
 
-@export var radius := 0.42
+@export var radius := 0.28
 @export var circle_color := Color(0.55, 0.85, 1.0, 0.8)
 @export var rotation_speed := 1.3
 @export var spawn_time := 0.18

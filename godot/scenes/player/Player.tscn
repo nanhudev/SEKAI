@@ -69,7 +69,7 @@ shape = SubResource("SwordShape")
 [node name="VFXRoot" type="Node3D" parent="CameraRig/LookPivot/MotionPivot/ShakePivot"]
 
 [node name="MagicCircle3D" parent="CameraRig/LookPivot/MotionPivot/ShakePivot/VFXRoot" instance=ExtResource("5")]
-position = Vector3(0.6, -0.35, -0.9)
+position = Vector3(0.42, -0.2, -1.15)
 rotation = Vector3(1.5708, 0, 0)
 
 [node name="FrostHitbox" type="Area3D" parent="CameraRig/LookPivot/MotionPivot/ShakePivot/VFXRoot"]
