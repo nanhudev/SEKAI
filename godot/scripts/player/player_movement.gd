@@ -61,10 +61,8 @@ func _physics_process(delta: float) -> void:
 		velocity.z = combat.dodge_direction.z * combat.dodge_speed_now()
 		move_and_slide()
 		return
-	if combat.state == combat.State.IAIDO and combat.state_time >= 0.32 and combat.state_time < 0.49:
-		velocity.x = -transform.basis.z.x * 19.0
-		velocity.z = -transform.basis.z.z * 19.0
-		move_and_slide()
+	if combat.state == combat.State.IAIDO:
+		velocity = Vector3.ZERO
 		return
 	var speed := tuning.sprint_speed if Input.is_action_pressed("sprint") else tuning.walk_speed
 	var target := direction * speed

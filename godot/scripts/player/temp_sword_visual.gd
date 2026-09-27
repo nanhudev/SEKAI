@@ -54,8 +54,9 @@ func _process(delta: float) -> void:
 			target_position = Vector3(0.22, -0.23, -0.75)
 			target_rotation = Vector3(-0.25, 0.0, 0.45)
 		CombatController.State.IAIDO:
-			target_position = Vector3(0.58, -0.65, -0.78)
-			target_rotation = Vector3(0.0, 0.0, -1.1 if combat.state_time < 0.35 else 0.65)
+			var cutting := combat.state_time >= 0.50 and combat.state_time < 0.86
+			target_position = Vector3(0.14, -0.67, -0.76) if not cutting else Vector3(0.11, -0.31, -0.76)
+			target_rotation = Vector3(-0.25, 0.0, -0.40) if not cutting else Vector3(-0.9, 0.0, 0.50)
 	if combat.state == CombatController.State.IDLE:
 		target_position.x -= camera_feedback.look_lag.x * 0.3
 		target_position.y += camera_feedback.look_lag.y * 0.22

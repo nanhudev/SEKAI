@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3]
+[gd_scene load_steps=23 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/player/Player.tscn" id="1"]
 [ext_resource type="PackedScene" path="res://scenes/enemies/TechnicalDummy.tscn" id="2"]
@@ -10,6 +10,12 @@
 [ext_resource type="Script" path="res://scripts/systems/combat_music.gd" id="8"]
 [ext_resource type="AudioStream" path="res://audio/music/first-encounter.mp3" id="9"]
 [ext_resource type="Script" path="res://scripts/systems/audio_state_controller.gd" id="10"]
+[ext_resource type="Script" path="res://scripts/combat/iaido_director.gd" id="11"]
+[ext_resource type="Script" path="res://scripts/combat/iaido_target_collector.gd" id="12"]
+[ext_resource type="Script" path="res://scripts/combat/iaido_tear_3d.gd" id="13"]
+[ext_resource type="AudioStream" path="res://audio/sfx/iaido_charge.wav" id="14"]
+[ext_resource type="AudioStream" path="res://audio/sfx/iaido_cut.wav" id="15"]
+[ext_resource type="AudioStream" path="res://audio/sfx/iaido_sheathe.wav" id="16"]
 
 [sub_resource type="StandardMaterial3D" id="FloorDebugMaterial"]
 albedo_color = Color(0.82, 0.79, 0.69, 1)
@@ -86,3 +92,29 @@ script = ExtResource("8")
 
 [node name="AudioStateController" type="Node" parent="."]
 script = ExtResource("10")
+
+[node name="IaidoTargetCollector" type="Node" parent="."]
+script = ExtResource("12")
+
+[node name="IaidoDirector" type="Node" parent="."]
+process_mode = 3
+script = ExtResource("11")
+
+[node name="IaidoTear3D" type="Node3D" parent="."]
+process_mode = 3
+script = ExtResource("13")
+
+[node name="IaidoChargeAudio" type="AudioStreamPlayer" parent="."]
+process_mode = 3
+stream = ExtResource("14")
+volume_db = -7.0
+
+[node name="IaidoCutAudio" type="AudioStreamPlayer" parent="."]
+process_mode = 3
+stream = ExtResource("15")
+volume_db = -4.0
+
+[node name="IaidoSheatheAudio" type="AudioStreamPlayer" parent="."]
+process_mode = 3
+stream = ExtResource("16")
+volume_db = -5.0

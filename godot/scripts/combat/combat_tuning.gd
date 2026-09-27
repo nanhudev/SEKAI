@@ -23,3 +23,8 @@ class_name CombatTuning
 @export var max_stamina := 100.0
 @export var max_mana := 100.0
 @export var dodge_stamina_cost := 20.0
+
+@export_group("Iaido Targeting")
+@export var iaido_range := 10.0
+@export var iaido_cone_degrees := 45.0
+@export var iaido_vertical_tolerance := 3.0

@@ -20,7 +20,7 @@ height = 1.6
 [sub_resource type="BoxShape3D" id="AttackShape"]
 size = Vector3(1.7, 1.5, 2.0)
 
-[node name="TechnicalDummy" type="StaticBody3D"]
+[node name="TechnicalDummy" type="StaticBody3D" groups=["hostiles"]]
 script = ExtResource("1")
 
 [node name="Body" type="MeshInstance3D" parent="."]

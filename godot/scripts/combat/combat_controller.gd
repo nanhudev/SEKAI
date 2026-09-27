@@ -21,6 +21,7 @@ signal state_changed(previous: State, current: State)
 @onready var dodge_audio: AudioStreamPlayer = player.get_node("DodgeAudio")
 @onready var screen_fx: CombatScreenFX = player.get_parent().get_node("CombatScreenFX")
 @onready var time_effects: TimeEffectManager = player.get_parent().get_node("TimeEffectManager")
+@onready var iaido_director: IaidoDirector = player.get_parent().get_node("IaidoDirector")
 
 var state := State.IDLE
 var state_time := 0.0
@@ -118,19 +119,6 @@ func _process(delta: float) -> void:
 			finish_action()
 	elif state == State.DODGE and state_time >= 0.36:
 		finish_action()
-	elif state == State.IAIDO:
-		screen_fx.set_iaido_focus(minf(0.65, state_time / 0.28 * 0.65))
-		var should_open := state_time >= 0.35 and state_time < 0.5
-		if should_open != hitbox_open:
-			hitbox_open = should_open
-			hitbox.set_active(should_open)
-			if should_open:
-				screen_fx.slash_flash(1.0)
-				camera_feedback.roll_impulse(2.5)
-		if state_time >= 0.54:
-			screen_fx.slash_flash(maxf(0.0, 1.0 - (state_time - 0.54) / 0.22))
-		if state_time >= 1.1:
-			finish_action()
 
 
 func request(action: StringName) -> bool:
@@ -224,12 +212,9 @@ func _start(action: StringName) -> bool:
 			if not player.unlimited_resources:
 				player.set("stamina", stamina - 35.0)
 			iaido_ready_at = now + 5.0
-			hitbox.damage = 65.0
-			hitbox.poise_damage = 70.0
-			hitbox.hit_delay = 0.08
-			camera_feedback.fov_hold = 7.0
-			time_effects.request_slow_motion(0.55, 1.2)
+			buffer.clear()
 			set_state(State.IAIDO)
+			iaido_director.start_iaido()
 		_: return false
 	return true
 
