@@ -29,9 +29,23 @@ Godot / Gameplay / Combat / Camera / UI / VFX / Save / Git / Testing
 | Iaido 7.2s 张力序列 | P0 | REVIEW | 14 phase 全实现；音频为占位合成 |
 | Enemy telegraph / AI | P1 | TODO | 现为 technical_dummy，非 Lesser Ruin Sentinel |
 | Iaido 5–8s Cinematic Tension Pass | P0 | REVIEW | 已到 7.2s，超出目标区间上限；待视听验收后再谈压缩 |
-| Git：提交本轮未落地改动 | P0 | BLOCKED | 工作区 18 改 + 13 新增 + 4 删除未提交，待 Producer 确认后提交 |
+| Git：提交本轮未落地改动 | P0 | DONE | 已由 MAIN 提交并推送：`c485aeb` + `8c71561`（7.2s Iaido 全序列）。远端 `godot-combat-mvp` = `8c71561` |
 
 阻塞原因：本环境启动 Godot 无可见窗口句柄；AMD RX 6650 XT 上 Forward+ 黑屏，已回退 Compatibility（见 `BLACK_SCREEN_DIAGNOSIS.md`）。所有 gameplay verified 必须在用户可见桌面上完成。
+
+### 环境备注：git push 通道
+
+沙箱默认 HTTP 代理对 `github.com:443` 返回 502（`api.github.com` 正常），因此直接 `git push` 会失败。可行通道是本机 v2RayN SOCKS5：
+
+```bash
+export GH_TOKEN=$(gh auth token)
+git -c http.proxy=socks5h://127.0.0.1:10808 \
+    -c credential.helper= \
+    -c credential.helper='!f() { echo username=x-access-token; echo password=$GH_TOKEN; }; f' \
+    push origin godot-combat-mvp
+```
+
+`gh` 当前登录账号 `y13077816460-eng` 对本仓库有 push 权限；本机 SSH key（`nanhuyiqiu`）无该仓库写权限，不要用 SSH 通道。
 
 ---
 

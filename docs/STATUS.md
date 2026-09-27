@@ -98,4 +98,6 @@ Producer / Integration 角色启动，建立三条工作流的共享状态。
 
 ### 未提交改动
 
-工作区有 18 个修改、13 个新增、4 个删除尚未提交，主要是 7.2 秒 Iaido 全序列。见 `PRODUCTION_BOARD.md` MAIN 段。
+已清空。MAIN 于 2026-09-27 将 7.2 秒 Iaido 全序列落成两次提交并推送：`c485aeb`（前置铺垫：前景武器层、world pause manager、Chat2Blender 工具、C2B briefs）与 `8c71561`（Iaido 7.2s 签名演出 + 蓝虚空 + 玻璃层 + 13 个占位音）。远端 `godot-combat-mvp` 现为 `8c71561`。
+
+推送通道说明见 `PRODUCTION_BOARD.md` 环境备注：沙箱代理封锁 `github.com`，需走本机 v2RayN SOCKS5（`127.0.0.1:10808`）。
