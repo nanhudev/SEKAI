@@ -28,3 +28,4 @@ class_name CombatTuning
 @export var iaido_range := 10.0
 @export var iaido_cone_degrees := 45.0
 @export var iaido_vertical_tolerance := 3.0
+@export var iaido_vertical_cone_degrees := 25.0

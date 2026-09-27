@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3]
+[gd_scene load_steps=25 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/player/Player.tscn" id="1"]
 [ext_resource type="PackedScene" path="res://scenes/enemies/TechnicalDummy.tscn" id="2"]
@@ -16,6 +16,8 @@
 [ext_resource type="AudioStream" path="res://audio/sfx/iaido_charge.wav" id="14"]
 [ext_resource type="AudioStream" path="res://audio/sfx/iaido_cut.wav" id="15"]
 [ext_resource type="AudioStream" path="res://audio/sfx/iaido_sheathe.wav" id="16"]
+[ext_resource type="Script" path="res://scripts/combat/iaido_screen_fx.gd" id="17"]
+[ext_resource type="AudioStream" path="res://audio/sfx/iaido_glass.wav" id="18"]
 
 [sub_resource type="StandardMaterial3D" id="FloorDebugMaterial"]
 albedo_color = Color(0.82, 0.79, 0.69, 1)
@@ -104,6 +106,11 @@ script = ExtResource("11")
 process_mode = 3
 script = ExtResource("13")
 
+[node name="IaidoScreenFX" type="CanvasLayer" parent="."]
+process_mode = 3
+layer = 6
+script = ExtResource("17")
+
 [node name="IaidoChargeAudio" type="AudioStreamPlayer" parent="."]
 process_mode = 3
 stream = ExtResource("14")
@@ -113,6 +120,16 @@ volume_db = -7.0
 process_mode = 3
 stream = ExtResource("15")
 volume_db = -4.0
+
+[node name="IaidoClickAudio" type="AudioStreamPlayer" parent="."]
+process_mode = 3
+stream = ExtResource("16")
+volume_db = -5.0
+
+[node name="IaidoGlassAudio" type="AudioStreamPlayer" parent="."]
+process_mode = 3
+stream = ExtResource("18")
+volume_db = -7.0
 
 [node name="IaidoSheatheAudio" type="AudioStreamPlayer" parent="."]
 process_mode = 3

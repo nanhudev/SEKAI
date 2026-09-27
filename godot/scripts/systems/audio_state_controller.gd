@@ -6,7 +6,20 @@ class_name AudioStateController
 var world_paused := false
 var music_paused := false
 var world_ducked := false
+var duck_db := 0.0
 var original_world_volumes: Dictionary = {}
+
+
+func _ready() -> void:
+	process_mode = Node.PROCESS_MODE_ALWAYS
+
+
+func _process(delta: float) -> void:
+	var target := 40.0 if world_ducked else 0.0
+	if absf(duck_db - target) < 0.01:
+		return
+	duck_db = move_toward(duck_db, target, delta * 400.0)
+	_apply_volumes()
 
 
 func pause_world_audio() -> void:
@@ -46,7 +59,13 @@ func _apply() -> void:
 			node.stream_paused = world_paused
 			if not original_world_volumes.has(node):
 				original_world_volumes[node] = node.volume_db
-			node.volume_db = original_world_volumes[node] - 18.0 if world_ducked else original_world_volumes[node]
+	_apply_volumes()
+
+
+func _apply_volumes() -> void:
+	for node in original_world_volumes.keys():
+		if is_instance_valid(node):
+			node.volume_db = original_world_volumes[node] - duck_db
 
 
 func _exit_tree() -> void:

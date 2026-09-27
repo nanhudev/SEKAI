@@ -18,6 +18,7 @@ var impulse := Vector2.ZERO
 var trauma := 0.0
 var fov_offset := 0.0
 var fov_hold := 0.0
+var iaido_pitch := 0.0
 var roll := 0.0
 var noise_time := 0.0
 var preset := Preset.NORMAL
@@ -119,7 +120,7 @@ func _process(delta: float) -> void:
 
 	var feedback_scale := 3.0 if preset == Preset.EXAGGERATED else (0.0 if preset == Preset.OFF else 1.0)
 	motion_pivot.position = smoothed_position * motion_scale
-	motion_pivot.rotation = smoothed_rotation * motion_scale + Vector3(impulse.y, impulse.x, roll) * feedback_scale * camera_shake_strength
+	motion_pivot.rotation = smoothed_rotation * motion_scale + Vector3(impulse.y + iaido_pitch, impulse.x, roll) * feedback_scale * camera_shake_strength
 	var shake := trauma * trauma * 0.018 * feedback_scale * camera_shake_strength
 	shake_pivot.position = Vector3(sin(noise_time * 1.7), cos(noise_time * 2.1), 0.0) * shake
 	camera.fov = base_fov + (fov_hold + fov_offset) * feedback_scale + sprint_fov * motion_scale

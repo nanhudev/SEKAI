@@ -207,6 +207,8 @@ func _start(action: StringName) -> bool:
 		&"iaido":
 			var now := Time.get_ticks_msec() / 1000.0
 			var stamina: float = player.get("stamina")
+			if float(player.get("health")) <= 0.0 or iaido_director.active or not is_instance_valid(player.get_node_or_null("CameraRig/LookPivot/MotionPivot/ShakePivot/WeaponRoot/TempSwordVisual")):
+				return false
 			if now < iaido_ready_at or (not player.unlimited_resources and stamina < 35.0):
 				return false
 			if not player.unlimited_resources:

@@ -5,13 +5,16 @@ extends CanvasLayer
 @onready var combat: CombatController = player.get_node("CombatController")
 @onready var camera_feedback: CameraFeedbackController = player.get_node("CameraFeedbackController")
 @onready var dummy: Node3D = sandbox.get_node("TechnicalDummy")
+@onready var iaido: IaidoDirector = sandbox.get_node("IaidoDirector")
 
 var panel: PanelContainer
 var slow_motion := false
 var camera_preset_button: Button
+var iaido_speed_button: Button
 
 
 func _ready() -> void:
+	process_mode = Node.PROCESS_MODE_ALWAYS
 	panel = PanelContainer.new()
 	panel.position = Vector2(20, 20)
 	panel.visible = false
@@ -29,6 +32,17 @@ func _ready() -> void:
 	_add_button(rows, "Freeze Enemy", _freeze_enemy)
 	_add_button(rows, "Reset Action", combat.finish_action)
 	_add_button(rows, "Trigger Iaido", func() -> void: combat.request(&"iaido"))
+	var iaido_title := Label.new()
+	iaido_title.text = "Iaido Debug"
+	rows.add_child(iaido_title)
+	_add_button(rows, "Hold Stage 1 · Focus", func() -> void: iaido.set_debug_hold(0.30))
+	_add_button(rows, "Hold Stage 2 · First Tear", func() -> void: iaido.set_debug_hold(0.84))
+	_add_button(rows, "Jump to First Tear", func() -> void: iaido.set_debug_hold(0.70))
+	_add_button(rows, "Jump to Glass Split", func() -> void: iaido.set_debug_hold(1.59))
+	_add_button(rows, "Jump to Recovery", func() -> void: iaido.set_debug_hold(1.82))
+	_add_button(rows, "Resume Iaido Timeline", iaido.release_debug_hold)
+	_add_button(rows, "Reset Iaido FX", iaido.finish_iaido)
+	iaido_speed_button = _add_button(rows, "Iaido Speed: 1.0x", _toggle_iaido_speed)
 	_add_button(rows, "Slow Motion", _toggle_slow_motion)
 	camera_preset_button = _add_button(rows, "Camera: Normal", _cycle_camera_preset)
 	_add_unavailable(rows, "Hitbox View · pending")
@@ -78,6 +92,12 @@ func _freeze_enemy() -> void:
 func _toggle_slow_motion() -> void:
 	slow_motion = not slow_motion
 	Engine.time_scale = 0.3 if slow_motion else 1.0
+
+
+func _toggle_iaido_speed() -> void:
+	var speed := 0.5 if iaido.playback_speed > 0.5 else 1.0
+	iaido.set_debug_speed(speed)
+	iaido_speed_button.text = "Iaido Speed: %.1fx" % speed
 
 
 func _exit_tree() -> void:

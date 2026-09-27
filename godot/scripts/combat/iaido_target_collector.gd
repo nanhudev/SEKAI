@@ -5,8 +5,12 @@ class_name IaidoTargetCollector
 
 
 func collect(player: CharacterBody3D, camera: Camera3D) -> Node3D:
-	var best: Node3D
-	var best_score := -INF
+	var results := collect_targets(player, camera)
+	return results[0] if not results.is_empty() else null
+
+
+func collect_targets(player: CharacterBody3D, camera: Camera3D) -> Array[Node3D]:
+	var scored: Array[Dictionary] = []
 	var origin := camera.global_position
 	var forward := -camera.global_basis.z
 	var space := player.get_world_3d().direct_space_state
@@ -21,6 +25,9 @@ func collect(player: CharacterBody3D, camera: Camera3D) -> Node3D:
 		var offset := target_point - origin
 		var distance := offset.length()
 		if distance > tuning.iaido_range or absf(offset.y) > tuning.iaido_vertical_tolerance:
+			continue
+		var vertical_angle := rad_to_deg(atan2(absf(offset.y), Vector2(offset.x, offset.z).length()))
+		if vertical_angle > tuning.iaido_vertical_cone_degrees:
 			continue
 		var horizontal := Vector2(offset.x, offset.z).normalized()
 		var forward_horizontal := Vector2(forward.x, forward.z).normalized()
@@ -37,7 +44,11 @@ func collect(player: CharacterBody3D, camera: Camera3D) -> Node3D:
 		var screen_center := camera.get_viewport().get_visible_rect().size * 0.5
 		var screen_offset := camera.unproject_position(target_point).distance_to(screen_center) / maxf(1.0, screen_center.length())
 		var score := (1.0 - clampf(screen_offset, 0.0, 1.0)) * 0.55 + (1.0 - angle / tuning.iaido_cone_degrees) * 0.30 + (1.0 - distance / tuning.iaido_range) * 0.15
-		if score > best_score:
-			best_score = score
-			best = actor
-	return best
+		scored.append({"actor": actor, "score": score})
+	scored.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return a["score"] > b["score"])
+	var results: Array[Node3D] = []
+	for entry in scored:
+		if results.size() >= 3:
+			break
+		results.append(entry["actor"])
+	return results
