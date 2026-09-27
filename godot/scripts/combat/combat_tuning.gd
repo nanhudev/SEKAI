@@ -5,6 +5,9 @@ class_name CombatTuning
 @export var walk_speed := 5.0
 @export var sprint_speed := 8.0
 @export var jump_velocity := 5.2
+# §16 Walk. A fraction of the default pace rather than its own absolute speed, so
+# retuning the jog does not silently retune the walk into a different relationship.
+@export var walk_pace := 0.55
 
 # ONE RATE USED TO ANSWER ALL THREE QUESTIONS, AND IT IS WHY THEY ALL FAILED AT
 # ONCE: accelerating, stopping and reversing are different physical events, and

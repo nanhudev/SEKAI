@@ -90,7 +90,7 @@ var seg_metrics: Array[String] = []
 var flow_peak := 0.0
 var run_origin := Vector3.ZERO
 
-const MOVE_ACTIONS := [&"move_forward", &"move_back", &"move_left", &"move_right", &"sprint"]
+const MOVE_ACTIONS := [&"move_forward", &"move_back", &"move_left", &"move_right", &"sprint", &"walk"]
 # ArenaDressing's far wall (0.7 thick, centred z = -17, zero collision) and the
 # chain lab's near edge. The camera guard below needs both to tell "subject in the
 # arena" from "subject behind the wall". WALL_Z is the wall's LAB-SIDE face, not
@@ -189,6 +189,8 @@ func _initialize() -> void:
 	_build_overlay()
 	if tour == "chain":
 		_build_chain_segments()
+	elif tour == "movement":
+		_build_movement_segments()
 	else:
 		_build_segments()
 	_build_review_camera()
@@ -830,6 +832,206 @@ func _update_camera() -> void:
 	# the viewport back only if it was taken.
 	if not review_camera.is_current():
 		review_camera.make_current()
+
+
+# ------------------------------------------------------------ movement tour
+# PART M. Every chapter is shot FIRST PERSON, because the claims are about what
+# travelling FEELS like -- the gait in the camera, the blade being carried, the
+# pitch of a turn -- and none of those exist on the outside of the body. What an
+# outside view would add, "the player moved", is already proven by the numbers in
+# tests/movement_metrics.gd.
+#
+# Chapters 1-3 exist because Walk did not. Keyboard input is all-or-nothing, so
+# the game had one pace that it called walking; the third pace is a held modifier,
+# which means a gamepad stick still gets the whole continuum for free.
+func _build_movement_segments() -> void:
+	segments = [
+		{
+			"name": "移动 · 走 WALK",
+			"note": "按住 Ctrl。这是本轮才真正存在的第三档速度。看：步频最慢，相机起伏最轻，剑几乎不动 —— 不是把小跑调慢，是另一种走法。",
+			"fp": true, "fov": 68.0, "pitch": -1.0,
+			"setup": func() -> void: _lane_start(0.0),
+			"events": [
+				[SETTLE, _lane_hold.bind([&"walk", &"move_forward"])],
+				[SETTLE + 2.4, _lane_release.bind([&"walk", &"move_forward"])],
+			],
+			"duration": SETTLE + 3.2,
+		},
+		{
+			"name": "移动 · 小跑 JOG",
+			"note": "默认速度。§17 要它「立刻进入」—— 实测 0.250s 到速，不是漂上去的。和上一章对比：步频变快，相机起伏变明显，剑开始跟不住身体。",
+			"fp": true, "fov": 68.0, "pitch": -1.0,
+			"setup": func() -> void: _lane_start(0.0),
+			"events": [
+				[SETTLE, _lane_hold.bind([&"move_forward"])],
+				[SETTLE + 2.4, _lane_release.bind([&"move_forward"])],
+			],
+			"duration": SETTLE + 3.2,
+		},
+		{
+			"name": "移动 · 冲刺 SPRINT",
+			"note": "§22 FOV 推开、步频更高、剑换成另一种持握姿态；§17 要 0.2–0.45s 的建立感（实测 0.367s），所以起步那一瞬不是满速。松手时（§23）剑回位的耗时是进入的 3.05 倍，不是瞬间弹回。",
+			"fp": true, "fov": 68.0, "pitch": -1.0,
+			"setup": func() -> void: _lane_start(0.0),
+			"events": [
+				[SETTLE, _lane_hold.bind([&"sprint", &"move_forward"])],
+				[SETTLE + 2.6, _lane_release.bind([&"sprint", &"move_forward"])],
+			],
+			"duration": SETTLE + 3.6,
+		},
+		{
+			"name": "移动 · 松键与停 SETTLE",
+			"note": "§18 不能瞬停，也不能滑三米。实测冲刺松键滑行 1.16m / 0.317s（改之前 2.22m）。看身体收住那一下 —— 是「先卸掉再收住」，不是断电。",
+			"fp": true, "fov": 68.0, "pitch": -1.0,
+			"setup": func() -> void: _lane_start(0.0),
+			"events": [
+				[SETTLE, _lane_hold.bind([&"sprint", &"move_forward"])],
+				[SETTLE + 1.3, _lane_release.bind([&"sprint", &"move_forward"])],
+			],
+			"duration": SETTLE + 2.6,
+		},
+		{
+			"name": "移动 · 180° 回头 TURN",
+			"note": "§19 不能瞬间反向，也不能像船掉头。实测整段 0.533s，其中「原有动量耗尽」占 0.183s（34%）—— 要看的就是这 34%：先把向前的速度花掉，再朝反方向加速。删掉制动的话总时长依旧好看，但这段会变成瞬时翻转。",
+			"fp": true, "fov": 68.0, "pitch": -1.0,
+			"setup": func() -> void: _lane_start(0.0),
+			"events": [
+				[SETTLE, _lane_hold.bind([&"sprint", &"move_forward"])],
+				[SETTLE + 1.2, _lane_release.bind([&"move_forward"])],
+				[SETTLE + 1.22, _lane_hold.bind([&"move_back"])],
+				[SETTLE + 2.2, _lane_release.bind([&"move_back", &"sprint"])],
+			],
+			"duration": SETTLE + 3.0,
+		},
+		{
+			"name": "移动 · 跳 JUMP & LAND",
+			"note": "§24 起跳压缩 / 滞空 / 落地压缩。§25 落地按落下速度分三档并传导到相机与剑；但小跳不该震屏 —— 低于 3.0 m/s 的下落完全不发声，这两跳都是轻档。",
+			"fp": true, "fov": 68.0, "pitch": -1.0,
+			"setup": func() -> void: _lane_start(0.0),
+			"events": [
+				[SETTLE, _jump_press],
+				[SETTLE + 0.06, _jump_release],
+				[SETTLE + 1.3, _jump_press],
+				[SETTLE + 1.36, _jump_release],
+			],
+			"duration": SETTLE + 2.6,
+		},
+		{
+			"name": "移动 · 重落地 HEAVY LAND",
+			"note": "从高处落下。三档实测 light 5.1 / medium 8.4 / heavy 12.4 m/s：相机与剑都按档位反应，而剑是弹簧（先沉过头再回来），不是一次性位移。",
+			"fp": true, "fov": 68.0, "pitch": -1.0,
+			"setup": func() -> void: _lane_start(-2.0, 5.2),
+			"events": [],
+			"duration": SETTLE + 2.6,
+		},
+		{
+			"name": "移动 · 前闪避 DODGE FWD",
+			"note": "PART I 要的是「一阵爆发」，不是瞬移 1.8m。实测 2.00m / 0.367s，第 2 帧速度远低于峰值 —— 有加速段、峰值段、收尾段，不是一帧到位。",
+			"fp": true, "fov": 68.0, "pitch": -1.0,
+			"setup": func() -> void: _lane_start(0.0),
+			"events": [
+				[SETTLE, _dodge],
+				[SETTLE + 1.4, _dodge],
+			],
+			"duration": SETTLE + 2.6,
+		},
+		{
+			"name": "移动 · 侧闪避 DODGE SIDE",
+			"note": "同一次侧移，看剑的横向拖尾：身体先走，剑被留在后面再追上来。§21 的 weapon lag 按身体本地速度算，所以侧移与前后的拖曳方向不同。",
+			"fp": true, "fov": 68.0, "pitch": -1.0,
+			"setup": func() -> void: _lane_start(0.0),
+			"events": [
+				[SETTLE, _lane_hold.bind([&"move_right"])],
+				[SETTLE + 0.2, _dodge],
+				[SETTLE + 1.6, _lane_release.bind([&"move_right"])],
+				[SETTLE + 1.62, _lane_hold.bind([&"move_left"])],
+				[SETTLE + 1.8, _dodge],
+				[SETTLE + 2.4, _lane_release.bind([&"move_left"])],
+			],
+			"duration": SETTLE + 3.2,
+		},
+		{
+			"name": "移动 · 上坡 SLOPE UP",
+			"note": "§26 上坡要付出代价。同一段坡、同样按住冲刺：上坡 5.51 m/s 对平地 6.90 m/s（−20%）。读数取自脚下实际表面法线而非高度图，关卡把坡放在哪都成立。",
+			"fp": true, "fov": 68.0, "pitch": 6.0,
+			"setup": func() -> void: _enter_ramp(0.2, true),
+			"events": [
+				[SETTLE + 0.2, _lane_hold.bind([&"sprint", &"move_forward"])],
+				[SETTLE + 1.3, _lane_release.bind([&"sprint", &"move_forward"])],
+			],
+			"duration": SETTLE + 2.2,
+		},
+		{
+			"name": "移动 · 下坡 SLOPE DOWN",
+			"note": "§26 下坡稍微保留动量（+7%，7.39 m/s）。注意这不是重力推着走 —— 刻意没做沿坡重力求解器，否则它会立刻开始和流派突进、链拽拉互相打架。",
+			"fp": true, "fov": 68.0, "pitch": -6.0,
+			"setup": func() -> void: _enter_ramp(0.2, false),
+			"events": [
+				[SETTLE + 0.2, _lane_hold.bind([&"sprint", &"move_forward"])],
+				[SETTLE + 1.3, _lane_release.bind([&"sprint", &"move_forward"])],
+			],
+			"duration": SETTLE + 2.2,
+		},
+	]
+
+
+# Every take starts from NOTHING HELD. A key left down by the previous chapter
+# silently changes this one, and it is worst in the pace chapters: a surviving
+# `sprint` turns the walk chapter into a sprint, and the only symptom is a caption
+# that no longer matches what is on screen.
+func _lane_start(offset_x: float, drop_height := 0.0) -> void:
+	_release_movement()
+	Input.action_release(&"walk")
+	Input.action_release(&"jump")
+	var start := lane.start_position()
+	player.global_position = Vector3(start.x + offset_x, MovementLane.DECK_Y + 1.4 + drop_height, start.z)
+	player.velocity = Vector3.ZERO
+	player.look_at_from_position(
+		player.global_position,
+		player.global_position + MovementLane.RUN_DIRECTION * 4.0,
+		Vector3.UP
+	)
+	look_pivot.rotation.x = deg_to_rad(seg_pitch)
+
+
+# The lane's own ramp: the one slope in the level, and the SAME slope for both
+# takes, so the only difference between the two chapters is which way it is faced.
+func _enter_ramp(along: float, uphill: bool) -> void:
+	_lane_start(0.0)
+	var bottom := MovementLane.CENTER.x - MovementLane.LENGTH * 0.5 - MovementLane.RAMP_RUN
+	var rise := MovementLane.DECK_Y / MovementLane.RAMP_RUN
+	var run := MovementLane.RAMP_RUN * (along if uphill else 1.0 - along)
+	player.global_position = Vector3(bottom + run, run * rise + 1.2, MovementLane.CENTER.z)
+	player.velocity = Vector3.ZERO
+	# The ramp only rises toward +x, so facing +x is the climb and facing -x is the
+	# descent. Same surface, opposite normal.
+	player.rotation = Vector3(0.0, 0.0 if uphill else PI, 0.0)
+	look_pivot.rotation.x = deg_to_rad(seg_pitch)
+
+
+func _lane_hold(actions: Array) -> void:
+	for a in actions:
+		_hold(a, true)
+
+
+func _lane_release(actions: Array) -> void:
+	for a in actions:
+		_hold(a, false)
+
+
+# Jump is EDGE-TRIGGERED, so it is pressed on one event and lifted on the next.
+# Pressing and releasing inside a single event is a coin flip on whether a physics
+# tick ever observes `is_action_just_pressed`, which reads as a broken take.
+func _jump_press() -> void:
+	Input.action_press(&"jump")
+
+
+func _jump_release() -> void:
+	Input.action_release(&"jump")
+
+
+func _dodge() -> void:
+	combat.request(&"dodge")
 
 
 func _run_segment(segment: Dictionary) -> void:

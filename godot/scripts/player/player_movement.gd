@@ -76,6 +76,11 @@ func _ready() -> void:
 	_bind_key("jump", KEY_SPACE)
 	_bind_key("sprint", KEY_SHIFT)
 	_bind_key("dodge", KEY_Q)
+	# §16 lists Walk, Jog and Sprint as three different ways to travel, and until
+	# now there were only two: keyboard input is all-or-nothing, so "walk" did not
+	# exist and the only pace was the one the game calls walking. A held modifier is
+	# the honest fix — a gamepad stick will still give the whole continuum.
+	_bind_key("walk", KEY_CTRL)
 	hurtbox.owner_actor = self
 	# Anything that needs the player finds them here instead of assuming it lives
 	# next to them, so a stage is free to own its own enemies.
@@ -131,8 +136,12 @@ func _physics_process(delta: float) -> void:
 	# shape is authored per move. Styles that steer more (回风) simply feel freer.
 	# 风步 multiplies on top: momentum magic changes how fast you can reposition,
 	# it never teleports you.
+	var pace := (
+		tuning.sprint_speed if Input.is_action_pressed("sprint")
+		else tuning.walk_speed * (tuning.walk_pace if Input.is_action_pressed("walk") else 1.0)
+	)
 	var speed := (
-		(tuning.sprint_speed if Input.is_action_pressed("sprint") else tuning.walk_speed)
+		pace
 		* combat.movement_scale()
 		* combat.speed_multiplier()
 		* _weapon_movement_scale()
