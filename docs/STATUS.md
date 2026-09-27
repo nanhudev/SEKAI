@@ -153,3 +153,12 @@ Producer / Integration 角色启动，建立三条工作流的共享状态。
 已清空。MAIN 于 2026-09-27 将 7.2 秒 Iaido 全序列落成两次提交并推送：`c485aeb`（前置铺垫：前景武器层、world pause manager、Chat2Blender 工具、C2B briefs）与 `8c71561`（Iaido 7.2s 签名演出 + 蓝虚空 + 玻璃层 + 13 个占位音）。远端 `godot-combat-mvp` 现为 `8c71561`。
 
 推送通道说明见 `PRODUCTION_BOARD.md` 环境备注：沙箱代理封锁 `github.com`，需走本机 v2RayN SOCKS5（`127.0.0.1:10808`）。
+
+## NARRATIVE · 开线 · 2026-09-27
+
+NARRATIVE / WORLD BUILDING 线启动，与 Combat Sandbox 并行，**不等待战斗完成**。文档全部落在 `docs/narrative/`。
+
+- **审计**：对全仓叙事设定做了一次彻底对账（Web 原型 / Godot / docs / 资产 / 音频命名），结论与命名裁决写入 `WORLD_BIBLE.md` §0。裁决：区域 = **雾谷 Mistvale**、据点 = **雾栖镇**（不再用"雾栖村"）、森林 = **雾谷东林**（其中片区**青竹林**）、敌人族 = **遗迹哨兵**（民间称"古代构造体"，`Technical Dummy` 只是开发占位名）、**信标（装置）+ 观察者（通过信标看世界的东西）**。
+- **V0.1 文档**：`WORLD_BIBLE.md`（魔法=理解性质；三种剑=信息/位置/距离；历史悬念只留三件物证）、`MISTVALE.md`（空间 0–9 段 + 三股力量 + 三条独特文化）、`CHARACTERS.md`（7 位 Act I 人物 + 1 影子角色）、`MAIN_STORY.md`（Prologue / Act I 节点 1–12 / Day 10 Anchor 六种状态 / 60 分钟表）、`STYLE_GUIDE.md`（禁用 AI 套话、命名规则、文案标准）。
+- **纪律**：本阶段**不写完整对白**，先钉"世界为什么这样运转"。骨架冻结后再进 dialogue pass，避免世界观一改全部报废。
+- **未决**：`COMBAT_DESIGN.md` 与 `moveset_library.gd` 不同步（折柳/惊鸿/长风三段已实现、文档写未实现），请 MAIN 回写；Narrative 现按已实现为准。

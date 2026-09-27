@@ -109,6 +109,28 @@ ChatGPT Web → Blender Python → Blender MCP → GLB → Godot
 
 ---
 
+## D · NARRATIVE & WORLD
+
+世界观 / 主线 / 角色 / 区域叙事 / 文案体系。文档在 `docs/narrative/`。
+**定位：Sandbox 证明"怎么玩"，NARRATIVE 决定"为什么值得继续玩"。**
+本线不做手感、不写战斗代码、不建模。**实现类的 Fate/Soul Echo/WorldState 仍为 FROZEN**（见 `DESIGN_BACKLOG.md`），本线只做设计。
+
+| 任务 | 优先级 | 状态 | 备注 |
+| --- | --- | --- | --- |
+| 既有叙事设定审计 + 命名裁决 | P1 | DONE | 结论写入 `narrative/WORLD_BIBLE.md` §0；裁决：雾谷 / 雾栖镇 / 雾谷东林·青竹林 / 遗迹哨兵 / 信标+观察者 |
+| `WORLD_BIBLE.md` V0.1 | P1 | DONE | 魔法=理解性质；三种剑=信息/位置/距离；最大悬念=古代文明"不再需要留在这里" |
+| `MISTVALE.md` V0.1 | P1 | DONE | 空间 0–9 段各设叙事功能；三股力量（公会/商团/钟塔）+ 治安官；三条独特文化 |
+| `CHARACTERS.md` V0.1 | P1 | DONE | 7 位 Act I 人物 + 1 影子角色；每人回答"玩家不在时在做什么"；含学习来源表 |
+| `MAIN_STORY.md` V0.1 | P1 | DONE | Premise/Theme/Prologue/Act I 节点 1–12/Day 10 Anchor 六种状态/60 分钟表；Act II·III 仅一行 |
+| `STYLE_GUIDE.md` V0.1 | P1 | DONE | 对白长度、禁用 AI 套话表、命名规则、技能与任务文案标准、自查清单 |
+| Narrative Request → ART/AUDIO/MAIN | P1 | TODO | 商队车、钟塔第五钟、奥伦柴堆、遗迹低频声、登记簿"看纸"交互。见 `MAIN_STORY.md` §12 与 `MISTVALE.md` §8 |
+| Prologue/Act I dialogue pass | P2 | BLOCKED | **等骨架冻结后再进**，避免世界观一改就全废 |
+| `TIMELINE.md` / `FACTIONS.md` / `QUESTS.md` / `TERMINOLOGY.md` / `NARRATIVE_BACKLOG.md` | P3 | TODO | 第一轮不建，按需再开 |
+
+未决事项：`COMBAT_DESIGN.md` 与 `moveset_library.gd` 不同步（折柳/惊鸿/长风三段已实现但文档写"未实现"），请 MAIN 回写；Narrative 现按**已实现**为准。
+
+---
+
 ## 冲突优先级
 
 1. 当前用户指令
