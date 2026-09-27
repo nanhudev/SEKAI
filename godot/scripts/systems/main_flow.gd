@@ -22,6 +22,8 @@ func _ready() -> void:
 	settings_menu.back_pressed.connect(_close_settings)
 	settings_menu.fov_slider.value_changed.connect(_apply_settings)
 	settings_menu.sensitivity_slider.value_changed.connect(_apply_settings)
+	settings_menu.motion_slider.value_changed.connect(_apply_settings)
+	settings_menu.shake_slider.value_changed.connect(_apply_settings)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -100,4 +102,6 @@ func _apply_settings(_value: float) -> void:
 	var player: CharacterBody3D = combat_sandbox.get_node("Player")
 	var camera_feedback: CameraFeedbackController = player.get_node("CameraFeedbackController")
 	camera_feedback.base_fov = settings_menu.fov_slider.value
+	camera_feedback.camera_motion_strength = settings_menu.motion_slider.value
+	camera_feedback.camera_shake_strength = settings_menu.shake_slider.value
 	player.set("mouse_sensitivity", settings_menu.sensitivity_slider.value)

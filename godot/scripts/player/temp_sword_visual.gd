@@ -2,6 +2,8 @@ extends Node3D
 # TEMP combat visual. Replace with the approved Chat2Blender sword asset later.
 
 @onready var combat: CombatController = get_node("../../../../../../CombatController")
+@onready var player: CharacterBody3D = combat.get_parent()
+@onready var camera_feedback: CameraFeedbackController = player.get_node("CameraFeedbackController")
 
 const IDLE_POSITION := Vector3(0.55, -0.52, -0.95)
 const IDLE_ROTATION := Vector3(0.0, 0.0, -0.2)
@@ -50,5 +52,11 @@ func _process(delta: float) -> void:
 		CombatController.State.IAIDO:
 			target_position = Vector3(0.58, -0.65, -0.78)
 			target_rotation = Vector3(0.0, 0.0, -1.1 if combat.state_time < 0.35 else 0.65)
-	position = position.lerp(target_position, minf(1.0, delta * 16.0))
+	if combat.state == CombatController.State.IDLE:
+		target_position.x -= camera_feedback.look_lag.x * 0.3
+		target_position.y += camera_feedback.look_lag.y * 0.22
+	if Input.is_action_pressed("sprint") and player.velocity.length() > 2.0:
+		target_position.y -= 0.13
+		target_rotation.z -= 0.12
+	position = position.lerp(target_position, minf(1.0, delta * 10.0))
 	rotation = rotation.lerp(target_rotation, minf(1.0, delta * 20.0))

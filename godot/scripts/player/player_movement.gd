@@ -35,6 +35,7 @@ func _bind_key(action: StringName, key: Key) -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
 		rotate_y(-event.relative.x * mouse_sensitivity)
+		$CameraFeedbackController.on_mouse_look(event.relative * mouse_sensitivity)
 		look_pivot.rotate_x(-event.relative.y * mouse_sensitivity)
 		look_pivot.rotation.x = clampf(look_pivot.rotation.x, -1.45, 1.45)
 	elif event.is_action_pressed("ui_cancel"):

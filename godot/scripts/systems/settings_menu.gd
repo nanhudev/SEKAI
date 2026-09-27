@@ -4,6 +4,8 @@ signal back_pressed
 
 var fov_slider: HSlider
 var sensitivity_slider: HSlider
+var motion_slider: HSlider
+var shake_slider: HSlider
 
 
 func _ready() -> void:
@@ -26,6 +28,14 @@ func _ready() -> void:
 	sensitivity_slider = _slider(0.001, 0.006, 0.0024)
 	sensitivity_slider.step = 0.0001
 	rows.add_child(sensitivity_slider)
+	rows.add_child(_label("镜头运动"))
+	motion_slider = _slider(0.0, 2.0, 1.0)
+	motion_slider.step = 0.05
+	rows.add_child(motion_slider)
+	rows.add_child(_label("镜头震动"))
+	shake_slider = _slider(0.0, 2.0, 1.0)
+	shake_slider.step = 0.05
+	rows.add_child(shake_slider)
 	var back := Button.new()
 	back.text = "返回"
 	back.custom_minimum_size = Vector2(300, 48)
