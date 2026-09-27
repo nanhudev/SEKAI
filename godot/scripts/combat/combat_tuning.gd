@@ -46,6 +46,19 @@ class_name CombatTuning
 # an opponent without scanning the tree or the controller knowing what an enemy
 # is — the same reason the element rules live in data.
 const TARGET_GROUP := &"combat_target"
+# Things a chain may attach to that are NOT enemies and must never be measured as
+# one: a pillar, a ruin ring, a hook point. Separate from the group above on
+# purpose — a pillar that joined TARGET_GROUP would become a valid target for
+# 白蔷庭's Measure and for every sweep, which is not what a pillar is.
+const ANCHOR_GROUP := &"chain_anchor"
+# Physics props a weapon may move (crates). Hittable, never measured, and never a
+# wall — a crate that stopped a sweep would make 横缚 useless in a room with boxes.
+const PROP_GROUP := &"combat_prop"
+# The player registers in this group so anything that needs the player can find
+# them without being a sibling. A stage is free to own its own targets now (see
+# ChainLab), and a dummy that assumed `get_parent().get_node("Player")` could
+# only ever live in one scene.
+const PLAYER_GROUP := &"player"
 
 @export_group("Iaido Targeting")
 @export var iaido_range := 10.0

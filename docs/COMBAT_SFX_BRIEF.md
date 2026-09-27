@@ -182,6 +182,55 @@ the state is on the target, not only a cast transient.
 input, an audibly different outcome.** If they sound like the same sound at different volumes,
 Wind is a damage number again.
 
+## Priority G: 缚星链 · STAR-BIND CHAIN (added 2026-09-27, combat director pass)
+
+**THE CHAIN'S IDENTITY IS THE LINKS. NOT THE HEAD.**
+A single air whoosh over a thrown head makes this read as a whip, and a whip is just a long
+sword with a worse grip. Every cue below therefore carries a **link layer**: many small metal
+contacts, not one. If a listener cannot hear that the weapon is a rope of metal, the weapon
+has failed at the level sound can fix.
+
+Two cues carry the whole design, and both are structural rather than decorative:
+
+- `ch_taut` — TENSION has no UI, so this cue *is* the readout. It must be unmistakable and it
+  must be the same sound every time the chain reaches its limit, or the player never learns
+  what "taut" means.
+- `ch_tug` — the haul is delivered as five diminishing yanks (see `COMBAT_DESIGN.md` §19).
+  **The rhythm has to be audible or 顿挫 only exists in the animation.** One sample triggered
+  five times is a machine gun, which is the opposite of a rope losing power; the cue must
+  degrade across the sequence.
+
+| Cue ID | Layers to source or generate | Target duration | Gameplay trigger |
+| --- | --- | --- | --- |
+| `ch_hold` | loose links settling against each other, no whoosh, no wind | 0.7 s | idle sway of the head |
+| `ch_sweep` | wide air cut **+ a dense link rattle that trails the air slightly** | 0.26 s | 横缚 (145° sweep) |
+| `ch_return` | the same rattle played in reverse, tighter and shorter | 0.22 s | 返扫 (the carried second cut) |
+| `ch_slam` | air accelerating downward, then a short link clatter on arrival | 0.30 s | 下砸 |
+| `ch_orbit_loop` | continuous circling links, seamless. **The rate must track MOMENTUM, not a fixed BPM** | 1.0 s loop | 蓄势回旋 active |
+| `ch_launch` | links paying out fast and unevenly, rising rattle, then air | 0.45 s | 甩星 release |
+| `ch_taut` | one hard metal snap at full stretch, then a **low creak of something under load** | 0.50 s | chain reaches max radius |
+| `ch_hook_throw` | head leaving the hand, air narrowing behind it | 0.34 s | 缠锁 throw |
+| `ch_hook_soft` | head biting into a body: dull metal, cloth, no ring | 0.30 s | hook attaches to an enemy |
+| `ch_hook_hard` | the same bite on stone: sharp metal ring + grit | 0.30 s | hook attaches to the anchor |
+| `ch_tug` | **one heavy yank**: rope creak under load + a cluster of links being dragged. Three tiers, each shorter/duller/lower than the last, mapped to `pull_tug_curve` (0.28 / 0.20 / 0.12) | 0.20 / 0.16 / 0.12 s | each of the 5 tugs of 缚 / 曳 |
+| `ch_tug_player` | the same yank **heard from the dragged end**: your own feet scraping + cloth, the chain far away | 0.24 s | a heavy target / the anchor hauls YOU |
+| `ch_bound` | the chain going tight AROUND something: a short constricting creak, no impact | 0.35 s | 缚 opens its window |
+| `ch_slip` | the chain letting go: links running slack, a small downward settle | 0.30 s | 缚 · 松脱 |
+| `ch_pull_cut` | the pull and the cut as ONE event: chain strain handing over to a steel cut | 0.30 s | 拉近斩 |
+| `ch_ground_slam` | upward chain strain, then a full body/ground impact with the links arriving after | 0.55 s | 地砸 |
+| `ch_wall` | head into stone: hard stone impact, then links falling slack, **no rebound** | 0.45 s | 撞墙 · WALL |
+| `ch_deflect` | metal sweeping metal aside — a glancing scrape, never a solid clang | 0.22 s | 拨链 |
+| `ch_chain_cut` | 截链: the enemy's steel being knocked off its line, plus a bright link snap | 0.28 s | perfect deflect |
+| `ch_wind_boost` | air joining an already-spinning chain — the loop getting denser, no gust transient | 0.40 s | 风 × 链 momentum boost |
+
+**`ch_tug` vs `ch_tug_player` is the weight table in sound.** A light enemy is heard as *the
+thing being hauled*; a heavy enemy and a fixed pillar are heard as *your own body being
+hauled*, and the difference between those two mixes is the entire §18 argument. If they sound
+like the same cue at different volumes, weight is a number again.
+
+**Do not add a tug sound to the chain's overhead/hold layers.** Five yanks at 0.24 s spacing sit
+inside a sequence that is otherwise mostly quiet, and that quiet is what makes the rhythm read.
+
 ## Source and audition log template
 
 For every imported candidate record: cue ID, source/tool, creator or model, license/usage right, exact generation prompt or source URL, creation/download date, file hash, intended trigger, and audition notes. Keep rejected candidates out of the game directory. Never describe a cue as approved until it is heard in the Godot combat scene at normal gameplay volume.

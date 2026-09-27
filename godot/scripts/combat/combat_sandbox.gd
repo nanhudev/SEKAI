@@ -8,10 +8,25 @@ extends Node3D
 @onready var camera_feedback: CameraFeedbackController = player.get_node("CameraFeedbackController")
 @onready var screen_fx: CombatScreenFX = $CombatScreenFX
 @onready var time_effects: TimeEffectManager = $TimeEffectManager
+@onready var weapon: WeaponSlot = player.get_node("WeaponSlot")
+
+# The first-person weapon rigs that have to get out of the way when the other
+# language is in hand. TempSwordVisual is the placeholder; Sword_FP is the real
+# rig ART is building to replace it (see scenes/weapons/Sword_FP.tscn), which is
+# why this is a list and not a single path.
+const SWORD_RIGS := [
+	"CameraRig/LookPivot/MotionPivot/ShakePivot/WeaponRoot/TempSwordVisual",
+]
 
 # Placeholder wind environment: a wall to be thrown into and light bodies that
 # actually move. Built in code so ART can replace it wholesale later.
 var wind_props: WindProps
+# A second stage, because movement and combat cannot share one: the dummy stands
+# on the line the player walks down. See MovementLane.
+var movement_lane: MovementLane
+# A third stage, because a weapon about SPACE cannot be judged in a 24m box with an
+# enemy on the walking line. See ChainLab.
+var chain_lab: ChainLab
 
 
 func _ready() -> void:
@@ -20,8 +35,38 @@ func _ready() -> void:
 	wind_props = WindProps.new()
 	wind_props.name = "WindProps"
 	add_child(wind_props)
+	movement_lane = MovementLane.new()
+	movement_lane.name = "MovementLane"
+	add_child(movement_lane)
+	chain_lab = ChainLab.new()
+	chain_lab.name = "ChainLab"
+	add_child(chain_lab)
+	weapon.changed.connect(_on_weapon_changed)
+	_apply_weapon_visibility()
 	screen_fx.reset()
 	call_deferred("_check_visual_state")
+
+
+func _on_weapon_changed(_previous: StringName, _current: StringName) -> void:
+	_apply_weapon_visibility()
+
+
+# 玩家没有职业，只有经历 — and the hands still hold ONE weapon at a time. Nothing took
+# the sword's rig away when the slot changed, so a player holding 缚星链 kept a 95cm
+# blade and its grip drawn in the other hand: at all times, in every frame, and
+# invisibly to the chain's own tests, because a weapon that is not being asked about
+# does not appear in anyone's failure message.
+#
+# The SCENE owns this rather than either weapon. A weapon that knew how to hide the
+# other weapon would be the same class of mistake as a controller with style
+# branches, and it would have to be un-taught the moment a third language arrives —
+# which is exactly what this build is.
+func _apply_weapon_visibility() -> void:
+	var sword_in_hand := weapon.is_sword()
+	for path in SWORD_RIGS:
+		var rig := player.get_node_or_null(path) as Node3D
+		if rig != null:
+			rig.visible = sword_in_hand
 
 
 func _on_shattered() -> void:

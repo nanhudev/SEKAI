@@ -27,7 +27,7 @@ enum State { IDLE, ALERT, ATTACK, STAGGER, FROZEN, DEAD }
 @onready var hurtbox: CombatHurtbox = $Hurtbox
 @onready var core: MeshInstance3D = $Core
 @onready var attack_hitbox: CombatHitbox = $AttackHitbox
-@onready var player: CharacterBody3D = get_parent().get_node("Player")
+@onready var player: CharacterBody3D = _resolve_player()
 
 var health := 120.0
 var poise := 0.0
@@ -72,6 +72,17 @@ func _ready() -> void:
 	attack_hitbox.get_node("CollisionShape3D").shape = attack_shape
 	core.material_override = cue_material
 	_build_telegraph()
+
+
+# A stage is allowed to own its own enemies now (see ChainLab), and a dummy that
+# demanded `get_parent().get_node("Player")` could only ever live in one scene.
+# Look for the sibling first because that is still the common case, then fall back
+# to the group the player puts itself in.
+func _resolve_player() -> CharacterBody3D:
+	var sibling := get_parent().get_node_or_null("Player") as CharacterBody3D
+	if sibling != null:
+		return sibling
+	return get_tree().get_first_node_in_group(CombatTuning.PLAYER_GROUP) as CharacterBody3D
 
 
 # Convenience mirrors so debug UI and older tooling can still read a number.
@@ -132,6 +143,11 @@ func _build_telegraph() -> void:
 
 func _process(delta: float) -> void:
 	if state == State.DEAD:
+		return
+	if player == null:
+		# A stage with no player in it (a static target row for the chain, say).
+		# It still has to react to being hit, so only the AI is skipped.
+		_update_elements(delta)
 		return
 	state_timer = maxf(0.0, state_timer - delta)
 	attack_cooldown = maxf(0.0, attack_cooldown - delta)
@@ -365,7 +381,11 @@ func damage_brittle_break(hit: Dictionary) -> void:
 
 func _apply_element(def: ElementDefinition, hit: Dictionary) -> void:
 	if def.has_ladder() or def.applies_per_hit > 0.0:
-		var stage := elements.apply(def, def.applies_per_hit)
+		# The spell decides how much of the element it delivers, not the target.
+		# A sword hit and a spell both arrive here as 1.0, which is why 寒流 needs
+		# three casts to freeze something and 凝霜 needs one.
+		var amount := def.applies_per_hit * float(hit.get("element_scale", 1.0))
+		var stage := elements.apply(def, amount)
 		var name := def.stage_names[stage] if def.has_ladder() else &""
 		element_stage_changed.emit(def.id, name)
 		if def.is_final_stage(stage):
@@ -538,3 +558,91 @@ func _element_hit(element_id: StringName, count: int) -> void:
 			"damage": 0.0, "poise_damage": 0.0, "element": element_id,
 			"impulse": 0.0, "source": null, "target": self,
 		})
+
+
+# ===================================================================== 缚星链
+# The chain's contract with whatever it catches. It asks these questions and
+# nothing else, exactly the way Measure only asks which group something is in —
+# so the weapon never has to know that a "TechnicalDummy" exists.
+
+func weight_class() -> StringName:
+	# Read through a method rather than the `weight` field directly: the chain's
+	# weight table is the whole reason a hook has three different outcomes, and an
+	# interface is the difference between a rule and a convention.
+	return weight
+
+
+func on_chain_hooked(_source: Node3D) -> void:
+	# Caught mid-swing. The throw landing is supposed to remove the attack the
+	# enemy was already committed to, otherwise "hook the lunge" rewards nothing.
+	if state == State.DEAD:
+		return
+	attack_hitbox.set_active(false)
+	attack_open = false
+	attack_cooldown = maxf(attack_cooldown, 0.5)
+	state = State.ALERT if state != State.FROZEN else State.FROZEN
+	state_timer = 0.0
+	_open_idle()
+
+
+func on_chain_released() -> void:
+	if state == State.DEAD:
+		return
+	if state == State.STAGGER:
+		state = State.ALERT
+		_open_idle()
+
+
+func apply_bound(seconds: float) -> void:
+	# 缚's payoff: off balance, briefly, and shorter the heavier the target is —
+	# which is why a heavy enemy is not a victim but an ANCHOR (§18).
+	if state == State.DEAD:
+		return
+	if state == State.FROZEN:
+		# A frozen target is already unable to act. Binding it would be spending a
+		# setup rather than building one.
+		return
+	attack_hitbox.set_active(false)
+	attack_open = false
+	state = State.STAGGER
+	state_timer = maxf(state_timer, seconds)
+	poise = 0.0
+	_open_idle()
+
+
+# A chain dragging something moves it for real, so the world can interrupt it —
+# the same reason wind's push uses move_and_collide instead of a teleport. Pulling
+# a light enemy into a pillar is a legitimate outcome.
+func chain_pull(offset: Vector3) -> bool:
+	if state == State.DEAD:
+		return false
+	offset.y = 0.0
+	if offset.length_squared() < 0.0001:
+		return false
+	var collision := move_and_collide(offset)
+	if collision == null:
+		return false
+	last_wall_impact = clampf(offset.length() / 2.0, 0.25, 1.2)
+	poise += 22.0 * last_wall_impact
+	state = State.STAGGER
+	state_timer = 0.6 * last_wall_impact
+	attack_hitbox.set_active(false)
+	attack_open = false
+	wall_impact.emit(last_wall_impact)
+	_open_idle()
+	return true
+
+
+func on_chain_deflect() -> void:
+	# 截链. Deliberately NOT the same reaction as a sword parry: nothing was met,
+	# the attack's trajectory was disturbed, so what happens is the enemy's own
+	# swing coming apart.
+	if state == State.DEAD:
+		return
+	attack_hitbox.set_active(false)
+	attack_open = false
+	state = State.STAGGER
+	state_timer = 0.55
+	poise = 0.0
+	last_interrupt = 0.5
+	_open_idle()
