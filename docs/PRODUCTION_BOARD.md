@@ -50,7 +50,7 @@ Godot / Gameplay / Combat / Camera / UI / VFX / Save / Git / Testing
 ### 战斗线验收现状（COMBAT 会话 · 2026-09-27）
 
 - **技术验证通过**：**18 项 headless 集成测试全部绿**。本轮新增 3 项：`element_magic_integration`（三系行为差异 + 规则即数据 + 5 种交互）、`white_rose_integration`（Measure 给手感不给伤害 / 缠剑是选择）、`combat_lab_integration`（4 流派 × 3 元素全排列）。另有 `hidden_edge_loop_integration` 把 P2 的藏锋循环钉住。
-- **已提交**：`59d983c`（通用剑语言层，40 files）、`cd4cbad`（回风 Prototype）。本轮（元素数据层 + 魔法层 + 白蔷庭 + Combat Lab + 文档）单独一个提交，**仅含战斗线文件**。
+- **已提交**：`59d983c`（通用剑语言层，40 files）、`cd4cbad`（回风 Prototype）。本轮（元素数据层 + 魔法层 + 白蔷庭 + Combat Lab + 文档）单独一个提交：`b33a12f`（41 files, +3798/−154），**仅含战斗线文件**。
 - **纪律**：本会话**未** `git add -A`。Iaido 演出线、ART、AUDIO 的未提交改动仍留在各自工作区。
 - **交互验收未完成**：字面意义上的"是否有趣"仍未验收 —— 阶段一（通用剑）、阶段二（换流派可辨）、回风"为不断势而主动跑"、白蔷"主动控制距离"、三系魔法"只看行为能否分辨"，**全部需要动起来看**。headless 只能证明逻辑正确。
 - **`--editor --quit` 副作用（需对账）**：本会话为注册 8 个新 `class_name`（`WindProps` / `ElementField` / `MagicSchool` / `MagicLibrary` / `SpellDefinition` / `ElementDefinition` / `ElementState` / `ElementLibrary`）跑了 import 一次。**本轮该次 import 后 `IaidoTuning.tres` 的 md5 未变**（`d8437620…`，与 import 前一致），说明此前的 `.tres` 重写与 import 之间不是稳定因果。**Iaido 线请自行确认 `IaidoTuning.tres` 的当前 diff 是否为你的意图。**

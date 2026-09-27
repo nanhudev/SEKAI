@@ -262,6 +262,8 @@ NARRATIVE / WORLD BUILDING 线启动，与 Combat Sandbox 并行，**不等待�
 ### 对账
 
 - 本会话**未** `git add -A`，只暂存战斗线文件；Iaido 演出线 / ART / AUDIO 的未提交改动仍留在各自工作区。
+  本轮提交 = **`b33a12f`**（41 files, +3798/−154），**仅战斗线**。ART 的 `ENV-01` 行（`SPEC READY → IN GODOT`）**保持未暂存**，由 ART 自己发布 —— 每条线只发布自己那一行。
+- **未 push**：提交后本地领先远端 1 个提交（提交前 `godot-combat-mvp` = `origin/godot-combat-mvp` = `282e9eb`）。推送渠道是本机 v2RayN SOCKS5，是否推交由 MAIN / 用户决定。
 - 为注册 8 个新 `class_name` 跑过 1 次 `--editor --quit`。**该次之后 `IaidoTuning.tres` 的 md5 未变**（`d8437620…`），此前记录过的 `.tres` 重写与 import 之间不是稳定因果。**Iaido 线请自行确认当前 diff 是否是自己的意图。**
 - 下一步：把"任何一行 × 任何一列"在可见桌面上跑一遍（`F8` → 切流派 → 切法术 → 切敌人状态 → 就位撞墙），
   先回答 §53 的五个自问，再谈平衡数值。
