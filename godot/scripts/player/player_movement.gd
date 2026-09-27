@@ -3,6 +3,21 @@ extends CharacterBody3D
 @export var tuning: CombatTuning = preload("res://resources/tuning/CombatTuning.tres")
 @export var mouse_sensitivity := 0.0024
 
+# Landing belongs to the BODY, not to the camera. It used to be detected inside
+# CameraFeedbackController off that node's own copy of the player's previous
+# vertical speed, which meant two independent ideas of "was that a landing" —
+# the camera could ring on your behalf and nothing else could ask the question.
+# One source of truth, broadcast, so camera / weapon / audio all answer the same
+# event. §25: graded by fall speed, and below the soft threshold there is no
+# landing at all, because a hop that shakes the screen makes every step an event.
+signal landed(impact_speed: float, tier: StringName)
+
+const LANDING_SOFT := 3.0
+const LANDING_MEDIUM := 7.0
+const LANDING_HEAVY := 11.0
+
+var _was_grounded := true
+
 var health := 100.0
 var mana := 100.0
 var stamina := 100.0
@@ -92,6 +107,10 @@ func _physics_process(delta: float) -> void:
 	if unlimited_resources:
 		mana = 100.0
 		stamina = 100.0
+	# What we were doing BEFORE this frame's move — after `move_and_slide` the
+	# vertical figure is already the leftovers, which is zero on exactly the frame
+	# a landing happens, so reading it afterwards would report no impact at all.
+	var falling_at := velocity.y
 	if not is_on_floor():
 		velocity.y -= 14.0 * delta
 	elif Input.is_action_just_pressed("jump"):
@@ -103,6 +122,7 @@ func _physics_process(delta: float) -> void:
 		velocity.x = combat.dodge_direction.x * combat.dodge_speed_now()
 		velocity.z = combat.dodge_direction.z * combat.dodge_speed_now()
 		move_and_slide()
+		_settle_after_move(falling_at)
 		return
 	if combat.state in [combat.State.IAIDO, combat.State.ULTIMATE]:
 		velocity = Vector3.ZERO
@@ -116,6 +136,7 @@ func _physics_process(delta: float) -> void:
 		* combat.movement_scale()
 		* combat.speed_multiplier()
 		* _weapon_movement_scale()
+		* _slope_factor(direction)
 	)
 	var target := direction * speed
 	var lunge := combat.attack_lunge_velocity()
@@ -161,6 +182,23 @@ func _physics_process(delta: float) -> void:
 	velocity.x = _strip_push(velocity.x, push.x)
 	velocity.z = _strip_push(velocity.z, push.z)
 	external_velocity = external_velocity.lerp(Vector3.ZERO, minf(1.0, delta * PUSH_DECAY))
+	_settle_after_move(falling_at)
+
+
+# Called after every `move_and_slide`. Sitting here rather than once at the end
+# is the point: three paths leave this function early, and a landing that happens
+# during a dodge is still a landing.
+func _settle_after_move(falling_at: float) -> void:
+	var grounded := is_on_floor()
+	if grounded and not _was_grounded and falling_at < -LANDING_SOFT:
+		var impact := -falling_at
+		var tier := (
+			&"heavy" if impact >= LANDING_HEAVY
+			else &"medium" if impact >= LANDING_MEDIUM
+			else &"light"
+		)
+		landed.emit(impact, tier)
+	_was_grounded = grounded
 
 
 func _weapon_movement_scale() -> float:
@@ -183,6 +221,27 @@ func _input_fights_motion(direction: Vector3) -> bool:
 	if direction.length_squared() < 0.01:
 		return false
 	return Vector2(velocity.x, velocity.z).dot(Vector2(direction.x, direction.z)) < 0.0
+
+
+# §26. Read off the SURFACE rather than off a heightmap: the ground this body is
+# actually standing on already knows which way it tilts, and asking it means the
+# rule keeps working wherever the level decides to put a slope.
+#
+# `normal.dot(direction)` is signed by construction and needs no height sampling:
+# on flat ground the normal is straight up so the dot is 0; going up a slope that
+# rises toward you the normal leans back against your heading, giving a negative
+# dot; coming down it leans the other way and gives a positive one.
+#
+# Deliberately not a sliding/gravity-along-slope simulation — §26 asks for "up is
+# a little harder, down is a little freer", and a second solver here would start
+# arguing with style lunges and the chain's drag the moment anyone tuned either.
+func _slope_factor(direction: Vector3) -> float:
+	if direction.length_squared() < 0.01 or not is_on_floor():
+		return 1.0
+	var along := get_floor_normal().dot(direction)
+	if along < 0.0:
+		return 1.0 + along * tuning.slope_up_cost
+	return 1.0 + along * tuning.slope_down_gain
 
 
 func _accel_rate() -> float:

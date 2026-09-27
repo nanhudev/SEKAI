@@ -32,6 +32,12 @@ class_name CombatTuning
 @export var stop_accel := 26.0          # §18 a settle you can feel, not a slide
 @export var brake_accel := 45.0         # §19 the visible pivot
 
+# §26. Cost is paid against `normal.dot(direction)`, which is 0 on flat ground and
+# at most ±sin(slope) elsewhere, so these read as "how much of the tilt is felt"
+# rather than "how steep before something happens".
+@export var slope_up_cost := 0.7        # uphill is genuinely harder work
+@export var slope_down_gain := 0.25     # downhill keeps a little of what it earned
+
 @export_group("Timing")
 @export var input_buffer := 0.15
 @export var light_hitstop := 0.028

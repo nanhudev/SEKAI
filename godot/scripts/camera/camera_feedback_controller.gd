@@ -36,8 +36,6 @@ var look_lag := Vector2.ZERO
 var velocity_lag := Vector3.ZERO
 var smoothed_position := Vector3.ZERO
 var smoothed_rotation := Vector3.ZERO
-var was_grounded := false
-var previous_vertical_speed := 0.0
 
 
 func cycle_preset() -> String:
@@ -67,6 +65,14 @@ func add_trauma(amount: float) -> void:
 
 func add_iaido_frame(direction: Vector2, strength: float = 1.0) -> void:
 	# A cinematic nudge that is NOT suppressed by iaido_still.
+	#
+	# DEPRECATED — NOTHING CALLS THIS ANY MORE. `iaido_frame` is now ASSIGNED
+	# from the Iaido timeline every frame instead of being accumulated here.
+	# Accumulating it decayed on real frame delta, which meant the Iaido camera
+	# kept settling through a time stop that is supposed to freeze it mid-move,
+	# and it made the frame a function of wall time so two renders of the same
+	# ceremony instant differed — a frozen window could never then be proven
+	# frozen. Do not reintroduce an accumulator; assign `iaido_frame` instead.
 	iaido_frame += direction * strength
 
 
@@ -78,8 +84,29 @@ func fov_kick(degrees: float) -> void:
 	fov_offset += degrees
 
 
+# A SUSTAINED offset, as opposed to a kick. A system that holds a state (缚星链's
+# orbit) sets this while the state lasts and clears it when it ends. Feeding an
+# event into fov_offset was not an option: that accumulator decays at
+# settle_speed, so calling it every frame would have made the orbit's FOV
+# pressure depend on the framerate.
+var sustain_fov := 0.0
+
+
 func roll_impulse(degrees: float) -> void:
 	roll += deg_to_rad(degrees)
+
+
+func _ready() -> void:
+	# The body owns landing now (§25). Subscribing rather than re-detecting means
+	# there is exactly one idea of "that was a landing" in the game, and anything
+	# else that reacts to it — weapon, footstep audio — reacts to the same frame.
+	if player.has_signal("landed"):
+		player.landed.connect(_on_landed)
+
+
+func _on_landed(_impact_speed: float, tier: StringName) -> void:
+	var weight: float = {&"light": 0.45, &"medium": 1.0, &"heavy": 1.7}.get(tier, 1.0)
+	landing_impulse(weight)
 
 
 func landing_impulse(strength: float = 1.0) -> void:
@@ -88,12 +115,25 @@ func landing_impulse(strength: float = 1.0) -> void:
 
 
 func _process(delta: float) -> void:
+	# THE CEREMONY CLOCK IS OFF: NOTHING INTEGRATES, BUT THE POSE IS STILL
+	# WRITTEN.
+	#
+	# This used to `return`, which pinned the frame by leaving the last pose in
+	# place. That worked for the hero freeze frame and broke the time stops: the
+	# director writes motion_pivot from inside this function, so an early return
+	# also stopped the director's own camera moves from landing. Zeroing the
+	# delta instead freezes every accumulator — bob, sway, tremor, trauma decay,
+	# the cinematic `iaido_frame` impulse, `noise_time` — while still applying
+	# the pose those frozen values describe. Same still frame, no blind spot.
 	if iaido_frozen:
-		return
+		delta = 0.0
 	noise_time += delta * 27.0
 	var decay := minf(1.0, settle_speed * delta)
 	impulse = impulse.lerp(Vector2.ZERO, decay)
-	iaido_frame = iaido_frame.lerp(Vector2.ZERO, minf(1.0, settle_speed * 1.4 * delta))
+	# `iaido_frame` is NOT decayed here. The Iaido director assigns it from its
+	# own timeline (three impulses, eased on ceremony time), and decaying it here
+	# as well would both fight that assignment and leak wall time back into a
+	# frame that has to be a pure function of the ceremony clock.
 	fov_offset = lerpf(fov_offset, 0.0, decay)
 	roll = lerpf(roll, 0.0, decay)
 	look_lag = look_lag.lerp(Vector2.ZERO, minf(1.0, delta * 11.0))
@@ -113,10 +153,6 @@ func _process(delta: float) -> void:
 		gait_phase += delta * (15.0 if sprinting else 10.0)
 		if floori(gait_phase / PI) > old_step:
 			step_pulse = 0.028 if sprinting else 0.012
-	if grounded and not was_grounded and previous_vertical_speed < -3.0:
-		landing_impulse(minf(1.8, -previous_vertical_speed / 8.0))
-	was_grounded = grounded
-	previous_vertical_speed = player.velocity.y
 
 	var motion_scale := camera_motion_strength
 	var gait_scale := 2.0 if sprinting else 1.0
@@ -148,4 +184,4 @@ func _process(delta: float) -> void:
 	shake_pivot.position = Vector3(sin(noise_time * 1.7), cos(noise_time * 2.1), 0.0) * shake * still
 	# The Iaido FOV push is a cinematic direction, not feedback, so it ignores
 	# the camera preset. A player on "Off" still gets the full performance.
-	camera.fov = base_fov + fov_hold + fov_offset * feedback_scale + sprint_fov * motion_scale * still
+	camera.fov = base_fov + fov_hold + fov_offset * feedback_scale + sprint_fov * motion_scale * still + sustain_fov

@@ -18,6 +18,7 @@ extends SceneTree
 # quietly broken "stop" in this engine before.
 
 const TICK := 60.0
+const SLOPE_FRAMES := 14
 
 var world: Node3D
 var player: CharacterBody3D
@@ -26,6 +27,7 @@ var combat: CombatController
 var camera: Camera3D
 var failures: Array[String] = []
 var metrics: Dictionary = {}
+var _landing_report: Dictionary = {}
 
 
 func _initialize() -> void:
@@ -65,6 +67,8 @@ func _run() -> void:
 	await _measure_turn_180()
 	await _measure_jump()
 	await _measure_dodge()
+	await _measure_slope()
+	await _measure_landing_tiers()
 
 	_report()
 	if failures.is_empty():
@@ -264,6 +268,157 @@ func _measure_dodge() -> void:
 	)
 
 
+# §26. Same pace, same number of frames, same input: the only thing that may
+# differ is which way the ground tilts. Measured on the lane's own ramp both
+# directions so the surface is identical and no walking has to be done to get on.
+func _measure_slope() -> void:
+	# Short run on purpose. The ramp is only 3.1m of slope; a longer measurement
+	# simply reaches the deck and measures the flat again, which is how the first
+	# version of this check "found" a 65% uphill penalty.
+	var frames := SLOPE_FRAMES
+	var flat := await _run_from(
+		Vector3(MovementLane.CENTER.x - 2.0, MovementLane.DECK_Y + 0.4, MovementLane.CENTER.z),
+		MovementLane.RUN_DIRECTION, frames
+	)
+	var ramp_bottom := MovementLane.CENTER.x - MovementLane.LENGTH * 0.5 - MovementLane.RAMP_RUN
+	var ramp_top := MovementLane.CENTER.x - MovementLane.LENGTH * 0.5
+	var rise := MovementLane.DECK_Y / MovementLane.RAMP_RUN
+	# `global_position` is the CAPSULE'S CENTRE, not the feet — dropping the body
+	# in at the surface height buries half of it in the slab and it gets shoved
+	# out sideways, which reads as an unmovable body (the first attempt measured
+	# 0.08m of uphill travel: a collision, not a slope). Start clear and let it
+	# settle; HOT_FRAMES is long enough that every run begins actually standing.
+	var clearance := 1.2
+	var up := await _run_from(
+		Vector3(ramp_bottom + MovementLane.RAMP_RUN * 0.2, MovementLane.RAMP_RUN * 0.2 * rise + clearance, MovementLane.CENTER.z),
+		MovementLane.RUN_DIRECTION, frames
+	)
+	var down := await _run_from(
+		Vector3(ramp_top - MovementLane.RAMP_RUN * 0.2, MovementLane.DECK_Y - MovementLane.RAMP_RUN * 0.2 * rise + clearance, MovementLane.CENTER.z),
+		-MovementLane.RUN_DIRECTION, frames
+	)
+	metrics["slope_flat"] = flat.distance
+	metrics["slope_up"] = up.distance
+	metrics["slope_down"] = down.distance
+	metrics["slope_flat_speed"] = flat.speed
+	metrics["slope_up_speed"] = up.speed
+	metrics["slope_down_speed"] = down.speed
+	# Gated on SPEED, not distance: the run is deliberately shorter than the ramp,
+	# so distance depends on where the body happens to still be on it, while the
+	# speed it reaches is a property of how hard the climb is.
+	_check(
+		up.speed < flat.speed * 0.95,
+		"sprinting uphill topped out at %.2f m/s against %.2fm on the flat — §26 wants the climb to cost something"
+			% [up.speed, flat.speed]
+	)
+	_check(
+		down.speed > flat.speed * 1.03,
+		"downhill (%.2f m/s) is no freer than the flat (%.2f m/s) — §26 asks for a little preserved momentum, and comparing only against uphill hides whether it is there at all"
+			% [down.speed, flat.speed]
+	)
+	_check(
+		down.speed > up.speed * 1.10,
+		"downhill (%.2f m/s) is not clearly freer than uphill (%.2f m/s) — the same slope in two directions must not answer identically"
+			% [down.speed, up.speed]
+	)
+	_check(
+		down.speed <= flat.speed * 1.25,
+		"downhill reached %.2f m/s against %.2f on the flat — §26 wants momentum preserved, not gravity doing the work"
+			% [down.speed, flat.speed]
+	)
+
+
+# §25. Same floor, three different falls. The tiering is the entire idea: a hop
+# must produce nothing, and a real drop has to differ from a small one in more
+# than volume.
+func _measure_landing_tiers() -> void:
+	var seen: Dictionary = {}
+	player.landed.connect(func(speed: float, tier: StringName) -> void:
+		seen[tier] = maxf(float(seen.get(tier, 0.0)), speed)
+	)
+	var flat := MovementLane.CENTER + Vector3(-2.0, 0.0, 0.0)
+	# Relative to the RESTING height, never to the deck: `global_position` is the
+	# capsule's centre, so an absolute drop height either buries the body in the
+	# deck (it never leaves the ground, emits nothing, and the check passes while
+	# testing literally nothing) or hangs it miles up. Settle first, then lift.
+	var rest_y := await _settle_at(flat)
+	await _drop_by(rest_y, 1.0)     # ~5.3 m/s -> light
+	await _drop_by(rest_y, 2.6)     # ~8.5 m/s -> medium
+	await _drop_by(rest_y, 5.6)     # ~12.5 m/s -> heavy
+	metrics["landing"] = seen
+	# Snapshot for the report: `seen` is emptied again below to test that a hop is
+	# silent, and printing the live dictionary afterwards showed "(none)" while
+	# every tier had in fact fired.
+	_landing_report = seen.duplicate()
+	_check(
+		seen.has(&"medium"),
+		"a 1.6m drop produced no medium landing — the tiers are not being reached at all"
+	)
+	_check(
+		seen.has(&"heavy"),
+		"a 7m drop produced no heavy landing — §25's top tier is unreachable, so the three tiers are two"
+	)
+	# A SMALL drop is not a landing. This is the line that keeps ordinary movement
+	# readable — if every step off a kerb rings the camera, then a real drop has
+	# nothing left to emphasise with.
+	seen.clear()
+	await _drop_by(rest_y, 0.15)
+	_check(
+		seen.is_empty(),
+		"a 0.15m drop announced a landing %s — every kerb would ring the camera" % [seen.keys()]
+	)
+
+
+# Returns the y the body actually rests at here, which is the only honest datum
+# for how far to lift it.
+func _settle_at(spot: Vector3) -> float:
+	player.global_position = Vector3(spot.x, MovementLane.DECK_Y + 1.6, spot.z)
+	player.velocity = Vector3.ZERO
+	for i in 60:
+		await _tick()
+		if player.is_on_floor():
+			break
+	await _wait(8)
+	return player.global_position.y
+
+
+func _drop_by(rest_y: float, height: float) -> void:
+	player.global_position = Vector3(
+		player.global_position.x, rest_y + height, player.global_position.z
+	)
+	player.velocity = Vector3.ZERO
+	await _wait(2)
+	for i in 160:
+		await _tick()
+		if player.is_on_floor():
+			break
+	await _wait(4)
+
+
+var HOT_FRAMES := 26
+
+
+func _run_from(spot: Vector3, heading: Vector3, frames: int) -> Dictionary:
+	player.global_position = spot
+	player.velocity = Vector3.ZERO
+	player.look_at_from_position(spot, spot + heading * 4.0, Vector3.UP)
+	await _wait(HOT_FRAMES)
+	var origin := player.global_position
+	Input.action_press(&"move_forward")
+	Input.action_press(&"sprint")
+	for i in frames:
+		await _tick()
+	var top := _hspeed()
+	Input.action_release(&"move_forward")
+	Input.action_release(&"sprint")
+	return {
+		"distance": Vector2(player.global_position.x, player.global_position.z).distance_to(
+			Vector2(origin.x, origin.z)
+		),
+		"speed": top,
+	}
+
+
 # ---------------------------------------------------------------- primitives
 
 func _accelerate(sprint: bool) -> Dictionary:
@@ -374,6 +529,15 @@ func _report() -> void:
 	print("    dodge    距离 %.2fm   时长 %.3fs   第2帧 %.2f → 峰值 %.2f m/s" % [
 		metrics.get("dodge_dist", 0.0), metrics.get("dodge_time", 0.0),
 		metrics.get("dodge_first", 0.0), metrics.get("dodge_peak", 0.0)
+	])
+	var landed_seen := _landing_report
+	print("    slope    平地 %.2f m/s   上坡 %.2f m/s   下坡 %.2f m/s   (%d 帧)" % [
+		metrics.get("slope_flat_speed", 0.0), metrics.get("slope_up_speed", 0.0),
+		metrics.get("slope_down_speed", 0.0), SLOPE_FRAMES
+	])
+	print("    landing  %s" % [
+		", ".join(landed_seen.keys().map(func(k): return "%s %.1fm/s" % [k, landed_seen[k]]))
+		if not landed_seen.is_empty() else "(none)"
 	])
 	print("  ──────────────────────────────────────────────────────────-")
 	print("")
