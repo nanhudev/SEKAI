@@ -190,9 +190,10 @@ func _start(action: StringName) -> bool:
 		&"block": set_state(State.BLOCK)
 		&"dodge":
 			var stamina: float = player.get("stamina")
-			if stamina < tuning.dodge_stamina_cost:
+			if not player.unlimited_resources and stamina < tuning.dodge_stamina_cost:
 				return false
-			player.set("stamina", stamina - tuning.dodge_stamina_cost)
+			if not player.unlimited_resources:
+				player.set("stamina", stamina - tuning.dodge_stamina_cost)
 			var input_vector := Input.get_vector("move_left", "move_right", "move_forward", "move_back")
 			var wish := Vector3(input_vector.x, 0, input_vector.y)
 			dodge_direction = (player.transform.basis * (wish if wish.length_squared() > 0.01 else Vector3.FORWARD)).normalized()
@@ -202,9 +203,10 @@ func _start(action: StringName) -> bool:
 			casting_spell = selected_spell
 			var mana: float = player.get("mana")
 			var ability := _current_ability()
-			if mana < ability.mana_cost:
+			if not player.unlimited_resources and mana < ability.mana_cost:
 				return false
-			player.set("mana", mana - ability.mana_cost)
+			if not player.unlimited_resources:
+				player.set("mana", mana - ability.mana_cost)
 			camera_feedback.fov_kick(1.5)
 			magic_circle.circle_color = Color(1.0, 0.55, 0.2, 0.85) if casting_spell == &"fire" else (Color(0.75, 0.8, 0.8, 0.8) if casting_spell == &"wind" else Color(0.55, 0.85, 1.0, 0.8))
 			magic_circle.set_casting(true)
@@ -212,9 +214,10 @@ func _start(action: StringName) -> bool:
 		&"iaido":
 			var now := Time.get_ticks_msec() / 1000.0
 			var stamina: float = player.get("stamina")
-			if now < iaido_ready_at or stamina < 35.0:
+			if now < iaido_ready_at or (not player.unlimited_resources and stamina < 35.0):
 				return false
-			player.set("stamina", stamina - 35.0)
+			if not player.unlimited_resources:
+				player.set("stamina", stamina - 35.0)
 			iaido_ready_at = now + 5.0
 			hitbox.damage = 65.0
 			hitbox.poise_damage = 70.0
@@ -253,7 +256,8 @@ func _on_player_hit(hit: Dictionary) -> void:
 				attacker.call("on_perfect_guard")
 		else:
 			var stamina: float = player.get("stamina")
-			player.set("stamina", maxf(0.0, stamina - 12.0))
+			if not player.unlimited_resources:
+				player.set("stamina", maxf(0.0, stamina - 12.0))
 		return
 	var health: float = player.get("health")
 	player.set("health", maxf(0.0, health - float(hit.get("damage", 0.0))))

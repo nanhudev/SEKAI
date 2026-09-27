@@ -6,6 +6,7 @@ extends CharacterBody3D
 var health := 100.0
 var mana := 100.0
 var stamina := 100.0
+var unlimited_resources := false
 
 @onready var look_pivot: Node3D = $CameraRig/LookPivot
 @onready var hurtbox: CombatHurtbox = $Hurtbox
@@ -43,6 +44,9 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _physics_process(delta: float) -> void:
+	if unlimited_resources:
+		mana = 100.0
+		stamina = 100.0
 	if not is_on_floor():
 		velocity.y -= 14.0 * delta
 	elif Input.is_action_just_pressed("jump"):

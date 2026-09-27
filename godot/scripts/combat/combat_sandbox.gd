@@ -1,6 +1,7 @@
 extends Node3D
 
 @export var shatter_scene: PackedScene = preload("res://scenes/combat/ShatterVFX.tscn")
+@export var sandbox_unlimited_resources := true
 
 @onready var dummy: Node3D = $TechnicalDummy
 @onready var player: CharacterBody3D = $Player
@@ -11,6 +12,7 @@ extends Node3D
 
 func _ready() -> void:
 	dummy.shattered.connect(_on_shattered)
+	player.unlimited_resources = sandbox_unlimited_resources
 	screen_fx.reset()
 	call_deferred("_check_visual_state")
 
