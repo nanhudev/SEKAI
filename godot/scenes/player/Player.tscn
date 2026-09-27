@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3]
+[gd_scene load_steps=13 format=3]
 
 [ext_resource type="Script" path="res://scripts/player/player_movement.gd" id="1"]
 [ext_resource type="Script" path="res://scripts/camera/camera_feedback_controller.gd" id="2"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" path="res://scripts/combat/hitbox.gd" id="4"]
 [ext_resource type="PackedScene" path="res://scenes/combat/MagicCircle3D.tscn" id="5"]
 [ext_resource type="Script" path="res://scripts/combat/hurtbox.gd" id="6"]
+[ext_resource type="Script" path="res://scripts/player/temp_sword_visual.gd" id="7"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_1"]
 radius = 0.35
@@ -52,6 +53,9 @@ current = true
 fov = 75.0
 
 [node name="WeaponRoot" type="Node3D" parent="CameraRig/LookPivot/MotionPivot/ShakePivot"]
+
+[node name="TempSwordVisual" type="Node3D" parent="CameraRig/LookPivot/MotionPivot/ShakePivot/WeaponRoot"]
+script = ExtResource("7")
 
 [node name="SwordHitbox" type="Area3D" parent="CameraRig/LookPivot/MotionPivot/ShakePivot/WeaponRoot"]
 position = Vector3(0, -0.2, -1.4)
