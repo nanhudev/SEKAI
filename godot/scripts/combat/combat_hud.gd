@@ -9,9 +9,10 @@ var health_bar: ProgressBar
 var mana_bar: ProgressBar
 var stamina_bar: ProgressBar
 var status_label: Label
-var wheel: Control
+var wheel: RadialWheel
 var wheel_open := false
-var pending_spell: StringName = &"frost"
+var pending_spell: StringName = &""
+var wheel_vector := Vector2.ZERO
 
 
 func _ready() -> void:
@@ -29,19 +30,11 @@ func _ready() -> void:
 	status_label.position = Vector2(-250, -60)
 	status_label.custom_minimum_size = Vector2(230, 42)
 	add_child(status_label)
-	wheel = Control.new()
+	wheel = RadialWheel.new()
 	wheel.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
 	wheel.position = Vector2(-140, -140)
-	wheel.custom_minimum_size = Vector2(280, 280)
 	wheel.visible = false
 	add_child(wheel)
-	var background := ColorRect.new()
-	background.color = Color(0.04, 0.1, 0.12, 0.86)
-	background.size = Vector2(280, 280)
-	wheel.add_child(background)
-	_add_spell_button("FIRE", &"fire", Vector2(90, 26))
-	_add_spell_button("FROST", &"frost", Vector2(20, 178))
-	_add_spell_button("WIND", &"wind", Vector2(160, 178))
 
 
 func _make_bar(parent: VBoxContainer, caption: String, color: Color) -> ProgressBar:
@@ -57,17 +50,6 @@ func _make_bar(parent: VBoxContainer, caption: String, color: Color) -> Progress
 	parent.add_child(bar)
 	return bar
 
-
-func _add_spell_button(caption: String, spell: StringName, position_on_wheel: Vector2) -> void:
-	var button := Button.new()
-	button.text = caption
-	button.position = position_on_wheel
-	button.custom_minimum_size = Vector2(100, 52)
-	button.mouse_entered.connect(func() -> void: pending_spell = spell)
-	button.pressed.connect(func() -> void: pending_spell = spell)
-	wheel.add_child(button)
-
-
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.keycode == KEY_TAB and not event.echo:
 		if event.pressed and not wheel_open and combat.state != CombatController.State.IAIDO:
@@ -75,23 +57,30 @@ func _input(event: InputEvent) -> void:
 		elif not event.pressed and wheel_open:
 			close_wheel()
 		get_viewport().set_input_as_handled()
+	elif wheel_open and event is InputEventMouseMotion:
+		wheel_vector = (wheel_vector + event.relative).limit_length(180.0)
+		wheel.set_direction(wheel_vector)
+		pending_spell = wheel.selected_spell
+		get_viewport().set_input_as_handled()
+	elif wheel_open and event is InputEventMouseButton:
+		get_viewport().set_input_as_handled()
 
 
 func open_wheel() -> void:
 	wheel_open = true
-	pending_spell = combat.selected_spell
+	pending_spell = &""
+	wheel_vector = Vector2.ZERO
+	wheel.set_direction(Vector2.ZERO)
 	wheel.visible = true
-	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	time_effects.request_slow_motion(0.3, 3600.0)
 
 
 func close_wheel() -> void:
 	wheel_open = false
 	wheel.visible = false
-	combat.selected_spell = pending_spell
+	if pending_spell != &"":
+		combat.selected_spell = pending_spell
 	time_effects.reset()
-	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-
 
 func _process(_delta: float) -> void:
 	health_bar.value = player.get("health")
