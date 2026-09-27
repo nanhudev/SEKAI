@@ -167,9 +167,14 @@ func _update_world() -> void:
 		IaidoTuning.span(t, tuning.wave_start - 0.06, tuning.wave_start + 0.08)
 		* (1.0 - IaidoTuning.span(t, tuning.wave_end - 0.18, tuning.wave_end - 0.02))
 	)
-	var wave_a := IaidoTuning.ease_in_cubic(IaidoTuning.span(t, tuning.ring1_start, tuning.ring1_end))
-	var wave_b := IaidoTuning.ease_in_cubic(IaidoTuning.span(t, tuning.ring2_start, tuning.ring2_end))
-	var wave_c := IaidoTuning.ease_in_cubic(IaidoTuning.span(t, tuning.ring3_start, tuning.ring3_end))
+	# Ring progress is linear here on purpose. The compression still accelerates
+	# (the shader's radius curve steepens hard toward the centre, which is where
+	# the "ease in" the design asks for actually lives), but stacking a cubic on
+	# top of it kept every shell off-frame until the last tenth of a second, so
+	# the reverse wave was invisible in motion.
+	var wave_a := IaidoTuning.span(t, tuning.ring1_start, tuning.ring1_end)
+	var wave_b := IaidoTuning.span(t, tuning.ring2_start, tuning.ring2_end)
+	var wave_c := IaidoTuning.span(t, tuning.ring3_start, tuning.ring3_end)
 
 	var void_open := _track(t, [
 		Vector2(tuning.cut_start - 0.01, 0.0),

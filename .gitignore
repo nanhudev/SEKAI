@@ -4,3 +4,4 @@ dist/
 godot/.godot/
 .workbuddy/
 .capture/
+.render/

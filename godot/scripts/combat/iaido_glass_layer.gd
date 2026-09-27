@@ -79,7 +79,7 @@ func build(tuning: IaidoTuning) -> void:
 			"depth": rng.randf_range(-0.40, 0.40),
 			"angular": Vector3(rng.randf_range(-7.0, 7.0), rng.randf_range(-7.0, 7.0), rng.randf_range(-6.0, 6.0)),
 			"spin": rng.randf_range(0.0, TAU),
-			"alpha": rng.randf_range(0.22, 0.42),
+			"alpha": rng.randf_range(0.36, 0.60),
 			"tangent": tangent,
 			"normal": normal,
 		}
@@ -102,7 +102,7 @@ func _make_shard(width: float, height: float) -> Node3D:
 	core_material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 	core_material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
 	core_material.cull_mode = BaseMaterial3D.CULL_DISABLED
-	core_material.albedo_color = Color(0.74, 0.85, 0.95, 0.20)
+	core_material.albedo_color = Color(0.20, 0.26, 0.36, 0.45)
 	core_mesh.material = core_material
 	var core := MeshInstance3D.new()
 	core.name = "Pane"
@@ -191,7 +191,7 @@ func stage(time: float, tuning: IaidoTuning) -> void:
 func _apply_alpha(data: Dictionary, alpha: float) -> void:
 	var core_material := data.get("core_material") as StandardMaterial3D
 	if core_material != null:
-		core_material.albedo_color = Color(0.74, 0.85, 0.95, clampf(alpha, 0.0, 1.0))
+		core_material.albedo_color = Color(0.20, 0.26, 0.36, clampf(alpha, 0.0, 1.0))
 	var rim_material := data.get("rim_material") as StandardMaterial3D
 	if rim_material != null:
 		rim_material.albedo_color = Color(0.93, 0.96, 1.00, clampf(alpha * 1.8, 0.0, 1.0))

@@ -9,6 +9,14 @@ render_mode unshaded;
 // core, with slow inward fog, impossible mirrored parallax and sparse motes.
 // The two halves then separate along the cut normal, and the world surface
 // finally fails like glass: stress cracks, refraction, then physical shards.
+//
+// Two things here are deliberately authored to survive a flat test arena:
+//  1. The reverse compression front carries a bright crest over a dark trough.
+//     Pure refraction is invisible over flat colour, so the pressure edge has
+//     to be painted, not just sampled.
+//  2. Cracks GROW out of the cut line as wandering branches with tapering
+//     tips. A Voronoi f2-f1 field reads as a tidy hex web, which is exactly
+//     what glass does not look like.
 // ---------------------------------------------------------------------------
 
 uniform sampler2D screen_tex : hint_screen_texture, filter_linear;
@@ -76,42 +84,65 @@ float fbm(vec2 p) {
 	return s;
 }
 
-// x = nearest, y = second, zw = owning cell centre (in cell space)
-vec4 voronoi(vec2 p) {
-	vec2 ip = floor(p);
-	vec2 fp = fract(p);
-	float f1 = 8.0;
-	float f2 = 8.0;
-	vec2 centre = vec2(0.0);
-	for (int y = -1; y <= 1; y++) {
-		for (int x = -1; x <= 1; x++) {
-			vec2 g = vec2(float(x), float(y));
-			vec2 o = vec2(hash21(ip + g), hash21(ip + g + 17.31));
-			o = 0.5 + 0.40 * sin(o * 6.2831 + vec2(1.7, 4.2));
-			float d = length(g + o - fp);
-			if (d < f1) {
-				f2 = f1;
-				f1 = d;
-				centre = ip + g + o;
-			} else if (d < f2) {
-				f2 = d;
-			}
-		}
-	}
-	return vec4(f1, f2, centre);
-}
-
 // Reverse compression: air being dragged back into the sheath mouth.
-// Content is pulled inward, with a soft trailing wake so it reads as
-// refraction rather than a magic circle.
-vec2 ring_pull(vec2 dir, float len, float progress, float strength) {
-	if (strength <= 0.001) {
-		return vec2(0.0);
-	}
-	float radius = pow(1.0 - clamp(progress, 0.0, 1.0), 1.55) * 0.95 + 0.02;
+// Returns (inward pull, visible crest). The crest is what the eye actually
+// reads: a bright density edge with a dark trough trailing behind it on the
+// outside, the way a pressure front photographs against a plain wall.
+vec2 ring_profile(float len, float progress) {
+	// Radius decays late (exponent < 1) so the shell stays inside the visible
+	// frame for most of its life. A hard ease-in dropped it through the whole
+	// screen in the last 15% of the shell, which read as nothing at all.
+	// The compression still accelerates, but through the envelope and the
+	// crest brightness rather than by hiding the ring off-frame.
+	float radius = pow(1.0 - clamp(progress, 0.0, 1.0), 0.55) * 0.95 + 0.02;
 	float ring = exp(-pow((len - radius) * 26.0, 2.0));
 	float wake = exp(-pow((len - radius * 1.42) * 11.0, 2.0)) * 0.42;
-	return dir * (ring + wake) * strength * 0.020;
+	return vec2(ring + wake, ring);
+}
+
+// One crack branch growing outward from the cut line.
+// It wanders more the further it travels, and thins toward its tip instead of
+// stopping dead, so the bundle never reads as a printed pattern.
+float crack_branch(vec2 p, vec2 origin, vec2 dir, float len, float seed, float width) {
+	float along = dot(p - origin, dir);
+	if (along < 0.0 || along > len) {
+		return 0.0;
+	}
+	float wander = (vnoise(vec2(along * 4.2 + seed * 9.0, seed)) - 0.5) * (0.018 + along * 0.30);
+	vec2 q = origin + dir * along + vec2(-dir.y, dir.x) * wander;
+	float d = length(p - q);
+	float taper = 1.0 - 0.72 * (along / max(len, 1e-3));
+	float body = 1.0 - smoothstep(0.0, width * taper, d);
+	body *= 1.0 - smoothstep(len * 0.55, len, along);
+	return body;
+}
+
+// Stress field: nine primary branches plus six finer ones. Both sets start on
+// the cut line and run outward, so the fracture always reads as "this world
+// broke along the sword", never as a full-screen texture.
+float crack_field(vec2 p, vec2 nrm, vec2 tangent, float front, float seed) {
+	float acc = 0.0;
+	for (int i = 0; i < 12; i++) {
+		float fi = float(i);
+		float h1 = hash21(vec2(fi * 1.37, seed));
+		float h2 = hash21(vec2(fi * 2.71, seed + 5.0));
+		float h3 = hash21(vec2(fi * 4.13, seed + 11.0));
+		vec2 origin = tangent * ((h1 - 0.5) * 2.6);
+		vec2 dir = nrm * (h2 > 0.5 ? 1.0 : -1.0);
+		dir = normalize(dir + tangent * (h3 - 0.5) * 0.55);
+		float len = front * (0.32 + h3 * 0.88);
+		acc = max(acc, crack_branch(p, origin, dir, len, h1 * 37.0, 0.0029));
+	}
+	for (int i = 0; i < 8; i++) {
+		float fi = float(i);
+		float h1 = hash21(vec2(fi * 6.19 + 41.0, seed));
+		float h2 = hash21(vec2(fi * 3.53 + 7.0, seed + 3.0));
+		vec2 origin = tangent * ((h1 - 0.5) * 3.0);
+		vec2 dir = normalize(nrm * (h2 > 0.5 ? 1.0 : -1.0) + tangent * (h1 - 0.5) * 0.9);
+		float len = front * (0.18 + h1 * 0.52);
+		acc = max(acc, crack_branch(p, origin, dir, len, h2 * 61.0, 0.0016));
+	}
+	return acc;
 }
 
 void fragment() {
@@ -132,33 +163,28 @@ void fragment() {
 	vec2 from_sheath = (uv - sheath_uv) * asp;
 	float len_s = length(from_sheath);
 	vec2 dir_s = from_sheath / max(len_s, 1e-4);
-	vec2 pull = ring_pull(dir_s, len_s, wave_a, wave_strength)
-			+ ring_pull(dir_s, len_s, wave_b, wave_strength * 0.76)
-			+ ring_pull(dir_s, len_s, wave_c, wave_strength * 0.55);
+	vec2 rp1 = ring_profile(len_s, wave_a);
+	vec2 rp2 = ring_profile(len_s, wave_b);
+	vec2 rp3 = ring_profile(len_s, wave_c);
+	float pull_sum = rp1.x + rp2.x * 0.76 + rp3.x * 0.55;
+	float crest = (rp1.y + rp2.y * 0.80 + rp3.y * 0.60) * wave_strength;
+	float trough = ((rp1.x - rp1.y) + (rp2.x - rp2.y) * 0.80 + (rp3.x - rp3.y) * 0.60) * wave_strength;
+	vec2 pull = dir_s * pull_sum * wave_strength * 0.038;
 
 	// ---- glass layers 1 + 2: stress cracks and their refraction -----------
-	// Large plates (a handful of primary shards), hairline cracks between
-	// them, spreading out from the cut. Deliberately NOT a spiderweb overlay.
-	vec2 cell_p = uv * asp * 5.5 + vec2(3.1, 1.7);
-	vec4 v1 = voronoi(cell_p);
-	float thickness = 0.0045 + 0.014 * vnoise(uv * asp * 26.0);
-	float crack_a = 1.0 - smoothstep(0.0, thickness, v1.y - v1.x);
-	// Some branches simply stop. Glass does not crack in a perfect web.
-	float stops = step(0.30, hash21(v1.zw * 7.3));
-	crack_a *= mix(0.15, 1.0, stops);
-	vec4 v2 = voronoi(uv * asp * 12.0 + vec2(11.7, 5.3));
-	float crack_b = (1.0 - smoothstep(0.0, 0.0035, v2.y - v2.x)) * 0.40;
-
-	float ad0 = abs(dot((uv - cut_center) * asp, nrm));
-	float gate = smoothstep(0.0, 0.06, fracture + shatter);
+	// Coordinates relative to the cut, so the branches can be authored along
+	// the blade instead of laid over the screen.
+	vec2 rel = (uv - cut_center) * asp;
 	float front = fracture * 0.85 + shatter * 1.60;
-	float reach = 1.0 - smoothstep(0.0, 0.30, ad0 - front);
-	float proximity = 1.0 - smoothstep(0.08, 0.70, ad0);
-	float crack = clamp(crack_a * 0.9 + crack_b, 0.0, 1.0) * reach * proximity * gate * (1.0 - dissolve);
-	vec2 push = normalize(cell_p - v1.zw + vec2(1e-4)) * crack * refract_px * sx * px;
+	float gate = smoothstep(0.0, 0.06, fracture + shatter);
+	// Cracks stay near the wound: they spread from the cut, not everywhere.
+	float proximity = 1.0 - smoothstep(0.10, 0.85, abs(dot(rel, nrm)));
+	float crack = crack_field(rel, nrm, tangent, max(front, 0.001), 17.0 + 0.0);
+	crack = clamp(crack * 1.25, 0.0, 1.0) * gate * proximity * (1.0 - dissolve);
+	vec2 push = nrm * crack * refract_px * sx * px;
 
 	// ---- separation of the two halves -------------------------------------
-	float d = dot((uv - cut_center) * asp, nrm);
+	float d = dot(rel, nrm);
 	float side = d >= 0.0 ? 1.0 : -1.0;
 	// Mostly along the cut normal, biased tangentially so the upper piece
 	// drifts up/right and the lower piece drifts down/left.
@@ -190,22 +216,37 @@ void fragment() {
 	// stripe: the initial crack opens the slit, then the separation itself
 	// keeps widening it so the blue emptiness is gradually revealed.
 	float micro = (fbm(uv * asp * 110.0) - 0.5) * 2.0;
-	float ad = ad0 + micro * void_edge_width_px * sx * px;
+	float ad = abs(dot(rel, nrm)) + micro * void_edge_width_px * sx * px;
 	float half_gap = 0.5 * gap_px * sx * px + 0.64 * separation_px * sx * px;
 	float in_void = (1.0 - smoothstep(half_gap - px, half_gap + px, ad)) * void_open;
 
 	float t = clamp(ad / max(half_gap, 1e-5), 0.0, 1.0);
 	vec3 void_col = mix(void_mid_color, void_edge_color, smoothstep(0.18, 1.0, t));
-	float core = 1.0 - smoothstep(0.0, void_core_width, t);
-	void_col = mix(void_col, void_core_color, pow(core, 3.0) * 0.50);
+	// The blue-white core is a fixed hairline in PIXELS, not a share of the
+	// gap. Scale it with the gap and a narrow slit becomes a solid glowing
+	// rope, which is the one thing the void must never look like: the wound
+	// should read as deep navy emptiness with a hairline of light down the
+	// middle, not as a lit tube.
+	float core_w = max(void_core_width * 14.0 * sx * px, 1e-6);
+	float core = 1.0 - smoothstep(0.0, core_w, ad);
+	void_col = mix(void_col, void_core_color, pow(core, 1.6) * 0.74);
 
-	// Slow fog drifting inward (toward the cut line), never outward.
-	vec2 fog_p = vec2(dot((uv - cut_center) * asp, tangent) * 2.2, t * 3.4 + time * 0.10);
-	float fog = fbm(fog_p * vec2(1.0, 1.4) + vec2(time * 0.045, 0.0));
-	void_col += vec3(0.020, 0.040, 0.072) * fog * 0.55 * void_life;
-	float specks = pow(fbm(fog_p * 4.1 + vec2(time * 0.03, time * 0.02)), 9.0);
-	void_col += vec3(0.30, 0.44, 0.64) * specks * 0.45 * void_life;
-	void_col += ghost * vec3(0.040, 0.070, 0.115) * void_life * 0.45;
+	// Inside the wound: depth, not a flat fill. Slow fog drifts inward (toward
+	// the cut line, never outward), sparse motes hang in it, and a mirrored
+	// echo of the world gives the parallax of somewhere that is not here.
+	//
+	// The echo is kept faint on purpose. This arena is bright, so blending the
+	// world back in at any strength turned the wound into a lit blue tube; the
+	// void has to stay clearly darker than the world it replaced.
+	vec2 fog_p = vec2(dot(rel, tangent) * 1.7, t * 2.6 + time * 0.085);
+	float fog = fbm(fog_p * vec2(1.0, 1.5) + vec2(time * 0.04, 0.0));
+	float fog2 = fbm(fog_p * 3.1 - vec2(time * 0.03, time * 0.05));
+	void_col += vec3(0.055, 0.095, 0.165) * fog * 0.90 * void_life * in_void;
+	void_col += vec3(0.030, 0.050, 0.090) * fog2 * 0.45 * void_life * in_void;
+	float specks = pow(fbm(fog_p * 5.0 + vec2(time * 0.02, time * 0.03)), 8.0);
+	void_col += vec3(0.50, 0.66, 0.90) * specks * 0.60 * void_life * in_void;
+	void_col = mix(void_col, void_col * 0.72 + ghost * 0.28, 0.12 * void_life);
+	void_col += ghost * vec3(0.030, 0.052, 0.090) * void_life * 0.22;
 
 	// ---- world-side cut face: ivory rim + dark ink fibres ------------------
 	float rim_band = 1.0 - smoothstep(half_gap, half_gap + rim_px * sx * px, ad);
@@ -216,9 +257,28 @@ void fragment() {
 	// ---- composite ---------------------------------------------------------
 	vec3 col = mix(world, void_col, in_void);
 
-	// Cracks read as thin bright glass edges plus a faint refraction sheen.
-	col = mix(col, vec3(0.90, 0.93, 0.88), crack * 0.50 * (1.0 - in_void));
-	col += vec3(0.06, 0.09, 0.12) * crack * 0.30 * (1.0 - in_void);
+	// Cracks read as a dark seam with a lit edge beside it: that pairing is
+	// what sells broken glass far more than a bright line on its own. Which
+	// half dominates depends on what is behind it — a lit line over a white
+	// floor is simply invisible, and this arena is mostly white floor.
+	float luma_c = dot(col, vec3(0.299, 0.587, 0.114));
+	float dark_gain = smoothstep(0.30, 0.85, luma_c);
+	float crack_core = smoothstep(0.55, 1.0, crack);
+	float crack_edge = smoothstep(0.20, 0.70, crack);
+	col = mix(col, col * 0.26, crack_core * (0.40 + 0.42 * dark_gain) * (1.0 - in_void));
+	col = mix(col, vec3(0.93, 0.95, 0.92), crack_edge * (0.34 - 0.26 * dark_gain) * (1.0 - in_void));
+
+	// The compression front. Refraction alone vanishes over flat colour, so the
+	// pressure edge has to be painted too — but a white ring on a white floor
+	// would just read as a magic circle. The band adapts to what it crosses:
+	// a dark density band over bright surfaces, a lit crest over dark ones,
+	// which is how a shock front actually photographs.
+	float luma_here = dot(col, vec3(0.299, 0.587, 0.114));
+	float crest_dark = smoothstep(0.28, 0.78, luma_here);
+	float crest_lit = smoothstep(0.72, 0.18, luma_here);
+	col -= vec3(0.110, 0.130, 0.170) * crest * crest_dark * 1.25;
+	col += vec3(0.400, 0.500, 0.660) * crest * crest_lit * 0.75;
+	col -= vec3(0.055, 0.065, 0.085) * trough * 0.60;
 
 	// World drain: desaturate and lift contrast, void stays cold and alive.
 	float gray = dot(col, vec3(0.299, 0.587, 0.114));

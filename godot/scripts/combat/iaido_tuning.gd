@@ -66,8 +66,8 @@ class_name IaidoTuning
 @export var gap_mid_time := 3.20
 @export var cut_end := 3.40
 @export var gap_start_px := 3.0
-@export var gap_mid_px := 8.0
-@export var gap_max_px := 22.0
+@export var gap_mid_px := 10.0
+@export var gap_max_px := 27.0
 
 # --- PHASE H · WORLD SEPARATION ------------------------------------------
 @export_group("H · World Separation")

@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3]
+[gd_scene load_steps=23 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/player/Player.tscn" id="1"]
 [ext_resource type="PackedScene" path="res://scenes/enemies/TechnicalDummy.tscn" id="2"]
@@ -18,6 +18,7 @@
 [ext_resource type="Script" path="res://scripts/player/foreground_weapon_layer.gd" id="20"]
 [ext_resource type="Script" path="res://scripts/combat/iaido_glass_layer.gd" id="21"]
 [ext_resource type="Script" path="res://scripts/combat/iaido_audio_timeline.gd" id="22"]
+[ext_resource type="Script" path="res://scripts/systems/arena_dressing.gd" id="23"]
 
 [sub_resource type="StandardMaterial3D" id="FloorDebugMaterial"]
 albedo_color = Color(0.82, 0.79, 0.69, 1)
@@ -54,6 +55,9 @@ environment = SubResource("Environment_1")
 rotation = Vector3(-0.8, -0.5, 0)
 light_energy = 2.3
 shadow_enabled = true
+
+[node name="ArenaDressing" type="Node3D" parent="."]
+script = ExtResource("23")
 
 [node name="Floor" type="StaticBody3D" parent="."]
 
