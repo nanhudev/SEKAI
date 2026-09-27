@@ -49,6 +49,7 @@ func start_game() -> void:
 func pause_game() -> void:
 	if combat_sandbox == null:
 		return
+	combat_sandbox.get_node("AudioStateController").pause_world_audio()
 	combat_sandbox.process_mode = Node.PROCESS_MODE_DISABLED
 	pause_menu.visible = true
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
@@ -58,12 +59,14 @@ func resume_game() -> void:
 	if combat_sandbox == null:
 		return
 	combat_sandbox.process_mode = Node.PROCESS_MODE_INHERIT
+	combat_sandbox.get_node("AudioStateController").resume_world_audio()
 	pause_menu.visible = false
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
 
 func return_to_title() -> void:
 	if combat_sandbox != null:
+		combat_sandbox.get_node("AudioStateController").resume_world_audio()
 		combat_sandbox.queue_free()
 		combat_sandbox = null
 	Engine.time_scale = 1.0

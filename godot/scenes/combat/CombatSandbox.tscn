@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3]
+[gd_scene load_steps=17 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/player/Player.tscn" id="1"]
 [ext_resource type="PackedScene" path="res://scenes/enemies/TechnicalDummy.tscn" id="2"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" path="res://scenes/ui/CombatHUD.tscn" id="7"]
 [ext_resource type="Script" path="res://scripts/systems/combat_music.gd" id="8"]
 [ext_resource type="AudioStream" path="res://audio/music/first-encounter.mp3" id="9"]
+[ext_resource type="Script" path="res://scripts/systems/audio_state_controller.gd" id="10"]
 
 [sub_resource type="StandardMaterial3D" id="FloorDebugMaterial"]
 albedo_color = Color(0.82, 0.79, 0.69, 1)
@@ -82,3 +83,6 @@ script = ExtResource("4")
 [node name="CombatMusic" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("9")
 script = ExtResource("8")
+
+[node name="AudioStateController" type="Node" parent="."]
+script = ExtResource("10")
