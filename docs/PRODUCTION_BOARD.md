@@ -178,11 +178,21 @@ ChatGPT Web → Blender Python → Blender MCP → GLB → Godot
 | `RELATIONSHIPS.md`（PASS 02） | P1 | DONE | 关系矩阵（公开关系/真实态度/过去事件/潜在冲突）+ 鲁斯克 + 泰姆 + 作息表 + FA-01 后关系变化 |
 | PASS 02 修正落地 | P1 | DONE | 莉娅作息（可被错过）/ Soul Echo #2 改为 NPC 自我否认 / 魔法升格为世界底层规则 + 日常使用 3 例 |
 | 连续性规则 + 文档债 | P1 | DONE | 写入 `WORLD_BIBLE.md` §9：代码为准；prototype 不写 Lore；`COMBAT_DESIGN.md` 待 MAIN 回写 |
-| **Review：Prologue + Act I Early Game** | P0 | REVIEW | 交 DESIGN / MAIN 确认可实施为 Narrative Vertical Slice；**未通过前不推进 Act II、不开始对白** |
+| **Review：Prologue + Act I Early Game** | P0 | DONE | PASS 02 Review 已通过，三条裁决落地：A 奥伦重心移到"记录≠事实" / B 战后 3–6 秒安静 + 人的声音 / C 能力线不规定顺序 |
+| **`NARRATIVE_VERTICAL_SLICE_N01.md`（PASS 03）** | P0 | DONE | **可实施规格**：Scene Spec P00–P06 + A1–A7 / 8 个 Dialogue Scene / Readable R-01 货单 + R-02 ECHO-01（三方案比较，采纳 EC）/ 16 条环境对白 / Cluster 五状态 / VO 表 11 句 / 分钟级 Playthrough / 空间·音频·MAIN 请求 V0.2 |
+| **`NARRATIVE_STATE_V01.md`（PASS 03）** | P0 | DONE | 最小状态模型：flag 表 / **INFORMATION GRAPH F1–F10** / HARD vs SOFT / MISS MATRIX / 最小存档结构 / 给 MAIN 的接入优先级 5 步 |
+| `CHARACTERS.md` §13 SPEECH PROFILE | P1 | DONE | 8 人说话方式表（句长/用词/直接度/解释欲/停顿/礼貌/注意力）+ 三条跨角色纪律 |
+| `STYLE_GUIDE.md` §12 PLAYER VOICE V0.1 | P1 | DONE | 低频发声；禁三个同义句选项；沉默/点头/看向是合法选项 |
+| **`NAR-MAIN-01..06` 交 MAIN 实施** | P0 | TODO | `Readable`、最小 flag、`took_cart_blade`、N01 背景信号三件套、**南岸"路还在但没意义"不用空气墙**。详见 slice 文档 §12.3 |
+| **`NAR-SPATIAL-01..06` 交 ART（地编）** | P1 | TODO | 事故点声学开放 / Reveal 视角 / 进镇第一帧的魔法生活痕迹 / 奥伦后院不在主街正面 / 渡口看得到不好走 / 南岸不可见墙。见 `MISTVALE.md` §10 |
+| **`NAR-AUDIO-01..07` V0.2 交 AUDIO** | P1 | TODO | 第五钟独立音型 / 遗迹低频 / **泰姆远处声音（有距离感的空间声）** / 醒来点来源不明低频 / 镇子生活层 / 冷屋子声 / 后院只有劈柴 |
 | Dialogue Pass | P2 | BLOCKED | 前置：五条冻结门（见 `MAIN_STORY.md` §13）。通过后优先写 Prologue 真正会用的那几句 |
 | `TIMELINE.md` / `FACTIONS.md` / `QUESTS.md` / `TERMINOLOGY.md` / `NARRATIVE_BACKLOG.md` | P3 | TODO | 第一轮不建，按需再开 |
 
 未决事项：`COMBAT_DESIGN.md` 与 `moveset_library.gd` 不同步（折柳/惊鸿/长风三段已实现但文档写"未实现"），请 MAIN 回写；Narrative 现按**已实现**为准。
+**Combat 同步（PASS 03 只读）**：`white_rose`（白蔷庭）当前为 **prototype** → 本轮**不写它的 Lore**（continuity rule）；三系法术已实现 `火矢/焚环`、`寒流/凝霜`、`风压/风步`，与"火=转化 / 霜=停滞 / 风=动量"的底层规则一致，已用于 §8 的生活痕迹设计。聚合斩来历仍不解释。
+
+**PASS 04 门**：MAIN Review 通过 N01 可实施性 → 才进 Act I Quest Design + Dialogue Pass 02。**仍不进 Act II。**
 
 ---
 
