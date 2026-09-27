@@ -26,6 +26,9 @@ class_name CombatTuning
 # How long a follow-up window survives the end of the move it belongs to, so
 # the player is never punished for watching their own animation.
 @export var followup_grace := 0.12
+# Cooldown for style signatures that are short player-driven sequences (长风)
+# rather than full ceremonies (聚合斩, which times itself off the director).
+@export var signature_cooldown := 12.0
 
 @export_group("Camera")
 @export var light_camera_impulse := 0.015

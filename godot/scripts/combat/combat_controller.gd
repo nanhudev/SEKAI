@@ -92,12 +92,30 @@ var pose_time := 0.0
 var hits_landed := 0
 var last_hit_strength := 0.0
 
-# --- enhance state (纳息) ----------------------------------------------------
+# --- 势 / Flow (回风式) -------------------------------------------------------
+# Resolved only when moveset.flow_enabled. Kept on the controller rather than
+# in the moveset because it is per-fight state, not per-style data.
+var flow := 0.0
+var flow_idle_time := 0.0
+var flow_peak := 0.0
+
+# --- enhance state (纳息 / 惊鸿) ----------------------------------------------
 var enhance_left := 0.0
 var enhance_startup_scale := 1.0
 var enhance_perfect_guard_bonus := 0.0
 var enhance_first_hit_poise_scale := 1.0
 var enhance_skill_id: StringName = &""
+# 惊鸿's contribution: transitions and steering, not numbers.
+var enhance_transition_bonus := 0.0
+var enhance_steer_bonus := 1.0
+
+# --- slip state (折柳) --------------------------------------------------------
+var slip_until := 0.0
+var slip_skill: SwordSkill
+var slip_count := 0
+
+# Sideways mirror for signatures the player aims themselves (长风). +1 = right.
+var move_mirror := 1.0
 
 
 func _ready() -> void:
@@ -187,6 +205,7 @@ func _process(delta: float) -> void:
 		if enhance_left == 0.0:
 			style_message.emit("纳息 · 结束")
 	_update_sheath(delta)
+	_update_flow(delta)
 
 	match state:
 		State.ATTACK, State.RIPOSTE, State.SKILL:
@@ -265,6 +284,51 @@ func _sheathe_time_scale() -> float:
 	return skill.enhance_sheathe_scale
 
 
+# ------------------------------------------------------------------ 势 / Flow
+
+func _update_flow(delta: float) -> void:
+	if not moveset.flow_enabled:
+		flow = 0.0
+		flow_peak = 0.0
+		flow_idle_time = 0.0
+		return
+	# Standing still is what lets the momentum go. Attacking or being hit keeps
+	# it alive; simply holding a guard does not.
+	flow_peak = maxf(flow_peak, flow)
+	if state in [State.IDLE, State.BLOCK]:
+		flow_idle_time += delta
+		if flow_idle_time > moveset.flow_decay_delay:
+			_lose_flow(moveset.flow_decay * delta)
+	else:
+		flow_idle_time = 0.0
+
+
+func flow_ratio() -> float:
+	if not moveset.flow_enabled or moveset.flow_max <= 0.0:
+		return 0.0
+	return clampf(flow / moveset.flow_max, 0.0, 1.0)
+
+
+func _gain_flow(amount: float) -> void:
+	if not moveset.flow_enabled:
+		return
+	flow_idle_time = 0.0
+	flow = clampf(flow + amount, 0.0, moveset.flow_max)
+	flow_peak = maxf(flow_peak, flow)
+
+
+func _lose_flow(amount: float) -> void:
+	if not moveset.flow_enabled:
+		return
+	flow = maxf(0.0, flow - amount)
+
+
+func reset_flow() -> void:
+	flow = 0.0
+	flow_peak = 0.0
+	flow_idle_time = 0.0
+
+
 # ------------------------------------------------------------------ requests
 
 func request(action: StringName) -> bool:
@@ -293,14 +357,28 @@ func _can_cancel(action: StringName) -> bool:
 		State.ATTACK, State.RIPOSTE:
 			if active_move == null:
 				return true
-			var cancel_at := effective_startup() + active_move.strike + active_move.pose_span() * active_move.cancel_open
+			# 势 opens the exits earlier: at full Flow the style stops snagging
+			# between cuts. Note this lowers the *threshold fraction*, because a
+			# smaller fraction means the cancel unlocks sooner.
+			var transition := 1.0
+			if moveset.flow_enabled:
+				transition = lerpf(1.0, maxf(0.15, 1.0 - moveset.flow_transition_bonus), flow_ratio())
+			# 惊鸿 stacks on top of 势: while it is up, the style stops snagging
+			# almost entirely, which is what "更自由衔接" has to mean in data.
+			if enhance_left > 0.0 and enhance_transition_bonus > 0.0:
+				transition *= maxf(0.12, 1.0 - enhance_transition_bonus)
+			var cancel_at := (
+				effective_startup()
+				+ active_move.strike
+				+ active_move.pose_span() * active_move.cancel_open * transition
+			)
 			if state_time < cancel_at:
 				return false
 			if action == &"dodge":
 				# Dodging out is allowed once the blade has actually been
 				# committed past contact: the swing cannot be free, or attacks
 				# stop meaning anything. 回风 opens earliest, 藏锋 latest.
-				return state_time >= effective_startup() + active_move.strike * moveset.dodge_cancel_from
+				return state_time >= effective_startup() + active_move.strike * moveset.dodge_cancel_from * transition
 			return action in [&"light", &"heavy", &"block"]
 		State.SKILL:
 			return action == &"dodge" and state_time >= 0.12
@@ -319,6 +397,14 @@ func finish_action() -> void:
 		_finish_skill()
 	_close_hitbox()
 	magic_circle.set_casting(false)
+	# A whiff costs momentum. If missing were free, 回风 would just be a faster
+	# Universal and the style would have no idea behind it.
+	if (
+		moveset.flow_enabled
+		and not move_hit
+		and attack_kind in [&"light", &"sprint", &"retreat", &"heavy", &"skill"]
+	):
+		_lose_flow(moveset.flow_loss_miss)
 	if state == State.IAIDO:
 		screen_fx.reset()
 		camera_feedback.fov_hold = 0.0
@@ -552,14 +638,28 @@ func _start_cast() -> bool:
 
 
 func _start_signature() -> bool:
+	# A SIGNATURE is style identity, not the ultimate slot. 聚合斩 is a ceremony
+	# (a director takes over); 长风 is a short sequence the player keeps driving.
+	if moveset.signature_id == &"":
+		style_message.emit("此流派尚无 Signature")
+		return false
+	if _now() < iaido_ready_at:
+		style_message.emit("Signature · 冷却中")
+		return false
+	if moveset.signature_id == &"iaido":
+		return _start_iaido_ceremony()
+	return _start_move_signature()
+
+
+func _start_iaido_ceremony() -> bool:
 	var now := _now()
 	var stamina: float = player.get("stamina")
 	if float(player.get("health")) <= 0.0 or iaido_director.active:
 		return false
 	if not is_instance_valid(player.get_node_or_null("CameraRig/LookPivot/MotionPivot/ShakePivot/WeaponRoot/TempSwordVisual")):
 		return false
-	if now < iaido_ready_at or (not player.unlimited_resources and stamina < 35.0):
-		style_message.emit("聚合斩 · 冷却中")
+	if not player.unlimited_resources and stamina < 35.0:
+		style_message.emit("聚合斩 · 体力不足")
 		return false
 	if not player.unlimited_resources:
 		player.set("stamina", stamina - 35.0)
@@ -569,6 +669,33 @@ func _start_signature() -> bool:
 	set_state(State.IAIDO)
 	iaido_director.start_iaido()
 	return true
+
+
+func _start_move_signature() -> bool:
+	var move := moveset.get_move(moveset.signature_id)
+	if move == null:
+		return false
+	if not _can_act_now():
+		return false
+	if state != State.IDLE:
+		_close_hitbox()
+	apply_player_aimed_mirror()
+	iaido_ready_at = _now() + tuning.signature_cooldown
+	active_skill = null
+	move_startup_scale = 1.0
+	move_poise_scale = 1.0
+	attack_kind = &"signature"
+	buffer.clear()
+	_begin_move(move, State.SKILL)
+	style_message.emit("%s · SIGNATURE" % move.display_name)
+	return true
+
+
+func apply_player_aimed_mirror() -> void:
+	# Signature cuts the player aims: the side comes from the movement input at
+	# the moment the cut starts, so the sequence is steered, never scripted.
+	var wish := Input.get_vector("move_left", "move_right", "move_forward", "move_back")
+	move_mirror = -1.0 if wish.x < -0.3 else 1.0
 
 
 func _start_ultimate() -> bool:
@@ -599,6 +726,14 @@ func _begin_move(move: SwordMove, next_state: State) -> void:
 	sheath_amount = 0.0
 	followup_until = 0.0
 	pending_followup_id = &""
+	# A sequence the player drives (长风) opens its window immediately: whiffing
+	# must not end the player's own combination. 燕返 still has to be earned.
+	if move.followup_id != &"" and move.followup_from_start:
+		pending_followup_id = move.followup_id
+		followup_until = _now() + move.followup_window
+	move_mirror = 1.0
+	if move.player_aimed:
+		apply_player_aimed_mirror()
 	chain_active = attack_kind in [&"light", &"sprint", &"retreat"]
 	_write_hitbox(move, 1.0)
 	_emit_move_camera(move)
@@ -607,7 +742,8 @@ func _begin_move(move: SwordMove, next_state: State) -> void:
 
 
 func _write_hitbox(move: SwordMove, damage_scale: float) -> void:
-	hitbox.configure(move.hitbox_size, move.hitbox_offset)
+	var offset := Vector3(move.hitbox_offset.x * move_mirror, move.hitbox_offset.y, move.hitbox_offset.z)
+	hitbox.configure(move.hitbox_size, offset)
 	hitbox.damage = move.damage * damage_scale
 	hitbox.poise_damage = move.poise_damage * move_poise_scale
 	hitbox.element = move.element
@@ -641,6 +777,11 @@ func trigger_skill(index: int) -> bool:
 		return false
 	if state != State.IDLE:
 		_close_hitbox()
+	# 折柳 opens its window the instant the skill starts: here the defence IS the
+	# skill, so the window must not wait for the move to finish.
+	if skill.kind == SwordSkill.Kind.SLIP:
+		slip_skill = skill
+		slip_until = _now() + skill.slip_window
 	active_skill = skill
 	move_startup_scale = 1.0
 	move_poise_scale = 1.0
@@ -663,7 +804,10 @@ func _finish_skill() -> void:
 		enhance_perfect_guard_bonus = skill.enhance_perfect_guard_bonus
 		enhance_first_hit_poise_scale = skill.enhance_first_hit_poise_scale
 		enhance_skill_id = skill.id
-		style_message.emit("纳息 · 生效")
+		# 惊鸿 buys smoothness, not numbers.
+		enhance_transition_bonus = skill.enhance_transition_bonus
+		enhance_steer_bonus = skill.enhance_steer_bonus
+		style_message.emit("%s · 生效" % skill.display_name)
 
 
 func skill_cooldown_left(index: int) -> float:
@@ -711,11 +855,17 @@ func set_style(wanted: StringName, force: bool = false) -> bool:
 	chain_expires_at = 0.0
 	enhance_left = 0.0
 	enhance_skill_id = &""
+	enhance_transition_bonus = 0.0
+	enhance_steer_bonus = 1.0
+	slip_until = 0.0
+	slip_skill = null
+	move_mirror = 1.0
 	edge_glint = false
 	guard_recoil = 0.0
 	parry_lateral = 0.0
 	sheath_amount = 0.0
 	idle_time = 0.0
+	reset_flow()
 	style_changed.emit(style_id)
 	style_message.emit(moveset.display_name)
 	return true
@@ -728,7 +878,13 @@ func movement_scale() -> float:
 		State.IDLE:
 			return 1.0
 		State.ATTACK, State.RIPOSTE, State.SKILL:
-			return active_move.steer if active_move != null else 0.2
+			var steer := active_move.steer if active_move != null else 0.2
+			# 顺势: at full Flow the sword stops dragging you out of your line.
+			if moveset.flow_enabled:
+				steer *= lerpf(1.0, moveset.flow_steer_bonus, flow_ratio())
+			if enhance_left > 0.0:
+				steer *= enhance_steer_bonus
+			return steer
 		State.CHARGE:
 			return 0.22
 		State.BLOCK:
@@ -744,10 +900,9 @@ func movement_scale() -> float:
 
 
 func attack_lunge_velocity() -> Vector3:
-	if state == State.PARRY:
-		# 回风's perfect guard can leave the line immediately.
-		if is_zero_approx(parry_lateral):
-			return Vector3.ZERO
+	# A sidestep in progress (perfect-guard steer, or a 折柳 slip) overrides the
+	# move's own forward lunge: leaving the line is the point of both.
+	if not is_zero_approx(parry_lateral) and state in [State.PARRY, State.SKILL, State.IDLE]:
 		return player.global_transform.basis.x * parry_lateral * 4.0
 	if active_move == null or is_zero_approx(active_move.lunge):
 		return Vector3.ZERO
@@ -800,6 +955,10 @@ func recovery_scale() -> float:
 		scale *= active_move.hit_recovery_scale
 		if moveset.flow_on_hit_recovery < 1.0:
 			scale *= moveset.flow_on_hit_recovery
+		# 势 only pays out on connected cuts. A whiff must stay slow, or the
+		# style stops punishing the thing it is built to punish.
+		if moveset.flow_enabled:
+			scale *= lerpf(1.0, moveset.flow_recovery_at_max, flow_ratio())
 	else:
 		scale *= active_move.miss_recovery_scale
 	if scale < 1.0:
@@ -869,6 +1028,13 @@ func pose_snapshot() -> Dictionary:
 			intensity = 0.25
 		_:
 			pass
+	# A player-aimed cut is the same authored pose taken from the other side,
+	# because the player chose the side. Mirroring keeps one authored move able
+	# to answer "he is on my left" without a second animation.
+	if move_mirror < 0.0 and state in [State.ATTACK, State.RIPOSTE, State.SKILL]:
+		position.x = -position.x
+		rotation.y = -rotation.y
+		rotation.z = -rotation.z
 	# 归鞘 is a pose, not an effect on top: the whole weapon travels to the hip
 	# so the next draw reads as an actual draw.
 	if moveset.sheath_enabled and sheath_amount > 0.0 and state in [State.IDLE, State.STAGGER]:
@@ -903,6 +1069,11 @@ func _on_hitbox_landed(hit: Dictionary) -> void:
 		return
 	move_hit = true
 	hits_landed += 1
+	# 势: connecting is what keeps the style alive, and connecting *while moving*
+	# feeds it faster. That is the loop 回风 asks the player to chase.
+	if moveset.flow_enabled:
+		var on_the_move := attack_kind in [&"sprint", &"retreat"] or player.velocity.length() > 3.0
+		_gain_flow(moveset.flow_gain_movement_hit if on_the_move else moveset.flow_gain_hit)
 	var target = hit.get("target")
 	# 断章: only meaningful against an enemy that was mid-action.
 	if active_move.interrupt_bonus > 1.0 and target != null and target.has_method("is_telegraphing") and target.call("is_telegraphing"):
@@ -930,6 +1101,12 @@ func _on_hitbox_landed(hit: Dictionary) -> void:
 
 
 func _on_player_hit(hit: Dictionary) -> void:
+	# 折柳: the attack is allowed to pass by. Deliberately checked before dodge
+	# and before guard — declining the exchange is the fastest answer available,
+	# and it is the exact opposite of what Perfect Guard does.
+	if _slip_open():
+		_resolve_slip(hit)
+		return
 	if state == State.DODGE and state_time < 0.2:
 		return
 	if state in [State.BLOCK, State.PARRY]:
@@ -968,9 +1145,57 @@ func _on_player_hit(hit: Dictionary) -> void:
 		)
 
 
+func _slip_open() -> bool:
+	return slip_until > 0.0 and _now() <= slip_until
+
+
+func _resolve_slip(hit: Dictionary) -> void:
+	var skill := slip_skill
+	slip_until = 0.0
+	slip_skill = null
+	slip_count += 1
+	var counter_window := 0.9
+	var distance := 1.7
+	var flow_gain := 0.0
+	if skill != null:
+		counter_window = skill.slip_counter_window
+		distance = skill.slip_distance
+		flow_gain = skill.slip_flow_gain
+	if flow_gain > 0.0:
+		_gain_flow(flow_gain)
+	# Step off the line. The player's own input decides the side; failing that,
+	# slip away from whoever swung, which is always the correct answer.
+	var wish := Input.get_vector("move_left", "move_right", "move_forward", "move_back")
+	var side := 0.0
+	if absf(wish.x) > 0.1:
+		side = signf(wish.x)
+	else:
+		var attacker: Node = hit.get("source")
+		if attacker is Node3D:
+			var away: Vector3 = player.global_position - (attacker as Node3D).global_position
+			side = signf(away.dot(player.global_basis.x))
+		if is_zero_approx(side):
+			side = 1.0
+	parry_lateral = side * distance
+	get_tree().create_timer(0.30).timeout.connect(func() -> void:
+		if is_instance_valid(self):
+			parry_lateral = 0.0
+	)
+	camera_feedback.roll_impulse(side * 4.0)
+	camera_feedback.add_impulse(Vector2(side * 0.010, 0.004))
+	camera_feedback.fov_kick(2.4)
+	# The opening the slip left behind is the whole reward.
+	riposte_until = _now() + counter_window
+	style_message.emit("折柳 · 落空")
+
+
 func _perfect_guard(hit: Dictionary) -> void:
 	var guard := moveset.guard
 	perfect_guard_count += 1
+	# A clean deflect is the strongest single source of 势: reading the attack
+	# should feel like the most "in the flow" answer available.
+	if moveset.flow_enabled:
+		_gain_flow(moveset.flow_gain_deflect)
 	_close_hitbox()
 	var attacker: Node = hit.get("source")
 	if attacker != null and attacker.has_method("on_perfect_guard"):
@@ -1041,8 +1266,9 @@ func _now() -> float:
 
 func debug_state_line() -> String:
 	var move_name := active_move.display_name if active_move != null else "-"
-	return "%s · %s · %.2fs · glint=%s · sheathed=%.2f · chain=%d" % [
-		moveset.display_name, move_name, state_time, str(edge_glint), sheath_amount, combo_index,
+	var flow_text := " · 势=%.0f%%" % (flow_ratio() * 100.0) if moveset.flow_enabled else ""
+	return "%s · %s · %.2fs · glint=%s · sheathed=%.2f · chain=%d%s" % [
+		moveset.display_name, move_name, state_time, str(edge_glint), sheath_amount, combo_index, flow_text,
 	]
 
 

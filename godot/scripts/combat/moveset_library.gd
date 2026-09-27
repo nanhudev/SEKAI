@@ -545,13 +545,101 @@ static func flowing_wind() -> SwordMoveset:
 		"hitbox_size": Vector3(2.2, 1.3, 2.0), "hitbox_offset": Vector3(0.0, -0.2, -1.45),
 	})
 
+	# Signature 长风 — three cuts the player keeps steering. Each cut is entered
+	# from the previous one through an open follow-up window, so the sequence is
+	# never a locked animation: you can always leave, and the side you cut on is
+	# taken from your own movement input rather than scripted.
+	moves[&"fw_changfeng_1"] = _move(&"fw_changfeng_1", "长风 · 一", {
+		"startup": 0.080, "strike": 0.085, "follow_time": 0.065, "recovery": 0.190,
+		"damage": 24.0, "poise_damage": 20.0, "hitstop": 0.032,
+		"anchor": Vector3(0.34, -0.44, -0.92), "anchor_rot": Vector3(-0.05, 0.16, 0.60),
+		"wind": Vector3(-0.16, -0.46, -0.94), "wind_rot": Vector3(-0.06, 0.34, 1.12),
+		"contact": Vector3(0.62, -0.40, -1.08), "contact_rot": Vector3(0.05, -0.30, -0.88),
+		"follow": Vector3(0.70, -0.50, -1.04), "follow_rot": Vector3(0.10, -0.42, -1.10),
+		"recover": Vector3(0.34, -0.44, -0.92), "recover_rot": Vector3(-0.04, 0.16, 0.62),
+		"anticipation_power": 1.5, "strike_power": 2.8, "follow_power": 1.6,
+		"follow_overshoot": 0.06, "recover_sag": 0.008,
+		"lunge": 0.55, "lunge_lead": 0.25, "steer": 0.72,
+		"camera_impulse": Vector2(-0.006, 0.003), "camera_roll": 1.8, "fov_kick": 2.0,
+		"hitbox_size": Vector3(2.4, 1.4, 1.7), "hitbox_offset": Vector3(0.0, -0.22, -1.32),
+		"followup_id": &"fw_changfeng_2", "followup_window": 0.85,
+		"followup_from_start": true, "player_aimed": true,
+	})
+
+	moves[&"fw_changfeng_2"] = _move(&"fw_changfeng_2", "长风 · 二", {
+		"startup": 0.075, "strike": 0.085, "follow_time": 0.065, "recovery": 0.185,
+		"damage": 24.0, "poise_damage": 20.0, "hitstop": 0.032,
+		"anchor": Vector3(0.62, -0.42, -1.00), "anchor_rot": Vector3(0.05, -0.28, -0.88),
+		"wind": Vector3(0.72, -0.34, -0.96), "wind_rot": Vector3(0.03, -0.40, -1.02),
+		"contact": Vector3(0.08, -0.66, -1.10), "contact_rot": Vector3(0.20, 0.34, 1.20),
+		"follow": Vector3(0.0, -0.76, -1.04), "follow_rot": Vector3(0.24, 0.48, 1.46),
+		"recover": Vector3(0.30, -0.46, -0.92), "recover_rot": Vector3(-0.04, 0.18, 0.64),
+		"anticipation_power": 1.6, "strike_power": 2.9, "follow_power": 1.6,
+		"follow_overshoot": 0.06, "recover_sag": 0.008,
+		"lunge": 0.45, "lunge_lead": 0.25, "steer": 0.72,
+		"camera_impulse": Vector2(0.006, 0.003), "camera_roll": -1.8, "fov_kick": 2.0,
+		"hitbox_size": Vector3(2.4, 1.4, 1.7), "hitbox_offset": Vector3(0.0, -0.26, -1.32),
+		"followup_id": &"fw_changfeng_3", "followup_window": 0.85,
+		"followup_from_start": true, "player_aimed": true,
+	})
+
+	moves[&"fw_changfeng_3"] = _move(&"fw_changfeng_3", "长风 · 三", {
+		"startup": 0.095, "strike": 0.100, "follow_time": 0.090, "recovery": 0.300,
+		"damage": 34.0, "poise_damage": 36.0, "hitstop": 0.048,
+		"anchor": Vector3(0.30, -0.38, -0.92), "anchor_rot": Vector3(-0.28, 0.12, 0.24),
+		"wind": Vector3(-0.18, -0.50, -0.92), "wind_rot": Vector3(-0.02, 0.36, 1.22),
+		"contact": Vector3(0.46, -0.62, -1.22), "contact_rot": Vector3(0.24, -0.16, -0.30),
+		"follow": Vector3(0.18, -0.82, -1.10), "follow_rot": Vector3(0.34, 0.18, 0.42),
+		"recover": Vector3(0.34, -0.44, -0.92), "recover_rot": Vector3(-0.04, 0.16, 0.62),
+		"anticipation_power": 1.8, "strike_power": 3.2, "follow_power": 1.7,
+		"follow_overshoot": 0.11, "recover_sag": 0.012,
+		"lunge": 0.70, "lunge_lead": 0.2, "steer": 0.60,
+		"camera_impulse": Vector2(-0.012, 0.005), "camera_roll": -2.6, "fov_kick": 1.6,
+		"hitbox_size": Vector3(2.7, 1.5, 1.8), "hitbox_offset": Vector3(0.0, -0.30, -1.36),
+		"player_aimed": true,
+	})
+
+	# Skill 折柳 — decline the exchange instead of winning it. The slip itself
+	# does almost nothing; the point is the space it leaves to cut into.
+	moves[&"fw_zheliu"] = _move(&"fw_zheliu", "折柳", {
+		"startup": 0.060, "strike": 0.070, "follow_time": 0.060, "recovery": 0.180,
+		"damage": 8.0, "poise_damage": 6.0, "hitstop": 0.018,
+		"anchor": Vector3(0.38, -0.46, -0.92), "anchor_rot": Vector3(-0.02, 0.20, 0.52),
+		"wind": Vector3(0.62, -0.40, -0.86), "wind_rot": Vector3(0.06, 0.10, -0.20),
+		"contact": Vector3(0.30, -0.58, -1.02), "contact_rot": Vector3(0.16, 0.26, 1.06),
+		"follow": Vector3(0.22, -0.62, -0.96), "follow_rot": Vector3(0.18, 0.32, 1.24),
+		"recover": Vector3(0.34, -0.44, -0.92), "recover_rot": Vector3(-0.04, 0.16, 0.62),
+		"anticipation_power": 1.3, "strike_power": 2.2, "follow_power": 1.5,
+		"lunge": 0.20, "lunge_lead": 0.2, "steer": 0.80,
+		"camera_roll": 2.2, "fov_kick": 1.4,
+		"hitbox_size": Vector3(1.6, 1.2, 1.4), "hitbox_offset": Vector3(0.0, -0.24, -1.10),
+	})
+
+	# Skill 惊鸿 — a flourish that makes the style's transitions effortless.
+	moves[&"fw_jinghong"] = _move(&"fw_jinghong", "惊鸿", {
+		"startup": 0.090, "strike": 0.085, "follow_time": 0.070, "recovery": 0.200,
+		"damage": 16.0, "poise_damage": 12.0, "hitstop": 0.024,
+		"anchor": Vector3(0.42, -0.44, -0.94), "anchor_rot": Vector3(-0.04, 0.16, 0.60),
+		"wind": Vector3(-0.22, -0.48, -0.96), "wind_rot": Vector3(-0.06, 0.36, 1.18),
+		"contact": Vector3(0.58, -0.32, -1.18), "contact_rot": Vector3(0.02, -0.28, -0.66),
+		"follow": Vector3(0.54, -0.60, -1.08), "follow_rot": Vector3(0.20, -0.04, -0.06),
+		"recover": Vector3(0.34, -0.44, -0.92), "recover_rot": Vector3(-0.04, 0.16, 0.62),
+		"anticipation_power": 1.4, "strike_power": 2.5, "follow_power": 1.6,
+		"follow_overshoot": 0.09, "recover_sag": 0.010,
+		"lunge": 0.40, "lunge_lead": 0.2, "steer": 0.75,
+		"camera_impulse": Vector2(0.006, 0.005), "camera_roll": -2.0, "fov_kick": 2.6,
+		"hitbox_size": Vector3(2.2, 1.3, 1.7), "hitbox_offset": Vector3(0.0, -0.22, -1.30),
+	})
+
 	moveset.moves = moves
 	moveset.light_chain = [&"fw_l1", &"fw_l2", &"fw_l3", &"fw_l4"]
 	moveset.heavy_id = &"uni_heavy"
 	moveset.sprint_light_id = &"uni_sprint_light"
 	moveset.retreat_light_id = &"uni_retreat_light"
 	moveset.riposte_id = &"uni_riposte"
-	moveset.signature_id = &""
+	# 长风 is a SIGNATURE like 聚合斩, not an ultimate: three cuts the player
+	# keeps steering rather than a cinematic that takes the wheel away.
+	moveset.signature_id = &"fw_changfeng_1"
 	# 长风万里 is design-only for now; the ultimate slot stays empty on purpose.
 	moveset.ultimate_id = &""
 	moveset.skills = [
@@ -559,6 +647,23 @@ static func flowing_wind() -> SwordMoveset:
 			"id": &"fw_liuyun", "display_name": "流云", "kind": SwordSkill.Kind.MOBILITY,
 			"cooldown": 6.0, "move_id": &"fw_liuyun",
 			"note": "短位移同时切击，位移中保留方向控制。",
+		}),
+		_skill({
+			"id": &"fw_zheliu", "display_name": "折柳", "kind": SwordSkill.Kind.SLIP,
+			"cooldown": 7.0, "move_id": &"fw_zheliu",
+			"slip_window": 0.34, "slip_distance": 1.8, "slip_counter_window": 0.9,
+			"slip_flow_gain": 22.0,
+			"note": "让攻击落空，再切进它留下的空档。与完美格挡相反：不是对抗，是不接。",
+		}),
+		_skill({
+			"id": &"fw_jinghong", "display_name": "惊鸿", "kind": SwordSkill.Kind.ENHANCE,
+			"cooldown": 10.0, "move_id": &"fw_jinghong",
+			"enhance_duration": 7.0,
+			"enhance_startup_scale": 0.88,
+			"enhance_first_hit_poise_scale": 1.35,
+			"enhance_transition_bonus": 0.85,
+			"enhance_steer_bonus": 1.22,
+			"note": "短期强化衔接：冲刺/闪避/轻击之间不再互相卡住。是势的放大器，不是伤害。",
 		}),
 	]
 
@@ -571,6 +676,21 @@ static func flowing_wind() -> SwordMoveset:
 	moveset.pose_damping = 0.90
 	moveset.tremor = 0.0042
 	moveset.trail_width = 0.028
+
+	# 势 (Flow). The style's whole promise is that the sword gets easier to
+	# handle while you keep moving and connecting — so Flow pays in recovery,
+	# steering and transition timing, never in damage.
+	moveset.flow_enabled = true
+	moveset.flow_max = 100.0
+	moveset.flow_gain_hit = 12.0
+	moveset.flow_gain_movement_hit = 19.0
+	moveset.flow_gain_deflect = 24.0
+	moveset.flow_loss_miss = 16.0
+	moveset.flow_decay = 9.0
+	moveset.flow_decay_delay = 1.6
+	moveset.flow_recovery_at_max = 0.58
+	moveset.flow_steer_bonus = 1.45
+	moveset.flow_transition_bonus = 0.50
 
 	var guard := SwordGuardProfile.new()
 	# Deflect, not a wall: lower mitigation, but a perfect guard can leave the

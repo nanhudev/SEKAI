@@ -35,6 +35,28 @@ class_name SwordMoveset
 @export var flow_on_hit_recovery := 1.0
 @export var flow_min_recovery := 0.10
 
+@export_group("Flow")
+# 回风式's 势. An INTERNAL value — deliberately not a big UI bar. It rises while
+# you keep connecting and moving, falls when you whiff, and decays when you
+# stand still. It must never be a damage multiplier: it buys *smoothness*
+# (recovery, steering, earlier transitions), so the player feels the sword get
+# easier to handle rather than simply hitting harder.
+@export var flow_enabled := false
+@export var flow_max := 100.0
+@export var flow_gain_hit := 12.0
+# Movement attacks feed the style specifically: 回风 wants you to attack on the move.
+@export var flow_gain_movement_hit := 19.0
+@export var flow_gain_deflect := 24.0
+@export var flow_loss_miss := 16.0
+@export var flow_decay := 9.0
+@export var flow_decay_delay := 1.6
+# Recovery multiplier at full Flow, applied only to connected cuts.
+@export var flow_recovery_at_max := 0.58
+# Steering multiplier at full Flow: this is how "顺势" is felt in the hands.
+@export var flow_steer_bonus := 1.45
+# Fraction earlier that cancels open at full Flow: transitions stop snagging.
+@export var flow_transition_bonus := 0.50
+
 @export_group("Pose solver")
 @export var pose_stiffness := 96.0
 @export var pose_damping := 0.94

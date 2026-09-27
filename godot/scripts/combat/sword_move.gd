@@ -82,8 +82,16 @@ class_name SwordMove
 @export var requires_hit := false
 @export var followup_id: StringName = &""
 @export var followup_window := 0.0
+# Default: a follow-up opens on CONTACT (燕返 must be earned). A player-driven
+# sequence like 长风 opts in to opening at the start instead, so a whiff cannot
+# silently end the player's own combination.
+@export var followup_from_start := false
 @export var interrupt_bonus := 1.0
 @export var in_air := false
+# The player aims this cut: the side is taken from movement input when the move
+# starts and the pose / hitbox are mirrored, so a signature sequence is steered
+# rather than scripted.
+@export var player_aimed := false
 
 
 func total_time() -> float:
