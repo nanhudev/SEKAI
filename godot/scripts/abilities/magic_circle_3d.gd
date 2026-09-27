@@ -32,7 +32,17 @@ func _ready() -> void:
 	inner_geometry.name = "InnerGeometry"
 	energy_core.name = "EnergyCore"
 	_add_torus(outer_ring, radius, 0.012)
+	_add_torus(rune_ring, radius * 0.78, 0.004)
 	_add_torus(inner_geometry, radius * 0.52, 0.009)
+	for index in 4:
+		var spoke := MeshInstance3D.new()
+		var spoke_mesh := BoxMesh.new()
+		spoke_mesh.size = Vector3(radius * 0.55, 0.006, 0.008)
+		spoke.mesh = spoke_mesh
+		spoke.material_override = shader_material
+		spoke.position = Vector3(cos(float(index) * PI * 0.5), 0.0, sin(float(index) * PI * 0.5)) * radius * 0.27
+		spoke.rotation.y = -float(index) * PI * 0.5
+		inner_geometry.add_child(spoke)
 	for index in 12:
 		var marker := MeshInstance3D.new()
 		var box := BoxMesh.new()
@@ -80,7 +90,15 @@ func _process(delta: float) -> void:
 	inner_geometry.rotation.y += rotation_speed * 1.35 * delta
 	if casting:
 		var grow := minf(1.0, age / maxf(spawn_time, 0.001))
-		scale = Vector3.ONE * (grow + sin(age * 12.0) * pulse * grow)
+		outer_ring.scale = Vector3.ONE * smoothstep(0.0, 0.45, grow)
+		rune_ring.scale = Vector3.ONE * smoothstep(0.22, 0.80, grow)
+		inner_geometry.scale = Vector3.ONE * smoothstep(0.42, 1.0, grow)
+		energy_core.scale = Vector3.ONE * smoothstep(0.58, 1.0, grow)
+		var rune_count := rune_ring.get_child_count()
+		for index in rune_count:
+			if index > 0:
+				rune_ring.get_child(index).visible = float(index - 1) / maxf(1.0, float(rune_count - 1)) <= grow
+		scale = Vector3.ONE * (1.0 + sin(age * 12.0) * pulse * grow)
 	else:
 		scale = Vector3.ONE * maxf(0.0, 1.0 - age / maxf(collapse_time, 0.001))
 		if age >= collapse_time:

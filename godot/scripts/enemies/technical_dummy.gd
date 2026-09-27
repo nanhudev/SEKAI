@@ -80,7 +80,12 @@ func _process(delta: float) -> void:
 		cue_material.albedo_color = Color(1.0, 0.45, 0.2).lerp(Color(1.0, 0.15, 0.08), preparation) if attack_variant == 1 else Color(0.4, 0.85, 1.0).lerp(Color(0.9, 1.0, 1.0), preparation)
 	else:
 		core.scale = core.scale.lerp(Vector3.ONE, minf(1.0, delta * 12.0))
-		cue_material.albedo_color = Color(0.5, 0.75, 0.8)
+		var elemental_color := Color(0.5, 0.75, 0.8)
+		if frost > 0.0:
+			elemental_color = elemental_color.lerp(Color(0.82, 0.95, 1.0), clampf(frost / 100.0, 0.0, 1.0))
+		if burn > 0.0:
+			elemental_color = elemental_color.lerp(Color(1.0, 0.37, 0.1), clampf(burn / 3.0, 0.0, 0.8))
+		cue_material.albedo_color = elemental_color
 
 
 func _start_attack() -> void:

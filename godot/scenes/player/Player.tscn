@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3]
+[gd_scene load_steps=15 format=3]
 
 [ext_resource type="Script" path="res://scripts/player/player_movement.gd" id="1"]
 [ext_resource type="Script" path="res://scripts/camera/camera_feedback_controller.gd" id="2"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" path="res://scripts/combat/hurtbox.gd" id="6"]
 [ext_resource type="Script" path="res://scripts/player/temp_sword_visual.gd" id="7"]
 [ext_resource type="AudioStream" path="res://audio/sfx/dodge_temp.wav" id="8"]
+[ext_resource type="Script" path="res://scripts/abilities/spell_presentation.gd" id="9"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_1"]
 radius = 0.35
@@ -72,6 +73,9 @@ shape = SubResource("SwordShape")
 [node name="MagicCircle3D" parent="CameraRig/LookPivot/MotionPivot/ShakePivot/VFXRoot" instance=ExtResource("5")]
 position = Vector3(0.42, -0.2, -1.15)
 rotation = Vector3(1.5708, 0, 0)
+
+[node name="SpellPresentation" type="Node3D" parent="CameraRig/LookPivot/MotionPivot/ShakePivot/VFXRoot"]
+script = ExtResource("9")
 
 [node name="FrostHitbox" type="Area3D" parent="CameraRig/LookPivot/MotionPivot/ShakePivot/VFXRoot"]
 position = Vector3(0, -0.2, -2.5)
