@@ -46,6 +46,10 @@ func _process(delta: float) -> void:
 				var end_angle := -0.9 if combat.combo_index != 2 else 0.9
 				target_rotation = Vector3(0.0, 0.0, lerpf(start_angle, end_angle, progress))
 				target_position = Vector3(0.43, -0.37, -0.78)
+		CombatController.State.DODGE:
+			var side := combat.dodge_direction.dot(player.global_basis.x)
+			target_position = IDLE_POSITION + Vector3(-side * 0.16, -0.12, 0.1)
+			target_rotation = Vector3(-0.2, 0.0, -0.2 - side * 0.25)
 		CombatController.State.BLOCK:
 			target_position = Vector3(0.22, -0.23, -0.75)
 			target_rotation = Vector3(-0.25, 0.0, 0.45)

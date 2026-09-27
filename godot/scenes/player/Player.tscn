@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3]
+[gd_scene load_steps=14 format=3]
 
 [ext_resource type="Script" path="res://scripts/player/player_movement.gd" id="1"]
 [ext_resource type="Script" path="res://scripts/camera/camera_feedback_controller.gd" id="2"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" path="res://scenes/combat/MagicCircle3D.tscn" id="5"]
 [ext_resource type="Script" path="res://scripts/combat/hurtbox.gd" id="6"]
 [ext_resource type="Script" path="res://scripts/player/temp_sword_visual.gd" id="7"]
+[ext_resource type="AudioStream" path="res://audio/sfx/dodge_temp.wav" id="8"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_1"]
 radius = 0.35
@@ -114,3 +115,7 @@ script = ExtResource("2")
 
 [node name="CombatController" type="Node" parent="."]
 script = ExtResource("3")
+
+[node name="DodgeAudio" type="AudioStreamPlayer" parent="." groups=["world_audio"]]
+stream = ExtResource("8")
+volume_db = -8.0

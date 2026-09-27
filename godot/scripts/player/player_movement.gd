@@ -57,8 +57,8 @@ func _physics_process(delta: float) -> void:
 	var direction := (transform.basis * Vector3(input_vector.x, 0, input_vector.y)).normalized()
 	var combat: CombatController = $CombatController
 	if combat.state == combat.State.DODGE:
-		velocity.x = combat.dodge_direction.x * combat.dodge_speed
-		velocity.z = combat.dodge_direction.z * combat.dodge_speed
+		velocity.x = combat.dodge_direction.x * combat.dodge_speed_now()
+		velocity.z = combat.dodge_direction.z * combat.dodge_speed_now()
 		move_and_slide()
 		return
 	if combat.state == combat.State.IAIDO and combat.state_time >= 0.32 and combat.state_time < 0.49:

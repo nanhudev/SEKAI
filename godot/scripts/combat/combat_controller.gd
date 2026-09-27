@@ -18,6 +18,7 @@ signal state_changed(previous: State, current: State)
 @onready var camera_feedback: CameraFeedbackController = player.get_node("CameraFeedbackController")
 @onready var magic_circle: MagicCircle3D = player.get_node("CameraRig/LookPivot/MotionPivot/ShakePivot/VFXRoot/MagicCircle3D")
 @onready var hurtbox: CombatHurtbox = player.get_node("Hurtbox")
+@onready var dodge_audio: AudioStreamPlayer = player.get_node("DodgeAudio")
 @onready var screen_fx: CombatScreenFX = player.get_parent().get_node("CombatScreenFX")
 @onready var time_effects: TimeEffectManager = player.get_parent().get_node("TimeEffectManager")
 
@@ -115,7 +116,7 @@ func _process(delta: float) -> void:
 			_current_spell_hitbox().set_active(should_open)
 		if state_time >= ability.startup + ability.active + ability.recovery:
 			finish_action()
-	elif state == State.DODGE and state_time >= 0.25:
+	elif state == State.DODGE and state_time >= 0.36:
 		finish_action()
 	elif state == State.IAIDO:
 		screen_fx.set_iaido_focus(minf(0.65, state_time / 0.28 * 0.65))
@@ -197,7 +198,11 @@ func _start(action: StringName) -> bool:
 			var input_vector := Input.get_vector("move_left", "move_right", "move_forward", "move_back")
 			var wish := Vector3(input_vector.x, 0, input_vector.y)
 			dodge_direction = (player.transform.basis * (wish if wish.length_squared() > 0.01 else Vector3.FORWARD)).normalized()
-			camera_feedback.fov_kick(3.0)
+			camera_feedback.fov_kick(10.0)
+			var side := dodge_direction.dot(player.global_basis.x)
+			camera_feedback.roll_impulse(side * 3.5)
+			camera_feedback.add_impulse(Vector2(0.0, 0.025))
+			dodge_audio.play()
 			set_state(State.DODGE)
 		&"cast":
 			casting_spell = selected_spell
@@ -227,6 +232,17 @@ func _start(action: StringName) -> bool:
 			set_state(State.IAIDO)
 		_: return false
 	return true
+
+
+func dodge_speed_now() -> float:
+	if state_time < 0.05:
+		return 0.0
+	if state_time < 0.12:
+		return dodge_speed * smoothstep(0.05, 0.12, state_time)
+	if state_time < 0.20:
+		return dodge_speed
+	var tail := clampf((state_time - 0.20) / 0.16, 0.0, 1.0)
+	return dodge_speed * (1.0 - tail) * (1.0 - tail)
 
 
 func _current_ability() -> AbilityData:
