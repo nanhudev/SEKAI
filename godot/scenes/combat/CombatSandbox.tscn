@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3]
+[gd_scene load_steps=22 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/player/Player.tscn" id="1"]
 [ext_resource type="PackedScene" path="res://scenes/enemies/TechnicalDummy.tscn" id="2"]
@@ -13,11 +13,11 @@
 [ext_resource type="Script" path="res://scripts/combat/iaido_director.gd" id="11"]
 [ext_resource type="Script" path="res://scripts/combat/iaido_target_collector.gd" id="12"]
 [ext_resource type="Script" path="res://scripts/combat/iaido_tear_3d.gd" id="13"]
-[ext_resource type="AudioStream" path="res://audio/sfx/iaido_charge.wav" id="14"]
-[ext_resource type="AudioStream" path="res://audio/sfx/iaido_cut.wav" id="15"]
-[ext_resource type="AudioStream" path="res://audio/sfx/iaido_sheathe.wav" id="16"]
 [ext_resource type="Script" path="res://scripts/combat/iaido_screen_fx.gd" id="17"]
-[ext_resource type="AudioStream" path="res://audio/sfx/iaido_glass.wav" id="18"]
+[ext_resource type="Script" path="res://scripts/combat/world_pause_manager.gd" id="19"]
+[ext_resource type="Script" path="res://scripts/player/foreground_weapon_layer.gd" id="20"]
+[ext_resource type="Script" path="res://scripts/combat/iaido_glass_layer.gd" id="21"]
+[ext_resource type="Script" path="res://scripts/combat/iaido_audio_timeline.gd" id="22"]
 
 [sub_resource type="StandardMaterial3D" id="FloorDebugMaterial"]
 albedo_color = Color(0.82, 0.79, 0.69, 1)
@@ -44,6 +44,7 @@ ambient_light_source = 2
 ambient_light_color = Color(0.58, 0.66, 0.7, 1)
 
 [node name="CombatSandbox" type="Node3D"]
+process_mode = 1
 script = ExtResource("6")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
@@ -95,8 +96,26 @@ script = ExtResource("8")
 [node name="AudioStateController" type="Node" parent="."]
 script = ExtResource("10")
 
+[node name="WorldPauseManager" type="Node" parent="."]
+process_mode = 3
+script = ExtResource("19")
+
+[node name="ForegroundWeaponLayer" type="CanvasLayer" parent="."]
+process_mode = 3
+layer = 8
+script = ExtResource("20")
+
 [node name="IaidoTargetCollector" type="Node" parent="."]
 script = ExtResource("12")
+
+[node name="IaidoAudioTimeline" type="Node" parent="."]
+process_mode = 3
+script = ExtResource("22")
+
+[node name="IaidoGlassLayer" type="CanvasLayer" parent="."]
+process_mode = 3
+layer = 7
+script = ExtResource("21")
 
 [node name="IaidoDirector" type="Node" parent="."]
 process_mode = 3
@@ -110,28 +129,3 @@ script = ExtResource("13")
 process_mode = 3
 layer = 6
 script = ExtResource("17")
-
-[node name="IaidoChargeAudio" type="AudioStreamPlayer" parent="."]
-process_mode = 3
-stream = ExtResource("14")
-volume_db = -7.0
-
-[node name="IaidoCutAudio" type="AudioStreamPlayer" parent="."]
-process_mode = 3
-stream = ExtResource("15")
-volume_db = -4.0
-
-[node name="IaidoClickAudio" type="AudioStreamPlayer" parent="."]
-process_mode = 3
-stream = ExtResource("16")
-volume_db = -5.0
-
-[node name="IaidoGlassAudio" type="AudioStreamPlayer" parent="."]
-process_mode = 3
-stream = ExtResource("18")
-volume_db = -7.0
-
-[node name="IaidoSheatheAudio" type="AudioStreamPlayer" parent="."]
-process_mode = 3
-stream = ExtResource("16")
-volume_db = -5.0

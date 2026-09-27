@@ -19,6 +19,12 @@ var trauma := 0.0
 var fov_offset := 0.0
 var fov_hold := 0.0
 var iaido_pitch := 0.0
+var iaido_frozen := false
+# 0 = normal combat feedback, 1 = the fight has stopped breathing (Iaido).
+# Bob, sway, gait and micro tremor are all scaled away, but the cinematic
+# iaido_pitch and iaido_frame survive so the director can still move us.
+var iaido_still := 0.0
+var iaido_frame := Vector2.ZERO
 var roll := 0.0
 var noise_time := 0.0
 var preset := Preset.NORMAL
@@ -59,6 +65,15 @@ func add_trauma(amount: float) -> void:
 	trauma = clampf(trauma + amount, 0.0, 1.0)
 
 
+func add_iaido_frame(direction: Vector2, strength: float = 1.0) -> void:
+	# A cinematic nudge that is NOT suppressed by iaido_still.
+	iaido_frame += direction * strength
+
+
+func set_iaido_still(amount: float) -> void:
+	iaido_still = clampf(amount, 0.0, 1.0)
+
+
 func fov_kick(degrees: float) -> void:
 	fov_offset += degrees
 
@@ -73,9 +88,12 @@ func landing_impulse(strength: float = 1.0) -> void:
 
 
 func _process(delta: float) -> void:
+	if iaido_frozen:
+		return
 	noise_time += delta * 27.0
 	var decay := minf(1.0, settle_speed * delta)
 	impulse = impulse.lerp(Vector2.ZERO, decay)
+	iaido_frame = iaido_frame.lerp(Vector2.ZERO, minf(1.0, settle_speed * 1.4 * delta))
 	fov_offset = lerpf(fov_offset, 0.0, decay)
 	roll = lerpf(roll, 0.0, decay)
 	look_lag = look_lag.lerp(Vector2.ZERO, minf(1.0, delta * 11.0))
@@ -86,7 +104,10 @@ func _process(delta: float) -> void:
 	var grounded := player.is_on_floor()
 	var sprinting := grounded and horizontal_speed > 1.0 and Input.is_action_pressed("sprint")
 	var moving := grounded and horizontal_speed > 0.35
-	gait_weight = lerpf(gait_weight, minf(1.0, horizontal_speed / 3.5) if moving else 0.0, minf(1.0, delta * 8.0))
+	# While the Iaido holds the world still, the gait itself unwinds so the
+	# camera does not snap back to a bob the moment the skill ends.
+	var still_weight := 1.0 - clampf(iaido_still, 0.0, 1.0)
+	gait_weight = lerpf(gait_weight, (minf(1.0, horizontal_speed / 3.5) if moving else 0.0) * still_weight, minf(1.0, delta * 8.0))
 	if moving:
 		var old_step := floori(gait_phase / PI)
 		gait_phase += delta * (15.0 if sprinting else 10.0)
@@ -119,8 +140,12 @@ func _process(delta: float) -> void:
 	sprint_fov = lerpf(sprint_fov, 4.5 if sprinting else 0.0, minf(1.0, delta * 7.0))
 
 	var feedback_scale := 3.0 if preset == Preset.EXAGGERATED else (0.0 if preset == Preset.OFF else 1.0)
-	motion_pivot.position = smoothed_position * motion_scale
-	motion_pivot.rotation = smoothed_rotation * motion_scale + Vector3(impulse.y + iaido_pitch, impulse.x, roll) * feedback_scale * camera_shake_strength
+	var still := 1.0 - clampf(iaido_still, 0.0, 1.0)
+	var combat_rotation := smoothed_rotation * motion_scale + Vector3(impulse.y, impulse.x, roll) * feedback_scale * camera_shake_strength
+	motion_pivot.position = smoothed_position * motion_scale * still
+	motion_pivot.rotation = combat_rotation * still + Vector3(iaido_pitch + iaido_frame.y, iaido_frame.x, 0.0)
 	var shake := trauma * trauma * 0.018 * feedback_scale * camera_shake_strength
-	shake_pivot.position = Vector3(sin(noise_time * 1.7), cos(noise_time * 2.1), 0.0) * shake
-	camera.fov = base_fov + (fov_hold + fov_offset) * feedback_scale + sprint_fov * motion_scale
+	shake_pivot.position = Vector3(sin(noise_time * 1.7), cos(noise_time * 2.1), 0.0) * shake * still
+	# The Iaido FOV push is a cinematic direction, not feedback, so it ignores
+	# the camera preset. A player on "Off" still gets the full performance.
+	camera.fov = base_fov + fov_hold + fov_offset * feedback_scale + sprint_fov * motion_scale * still

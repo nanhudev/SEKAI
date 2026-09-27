@@ -1,86 +1,83 @@
 extends Node3D
 class_name IaidoTear3D
+# World-space pre-cut omen.
+#
+# While the reverse wave compresses reality, a thin unstable line appears in
+# the world exactly where the cut will land. It is faint, it breathes, and it
+# dies the instant the real void opens. The cut itself is screen space; this
+# only sells that the world knew where it was going to break.
 
-var edge: MeshInstance3D
-var core: MeshInstance3D
-var fractures: Array[MeshInstance3D] = []
-var fragments: Array[MeshInstance3D] = []
-var world_ribbon: MeshInstance3D
-var world_ribbon_core: MeshInstance3D
+const OMEN_DISTANCE := -1.2
+
+var ivory_line: MeshInstance3D
+var ink_line: MeshInstance3D
+var flecks: Array[MeshInstance3D] = []
+var fleck_materials: Array[StandardMaterial3D] = []
+var ivory_material: StandardMaterial3D
+var ink_material: StandardMaterial3D
 
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
-	edge = _piece("Ink Edge", Vector3(3.2, 0.11, 0.015), Color(0.015, 0.025, 0.035), -0.02)
-	core = _piece("Ivory Core", Vector3(3.05, 0.026, 0.02), Color(1.0, 0.96, 0.82), 0.0)
-	world_ribbon = _ribbon("Spatial Plane Ink", Vector3(0.20, 0.045, 7.0), Color(0.02, 0.03, 0.04, 0.64))
-	world_ribbon_core = _ribbon("Spatial Plane Edge", Vector3(0.045, 0.023, 7.0), Color(0.98, 0.96, 0.86, 0.82))
-	for i in 8:
-		var crack := _piece("Secondary Fracture %d" % i, Vector3(0.72 - i * 0.1, 0.009, 0.012), Color(0.9, 0.93, 0.95), 0.01)
-		crack.position = Vector3(-1.2 + i * 0.35, (0.22 if i % 2 == 0 else -0.25), 0.01)
-		crack.rotation.z = (-0.65 if i % 2 == 0 else 0.52)
-		fractures.append(crack)
-	for i in 10:
-		var fleck := _piece("Ink Fragment %d" % i, Vector3(0.025 + float(i % 3) * 0.014, 0.08, 0.01), Color(0.025, 0.035, 0.045) if i % 2 == 0 else Color(0.92, 0.93, 0.87), 0.02)
-		fleck.rotation.z = float(i) * 1.7
-		fragments.append(fleck)
+	ivory_line = _plane("Spatial Omen Ivory", Vector3(3.6, 0.010, 0.010), Color(1.0, 0.97, 0.88, 0.0), 0.0)
+	ink_line = _plane("Spatial Omen Ink", Vector3(3.6, 0.030, 0.008), Color(0.02, 0.03, 0.05, 0.0), -0.008)
+	ivory_material = ivory_line.mesh.material as StandardMaterial3D
+	ink_material = ink_line.mesh.material as StandardMaterial3D
+	for i in 6:
+		var fleck := _plane("Omen Fleck %d" % i, Vector3(0.05, 0.012, 0.006), Color(0.92, 0.94, 0.90, 0.0), 0.006)
+		flecks.append(fleck)
+		fleck_materials.append(fleck.mesh.material as StandardMaterial3D)
 	visible = false
 
 
-func _piece(label: String, size: Vector3, tint: Color, z: float) -> MeshInstance3D:
-	var mesh := BoxMesh.new()
-	mesh.size = size
-	var material := StandardMaterial3D.new()
-	material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-	material.no_depth_test = true
-	material.cull_mode = BaseMaterial3D.CULL_DISABLED
-	material.albedo_color = tint
-	mesh.material = material
-	var instance := MeshInstance3D.new()
-	instance.name = label
-	instance.mesh = mesh
-	instance.position.z = z
-	add_child(instance)
-	return instance
-
-
-func _ribbon(label: String, size: Vector3, tint: Color) -> MeshInstance3D:
+func _plane(label: String, size: Vector3, tint: Color, z: float) -> MeshInstance3D:
 	var mesh := BoxMesh.new()
 	mesh.size = size
 	var material := StandardMaterial3D.new()
 	material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 	material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
 	material.cull_mode = BaseMaterial3D.CULL_DISABLED
+	material.no_depth_test = true
 	material.albedo_color = tint
 	mesh.material = material
 	var instance := MeshInstance3D.new()
 	instance.name = label
 	instance.mesh = mesh
-	instance.position = Vector3(0.0, 0.0, -3.5)
-	instance.rotation = Vector3(-0.08, 0.15, 0.0)
+	instance.position.z = z
+	instance.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	add_child(instance)
 	return instance
 
 
 func stage(time: float, tuning: IaidoTuning) -> void:
-	visible = time >= tuning.wave_end and time < tuning.restore_end
+	visible = time >= tuning.wave_start and time < tuning.cut_start + 0.02
 	if not visible:
 		return
-	var pre := smoothstep(tuning.wave_end, tuning.first_tear_end, time)
-	var main := smoothstep(tuning.draw_end, tuning.rupture_end, time)
-	var close := 1.0 - smoothstep(tuning.final_click, tuning.restore_end, time)
-	var width := (0.68 * pre + 0.32 * main) * close
-	edge.scale = Vector3(width, maxf(0.10, (0.30 + main * 1.2) * close), 1.0)
-	core.scale = Vector3(width, (0.35 + main * 1.8) * close, 1.0)
-	world_ribbon.visible = main > 0.01
-	world_ribbon_core.visible = main > 0.01
-	world_ribbon.scale = Vector3(maxf(0.01, main * close), 1.0, maxf(0.01, main * close))
-	world_ribbon_core.scale = Vector3(maxf(0.01, main * close), 1.0, maxf(0.01, main * close))
-	for i in fractures.size():
-		fractures[i].visible = (i < 4 and time <= tuning.hold_end) or (time >= tuning.draw_end and time < tuning.final_click)
-		fractures[i].scale.x = width * (0.65 if time < tuning.draw_end else 1.0)
-	for i in fragments.size():
+	# The cut runs up and to the right; in view space that is -cut_angle.
+	var screen_angle := deg_to_rad(-tuning.cut_angle_degrees)
+	rotation.z = screen_angle
+	ivory_line.position.z = OMEN_DISTANCE
+	ink_line.position.z = OMEN_DISTANCE - 0.01
+
+	var rise := IaidoTuning.ease_out_cubic(IaidoTuning.span(time, tuning.wave_start, tuning.wave_start + 0.45))
+	var death := 1.0 - IaidoTuning.span(time, tuning.draw_start, tuning.cut_start)
+	var compression := IaidoTuning.span(time, tuning.wave_start, tuning.hold_end)
+	var breathe := 1.0 + 0.28 * compression * sin(time * 7.4)
+	var alpha := rise * death * breathe
+
+	ivory_material.albedo_color = Color(1.0, 0.97, 0.88, clampf(alpha * 0.38, 0.0, 1.0))
+	ink_material.albedo_color = Color(0.02, 0.03, 0.05, clampf(alpha * 0.42, 0.0, 1.0))
+	# The omen tightens as the compression builds.
+	ivory_line.scale = Vector3(1.0, lerpf(1.6, 0.55, compression), 1.0)
+	ink_line.scale = Vector3(1.0, lerpf(2.4, 0.80, compression), 1.0)
+
+	for i in flecks.size():
 		var phase := float(i) * 2.399
-		var burst := smoothstep(tuning.draw_end, tuning.rupture_end, time) * (1.0 - smoothstep(tuning.final_click, tuning.restore_end, time))
-		fragments[i].position = Vector3(cos(phase) * (0.12 + burst * (0.45 + float(i % 4) * 0.13)), sin(phase) * (0.08 + burst * 0.33), 0.02)
-		fragments[i].scale = Vector3.ONE * maxf(0.05, burst)
+		var spread := lerpf(0.62, 0.10, compression)
+		flecks[i].position = Vector3(
+			cos(phase) * spread * 1.5,
+			sin(phase) * spread,
+			OMEN_DISTANCE + 0.006
+		)
+		flecks[i].rotation.z = phase
+		fleck_materials[i].albedo_color = Color(0.92, 0.94, 0.90, clampf(alpha * 0.42, 0.0, 1.0))

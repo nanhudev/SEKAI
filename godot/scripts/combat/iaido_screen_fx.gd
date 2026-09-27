@@ -1,126 +1,107 @@
 extends CanvasLayer
 class_name IaidoScreenFX
+# Composites the world-only cut above the desaturated world and below the
+# weapon foreground, so the sword is never torn, desaturated or shattered.
 
 var focus_rect: ColorRect
-var glass_rect: ColorRect
 var focus_material: ShaderMaterial
-var glass_material: ShaderMaterial
-var saturation_loss := 0.0
-var vignette := 0.0
-var wave := 0.0
-var wave_position := -1.0
-var pre_cut := 0.0
-var main_cut := 0.0
-var split_pixels := 0.0
-var glass := 0.0
+var reverse_wave: ReverseWaveEffect
+var last_resolution := Vector2.ZERO
 
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	layer = 6
 	focus_material = ShaderMaterial.new()
-	var focus_shader := Shader.new()
-	focus_shader.code = """
-shader_type canvas_item;
-render_mode unshaded;
-uniform sampler2D screen_tex : hint_screen_texture, filter_linear;
-uniform float saturation_loss = 0.0;
-uniform float vignette = 0.0;
-uniform float wave = 0.0;
-uniform float wave_position = -1.0;
-uniform float pre_cut = 0.0;
-uniform float main_cut = 0.0;
-uniform float split_pixels = 0.0;
-void fragment() {
-    vec2 center = SCREEN_UV * 2.0 - 1.0;
-    float seam = center.y + center.x * 0.65;
-    vec2 normal = normalize(vec2(0.65, 1.0));
-    vec2 split = normal * sign(seam) * split_pixels * SCREEN_PIXEL_SIZE;
-    float pressure = (1.0 - smoothstep(0.01, 0.25, abs(seam))) * wave;
-    vec2 displaced = clamp(SCREEN_UV + split + normal * sign(seam) * pressure * 0.006, vec2(0.001), vec2(0.999));
-    vec3 c = texture(screen_tex, displaced).rgb;
-    float gray = dot(c, vec3(0.299, 0.587, 0.114));
-    c = mix(c, vec3(gray), saturation_loss);
-    c *= 1.0 - smoothstep(0.30, 1.55, dot(center, center)) * vignette;
-    float pre_shape = step(abs(center.x), 0.70) * (0.40 + 0.60 * step(0.15, sin(center.x * 52.0)));
-    float thin = 1.0 - smoothstep(0.002, 0.011, abs(seam));
-    float wide = 1.0 - smoothstep(0.003, 0.029, abs(seam));
-    float wave_a = 1.0 - smoothstep(0.002, 0.009, abs(seam - wave_position));
-    float wave_b = 1.0 - smoothstep(0.002, 0.006, abs(seam - wave_position + 0.11));
-    c = mix(c, vec3(0.92, 0.92, 0.87), (wave_a * 0.18 + wave_b * 0.09) * wave);
-    c = mix(c, vec3(0.93, 0.91, 0.84), thin * pre_cut * pre_shape * 0.75 + wide * main_cut * 0.62);
-    COLOR = vec4(c, 1.0);
-}
-"""
-	focus_material.shader = focus_shader
-	focus_rect = _layer("Focus And World Split", focus_material)
-	glass_material = ShaderMaterial.new()
-	var glass_shader := Shader.new()
-	glass_shader.code = """
-shader_type canvas_item;
-render_mode unshaded;
-uniform float glass = 0.0;
-uniform float main_cut = 0.0;
-void fragment() {
-    vec2 p = SCREEN_UV * 2.0 - 1.0;
-    float seam = p.y + p.x * 0.65;
-    float cracks = 0.0;
-    float shards = 0.0;
-    for (int i = 0; i < 10; i++) {
-        float f = float(i);
-        float x = (f - 4.5) * 0.16;
-        float y = -x * 0.65;
-        vec2 d = p - vec2(x, y);
-        float side = mod(f, 2.0) < 1.0 ? 1.0 : -1.0;
-        float ray = abs(d.y - d.x * (side * 0.85 + 0.12));
-        float segment = step(0.0, d.x * side) * (1.0 - smoothstep(0.15, 0.38, length(d)));
-        cracks += (1.0 - smoothstep(0.002, 0.006, ray)) * segment;
-        if (i < 5) {
-            vec2 shard_p = vec2(x + side * 0.07, y + side * 0.06);
-            vec2 q = p - shard_p;
-            float mask = step(abs(q.x) + abs(q.y * 0.7), 0.065);
-            shards += mask * (0.12 + 0.08 * sin(f * 13.0));
-        }
-    }
-    float edge = (1.0 - smoothstep(0.0, 0.009, abs(seam))) * main_cut;
-    COLOR = vec4(vec3(0.97, 0.95, 0.88), clamp(cracks * glass * 0.58 + shards * glass + edge * 0.18, 0.0, 0.68));
-}
-"""
-	glass_material.shader = glass_shader
-	glass_rect = _layer("Glass Fracture", glass_material)
+	focus_material.shader = preload("res://vfx/iaido_world_split.gdshader")
+	focus_rect = ColorRect.new()
+	focus_rect.name = "WorldOnlySplit"
+	focus_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	focus_rect.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	focus_rect.material = focus_material
+	add_child(focus_rect)
+	reverse_wave = ReverseWaveEffect.new()
+	reverse_wave.name = "ReverseWaveEffect"
+	add_child(reverse_wave)
 	reset_iaido_fx()
 
 
-func _layer(label: String, shader_material: ShaderMaterial) -> ColorRect:
-	var rect := ColorRect.new()
-	rect.name = label
-	rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	rect.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	rect.material = shader_material
-	add_child(rect)
-	return rect
+func present(frame: Dictionary) -> void:
+	var focus := float(frame.get("focus", 0.0))
+	var void_open := float(frame.get("void_open", 0.0))
+	var gap_px := float(frame.get("gap_px", 0.0))
+	var separation_px := float(frame.get("separation_px", 0.0))
+	var fracture := float(frame.get("fracture", 0.0))
+	var shatter := float(frame.get("shatter", 0.0))
+	var dissolve := float(frame.get("dissolve", 0.0))
+	var wave_strength := float(frame.get("wave_strength", 0.0))
 
+	focus_material.set_shader_parameter("resolution", frame.get("resolution", Vector2(1920.0, 1080.0)))
+	focus_material.set_shader_parameter("cut_center", frame.get("cut_center", Vector2(0.5, 0.5)))
+	focus_material.set_shader_parameter("cut_angle", float(frame.get("cut_angle", -30.0)))
+	focus_material.set_shader_parameter("time", float(frame.get("time", 0.0)))
+	focus_material.set_shader_parameter("focus", focus)
+	focus_material.set_shader_parameter("void_open", void_open)
+	focus_material.set_shader_parameter("gap_px", gap_px)
+	focus_material.set_shader_parameter("separation_px", separation_px)
+	focus_material.set_shader_parameter("depth_parallax", float(frame.get("depth_parallax", 0.006)))
+	focus_material.set_shader_parameter("restore_pull", float(frame.get("restore_pull", 0.0)))
+	focus_material.set_shader_parameter("slide_px", float(frame.get("slide_px", 0.0)))
+	focus_material.set_shader_parameter("ivory_flash", float(frame.get("ivory_flash", 0.0)))
+	focus_material.set_shader_parameter("void_life", float(frame.get("void_life", 1.0)))
+	focus_material.set_shader_parameter("void_edge_color", frame.get("void_edge_color", Color(0.020, 0.043, 0.110)))
+	focus_material.set_shader_parameter("void_mid_color", frame.get("void_mid_color", Color(0.086, 0.125, 0.320)))
+	focus_material.set_shader_parameter("void_core_color", frame.get("void_core_color", Color(0.760, 0.870, 0.950)))
+	focus_material.set_shader_parameter("void_core_width", float(frame.get("void_core_width", 0.16)))
+	focus_material.set_shader_parameter("void_edge_width_px", float(frame.get("void_edge_width_px", 2.2)))
+	focus_material.set_shader_parameter("fracture", fracture)
+	focus_material.set_shader_parameter("shatter", shatter)
+	focus_material.set_shader_parameter("dissolve", dissolve)
+	focus_material.set_shader_parameter("refract_px", float(frame.get("refract_px", 6.0)))
+	focus_material.set_shader_parameter("rim_px", float(frame.get("rim_px", 3.5)))
+	focus_material.set_shader_parameter("wave_strength", wave_strength)
+	focus_material.set_shader_parameter("wave_a", float(frame.get("wave_a", 0.0)))
+	focus_material.set_shader_parameter("wave_b", float(frame.get("wave_b", 0.0)))
+	focus_material.set_shader_parameter("wave_c", float(frame.get("wave_c", 0.0)))
+	focus_material.set_shader_parameter("sheath_uv", frame.get("sheath_uv", Vector2(0.22, 0.80)))
 
-func set_frame(focus: float, wave_amount: float, pre_amount: float, cut_amount: float, split_amount: float, glass_amount: float, wave_phase: float = -1.0) -> void:
-	saturation_loss = focus * 0.75
-	vignette = focus * 0.24
-	wave = wave_amount
-	wave_position = wave_phase
-	pre_cut = pre_amount
-	main_cut = cut_amount
-	split_pixels = split_amount
-	glass = glass_amount
-	focus_material.set_shader_parameter("saturation_loss", saturation_loss)
-	focus_material.set_shader_parameter("vignette", vignette)
-	focus_material.set_shader_parameter("wave", wave)
-	focus_material.set_shader_parameter("wave_position", wave_position)
-	focus_material.set_shader_parameter("pre_cut", pre_cut)
-	focus_material.set_shader_parameter("main_cut", main_cut)
-	focus_material.set_shader_parameter("split_pixels", split_pixels)
-	glass_material.set_shader_parameter("glass", glass)
-	glass_material.set_shader_parameter("main_cut", main_cut)
-	focus_rect.visible = focus > 0.001 or wave_amount > 0.001 or pre_amount > 0.001 or cut_amount > 0.001 or split_amount > 0.001
-	glass_rect.visible = glass_amount > 0.001 or cut_amount > 0.001
+	reverse_wave.set_frame(
+		frame.get("sheath_uv", Vector2(0.22, 0.80)),
+		Vector3(float(frame.get("wave_a", 0.0)), float(frame.get("wave_b", 0.0)), float(frame.get("wave_c", 0.0))),
+		wave_strength
+	)
+
+	focus_rect.visible = (
+		focus > 0.001
+		or void_open > 0.001
+		or gap_px > 0.01
+		or separation_px > 0.01
+		or fracture > 0.001
+		or shatter > 0.001
+		or wave_strength > 0.001
+		or absf(float(frame.get("ivory_flash", 0.0))) > 0.001
+	)
 
 
 func reset_iaido_fx() -> void:
-	set_frame(0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+	if focus_material == null:
+		return
+	present({
+		"focus": 0.0,
+		"void_open": 0.0,
+		"gap_px": 0.0,
+		"separation_px": 0.0,
+		"fracture": 0.0,
+		"shatter": 0.0,
+		"dissolve": 0.0,
+		"wave_strength": 0.0,
+		"wave_a": 0.0,
+		"wave_b": 0.0,
+		"wave_c": 0.0,
+		"ivory_flash": 0.0,
+		"sheath_uv": Vector2(0.22, 0.80),
+		"resolution": last_resolution if last_resolution.length_squared() > 1.0 else Vector2(1920.0, 1080.0),
+	})
+	focus_rect.visible = false
+	if reverse_wave != null:
+		reverse_wave.set_frame(Vector2(0.22, 0.80), Vector3.ZERO, 0.0)

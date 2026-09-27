@@ -6,9 +6,19 @@ extends Node3D
 @onready var camera_feedback: CameraFeedbackController = player.get_node("CameraFeedbackController")
 @onready var iaido: IaidoDirector = player.get_parent().get_node("IaidoDirector")
 var click_flash: MeshInstance3D
+var blade_material: StandardMaterial3D
+var void_rim: MeshInstance3D
+var void_rim_material: StandardMaterial3D
 
 const IDLE_POSITION := Vector3(0.55, -0.52, -0.95)
 const IDLE_ROTATION := Vector3(0.0, 0.0, -0.2)
+const BLADE_TINT := Color(0.84, 0.92, 1.0)
+const VOID_TINT := Color(0.72, 0.85, 1.0)
+
+# How strongly the cold void behind the cut is reflected on the blade. The
+# weapon lives in its own foreground viewport, so this is the only thing that
+# ties it back to the world while reality is split open.
+var void_exposure := 0.0 : set = set_void_exposure
 
 
 func _ready() -> void:
@@ -16,7 +26,9 @@ func _ready() -> void:
 	rotation = IDLE_ROTATION
 	_add_part("TEMP Grip", Vector3(0.10, 0.28, 0.10), Vector3(0, -0.18, 0), Color(0.16, 0.12, 0.09))
 	_add_part("TEMP Guard", Vector3(0.36, 0.07, 0.11), Vector3(0, 0.01, 0), Color(0.72, 0.62, 0.35))
-	_add_part("TEMP Blade", Vector3(0.09, 0.95, 0.045), Vector3(0, 0.52, 0), Color(0.84, 0.92, 1.0))
+	_add_part("TEMP Blade", Vector3(0.09, 0.95, 0.045), Vector3(0, 0.52, 0), BLADE_TINT)
+	blade_material = get_node("TEMP Blade").mesh.material as StandardMaterial3D
+	_add_void_rim()
 	var flash_mesh := SphereMesh.new()
 	flash_mesh.radius = 0.045
 	flash_mesh.height = 0.09
@@ -30,6 +42,35 @@ func _ready() -> void:
 	click_flash.position = Vector3(0.0, 0.02, 0.05)
 	click_flash.visible = false
 	add_child(click_flash)
+
+
+func _add_void_rim() -> void:
+	# Back faces only: a cold halo that keeps the blade readable against the
+	# darkened world without ever lighting it like a torch.
+	var rim_mesh := BoxMesh.new()
+	rim_mesh.size = Vector3(0.075, 1.02, 0.035)
+	void_rim_material = StandardMaterial3D.new()
+	void_rim_material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	void_rim_material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	void_rim_material.cull_mode = BaseMaterial3D.CULL_FRONT
+	void_rim_material.albedo_color = Color(0.55, 0.74, 0.95, 0.0)
+	rim_mesh.material = void_rim_material
+	void_rim = MeshInstance3D.new()
+	void_rim.name = "VoidRim"
+	void_rim.mesh = rim_mesh
+	void_rim.position = Vector3(0, 0.52, 0)
+	void_rim.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	void_rim.visible = false
+	add_child(void_rim)
+
+
+func set_void_exposure(value: float) -> void:
+	void_exposure = clampf(value, 0.0, 1.0)
+	if void_rim == null or blade_material == null:
+		return
+	void_rim.visible = void_exposure > 0.01
+	void_rim_material.albedo_color = Color(0.55, 0.74, 0.95, void_exposure * 0.55)
+	blade_material.albedo_color = BLADE_TINT.lerp(VOID_TINT, void_exposure * 0.55)
 
 
 func _add_part(part_name: String, size: Vector3, offset: Vector3, tint: Color) -> void:
@@ -47,6 +88,9 @@ func _add_part(part_name: String, size: Vector3, offset: Vector3, tint: Color) -
 
 
 func _process(delta: float) -> void:
+	# The director samples the cinematic pose directly, including freeze frames.
+	if combat.state == CombatController.State.IAIDO:
+		return
 	click_flash.visible = combat.state == CombatController.State.IAIDO and combat.state_time >= iaido.tuning.first_click and combat.state_time < iaido.tuning.first_click + 0.035
 	var target_position := IDLE_POSITION
 	var target_rotation := IDLE_ROTATION

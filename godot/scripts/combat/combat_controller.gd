@@ -213,7 +213,9 @@ func _start(action: StringName) -> bool:
 				return false
 			if not player.unlimited_resources:
 				player.set("stamina", stamina - 35.0)
-			iaido_ready_at = now + 5.0
+			# The signature skill locks you out for the whole ceremony plus a
+			# beat of vulnerability afterwards, not for some arbitrary 5s.
+			iaido_ready_at = now + iaido_director.tuning.restore_end + 2.0
 			buffer.clear()
 			set_state(State.IAIDO)
 			iaido_director.start_iaido()

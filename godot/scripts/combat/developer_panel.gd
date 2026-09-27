@@ -7,10 +7,29 @@ extends CanvasLayer
 @onready var dummy: Node3D = sandbox.get_node("TechnicalDummy")
 @onready var iaido: IaidoDirector = sandbox.get_node("IaidoDirector")
 
+const STAGES: Array[Array] = [
+	["A · Freeze", 0.25],
+	["B · Sheath", 0.85],
+	["C · Reverse Wave", 1.70],
+	["D · Hold", 2.50],
+	["E · Lock Click", 2.86],
+	["F · Draw", 3.02],
+	["G · Void", 3.60],
+	["H · Glass", 4.50],
+	["I · Spin", 5.05],
+	["J · Slow Sheathe", 5.85],
+	["K · Final Click", 6.22],
+	["L · Restore", 6.95],
+]
+
+const SPEEDS: Array[float] = [0.25, 0.5, 1.0, 2.0]
+
 var panel: PanelContainer
 var slow_motion := false
 var camera_preset_button: Button
 var iaido_speed_button: Button
+var scrub_slider: HSlider
+var scrub_label: Label
 
 
 func _ready() -> void:
@@ -32,20 +51,56 @@ func _ready() -> void:
 	_add_button(rows, "Freeze Enemy", _freeze_enemy)
 	_add_button(rows, "Reset Action", combat.finish_action)
 	_add_button(rows, "Trigger Iaido", func() -> void: combat.request(&"iaido"))
-	var iaido_title := Label.new()
-	iaido_title.text = "Iaido Debug"
-	rows.add_child(iaido_title)
-	_add_button(rows, "Hold Stage 1 · Focus", func() -> void: iaido.set_debug_hold(0.30))
-	_add_button(rows, "Hold Stage 2 · First Tear", func() -> void: iaido.set_debug_hold(0.84))
-	_add_button(rows, "Jump to First Tear", func() -> void: iaido.set_debug_hold(0.70))
-	_add_button(rows, "Jump to Glass Split", func() -> void: iaido.set_debug_hold(1.59))
-	_add_button(rows, "Jump to Recovery", func() -> void: iaido.set_debug_hold(1.82))
-	_add_button(rows, "Resume Iaido Timeline", iaido.release_debug_hold)
-	_add_button(rows, "Reset Iaido FX", iaido.finish_iaido)
-	iaido_speed_button = _add_button(rows, "Iaido Speed: 1.0x", _toggle_iaido_speed)
+	_build_iaido_section(rows)
 	_add_button(rows, "Slow Motion", _toggle_slow_motion)
 	camera_preset_button = _add_button(rows, "Camera: Normal", _cycle_camera_preset)
 	_add_unavailable(rows, "Hitbox View · pending")
+
+
+func _build_iaido_section(rows: VBoxContainer) -> void:
+	var title := Label.new()
+	title.text = "Iaido Timeline Scrub"
+	rows.add_child(title)
+
+	scrub_slider = HSlider.new()
+	scrub_slider.min_value = 0.0
+	scrub_slider.max_value = iaido.tuning.restore_end
+	scrub_slider.step = 0.01
+	scrub_slider.value = 0.0
+	scrub_slider.custom_minimum_size = Vector2(240, 0)
+	scrub_slider.value_changed.connect(_on_scrub)
+	rows.add_child(scrub_slider)
+
+	scrub_label = Label.new()
+	scrub_label.text = "0.00 s / %.2f s" % iaido.tuning.restore_end
+	rows.add_child(scrub_label)
+
+	_add_button(rows, "Resume Iaido Timeline", iaido.release_debug_hold)
+
+	var grid := GridContainer.new()
+	grid.columns = 2
+	rows.add_child(grid)
+	for stage in STAGES:
+		var label: String = stage[0]
+		var time: float = stage[1]
+		var button := Button.new()
+		button.text = label
+		button.pressed.connect(func() -> void: _jump(time))
+		grid.add_child(button)
+
+	iaido_speed_button = _add_button(rows, "Iaido Speed: 1.0x", _toggle_iaido_speed)
+	_add_button(rows, "Reset Iaido FX", iaido.finish_iaido)
+
+
+func _jump(time: float) -> void:
+	iaido.set_debug_hold(time)
+	scrub_slider.value = time
+	scrub_label.text = "%.2f s / %.2f s" % [time, iaido.tuning.restore_end]
+
+
+func _on_scrub(value: float) -> void:
+	iaido.set_debug_hold(value)
+	scrub_label.text = "%.2f s / %.2f s" % [value, iaido.tuning.restore_end]
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -95,9 +150,12 @@ func _toggle_slow_motion() -> void:
 
 
 func _toggle_iaido_speed() -> void:
-	var speed := 0.5 if iaido.playback_speed > 0.5 else 1.0
+	var index := SPEEDS.find(iaido.playback_speed)
+	if index < 0:
+		index = 2
+	var speed: float = SPEEDS[(index + 1) % SPEEDS.size()]
 	iaido.set_debug_speed(speed)
-	iaido_speed_button.text = "Iaido Speed: %.1fx" % speed
+	iaido_speed_button.text = "Iaido Speed: %.2fx" % speed
 
 
 func _exit_tree() -> void:

@@ -45,6 +45,18 @@
 2. 用 Rapier 建立可进入室内与可靠碰撞，扩建地形并优化实例与加载。
 3. 补足 60–90 秒实时演出、原创音乐与环境声，并完整跑通 30 分钟体验。
 
+## GODOT COMBAT MVP · 2026-09-27 · Iaido重新导演（Signature Skill）
+
+- Iaido / 聚合斩已按 7.2 秒 Signature Skill 时间轴重排（PHASE A–N：世界静止 → 归鞘 → 三层反向波 → 压缩停顿 → 鞘锁 → 瞬斩 → 世界切开 → 分离 → 张力冻结 → 玻璃失效 → 双转剑 → 慢归鞘 → 现实崩解 → 回收恢复）。出刀只占 130ms，其余时长用于压迫感与期待。所有时间点集中在 `IaidoTuning.tres`，禁止擅自压缩。
+- 世界切裂改为真正的 Void Gap：斜切线中间是深蓝→靛青→蓝白核心的虚空（雾、微粒、镜像不可能视差、极慢向内运动），两侧世界沿斩线法线缓慢分离；已删除"上半幅直接滑落"的 UI 错位表现，重力滑落只允许出现在玻璃破碎之后。
+- 玻璃改为三层：着色器应力裂纹（Voronoi 细裂纹 + 分支随机停止 + 折射 UV 偏移）+ 新增 `IaidoGlassLayer` 前景独立 SubViewport 中的 8–20 片有厚度物理碎片（30–80ms 延迟、阻尼减速、悬停、恢复期倒放回吸）。
+- 前景武器层保留；新增 `void_exposure` 冷色刃缘让剑在黑暗画面中保持可读并仍属于场景。
+- 音频时间轴已建立：`IaidoAudioTimeline` 按 tuning 触发 14 个节点。Suno 本轮不可用，`godot/tools/generate_iaido_placeholders.py` 已合成占位音效并接入，后续只换文件不动时间轴。
+- 相机在演出期间进入 `iaido_still`：步频 bob、sway、微震全部衰减到零，与战斗形成反差；Iaido FOV 不再受相机预设影响。
+- Developer Panel（F8）新增 Iaido Timeline Scrub 滑块、12 个阶段跳转按钮与 0.25x/0.5x/1.0x/2.0x 速度。
+- Fail-safe：`finish_iaido` / `_exit_tree` 全量恢复 FOV、饱和度、世界暂停、音乐、前景层、裂口、虚空、玻璃与相机；`tests/iaido_integration.gd` 现在校验时间轴长度、静止站位、延迟命中、调试跳转与全量恢复。全部 9 个集成测试通过。
+- 已知限制：视觉与手感仍未做人工试玩验收；Iaido 冷却改为 `restore_end + 2.0s`（演出全程 + 后摇）。
+
 ## GODOT COMBAT MVP · 2026-09-27
 
 - TEMPORARY RENDERER FALLBACK: Forward+ on this AMD Radeon RX 6650 XT shows 2D UI/background but not 3D meshes. Compatibility restores the independent RenderProbe and Main → Start combat capture. Interactive desktop click and gameplay feel remain pending. See `BLACK_SCREEN_DIAGNOSIS.md`.
@@ -63,3 +75,27 @@
 - Audio: existing Suno Pro track `first-encounter.mp3` is reused in the Godot sandbox on a Music bus. Scene import, playback startup, title/restart and resource cleanup passed technical checks. Combat SFX remain pending; the cue/layer production brief is in `COMBAT_SFX_BRIEF.md`, while existing music provenance is documented in `ASSET_LICENSES.md` and `SUNO_LOG.md`.
 - Known bugs/limits: this execution environment starts Godot processes without visible window handles; therefore visual and hand-feel acceptance cannot be claimed. Technical enemy is a primitive test target, not the designed Lesser Ruin Sentinel. Combat SFX are pending.
 - Next immediate step: run editor import and physics integration checks in the official branch, then commit and push the stable technical foundation. Continue enemy telegraphs, audio and visual validation when a visible desktop path is available.
+
+## PRODUCER · 三对话并行 · 2026-09-27
+
+Producer / Integration 角色启动，建立三条工作流的共享状态。
+
+- 新增 `docs/PRODUCTION_BOARD.md`：MAIN / AUDIO / ART 三线任务板，是唯一权威状态源。三条对话改状态必须写回该文件，不得依赖聊天记忆。
+- 新增 `docs/ART_PIPELINE.md`：Chat2Blender 固定产线、角色边界、状态机、目录所有权。
+- 新增 `docs/AUDIO_STATUS.md`：13 个 iaido 占位音的实测时长、峰值、rms 与触发点台账。
+- 新增 `docs/asset_briefs/C2B-02 / C2B-03 / C2B-04`：FP Hand、Lesser Ruin Sentinel、Magic Catalyst。C2B-01 brief 此前已存在，本次补 `C2B-01-CHATGPT-PROMPT.md` 可直接粘贴的提交包。
+
+### 实测结论
+
+- Iaido 时间轴 15 个 cue 与 `IaidoTuning.tres` 全部对齐，无断链；13 个 wav 均存在。
+- 13 个 wav 全部 peak 0.898，来源为 `godot/tools/generate_iaido_placeholders.py` 合成占位音。Suno signature 一个都未替换。AUDIO 线的真实状态是"时间轴就绪、素材未产"，不是"音效完成"。
+- `collapse` cue 在 6.25 s 触发、素材长 1.25 s，结束于 7.50 s，超过 `restore_end` 7.20 s，会被 `finish_iaido()` 的 `stop_all()` 硬截断。替换素材时长度须压到 0.95 s 以内。
+- `void_open` 3.40 s 起持续 1.60 s，覆盖 `glass_stress`(4.25) 与 `shard_burst`(4.58)。替换时需分层让位或缩到 1.2 s 以内。
+
+### 技术债（MAIN）
+
+- `godot/scripts/player/temp_sword_visual.gd` 的 `CombatController.State.IAIDO` 分支引用 `timing.focus_start`、`focus_end`、`draw_slow_end`、`draw_fast_end`、`recovery_end`，这些字段在重构后的 `IaidoTuning` 中已不存在。该分支因 `_process` 开头 `if combat.state == IAIDO: return` 而永不执行，属于死代码。武器姿态实际由 `IaidoDirector._apply_weapon_pose()` 接管。应删除该分支，避免后续误改。
+
+### 未提交改动
+
+工作区有 18 个修改、13 个新增、4 个删除尚未提交，主要是 7.2 秒 Iaido 全序列。见 `PRODUCTION_BOARD.md` MAIN 段。

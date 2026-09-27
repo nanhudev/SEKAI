@@ -30,6 +30,14 @@ func set_iaido_focus(amount: float) -> void:
 	_update_shader()
 
 
+func set_world_drain(amount: float) -> void:
+	# Iaido PHASE A: the world is being switched off. Desaturate hard, pull a
+	# cold vignette in, and leave the void in the split shader untouched.
+	desaturation = clampf(amount, 0.0, 0.82)
+	vignette = clampf(amount * 0.32, 0.0, 0.26)
+	_update_shader()
+
+
 func slash_flash(amount: float) -> void:
 	ink_slash = clampf(amount, 0.0, 1.0)
 	flash = 0.12 * ink_slash

@@ -26,14 +26,28 @@ Use short, dry, layered impacts that preserve player control and positional clar
 | `wind_burst` | broad air displacement + dust/leaf movement + low push | 0.55 s | Wind release/force |
 | `shatter` | high ice crack + stone break + low punch + magic tail | 0.7 s | Frozen → Heavy Shatter |
 
-## Priority C: iaido
+## Priority C: iaido (7.2s signature ceremony, 2026-09-27 revision)
 
-| Cue ID | Layers to source or generate | Target duration | Gameplay trigger |
-| --- | --- | --- | --- |
-| `iaido_draw` | sheath friction + restrained breath | 0.35 s | anticipation |
-| `iaido_slash` | extremely fast blade cut + thin spatial tear | 0.25 s | active-frame strike |
-| `iaido_tear` | brief silence leading to widening brittle crack + low impact | 0.55 s | delayed hit |
-| `iaido_sheathe` | distinct hard sheath click, short room tail | 0.25 s | recovery |
+The audio timeline is live in `godot/scripts/combat/iaido_audio_timeline.gd`, keyed off `IaidoTuning`. All 14 cues currently use synthesised placeholders from `godot/tools/generate_iaido_placeholders.py`; replace the WAV files only — the trigger points must not move. The void must NOT sound like a sci-fi portal: no laser, no electricity, just deep airless resonance, subtle pressure and an impossible empty space.
+
+| Cue ID | Trigger (timeline) | Direction |
+| --- | --- | --- |
+| `iaido_air_suck` | 0.20s · world air disappears | fast broadband inhale, hard cut |
+| `iaido_sheath_move` | 0.80s · blade walks back to the hip | controlled metal friction |
+| `iaido_reverse_wave` | 1.20s · three shells collapse inward | reverse swell, air refraction |
+| `iaido_pressure` | 2.20s · compression hold | very low pressure tone, almost silence |
+| `iaido_lock_click` | 2.85s · sheath lock | sharp dry click, small |
+| `iaido_draw` | 2.97s · instant draw | fast bright swish, 130ms |
+| `iaido_world_cut` | 3.10s · reality tears | descending tear + low sub |
+| `iaido_void_open` | 3.40s · void exposed | deep airless resonance, slow |
+| `iaido_glass_stress` | 4.25s · surface starts failing | high creak with flutter |
+| `iaido_glass_break` | 4.58s · first shards let go | crystalline burst, not full collapse |
+| `iaido_spin` | 4.60s · two wrist revolutions | two whooshes, fast then medium |
+| `iaido_slow_sheathe` | 5.50s · blade friction slowing | friction decelerating to 0.3x |
+| `iaido_final_click` | 6.20s · FINAL CLICK | lower and heavier than the lock |
+| `iaido_reality_restore` | 6.80s · shards and void drawn back | reverse suck + tiny reconnect pulse |
+
+Music pauses at 0.00 and resumes from the same timestamp after `restore_end`; the large glass collapse at 6.25s reuses `iaido_glass_break` pitched down.
 
 ## Source and audition log template
 
