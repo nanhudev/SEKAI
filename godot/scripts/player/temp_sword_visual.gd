@@ -19,15 +19,54 @@ extends Node3D
 const IDLE_POSITION := Vector3(0.52, -0.50, -0.94)
 const IDLE_ROTATION := Vector3(0.0, 0.0, -0.18)
 
+# §21 WEAPON LOCOMOTION. A blade welded to the camera is the single fastest way
+# to make a body feel like a floating viewpoint, and it is invisible from a
+# screenshot of the world: the camera is doing all the moving correctly. These
+# are the six things the weapon has to inherit from the body it is attached to:
+#   weapon lag       the blade arrives after the body does
+#   turn lag         the blade trails a turn instead of being telepathic
+#   sprint lower     a different carrying posture, entered and left smoothly
+#   acceleration     leaving a stop tips it, arriving pushes it back
+#   landing inertia  the body going down takes the weapon with it
+#   stop settle      stopping overshoots slightly and comes back
+# Every one of them is applied AFTER the combat pose, so nothing here can fight
+# the move authoring — during a cut the pose dominates and this rides underneath.
+@export_group("Locomotion")
+@export var motion_lag := 0.10
+@export var lateral_sway := 0.055
+@export var forward_sway := 0.042
+@export var turn_sway := 0.20
+@export var sprint_drop := 0.10
+@export var sprint_roll := -0.20
+@export var landing_dip_gain := 0.008
+@export var landing_spring_k := 120.0
+@export var landing_spring_c := 13.0
+
+var _loc_vel := Vector3.ZERO
+var _loc_turn := 0.0
+var _prev_forward := Vector2.ZERO
+var _have_forward := false
+var _sprint_blend := 0.0
+var _land_dip := 0.0
+var _land_vel := 0.0
+var _loc_offset := Vector3.ZERO
+var _loc_rotation := Vector3.ZERO
+var _accel_local := 0.0
+
 const BLADE_TINT := Color(0.84, 0.92, 1.0)
 const VOID_TINT := Color(0.72, 0.85, 1.0)
 const GLINT_TINT := Color(1.0, 0.98, 0.90)
+const GRIP_TINT := Color(0.16, 0.12, 0.09)
+const GUARD_TINT := Color(0.72, 0.62, 0.35)
 const BLADE_LENGTH := 0.95
 const TRAIL_SAMPLES := 14
 const TRAIL_MIN_TIP_TRAVEL := 0.012
 
 var click_flash: MeshInstance3D
 var blade_material: StandardMaterial3D
+var grip_material: StandardMaterial3D
+var guard_material: StandardMaterial3D
+var click_material: StandardMaterial3D
 var blade_part: MeshInstance3D
 var grip_part: MeshInstance3D
 var guard_part: MeshInstance3D
@@ -50,6 +89,18 @@ var root_inverse := Transform3D.IDENTITY
 
 # How strongly the cold void behind the cut is reflected on the blade.
 var void_exposure := 0.0 : set = set_void_exposure
+
+# 吞噬. How completely the emptiness has eaten the FOREGROUND — the hand, the
+# sword, and every overlay that belongs to holding them.
+#
+# The devour used to stop at the world. That leaves the one object closest to the
+# camera as the last solid thing in the frame, which reads as a prop left on top
+# of a finished shot: the world is gone, the glass is gone, and there is still a
+# sword being held by nobody. Taking the weapon layer out with the world is what
+# makes it read as the whole reality going rather than as the backdrop going.
+#
+# Driven from the timeline, never accumulated.
+var swallowed := 0.0 : set = set_swallowed
 
 # Set for the duration of the Iaido ceremony. The director owns the transform
 # and the scabbard then, and the moveset's own scabbard prop would otherwise be
@@ -79,13 +130,17 @@ func _ready() -> void:
 	_build_glint()
 	_build_trail()
 	_build_click_flash()
+	if player != null and player.has_signal("landed"):
+		player.landed.connect(_on_player_landed)
 
 
 func _build_sword() -> void:
-	grip_part = _add_part("TEMP Grip", Vector3(0.10, 0.28, 0.10), Vector3(0, -0.18, 0), Color(0.16, 0.12, 0.09))
-	guard_part = _add_part("TEMP Guard", Vector3(0.36, 0.07, 0.11), Vector3(0, 0.01, 0), Color(0.72, 0.62, 0.35))
+	grip_part = _add_part("TEMP Grip", Vector3(0.10, 0.28, 0.10), Vector3(0, -0.18, 0), GRIP_TINT)
+	guard_part = _add_part("TEMP Guard", Vector3(0.36, 0.07, 0.11), Vector3(0, 0.01, 0), GUARD_TINT)
 	blade_part = _add_part("TEMP Blade", Vector3(0.075, BLADE_LENGTH, 0.038), Vector3(0, 0.52, 0), BLADE_TINT)
 	blade_material = blade_part.mesh.material as StandardMaterial3D
+	grip_material = grip_part.mesh.material as StandardMaterial3D
+	guard_material = guard_part.mesh.material as StandardMaterial3D
 	blade_length = BLADE_LENGTH
 	_add_void_rim()
 
@@ -175,7 +230,9 @@ func _build_click_flash() -> void:
 	flash_mesh.height = 0.09
 	var flash_material := StandardMaterial3D.new()
 	flash_material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	flash_material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
 	flash_material.albedo_color = Color(1.0, 0.98, 0.86)
+	click_material = flash_material
 	click_flash = MeshInstance3D.new()
 	click_flash.name = "Iaido Hilt Click"
 	click_flash.mesh = flash_mesh
@@ -187,11 +244,7 @@ func _build_click_flash() -> void:
 
 func set_void_exposure(value: float) -> void:
 	void_exposure = clampf(value, 0.0, 1.0)
-	if void_rim == null or blade_material == null:
-		return
-	void_rim.visible = void_exposure > 0.01
-	void_rim_material.albedo_color = Color(0.55, 0.74, 0.95, void_exposure * 0.55)
-	blade_material.albedo_color = BLADE_TINT.lerp(VOID_TINT, void_exposure * 0.55)
+	_apply_fade()
 
 
 func _add_part(part_name: String, size: Vector3, offset: Vector3, tint: Color) -> MeshInstance3D:
@@ -199,6 +252,11 @@ func _add_part(part_name: String, size: Vector3, offset: Vector3, tint: Color) -
 	mesh.size = size
 	var material := StandardMaterial3D.new()
 	material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	# Transparency is enabled at BUILD time, not switched on when the devour
+	# starts. Toggling it per frame re-sorts the material every frame and can
+	# stall on a shader recompile, and the fade has to be smooth to read as the
+	# emptiness closing over the blade.
+	material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
 	material.albedo_color = tint
 	mesh.material = material
 	var part := MeshInstance3D.new()
@@ -207,6 +265,128 @@ func _add_part(part_name: String, size: Vector3, offset: Vector3, tint: Color) -
 	part.position = offset
 	add_child(part)
 	return part
+
+
+# --- the foreground fade ----------------------------------------------------
+#
+# EVERY ALPHA IN THIS FILE IS COMPUTED IN ONE PLACE.
+#
+# Three systems write this weapon's colours: the cold rim follows
+# `void_exposure`, the edge glint follows `glint`, and the devour follows
+# `swallowed`. The director and this node are separate _process callbacks, so
+# whichever ran last used to win — and once the two are written in different
+# order the result is a flicker rather than a fade. Everything now goes through
+# `_apply_fade`, so any setter can be called in any order.
+func _apply_fade() -> void:
+	var keep := 1.0 - swallowed
+	var blade_tint := BLADE_TINT.lerp(VOID_TINT, void_exposure * 0.55)
+	if blade_material != null:
+		blade_material.albedo_color = Color(blade_tint.r, blade_tint.g, blade_tint.b, keep)
+	if grip_material != null:
+		grip_material.albedo_color = Color(GRIP_TINT.r, GRIP_TINT.g, GRIP_TINT.b, keep)
+	if guard_material != null:
+		guard_material.albedo_color = Color(GUARD_TINT.r, GUARD_TINT.g, GUARD_TINT.b, keep)
+	if void_rim_material != null:
+		void_rim_material.albedo_color = Color(0.55, 0.74, 0.95, void_exposure * 0.55 * keep)
+	# The rim is the one overlay that is also a BODY part of the void, so it is
+	# gated on both: no exposure means no rim, and a swallowed weapon has no rim
+	# to draw on. Decided here rather than in `set_void_exposure` so the devour
+	# can take the rim with it without a second setter knowing about it.
+	if void_rim != null:
+		void_rim.visible = void_exposure > 0.01 and keep > 0.001
+	if glint_material != null:
+		glint_material.albedo_color = Color(GLINT_TINT.r, GLINT_TINT.g, GLINT_TINT.b, glint * 0.42 * keep)
+	if click_material != null:
+		click_material.albedo_color = Color(1.0, 0.98, 0.86, keep)
+	if sheath_prop != null:
+		var sheath_material := sheath_prop.mesh.material as StandardMaterial3D
+		if sheath_material != null:
+			sheath_material.albedo_color = Color(0.13, 0.115, 0.13, keep)
+	# Nothing left to draw once it is gone: stop submitting the body parts at
+	# all, so the layer costs nothing and cannot flicker back on a stray alpha.
+	var solid := keep > 0.001
+	if blade_part != null:
+		blade_part.visible = solid
+	if grip_part != null:
+		grip_part.visible = solid
+	if guard_part != null:
+		guard_part.visible = solid
+
+
+func set_swallowed(value: float) -> void:
+	swallowed = clampf(value, 0.0, 1.0)
+	_apply_fade()
+
+
+# Everything here is driven by the BODY's motion in the BODY's own frame, so it
+# reads correctly whether you strafe, retreat or turn on the spot — the numbers
+# are "how much is the world sliding past me", not "what key am I holding".
+func _locomotion(delta: float) -> void:
+	if delta <= 0.0:
+		return
+	# Where the body is going, expressed locally: +x is right, -z is forward.
+	var local := player.global_basis.inverse() * player.velocity
+	var smoothed := _loc_vel.lerp(local, 1.0 - exp(-delta / maxf(motion_lag, 0.001)))
+	_accel_local = (local.z - smoothed.z) / delta
+	_loc_vel = smoothed
+
+	# Turn rate off the view vector rather than off mouse input: this has to work
+	# identically for a mouse flick, a controller stick or anything that rotates
+	# the body later, because the blade does not care why it is turning.
+	var forward := Vector2(-player.global_basis.z.x, -player.global_basis.z.z).normalized()
+	if _have_forward:
+		var crossed := _prev_forward.cross(forward)
+		var turned := wrapf(atan2(crossed, maxf(_prev_forward.dot(forward), -1.0)), -PI, PI)
+		_loc_turn = lerpf(_loc_turn, turned / delta, 1.0 - exp(-delta / 0.09))
+	_prev_forward = forward
+	_have_forward = true
+
+	# The blade ARRIVES LATE, so it leans away from where the body has got to.
+	var sideways := clampf(-_loc_vel.x / 6.0, -1.0, 1.0) * lateral_sway
+	var fore := clampf(-_loc_vel.z / 8.0, -1.0, 1.0) * forward_sway
+	var yaw := clampf(-_loc_turn / 4.0, -1.0, 1.0) * turn_sway
+	# And it tips with CHANGE in speed, which is the only part of acceleration a
+	# held-still camera can still see: leaving a stop leans it forward, arriving
+	# pushes it back onto the shoulder.
+	var accel_tip := clampf(_accel_local / 40.0, -1.0, 1.0) * forward_sway * 0.55
+
+	var want_sprint := (
+		player.is_on_floor()
+		and Input.is_action_pressed("sprint")
+		and Vector2(player.velocity.x, player.velocity.z).length() > 1.0
+	)
+	# Asymmetric on purpose: dropping into a sprint carry is immediate, coming out
+	# of it is a recovery — §23 asks for exactly that and forbids the snap back.
+	_sprint_blend = lerpf(
+		_sprint_blend, 1.0 if want_sprint else 0.0, 1.0 - exp(-delta / (0.10 if want_sprint else 0.34))
+	)
+
+	# Landing is a spring, not a lerp: the body stops and the blade keeps going,
+	# so it dips past and comes back. A monotone decay would look like a nudge.
+	_land_vel += (-landing_spring_k * _land_dip - landing_spring_c * _land_vel) * delta
+	_land_dip += _land_vel * delta
+
+	_loc_offset = Vector3(sideways, -sprint_drop * _sprint_blend + _land_dip, fore + accel_tip)
+	_loc_rotation = Vector3(-accel_tip * 0.6, yaw, sprint_roll * _sprint_blend)
+
+
+# The body owns landing (§25); the weapon just answers it. Graded so a hop barely
+# moves the blade and a real drop takes it down.
+func _on_player_landed(impact_speed: float, tier: StringName) -> void:
+	var weight: float = {&"light": 0.45, &"medium": 1.0, &"heavy": 1.7}.get(tier, 1.0)
+	_land_vel -= impact_speed * landing_dip_gain * weight * 8.0
+
+
+func locomotion_readout() -> Dictionary:
+	return {
+		"offset": _loc_offset,
+		"rotation": _loc_rotation,
+		"lateral": _loc_vel.x,
+		"forward": _loc_vel.z,
+		"turn": _loc_turn,
+		"sprint": _sprint_blend,
+		"land_dip": _land_dip,
+	}
 
 
 func _process(delta: float) -> void:
@@ -229,6 +409,7 @@ func _process(delta: float) -> void:
 	var follow := 1.0 - exp(-delta / tau)
 	pose_position = pose_position.lerp(target, follow)
 	pose_rotation = pose_rotation.lerp(target_rotation, follow)
+	_locomotion(delta)
 	if intensity > 0.02:
 		var amp := float(snapshot.tremor) * intensity
 		pose_position += Vector3(
@@ -236,8 +417,8 @@ func _process(delta: float) -> void:
 			sin(pose_time * 39.0 + 1.7),
 			sin(pose_time * 53.0 + 3.1),
 		) * amp
-	position = pose_position
-	rotation = pose_rotation
+	position = pose_position + _loc_offset
+	rotation = pose_rotation + _loc_rotation
 	# Transform from this node's space back into the WeaponRoot's space, so the
 	# scabbard and the trail can be authored in root space while parented here.
 	root_inverse = Transform3D(Basis.from_euler(pose_rotation), pose_position).affine_inverse()
@@ -279,9 +460,9 @@ func _update_glint(snapshot: Dictionary, delta: float) -> void:
 		wanted = 0.16
 	glint = lerpf(glint, wanted, minf(1.0, delta * 9.0))
 	var active := glint > 0.02
-	glint_band.visible = active and (blade_part == null or blade_part.visible)
+	glint_band.visible = active and (blade_part == null or blade_part.visible) and swallowed < 0.999
 	if active:
-		glint_material.albedo_color = Color(GLINT_TINT.r, GLINT_TINT.g, GLINT_TINT.b, glint * 0.42)
+		_apply_fade()
 
 
 func _update_trail(snapshot: Dictionary) -> void:

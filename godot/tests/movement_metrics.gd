@@ -69,6 +69,7 @@ func _run() -> void:
 	await _measure_dodge()
 	await _measure_slope()
 	await _measure_landing_tiers()
+	await _measure_weapon_locomotion()
 
 	_report()
 	if failures.is_empty():
@@ -369,6 +370,153 @@ func _measure_landing_tiers() -> void:
 	)
 
 
+# PART M §36 continued / §21. A locomotive weapon is invisible from a still: the
+# camera is moving correctly and the blade is at its idle pose. These numbers are
+# the only way to know the sword is being carried rather than pasted on.
+func _measure_weapon_locomotion() -> void:
+	var sword = player.get_node("CameraRig/LookPivot/MotionPivot/ShakePivot/WeaponRoot/TempSwordVisual")
+	if sword == null or not sword.has_method("locomotion_readout"):
+		_fail("the weapon has no locomotion readout, so §21 cannot be checked at all")
+		return
+	var flat := MovementLane.CENTER + Vector3(-2.0, 0.0, 0.0)
+	var rest_y := await _settle_at(flat)
+	await _wait(20)
+
+	# Moving must move the weapon. Magnitude is a feel question; existence is not.
+	Input.action_press(&"move_forward")
+	Input.action_press(&"sprint")
+	await _wait(30)
+	var running: Dictionary = sword.locomotion_readout()
+	Input.action_release(&"move_forward")
+	Input.action_release(&"sprint")
+	await _wait(60)
+	var idle_after: Dictionary = sword.locomotion_readout()
+	_check(
+		absf(float(running["forward"])) > 1.0,
+		"sprinting forward recorded %.2f m/s of local velocity — the weapon is not reading the body at all"
+			% float(running["forward"])
+	)
+	_check(
+		absf(Vector3(running["offset"]).z) > 0.005,
+		"running left the blade %.4fm off its pose — it is being carried by nothing"
+			% absf(Vector3(running["offset"]).z)
+	)
+	_check(
+		absf(Vector3(idle_after["offset"]).z) < 0.006,
+		"the blade never came back after the run (%.4fm) — once offset, always offset"
+			% absf(Vector3(idle_after["offset"]).z)
+	)
+
+	# Turn trail must be SIGNED, not merely present: a turn to the left has to tip
+	# the blade the other way from a turn to the right or it is decoration.
+	var left := await _spin(sword, -1.0)
+	var right := await _spin(sword, 1.0)
+	var left_yaw := Vector3(left["rotation"]).y
+	var right_yaw := Vector3(right["rotation"]).y
+	_check(
+		absf(left_yaw) > 0.004 and absf(right_yaw) > 0.004,
+		"turning did not trail the blade (left %.4f, right %.4f) — it is telepathic" % [left_yaw, right_yaw]
+	)
+	_check(
+		left_yaw * right_yaw < 0.0,
+		"both turns trailed the same way (left %.4f, right %.4f) — signed turn lag is missing"
+			% [left_yaw, right_yaw]
+	)
+
+	# Sprint carry: entered, and LEAVES SLOWER THAN IT ARRIVES (§23 no snap back).
+	var drop := await _sprint_carry(sword)
+	_check(
+		drop.lower < -0.03,
+		"sprinting did not change how the blade is carried (%.4fm) — it is the same pose at every pace"
+			% drop.lower
+	)
+	_check(
+		drop.out_ratio > 1.4,
+		"leaving the sprint took %.2fx what entering did — §23 wants a recovery, not a snap" % drop.out_ratio
+	)
+
+	# Landing inertia: the blade dips and comes BACK (a spring, not a step).
+	var heavy_dip := await _landing_dip(sword, rest_y, 5.6)
+	var hop_dip := await _landing_dip(sword, rest_y, 0.15)
+	_check(
+		heavy_dip.peak < -0.02,
+		"a 5.6m drop only took the blade %.4fm — the weapon does not weigh anything" % heavy_dip.peak
+	)
+	_check(
+		absf(heavy_dip.settled) < absf(heavy_dip.peak) * 0.6,
+		"the blade stayed down after landing (%.4fm of %.4fm) — that is a nudge, not inertia OUGHT to settle"
+			% [heavy_dip.settled, heavy_dip.peak]
+	)
+	_check(
+		absf(hop_dip.peak) < absf(heavy_dip.peak) * 0.5,
+		"a hop dipped the blade %.4fm against %.4fm for a 5.6m drop — §25's tiers are not reaching the weapon"
+			% [hop_dip.peak, heavy_dip.peak]
+	)
+	metrics["weapon"] = {
+		"run_forward": running["forward"], "run_offset": Vector3(running["offset"]).z,
+		"rest_offset": Vector3(idle_after["offset"]).z,
+		"turn_l": left_yaw, "turn_r": right_yaw,
+		"sprint_drop": drop.lower, "sprint_recover": drop.out_ratio,
+		"sprint_enter": drop.enter, "sprint_exit": drop.exit,
+		"land_peak": heavy_dip.peak, "land_settled": heavy_dip.settled, "hop_peak": hop_dip.peak,
+	}
+
+
+# Rotates the body in place and reports the weapon readout at the peak.
+func _spin(sword: Node, direction: float) -> Dictionary:
+	var worst: Dictionary = {}
+	var start := player.rotation.y
+	for i in 30:
+		player.rotation.y = start + direction * 0.05
+		await _tick()
+		var r: Dictionary = sword.locomotion_readout()
+		if worst.is_empty() or absf(Vector3(r["rotation"]).y) > absf(Vector3(worst["rotation"]).y):
+			worst = r
+	await _wait(40)
+	return worst
+
+
+func _sprint_carry(sword: Node) -> Dictionary:
+	Input.action_press(&"move_forward")
+	Input.action_press(&"sprint")
+	var blend := 0.0
+	var drop := 0.0
+	# Run to STEADY STATE, never "far enough". Cutting this loop the moment the
+	# weapon had visibly moved made the recovery ratio below report whatever the
+	# accident of the first two frames was — including a nonsense 9.67x.
+	var enter := 0
+	for i in 150:
+		await _tick()
+		enter += 1
+		blend = float(sword.locomotion_readout()["sprint"])
+		drop = minf(drop, Vector3(sword.locomotion_readout()["offset"]).y)
+		if blend >= 0.95:
+			break
+	Input.action_release(&"sprint")
+	Input.action_release(&"move_forward")
+	var exit := 0
+	for i in 240:
+		await _tick()
+		exit += 1
+		if float(sword.locomotion_readout()["sprint"]) <= 0.05:
+			break
+	# Both halves measured by the blend reaching its own steady state, so this is
+	# the authored enter/exit time constants and nothing else.
+	return {"lower": drop, "enter": enter, "exit": exit, "out_ratio": float(exit) / maxf(float(enter), 1.0)}
+
+
+func _landing_dip(sword: Node, rest_y: float, height: float) -> Dictionary:
+	await _drop_by(rest_y, height)
+	var peak := 0.0
+	for i in 30:
+		await _tick()
+		var y := Vector3(sword.locomotion_readout()["offset"]).y
+		if y < peak:
+			peak = y
+	await _wait(80)
+	return {"peak": peak, "settled": Vector3(sword.locomotion_readout()["offset"]).y}
+
+
 # Returns the y the body actually rests at here, which is the only honest datum
 # for how far to lift it.
 func _settle_at(spot: Vector3) -> float:
@@ -538,6 +686,16 @@ func _report() -> void:
 	print("    landing  %s" % [
 		", ".join(landed_seen.keys().map(func(k): return "%s %.1fm/s" % [k, landed_seen[k]]))
 		if not landed_seen.is_empty() else "(none)"
+	])
+	var w: Dictionary = metrics.get("weapon", {})
+	print("    weapon   跑动位移 %.4fm → 静止回位 %.4fm   转向拖尾 L %+.4f / R %+.4f" % [
+		w.get("run_offset", 0.0), w.get("rest_offset", 0.0),
+		w.get("turn_l", 0.0), w.get("turn_r", 0.0)
+	])
+	print("             冲刺下沉 %.4fm (进入 %d 帧 / 退出 %d 帧 = %.2fx)   落地 %.4fm → 回稳 %.4fm (跳 %.4fm)" % [
+		w.get("sprint_drop", 0.0), w.get("sprint_enter", 0), w.get("sprint_exit", 0),
+		w.get("sprint_recover", 0.0),
+		w.get("land_peak", 0.0), w.get("land_settled", 0.0), w.get("hop_peak", 0.0)
 	])
 	print("  ──────────────────────────────────────────────────────────-")
 	print("")
