@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3]
+[gd_scene load_steps=25 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/player/Player.tscn" id="1"]
 [ext_resource type="PackedScene" path="res://scenes/enemies/TechnicalDummy.tscn" id="2"]
@@ -19,6 +19,8 @@
 [ext_resource type="Script" path="res://scripts/combat/iaido_glass_layer.gd" id="21"]
 [ext_resource type="Script" path="res://scripts/combat/iaido_audio_timeline.gd" id="22"]
 [ext_resource type="Script" path="res://scripts/systems/arena_dressing.gd" id="23"]
+[ext_resource type="Script" path="res://scripts/combat/moment_of_no_moon_director.gd" id="24"]
+[ext_resource type="Script" path="res://scripts/combat/parry_debug_overlay.gd" id="25"]
 
 [sub_resource type="StandardMaterial3D" id="FloorDebugMaterial"]
 albedo_color = Color(0.82, 0.79, 0.69, 1)
@@ -124,6 +126,13 @@ script = ExtResource("21")
 [node name="IaidoDirector" type="Node" parent="."]
 process_mode = 3
 script = ExtResource("11")
+
+[node name="MomentOfNoMoonDirector" type="Node" parent="."]
+script = ExtResource("24")
+
+[node name="ParryDebugOverlay" type="CanvasLayer" parent="."]
+layer = 4
+script = ExtResource("25")
 
 [node name="IaidoTear3D" type="Node3D" parent="."]
 process_mode = 3

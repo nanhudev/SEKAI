@@ -9,10 +9,15 @@ var health_bar: ProgressBar
 var mana_bar: ProgressBar
 var stamina_bar: ProgressBar
 var status_label: Label
+var banner: Label
+var banner_until := 0.0
 var wheel: RadialWheel
 var wheel_open := false
 var pending_spell: StringName = &""
 var wheel_vector := Vector2.ZERO
+# Set by IaidoDirector. A signature skill is a performance, not a readout, so
+# the HUD drops to a whisper for the duration and comes straight back.
+var iaido_presence := 1.0
 
 
 func _ready() -> void:
@@ -27,14 +32,30 @@ func _ready() -> void:
 	stamina_bar = _make_bar(bars, "STAMINA", Color(0.7, 0.73, 0.45))
 	status_label = Label.new()
 	status_label.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_RIGHT)
-	status_label.position = Vector2(-250, -60)
-	status_label.custom_minimum_size = Vector2(230, 42)
+	status_label.position = Vector2(-330, -74)
+	status_label.custom_minimum_size = Vector2(310, 60)
 	add_child(status_label)
+	# A style must be felt, not read off a damage number. This banner is only
+	# for confirming that a window opened (ripposte, glint, enhance), and it
+	# never shows damage.
+	banner = Label.new()
+	banner.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
+	banner.position = Vector2(-160, 74)
+	banner.custom_minimum_size = Vector2(320, 30)
+	banner.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	banner.modulate.a = 0.0
+	add_child(banner)
+	combat.style_message.connect(_show_banner)
 	wheel = RadialWheel.new()
 	wheel.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
 	wheel.position = Vector2(-140, -140)
 	wheel.visible = false
 	add_child(wheel)
+
+
+func _show_banner(text: String) -> void:
+	banner.text = text
+	banner_until = Time.get_ticks_msec() / 1000.0 + 1.5
 
 
 func _make_bar(parent: VBoxContainer, caption: String, color: Color) -> ProgressBar:
@@ -82,17 +103,37 @@ func close_wheel() -> void:
 		combat.selected_spell = pending_spell
 	time_effects.reset()
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	health_bar.value = player.get("health")
 	mana_bar.value = player.get("mana")
 	stamina_bar.value = player.get("stamina")
-	status_label.text = "SWORD  ·  %s  ·  E CAST" % String(combat.selected_spell).to_upper()
+	var chain := ""
+	if combat.attack_kind in [&"light", &"sprint", &"retreat"] and combat.combo_index > 0:
+		chain = "  ·  %d/%d" % [combat.combo_index, combat.moveset.light_chain.size()]
+	var state_tag := String(CombatController.State.keys()[combat.state])
+	status_label.text = "%s\n%s  ·  %s%s  ·  E CAST %s" % [
+		combat.moveset.display_name,
+		String(combat.selected_spell).to_upper(),
+		state_tag,
+		chain,
+		("纳息 %.1fs" % combat.enhance_left) if combat.enhance_left > 0.0 else "",
+	]
+	if banner_until > 0.0:
+		var left := banner_until - Time.get_ticks_msec() / 1000.0
+		banner.modulate.a = clampf(left / 0.5, 0.0, 1.0)
+		if left <= 0.0:
+			banner_until = 0.0
+			banner.modulate.a = 0.0
 	var quiet := health_bar.value >= 100.0 and mana_bar.value >= 100.0 and stamina_bar.value >= 100.0 and combat.state == CombatController.State.IDLE
-	var opacity := 0.45 if quiet else 1.0
+	var opacity := (0.45 if quiet else 1.0) * iaido_presence
 	health_bar.modulate.a = opacity
 	mana_bar.modulate.a = opacity
 	stamina_bar.modulate.a = opacity
 	status_label.modulate.a = opacity
+
+
+func set_iaido_presence(value: float) -> void:
+	iaido_presence = clampf(value, 0.0, 1.0)
 
 
 func _exit_tree() -> void:

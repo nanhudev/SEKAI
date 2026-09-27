@@ -1,5 +1,41 @@
 # SEKAI MVP 0.1 状态
 
+## 2026-09-27 · 单手剑通用语言与三个流派原型
+
+把战斗层从"几招散装的连击"重做成**一套通用剑语言 + 流派数据改写**：`CombatController` 只认识剑语言，
+从不 `if style_id == ...`；一个流派 = 一份 `SwordMoveset` 数据（节奏、方向、取消窗口、位移、架势、反击、技能）。
+
+新增数据结构：`SwordMove` / `SwordGuardProfile` / `SwordSkill` / `SwordMoveset` / `SwordPoseSampler`，
+全部流派集中在 `moveset_library.gd` 里构建 —— 这是唯一新增流派的地方。
+武器运动从 Transform tween 换成**按招式写死的权重曲线 + 指数滞后弹簧 + 真实刀光**（14 点刀尖采样），
+解决了"剑像飘"的问题。设计文档见 `docs/COMBAT_DESIGN.md`。
+
+落地内容：
+
+- **通用层**：三段轻击（第三段改成收鞘一拍 + 快速突刺来换节奏）、Tap/Hold 分家的重击
+  （蓄力改的是**姿势伤害**不是伤害 ×2）、冲刺/后撤攻击、快速短突刺反击。
+- **防御闭环**：防御非无敌（重击双倍扣耐力、破防带相机冲击与武器后坐）；完美格挡窗口收到 **0.12s**，
+  在同一时刻给五个通道的反馈（后坐 / hitstop / 敌人中断 / 火花 / 金属瞬态），并开启 0.75s 反击窗口。
+  按住防御超出窗口**不算**完美格挡 —— 这条退化路径被测试专门锁死。
+- **藏锋流**：纳刀/拔刀红利（带刀出鞘起手 ×0.72）与"连段会打断纳刀"的节奏约束；
+  一文字 / 返刃（命中更快、空挥更慢，差 2.3 倍）/ 落月 / 断水（0.3s 绝对静止后极快横斩）；
+  截锋奖励以**刀锋微光**表现而非 UI 增益条；三技能 纳息 / 燕返（空挥无第二段）/ 断章。
+- **回风式**：四段链、命中才缩短恢复（`flow_on_hit_recovery 0.60`）、转向权 >2× 藏锋、Deflect 型防御。
+- **聚合斩**保留为 **SIGNATURE**（移出 Ultimate 槽，独立冷却，演出未改动）。
+- **无明一刻**为独立 Ultimate 原型：静默 → 单色 → 细线标记 → 一次几乎看不见的拔刀 → 纳刀 → CLICK → 同时激活。
+  四个动画钩子独立产线，**不共用聚合斩资产**。
+- **Technical Dummy** 变成测量仪器：电报环生效帧猝然闭合，可强制指定 Sweep/Heavy/Lunge，攻击 poise 让重击能打断玩家。
+- **Combat Lab** 开发面板：即时切换流派、技能冷却、强制敌人攻击、Hitstop 三档（Off/Normal/Exaggerated）、Parry Timing Debug。
+
+测试：**13 项 headless 集成测试全部通过**，其中 `moveset` / `parry_riposte` / `style` / `ultimate`
+四项为本轮新增。（期间 `iaido_integration` 曾短暂变红，原因是 Iaido 演出线正在并行改动
+`iaido_tear_3d.gd` 的 `_draw_drain()` 签名；战斗层未触碰该文件，Iaido 线改完后已自愈。）
+
+**必须明确的边界**：以上全部为技术验证。用户验收标准里的
+「阶段一：只用通用剑对 Dummy 打必须已经有趣」与「阶段二：切藏锋后不看 UI 就知道是另一把剑」
+**尚未验收** —— 本环境 Godot 无可见窗口句柄，手感类验收只能由用户在可见桌面完成。
+视觉仍为 `TempSwordVisual` 程序化姿态，**无手部、无骨骼动画**，需求见 `docs/COMBAT_ANIMATION_REQUIREMENTS.md`。
+
 ## 2026-09-27 · Iaido 演出逐帧渲染校验与修正
 
 用真实 GL 上下文把整套 7.2 秒演出逐帧渲染出来（`godot/tools/iaido_movie_renderer.gd`，用 debug-hold 把时间轴钉在精确时刻，与帧率无关），再合成 MP4（`godot/tools/encode_iaido_movie.sh`，按同一时序混入占位音轨）。产物在 `F:\SEKAI\.render\iaido_signature_ceremony.mp4`，仅用于试玩前预审，不进版本库。

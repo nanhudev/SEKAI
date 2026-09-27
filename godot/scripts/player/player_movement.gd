@@ -61,13 +61,19 @@ func _physics_process(delta: float) -> void:
 		velocity.z = combat.dodge_direction.z * combat.dodge_speed_now()
 		move_and_slide()
 		return
-	if combat.state == combat.State.IAIDO:
+	if combat.state in [combat.State.IAIDO, combat.State.ULTIMATE]:
 		velocity = Vector3.ZERO
 		return
-	var speed := tuning.sprint_speed if Input.is_action_pressed("sprint") else tuning.walk_speed
+	# Attacks do not lock movement: they scale it, and they add a lunge whose
+	# shape is authored per move. Styles that steer more (回风) simply feel freer.
+	var speed := (tuning.sprint_speed if Input.is_action_pressed("sprint") else tuning.walk_speed) * combat.movement_scale()
 	var target := direction * speed
-	if combat.state == combat.State.ATTACK and combat.attack_kind == &"light" and combat.combo_index == 3 and combat.state_time >= 0.09 and combat.state_time < 0.21:
-		target += -transform.basis.z * 4.0
-	velocity.x = move_toward(velocity.x, target.x, tuning.acceleration * delta)
-	velocity.z = move_toward(velocity.z, target.z, tuning.acceleration * delta)
+	var lunge := combat.attack_lunge_velocity()
+	if lunge != Vector3.ZERO:
+		# A lunge is an impulse, not an acceleration ramp, or it never lands.
+		velocity.x = target.x + lunge.x
+		velocity.z = target.z + lunge.z
+	else:
+		velocity.x = move_toward(velocity.x, target.x, tuning.acceleration * delta)
+		velocity.z = move_toward(velocity.z, target.z, tuning.acceleration * delta)
 	move_and_slide()
