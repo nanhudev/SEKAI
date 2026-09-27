@@ -51,6 +51,9 @@ func start_game() -> void:
 func pause_game() -> void:
 	if combat_sandbox == null:
 		return
+	var iaido: IaidoDirector = combat_sandbox.get_node("IaidoDirector")
+	if iaido.active:
+		iaido.finish_iaido()
 	combat_sandbox.get_node("AudioStateController").pause_world_audio()
 	combat_sandbox.process_mode = Node.PROCESS_MODE_DISABLED
 	pause_menu.visible = true
@@ -68,6 +71,9 @@ func resume_game() -> void:
 
 func return_to_title() -> void:
 	if combat_sandbox != null:
+		var iaido: IaidoDirector = combat_sandbox.get_node("IaidoDirector")
+		if iaido.active:
+			iaido.finish_iaido()
 		combat_sandbox.get_node("AudioStateController").resume_world_audio()
 		combat_sandbox.queue_free()
 		combat_sandbox = null
