@@ -193,13 +193,25 @@ ChatGPT Web → Blender Python → Blender MCP → GLB → Godot
 | **`VO-001..006`（泰姆）先做** | P1 | TODO | **第一批只验这 6 句**：空间声 + 可中断 + "战后把世界接回来"的节奏。成立才扩到 22 句。交 AUDIO（后端与后期）+ MAIN（Player） |
 | Dialogue Pass | P2 | DONE | 五条冻结门已过（`MAIN_STORY.md` §13）；PASS 02 只覆盖 Act I 前半第二层，**Act I 后半对白仍冻结** |
 | `TIMELINE.md` / `FACTIONS.md` / `TERMINOLOGY.md` / `NARRATIVE_BACKLOG.md` | P3 | TODO | 第一轮不建，按需再开（`QUESTS.md` 已由 `ACT1_QUESTS.md` 承担） |
+| **`ACT1_QUESTS.md` V0.2（PASS 05）** | P0 | DONE | **第一天**：§10 三条主线程（A 立足 / B 商队事故 / C 人）+ 交叉表（**B 不是任务**）/ §11 **进镇→傍晚→第一夜→第二天早晨**节奏 + 第一夜只有声音 / §12 第二天三个变化 / §13 四条新支线 **S-06..S-09** / §14 **FA-01 信号网络 8 个 × 6 渠道** / §15 四条 NON-FAILURE FAILURE / §16 任务 UI 措辞 / §17 **Readables V0.2（R-07..R-11 全文）** / §18 Paper Playtest V0.2 / §19 flag 增量 |
+| **`DIALOGUE_PASS_02.md` V0.2（PASS 05）** | P0 | DONE | 新增 **8 场（D15–D22）**：渡口干活 / 炉子 / 少了一件 / 奥伦搬柴 / 一封信 / 第一夜 / 第二天早晨 / 北门没开 + **第一次能力习得三条入口（E1 藏锋 / E2 回风 / E3 性质）** + 18 条 bark + **VO-023..034** + 关系纹理映射 |
+| **`INFORMATION_GRAPH.md`（PASS 05）** | P1 | DONE | **玩家知识 K001–K017**（来源 / H·S / 能错过吗 / 还有谁知道 / 以后咬回哪）+ **NPC 信息差表**（谁不知道什么、谁自以为知道但错）+ **关系纹理**（不是好感度）+ 三条对白纪律 |
+| `CHARACTERS.md` §14 DAILY PRESENCE | P1 | DONE | 9 位角色的**在哪 / 何时 / 做什么 / 为什么在那 / 玩家不在时**；**奥伦三层认识**（Layer1 普通 → Layer2 动作熟练 → Layer3 木桩切痕，**没人告诉他**） |
+| `MISTVALE.md` §11–§14 | P1 | DONE | **本地文化六问**（打招呼 / 外来的 / 四下钟 / 怎么看公会 / 怎么看遗迹 / 失踪不写死）+ **空间叙事层**（9 区密度 3→0 + **四处必须安静**）+ `NAR-AUDIO-10..17` + UI TEXT SPEC V0.1 |
+| **`NAR-AUDIO-10..17` V0.2 交 AUDIO** | P1 | TODO | market day / **market close** / **first night**（钟·河·酒馆·北山极低频）/ north gate alert / bell schedule / **ferry ambience** / **forge ambience（风箱要给出节奏，D16 依赖它）** / oren backyard |
 
 未决事项：`COMBAT_DESIGN.md` 与 `moveset_library.gd` 不同步（折柳/惊鸿/长风三段已实现但文档写"未实现"），请 MAIN 回写；Narrative 现按**已实现**为准。
 **Combat 同步（PASS 03 只读）**：`white_rose`（白蔷庭）当前为 **prototype** → 本轮**不写它的 Lore**（continuity rule）；三系法术已实现 `火矢/焚环`、`寒流/凝霜`、`风压/风步`，与"火=转化 / 霜=停滞 / 风=动量"的底层规则一致，已用于 §8 的生活痕迹设计。聚合斩来历仍不解释。
 
 **PASS 04 顺序调整说明**：原计划先等 MAIN Review N01 再做 Act I Quest + Dialogue 02，本轮**提前做**，原因是 ART 的 `LD-01` 已把 `NAR-01..07` + 22 个槽位的位置留好并写明「文案填内容，地编保位置」——**槽位回填是时间敏感的，等地编铺完再给就要返工**。任务与对白因此全部**锚定 LD-01 的真实坐标**（Z-01..Z-12 / C-01..C-08 / V1..V9）。
 
-**PASS 05 门**：MAIN Review 通过 `NARRATIVE_VERTICAL_SLICE_N01.md` + `ACT1_QUESTS.md` 的可实施性 → 才进 Act I 后半与 FA-01 本体。**仍不进 Act II。**
+**PASS 05 说明（第一天 / 第一夜 / 第二天早晨）**：本轮把"世界设定扩张"停掉，改为向下深化——玩家今晚睡哪、明天为什么还留在这。**THREAD B（商队事故）明确不是任务**：没有条目、没有日志、没有完成态，全靠别人随口的话拼起来。`day_index` **只能是 0 或 1**（睡一次），**不做日历、不做第三天**。
+
+**PASS 06 门**：MAIN Review 通过 `ACT1_QUESTS.md` V0.2 + `DIALOGUE_PASS_02.md` V0.2 的可实施性 → 才进 Act I 后半与 FA-01 本体。**仍不进 Act II。**
+**新增硬约束（交 MAIN / AUDIO / UI）**：
+- **第一夜不弹任何"休息"UI、不放过场、不给"新的一天"大字** —— 睡觉只是屏幕暗下去，然后声音先回来（`ACT1_QUESTS.md` §11.1）。
+- **`NAR-AUDIO-16` 风箱必须给出节奏信息**，否则 D16「跟着我的手」没法玩。
+- **`[沉默]` 必须是真实可点的选项，视觉上不比说话的选项弱**（UI TEXT SPEC）。
 **顺序硬约束**：S-05（薇尔·被划掉的那一行）**必须先于** ECHO-01 可被遇到，否则 ECHO-01 效果减半（见 `ACT1_QUESTS.md` §4.6）。
 
 ---

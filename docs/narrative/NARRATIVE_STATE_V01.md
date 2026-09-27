@@ -147,6 +147,21 @@ guarantor               : StringName   # none / garran / lia / mira
 
 ---
 
+## §5A V0.2 增量指针（PASS 05 · FIRST DAY / FIRST NIGHT）
+
+> 完整表见 `ACT1_QUESTS.md` §19。这里只记**与状态模型有关的四条纪律**，避免实现的人做反。
+
+| 纪律 | 内容 |
+| --- | --- |
+| **`day_index` 只能是 0 或 1** | 睡一次 +1。**不做日历、不做时钟、不做第三天。** 玩家想逛多久逛多久，世界不按天推进内容 |
+| **`slept_where` 不是惩罚状态** | `none / garran_hearth / outside`。露宿只让夜里低频听得更清楚，**没有 debuff、没有提示** |
+| **八个 FA-01 信号只是 flag** | 见 `ACT1_QUESTS.md` §14。**不接任务、不上 UI、不写日志、不做"5/8"进度** |
+| **关系纹理不是数值** | `Dictionary[StringName, StringName]`，见 `INFORMATION_GRAPH.md` §3。不是好感度 |
+
+**玩家知识（K001–K017）与 NPC 信息差**另见 `INFORMATION_GRAPH.md` §1–§2 —— **那边是"谁知道什么"，这边是"系统记什么"，不要混。**
+
+---
+
 ## §6 本轮明确不做
 
 - 不做天数 / 时钟 / 日历系统（FA-01 的"第五钟"是**事件**，不是时间）
