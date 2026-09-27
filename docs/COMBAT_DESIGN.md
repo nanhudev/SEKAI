@@ -641,6 +641,18 @@ Dummy 不是展示对象，是**测量仪器**。它必须让玩家能练到每�
    但清场效率会显得弱。这是一个"演出 vs 实用"的取舍，倾向保演出。
 6. **回风式的大招（长风万里）是否需要一个"位移即伤害"的机制？**
    若做，它会与闪避系统争夺语义。
+7. **hitstop 该不该冻结"时钟窗口"？（渲染演示时发现，建议优先处理）**
+   动画与招式推进走 `state_time += delta`，会被 `Engine.time_scale` 冻结；但
+   `riposte_until` / `bind_until` / `chain_expires_at` / `followup_until` /
+   `slip_until` / `skill_cooldowns` 全部走 `_now()`（`Time.get_ticks_msec()` 墙钟），
+   **不受 time_scale 影响**。
+   后果：完美格挡会触发 `perfect_guard_hitstop ≈ 0.062s`，这 62ms 里动画是静止的，
+   但窗口照走 —— 所以
+   **白蔷庭 0.30s 的缠剑窗口，玩家实际只有约 0.238s 可反应（少 21%）**，
+   藏锋 0.6s 反击窗口少约 10%。同理，重击命中的 0.085s hitstop 也会吃掉连段窗口。
+   两种修法：把 `_now()` 改成"累积 delta 的游戏时钟"（hitstop 连窗口一起冻，
+   语义最干净），或把窗口改回 `state_time` 语义。**本轮未改** —— 这会改全体手感，
+   需要实机确认后再动。
 
 ---
 
