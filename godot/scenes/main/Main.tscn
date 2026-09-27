@@ -1,6 +1,6 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=5 format=3 uid="uid://bxmgc1asnt8r6"]
 
-[ext_resource type="Script" path="res://scripts/systems/main_flow.gd" id="1"]
+[ext_resource type="Script" uid="uid://5hfy3mxkjf8x" path="res://scripts/systems/main_flow.gd" id="1"]
 [ext_resource type="PackedScene" path="res://scenes/ui/MainMenu.tscn" id="2"]
 [ext_resource type="PackedScene" path="res://scenes/ui/PauseMenu.tscn" id="3"]
 [ext_resource type="PackedScene" path="res://scenes/ui/SettingsMenu.tscn" id="4"]
@@ -9,9 +9,15 @@
 script = ExtResource("1")
 
 [node name="MainMenu" parent="." instance=ExtResource("2")]
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="PauseMenu" parent="." instance=ExtResource("3")]
 visible = false
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="SettingsMenu" parent="." instance=ExtResource("4")]
 visible = false
+grow_horizontal = 2
+grow_vertical = 2

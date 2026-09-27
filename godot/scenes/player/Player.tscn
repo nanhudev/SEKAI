@@ -56,6 +56,10 @@ fov = 75.0
 
 [node name="WeaponRoot" type="Node3D" parent="CameraRig/LookPivot/MotionPivot/ShakePivot"]
 
+[node name="SheathAnchor" type="Node3D" parent="CameraRig/LookPivot/MotionPivot/ShakePivot/WeaponRoot"]
+position = Vector3(-0.52, -0.43, -0.80)
+rotation = Vector3(0.15, -0.10, 2.25)
+
 [node name="TempSwordVisual" type="Node3D" parent="CameraRig/LookPivot/MotionPivot/ShakePivot/WeaponRoot"]
 script = ExtResource("7")
 

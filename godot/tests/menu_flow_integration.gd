@@ -31,8 +31,13 @@ func _run() -> void:
 		_fail("Settings did not return to pause")
 		return
 	main.pause_menu.resume_pressed.emit()
-	if main.pause_menu.visible or main.combat_sandbox.process_mode != Node.PROCESS_MODE_INHERIT:
+	# Main runs ALWAYS so the pause menu can still react while the world is
+	# paused; the sandbox therefore resumes as PAUSABLE, never INHERIT.
+	if main.pause_menu.visible or main.combat_sandbox.process_mode != Node.PROCESS_MODE_PAUSABLE:
 		_fail("Resume did not restore sandbox")
+		return
+	if main.process_mode != Node.PROCESS_MODE_ALWAYS:
+		_fail("Main menu flow must keep processing while the world is paused")
 		return
 	main.pause_game()
 	main.pause_menu.title_pressed.emit()

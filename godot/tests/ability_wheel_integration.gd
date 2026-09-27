@@ -8,6 +8,9 @@ func _initialize() -> void:
 func _run() -> void:
 	var scene: PackedScene = load("res://scenes/combat/CombatSandbox.tscn")
 	var world: Node3D = scene.instantiate()
+	# The sandbox grants unlimited resources for free play; the mana economy can
+	# only be checked with that grant switched off.
+	world.set("sandbox_unlimited_resources", false)
 	root.add_child(world)
 	var player: CharacterBody3D = world.get_node("Player")
 	var combat: CombatController = player.get_node("CombatController")

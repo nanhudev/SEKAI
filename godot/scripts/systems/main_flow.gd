@@ -11,6 +11,7 @@ var settings_return_to_pause := false
 
 
 func _ready() -> void:
+	process_mode = Node.PROCESS_MODE_ALWAYS
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	main_menu.start_pressed.connect(start_game)
 	main_menu.settings_pressed.connect(func() -> void: _open_settings(false))
@@ -63,7 +64,7 @@ func pause_game() -> void:
 func resume_game() -> void:
 	if combat_sandbox == null:
 		return
-	combat_sandbox.process_mode = Node.PROCESS_MODE_INHERIT
+	combat_sandbox.process_mode = Node.PROCESS_MODE_PAUSABLE
 	combat_sandbox.get_node("AudioStateController").resume_world_audio()
 	pause_menu.visible = false
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
