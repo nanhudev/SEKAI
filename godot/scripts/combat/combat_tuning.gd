@@ -4,8 +4,33 @@ class_name CombatTuning
 @export_group("Movement")
 @export var walk_speed := 5.0
 @export var sprint_speed := 8.0
-@export var acceleration := 14.0
 @export var jump_velocity := 5.2
+
+# ONE RATE USED TO ANSWER ALL THREE QUESTIONS, AND IT IS WHY THEY ALL FAILED AT
+# ONCE: accelerating, stopping and reversing are different physical events, and
+# paying for one of them necessarily paid for the others. Entering a jog felt
+# dead because the same number had to also stop a sprint inside three metres.
+#
+# Each is a RESPONSE RATE (1/s) for an exponential approach rather than a raw
+# acceleration. Two reasons: the body arrives with its speed easing in instead
+# of snapping in a straight line, and `exp(-rate * dt)` is framerate independent
+# — which matters in this engine because hitstop scales delta.
+#
+# Measured with tests/movement_metrics.gd; the gate is that file's envelope.
+@export var jog_accel_rate := 12.0      # §17 jog enters immediately
+@export var sprint_accel_rate := 8.5    # §17 sprint builds over 0.2-0.45s
+
+# Stopping and braking are deliberately NOT exponential.
+#
+# Approaching a reversed target exponentially produces a rate proportional to
+# the whole gap — from +7.7 to -8 that is 220 m/s² on the first frame, which
+# spends the forward motion in 0.05s. The pivot then exists only on paper: the
+# body teleports to a stop and *then* runs back, and the total time still looks
+# healthy, so no gate that measures the whole reversal can see it. These two are
+# CONSTANT rates so there is a brake you can actually read, and the metric that
+# proves it is separate (see movement_metrics "arrest").
+@export var stop_accel := 26.0          # §18 a settle you can feel, not a slide
+@export var brake_accel := 45.0         # §19 the visible pivot
 
 @export_group("Timing")
 @export var input_buffer := 0.15

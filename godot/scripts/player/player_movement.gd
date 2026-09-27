@@ -124,8 +124,22 @@ func _physics_process(delta: float) -> void:
 		velocity.x = target.x + lunge.x
 		velocity.z = target.z + lunge.z
 	else:
-		velocity.x = move_toward(velocity.x, target.x, tuning.acceleration * delta)
-		velocity.z = move_toward(velocity.z, target.z, tuning.acceleration * delta)
+		var wish := Vector2(target.x, target.z)
+		var now := Vector2(velocity.x, velocity.z)
+		var braking := _input_fights_motion(direction)
+		if direction.length_squared() < 0.01 or braking:
+			# Both are metered at a constant m/s²: the body has to visibly spend
+			# what it was carrying. Approaching a reversed target exponentially
+			# instead would charge the entire gap at once and arrive in 0.05s.
+			var rate := tuning.brake_accel if braking else tuning.stop_accel
+			var step := rate * delta
+			now.x = move_toward(now.x, wish.x, step)
+			now.y = move_toward(now.y, wish.y, step)
+		else:
+			var blend := 1.0 - exp(-_accel_rate() * delta)
+			now = lerp(now, wish, blend)
+		velocity.x = now.x
+		velocity.z = now.y
 	# 曳 / 缚 on something too heavy to move drags the player toward it. This rides
 	# on top of the walk solver rather than replacing it, so the player can still
 	# resist, and it decays instead of being a teleport.
@@ -153,3 +167,23 @@ func _weapon_movement_scale() -> float:
 	if chain == null:
 		return 1.0
 	return chain.movement_scale()
+
+
+# Three situations, three rates — see CombatTuning's Movement group for why one
+# number could not cover them.
+#
+# The pick depends on what the input is DOING TO THE CURRENT MOTION, not on how
+# fast we happen to be going, which is what makes the pivot answer immediately:
+# the frame the input points away from the velocity, the fastest rate engages,
+# and until then nothing is fighting to be heard over the run.
+# True while the input points AGAINST the motion — that is the pivot, and it is
+# recognised independently of how fast the body happens to be going, so the
+# fastest response engages on the exact frame the player asks for it.
+func _input_fights_motion(direction: Vector3) -> bool:
+	if direction.length_squared() < 0.01:
+		return false
+	return Vector2(velocity.x, velocity.z).dot(Vector2(direction.x, direction.z)) < 0.0
+
+
+func _accel_rate() -> float:
+	return tuning.sprint_accel_rate if Input.is_action_pressed("sprint") else tuning.jog_accel_rate
