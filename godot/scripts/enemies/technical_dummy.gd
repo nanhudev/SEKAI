@@ -13,11 +13,16 @@ extends StaticBody3D
 signal shattered
 signal attack_started(variant: int)
 signal attack_phase_changed(phase: StringName)
+signal element_stage_changed(element_id: StringName, stage: StringName)
+signal wall_impact(strength: float)
 
 enum State { IDLE, ALERT, ATTACK, STAGGER, FROZEN, DEAD }
 
 @export var max_health := 120.0
 @export var poise_limit := 50.0
+# Wind is scaled by this: the same gust throws a light enemy and barely turns a
+# heavy one. Element behaviour is about weight, not health.
+@export var weight: StringName = ElementLibrary.WEIGHT_MEDIUM
 
 @onready var hurtbox: CombatHurtbox = $Hurtbox
 @onready var core: MeshInstance3D = $Core
@@ -26,8 +31,6 @@ enum State { IDLE, ALERT, ATTACK, STAGGER, FROZEN, DEAD }
 
 var health := 120.0
 var poise := 0.0
-var frost := 0.0
-var burn := 0.0
 var state := State.IDLE
 var state_timer := 0.0
 var attack_cooldown := 1.0
@@ -45,9 +48,23 @@ var telegraph_material: StandardMaterial3D
 var telegraph_flash := 0.0
 var last_interrupt := 0.0
 
+# --- elements, as data -------------------------------------------------------
+# There is no `if element == frost` anywhere below. The rules live in
+# ElementLibrary as ElementDefinitions; this actor only decides what a stage
+# change means for a body that can stagger, freeze and be thrown into a wall.
+var element_defs: Dictionary = {}
+var elements := ElementState.new()
+var last_wall_impact := 0.0
+
 
 func _ready() -> void:
+	# Joining the group is the whole contract with 白蔷庭's Measure: the style can
+	# read the distance to anything in it without knowing what an enemy is.
+	add_to_group(CombatTuning.TARGET_GROUP)
 	health = max_health
+	element_defs = ElementLibrary.all()
+	for def in element_defs.values():
+		elements._entry(def)
 	hurtbox.owner_actor = self
 	hurtbox.hit_received.connect(_on_hit)
 	attack_hitbox.source = self
@@ -55,6 +72,42 @@ func _ready() -> void:
 	attack_hitbox.get_node("CollisionShape3D").shape = attack_shape
 	core.material_override = cue_material
 	_build_telegraph()
+
+
+# Convenience mirrors so debug UI and older tooling can still read a number.
+# The ElementState remains the single source of truth.
+var frost: float:
+	get: return elements.value(ElementLibrary.FROST)
+	set(value): elements.set_value(ElementLibrary.FROST, value)
+
+
+var burn: float:
+	get:
+		var def: ElementDefinition = element_defs.get(ElementLibrary.FIRE)
+		return 0.0 if def == null else (1.0 if elements.value(ElementLibrary.FIRE) > 0.0 else 0.0)
+	set(value):
+		var def: ElementDefinition = element_defs.get(ElementLibrary.FIRE)
+		if def != null:
+			elements.set_value(ElementLibrary.FIRE, 1.0 if value > 0.0 else 0.0)
+
+
+func element_stage(element_id: StringName) -> StringName:
+	var def: ElementDefinition = element_defs.get(element_id)
+	if def == null:
+		return &""
+	return elements.stage_name(def)
+
+
+func is_brittle() -> bool:
+	return state == State.FROZEN
+
+
+func is_alive() -> bool:
+	return state != State.DEAD
+
+
+func _clear_element(element_id: StringName) -> void:
+	elements.clear(element_id)
 
 
 func _build_telegraph() -> void:
@@ -110,19 +163,47 @@ func _process(delta: float) -> void:
 		_set_phase(&"idle")
 	if state == State.FROZEN and state_timer == 0.0:
 		state = State.ALERT
-		frost = 0.0
+		_clear_element(ElementLibrary.FROST)
 		_set_phase(&"idle")
-	if state != State.FROZEN:
-		frost = maxf(0.0, frost - delta * 4.0)
-	if burn > 0.0:
-		burn = maxf(0.0, burn - delta)
-		health -= 5.0 * delta
-		if health <= 0.0:
-			state = State.DEAD
-			visible = false
-			attack_hitbox.set_active(false)
+	_update_elements(delta)
 	core.rotation.y += delta * (0.0 if state == State.FROZEN else 0.6)
 	_update_cue(delta)
+
+
+func _update_elements(delta: float) -> void:
+	# All element bookkeeping is data-driven. This function never asks what an
+	# element "means"; it asks the ElementState what changed.
+	var report := elements.update(delta)
+	var tick := float(report["tick_damage"])
+	if tick > 0.0:
+		health -= tick
+		poise += float(report["tick_poise"])
+	for def in report["expired"]:
+		element_stage_changed.emit((def as ElementDefinition).id, &"normal")
+	for change in report["transitions"]:
+		var def: ElementDefinition = change["def"]
+		var to_stage := int(change["to"])
+		var name := def.stage_names[to_stage] if def.has_ladder() else &""
+		element_stage_changed.emit(def.id, name)
+	if last_wall_impact > 0.0:
+		last_wall_impact = maxf(0.0, last_wall_impact - delta)
+	if health <= 0.0:
+		_die()
+		return
+	if poise >= poise_limit and state != State.FROZEN:
+		poise = 0.0
+		state = State.STAGGER
+		state_timer = 0.6
+		_open_idle()
+
+
+func _die() -> void:
+	state = State.DEAD
+	attack_hitbox.set_active(false)
+	visible = false
+	hurtbox.monitorable = false
+	telegraph.visible = false
+	_set_phase(&"dead")
 
 
 func _update_cue(delta: float) -> void:
@@ -139,11 +220,13 @@ func _update_cue(delta: float) -> void:
 		telegraph_material.albedo_color = Color(0.55, 0.9, 1.0, glow)
 	else:
 		core.scale = core.scale.lerp(Vector3.ONE, minf(1.0, delta * 12.0))
+		# Tint comes from the element definitions, so adding an element never
+		# means editing the enemy again.
 		var elemental_color := Color(0.5, 0.75, 0.8)
-		if frost > 0.0:
-			elemental_color = elemental_color.lerp(Color(0.82, 0.95, 1.0), clampf(frost / 100.0, 0.0, 1.0))
-		if burn > 0.0:
-			elemental_color = elemental_color.lerp(Color(1.0, 0.37, 0.1), clampf(burn / 3.0, 0.0, 0.8))
+		for key in elements.active_ids():
+			var def: ElementDefinition = element_defs[key]
+			if def != null:
+				elemental_color = elemental_color.lerp(def.tint, 0.55)
 		cue_material.albedo_color = elemental_color
 		var flash_scale := 1.0 + telegraph_flash * 1.4
 		telegraph.scale = Vector3.ONE * flash_scale
@@ -197,63 +280,147 @@ func _start_attack() -> void:
 func _on_hit(hit: Dictionary) -> void:
 	if state == State.DEAD:
 		return
+	var element_id: StringName = hit.get("element", &"physical")
+	var def: ElementDefinition = element_defs.get(element_id)
 	var heavy: bool = float(hit.get("poise_damage", 0.0)) >= 35.0
-	if state == State.FROZEN and heavy:
+	var frozen := state == State.FROZEN
+	var frost_def: ElementDefinition = element_defs.get(ElementLibrary.FROST)
+	var frost_stage := elements.stage_index(frost_def)
+
+	# 1) The reference combo. A frozen target is brittle: the heavy follow-up is
+	#    what cashes in the setup the player built. This is the one interaction
+	#    every other one is measured against.
+	if frozen and heavy:
 		var shatter_damage := 55.0 * float(hit.get("frozen_bonus", 1.0))
 		health -= shatter_damage
-		frost = 0.0
+		_clear_element(ElementLibrary.FROST)
 		state = State.STAGGER
 		state_timer = 1.0
 		attack_hitbox.set_active(false)
 		_open_idle()
 		shattered.emit()
-	else:
-		var damage := float(hit.get("damage", 0.0))
-		if state == State.FROZEN:
-			damage *= float(hit.get("frozen_bonus", 1.0))
-		health -= damage
-		poise += float(hit.get("poise_damage", 0.0))
-		if hit.get("interrupt", false):
-			# 断章: cutting an action in half has to actually stop it.
+		if health <= 0.0:
+			_die()
+		return
+
+	# 2) Brittle Break: a heavy landing on a merely FROSTED target breaks the
+	#    brittle layer for real damage. Not Frozen — deliberately a rung earlier,
+	#    so 藏锋's heavy has a reason to exist against frost that is not Shatter.
+	if heavy and frost_stage >= 2 and frost_stage < 3:
+		damage_brittle_break(hit)
+		return
+
+	# 3) Ordinary damage.
+	var damage := float(hit.get("damage", 0.0))
+	if frozen:
+		damage *= float(hit.get("frozen_bonus", 1.0))
+	if def != null:
+		damage += def.impact_damage
+	health -= damage
+	poise += float(hit.get("poise_damage", 0.0))
+
+	if hit.get("interrupt", false):
+		# 断章: cutting an action in half has to actually stop it.
+		attack_hitbox.set_active(false)
+		attack_open = false
+		state = State.STAGGER
+		state_timer = 0.95
+		poise = 0.0
+		last_interrupt = 0.5
+		_open_idle()
+
+	if def != null:
+		_apply_element(def, hit)
+
+	if health <= 0.0:
+		_die()
+		return
+	if poise >= poise_limit and state != State.FROZEN:
+		poise = 0.0
+		state = State.STAGGER
+		state_timer = 0.6
+		_open_idle()
+
+
+func damage_brittle_break(hit: Dictionary) -> void:
+	# Frosted → a real heavy. The brittle layer shatters for posture rather than
+	# health, which is what makes Frost a setup for a stagger, not for damage.
+	var frost_def: ElementDefinition = element_defs.get(ElementLibrary.FROST)
+	var bonus := frost_def.brittle_bonus if frost_def != null else 1.0
+	var damage := float(hit.get("damage", 0.0))
+	if frost_def != null and frost_def.enables_brittle:
+		damage *= bonus
+	health -= damage
+	_clear_element(ElementLibrary.FROST)
+	poise = 0.0
+	state = State.STAGGER
+	state_timer = 0.95
+	attack_hitbox.set_active(false)
+	attack_open = false
+	last_interrupt = 0.4
+	_open_idle()
+	if health <= 0.0:
+		_die()
+
+
+func _apply_element(def: ElementDefinition, hit: Dictionary) -> void:
+	if def.has_ladder() or def.applies_per_hit > 0.0:
+		var stage := elements.apply(def, def.applies_per_hit)
+		var name := def.stage_names[stage] if def.has_ladder() else &""
+		element_stage_changed.emit(def.id, name)
+		if def.is_final_stage(stage):
+			# Frozen is a beat, not a switch-off: short, and it leaves the target
+			# brittle rather than removed from the fight.
+			state = State.FROZEN
+			state_timer = def.final_stage_duration
 			attack_hitbox.set_active(false)
 			attack_open = false
-			state = State.STAGGER
-			state_timer = 0.95
-			poise = 0.0
-			last_interrupt = 0.5
 			_open_idle()
-		if hit.get("element", &"physical") == &"frost":
-			frost += 45.0
-			if frost >= 100.0:
-				state = State.FROZEN
-				state_timer = 4.0
-				attack_hitbox.set_active(false)
-				_open_idle()
-		elif hit.get("element", &"physical") == &"fire":
-			burn = 3.0
-		elif hit.get("element", &"physical") == &"wind":
-			var source: Node3D = hit.get("source")
-			if source != null:
-				var away := global_position - source.global_position
-				away.y = 0.0
-				if away.length_squared() > 0.01:
-					global_position += away.normalized() * float(hit.get("impulse", 0.0))
+			return
+		if def.final_stage_staggers:
 			state = State.STAGGER
-			state_timer = 0.45
+			state_timer = 0.25
 			attack_hitbox.set_active(false)
 			_open_idle()
-		if poise >= poise_limit and state != State.FROZEN:
-			poise = 0.0
-			state = State.STAGGER
-			state_timer = 0.6
-			_open_idle()
-	if health <= 0.0:
-		state = State.DEAD
-		attack_hitbox.set_active(false)
-		visible = false
-		hurtbox.monitorable = false
-		telegraph.visible = false
-		_set_phase(&"dead")
+
+	# A damage-over-time element is switched ON rather than climbed, so hold it at
+	# a non-zero value and let ElementState tick it down.
+	if def.tick_damage > 0.0:
+		elements.refresh_dot(def)
+		elements.set_value(def.id, maxf(elements.value(def.id), 1.0))
+
+	if def.pushes:
+		_push_from(def, hit)
+
+
+func _push_from(def: ElementDefinition, hit: Dictionary) -> void:
+	var source: Node3D = hit.get("source")
+	if source == null:
+		return
+	var away := global_position - source.global_position
+	away.y = 0.0
+	if away.length_squared() <= 0.01:
+		return
+	var scale := ElementLibrary.push_scale_for(weight) if def.push_weight_scaled else 1.0
+	var applied := float(hit.get("impulse", 0.0)) * scale
+	if applied <= 0.0:
+		return
+	# Move for real, so a wall can stop it. Being thrown into something is the
+	# payoff of wind, and it only exists if the environment can interrupt it.
+	var collision := move_and_collide(away.normalized() * applied)
+	if collision != null:
+		var strength := clampf(applied / 4.0, 0.2, 1.5)
+		last_wall_impact = strength
+		poise += 30.0 * strength
+		state = State.STAGGER
+		state_timer = 0.75 * strength
+		wall_impact.emit(strength)
+	else:
+		state = State.STAGGER
+		state_timer = 0.45
+	attack_hitbox.set_active(false)
+	attack_open = false
+	_open_idle()
 
 
 func _open_idle() -> void:
@@ -306,8 +473,7 @@ func on_interrupted(stagger: float) -> void:
 func reset_dummy() -> void:
 	health = max_health
 	poise = 0.0
-	frost = 0.0
-	burn = 0.0
+	elements.clear_all()
 	state = State.IDLE
 	state_timer = 0.0
 	attack_cooldown = 1.0
@@ -317,6 +483,7 @@ func reset_dummy() -> void:
 	hurtbox.monitorable = true
 	telegraph.visible = true
 	last_interrupt = 0.0
+	last_wall_impact = 0.0
 	_set_phase(&"idle")
 
 
@@ -335,3 +502,39 @@ func freeze_for_debug() -> void:
 	frost = 100.0
 	attack_hitbox.set_active(false)
 	_open_idle()
+
+
+# Combat Lab preset. This deliberately goes through the SAME _on_hit path a spell
+# uses, so a state forced from the panel behaves exactly like one the player
+# created — a Lab shortcut that skipped the machinery would let a broken combo
+# look fine on the panel and fail in play.
+func apply_debug_state(label: StringName) -> bool:
+	match label:
+		&"normal":
+			elements.clear_all()
+			if state != State.DEAD:
+				state = State.IDLE
+				state_timer = 0.0
+			_open_idle()
+			return true
+		&"burning":
+			elements.clear_all()
+			_element_hit(ElementLibrary.FIRE, 1)
+			return true
+		&"frosted":
+			elements.clear_all()
+			_element_hit(ElementLibrary.FROST, 2)
+			return true
+		&"frozen":
+			elements.clear_all()
+			_element_hit(ElementLibrary.FROST, 3)
+			return true
+	return false
+
+
+func _element_hit(element_id: StringName, count: int) -> void:
+	for i in count:
+		_on_hit({
+			"damage": 0.0, "poise_damage": 0.0, "element": element_id,
+			"impulse": 0.0, "source": null, "target": self,
+		})

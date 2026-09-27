@@ -66,7 +66,13 @@ func _physics_process(delta: float) -> void:
 		return
 	# Attacks do not lock movement: they scale it, and they add a lunge whose
 	# shape is authored per move. Styles that steer more (回风) simply feel freer.
-	var speed := (tuning.sprint_speed if Input.is_action_pressed("sprint") else tuning.walk_speed) * combat.movement_scale()
+	# 风步 multiplies on top: momentum magic changes how fast you can reposition,
+	# it never teleports you.
+	var speed := (
+		(tuning.sprint_speed if Input.is_action_pressed("sprint") else tuning.walk_speed)
+		* combat.movement_scale()
+		* combat.speed_multiplier()
+	)
 	var target := direction * speed
 	var lunge := combat.attack_lunge_velocity()
 	if lunge != Vector3.ZERO:

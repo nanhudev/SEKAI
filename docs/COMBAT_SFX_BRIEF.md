@@ -97,6 +97,45 @@ The 0.3 s of near-silence is what makes the following cut land. Do not fill it w
 unrelated samples. `fw_flow_break` must be audibly worse than `fw_flow_keep` — that
 contrast is the entire style.
 
+Added this round (回风 is now fully playable, so these are gating):
+
+| Cue ID | Layers to source or generate | Target duration | Gameplay trigger |
+| --- | --- | --- | --- |
+| `fw_zheliu_slip` | the incoming attack's transient **passing by** — cloth moving, not metal contacting | 0.22 s | 折柳 lets an attack graze past |
+| `fw_zheliu_air` | a thin returning air cut, deliberately small | 0.16 s | the counter-cut after a slip |
+| `fw_jinghong` | a rising air swirl with no contact transient | 0.24 s | 惊鸿 opens the style's exits |
+| `fw_changfeng_a/b/c` | three directional cuts, **same timbre family**, panning with the cut side | 0.20 s each | the three 长风 cuts |
+
+`fw_zheliu_slip` is the one that matters most: it must sound like the attack **missed**,
+not like it was blocked. If it shares timbre with `guard_hold`, 折柳 loses its identity —
+the whole point is that the player declined the exchange instead of winning it.
+
+### 白蔷庭 · White Rose — the quiet style
+
+Critical design note: **this style barely makes impact sounds, and that is the identity.**
+A quiet style cannot be sold as "the same cuts, turned down" — it needs its own palette,
+mostly air and thin steel, with the impacts placed *precisely* rather than loudly.
+
+| Cue ID | Layers to source or generate | Target duration | Gameplay trigger |
+| --- | --- | --- | --- |
+| `wr_cut_short` | a very short, very dry steel line — no body, almost no tail | 0.12 s | 第一式 横 |
+| `wr_thrust_point` | narrow air puncture + a single clean steel tick at the tip | 0.14 s | 第二式 刺 |
+| `wr_cut_back` | reverse-direction short line, timbrally the mirror of `wr_cut_short` | 0.12 s | 第三式 反 |
+| `wr_measure_ideal` | a barely-there air change on the *player's* side — like stepping into the right place | 0.10 s | a move commits at Ideal Measure |
+| `wr_measure_crowd` | muffled, close, slightly unpleasant cloth/armour press | 0.12 s | a move commits Too Close |
+| `wr_chuanting_drive` | one long steel exit that keeps travelling — the point does not stop | 0.30 s | 穿庭 |
+| `wr_jiazhang_read` | identical first 200ms to `wr_chuanting_drive`, then a hard cancel: air cut off mid-travel | 0.20 s | 假章's feint wind-up |
+| `wr_bind_lock` | two blades settling against each other: one metal-on-metal contact, then tension | 0.28 s | the bind begins (perfect guard on 白蔷) |
+| `wr_bind_thrust` | the slide along the opponent's blade, then the point going in | 0.22 s | Light inside the bind |
+| `wr_bind_disengage` | steel leaving contact + the player's own footstep backwards | 0.26 s | Heavy inside the bind |
+
+Two hard rules for this style:
+
+1. **`wr_jiazhang_read` must share its first 200 ms with `wr_chuanting_drive`.**
+   A feint you can hear is not a feint. Record/extract them from the same source take.
+2. **`wr_measure_ideal` must be non-localisable.** If the player can tell it is a UI beep,
+   the style has become a readout. It should feel like a change in how the room sounds.
+
 ## Priority E: 无明一刻 (Moment of No-Moon) ultimate
 
 Distinct from Priority C. This ceremony's whole point is the silence and the single click.
@@ -117,6 +156,31 @@ Do **not** reuse 聚合斩's void or glass cues.
 If `mom_click` is not the loudest, loneliest sound in the sequence, the ultimate fails
 regardless of how good the rest of the mix is. Music must duck out at 0.00 and resume
 from the same timestamp after `mom_restore`.
+
+## Priority F: elements as behaviour (added 2026-09-27, combat director pass)
+
+Requirement is behavioural: **watching the game with the audio on, the three elements must
+be distinguishable without looking.** So each element needs a *state* layer that runs while
+the state is on the target, not only a cast transient.
+
+| Cue ID | Layers to source or generate | Target duration | Trigger |
+| --- | --- | --- | --- |
+| `mag_ember_cast` | short dry ignition, no whoosh | 0.18 s | 火种 |
+| `mag_burn_loop` | low, close, irregular crackle. **Irregular is mandatory** — a steady loop reads as a machine | 1.0 s loop | target is Burning |
+| `mag_burn_spread` | the crackle jumping sideways with a clear directional shift | 0.35 s | wind spreads a burning target / field |
+| `mag_frost_cast` | tight cold air intake, reverse-envelope | 0.20 s | 寒流 / 凝霜 |
+| `mag_frost_stage` | three escalating crystal ticks: chilled / frosted / frozen | 0.10 s each | frost climbs a rung |
+| `mag_shatter` | brittle crack **then** a heavy break — two events, not one | 0.34 s | Shatter |
+| `mag_brittle_break` | single dull shear, closer and drier than Shatter | 0.24 s | Brittle Break (Frosted + heavy) |
+| `mag_wind_cast` | wide, low, moving air with an audible cone edge | 0.24 s | 风压 |
+| `mag_wind_light` | the object/enemy being pushed: cloth and light debris | 0.22 s | a light target is thrown |
+| `mag_wind_heavy` | the same gust meeting a heavy target: air only, **no displacement** | 0.20 s | a heavy target resists |
+| `mag_wall_impact` | body/box hitting a hard surface, plus a small settle | 0.30 s | COMBO 2 — pushed into the wall |
+| `mag_infuse_fire` / `mag_infuse_frost` | a short material change on the blade itself, no transient | 0.16 s | the blade passes through a field |
+
+`mag_wind_light` vs `mag_wind_heavy` is the element's whole thesis in two cues: **the same
+input, an audibly different outcome.** If they sound like the same sound at different volumes,
+Wind is a damage number again.
 
 ## Source and audition log template
 

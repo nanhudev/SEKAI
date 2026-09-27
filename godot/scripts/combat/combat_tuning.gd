@@ -40,6 +40,13 @@ class_name CombatTuning
 @export var max_mana := 100.0
 @export var dodge_stamina_cost := 20.0
 
+@export_group("Targeting")
+# Anything a style may measure distance against joins this group (technical
+# dummy, future enemies, the wall-impact dummy). Membership is how Measure finds
+# an opponent without scanning the tree or the controller knowing what an enemy
+# is — the same reason the element rules live in data.
+const TARGET_GROUP := &"combat_target"
+
 @export_group("Iaido Targeting")
 @export var iaido_range := 10.0
 @export var iaido_cone_degrees := 45.0

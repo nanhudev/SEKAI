@@ -92,6 +92,11 @@ class_name SwordMove
 # starts and the pose / hitbox are mirrored, so a signature sequence is steered
 # rather than scripted.
 @export var player_aimed := false
+# 假章's feint. Every other move locks its exits until the blade has at least
+# been committed; a feint is the one exception, because cancelling the wind-up
+# IS the technique. < 1.0 = cancels unlock this far into startup, and the
+# dodge gate is pulled back with them. Default 1.0 keeps every other move honest.
+@export var feint_cancel_from := 1.0
 
 
 func total_time() -> float:

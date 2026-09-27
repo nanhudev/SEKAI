@@ -215,3 +215,53 @@ NARRATIVE / WORLD BUILDING 线启动，与 Combat Sandbox 并行，**不等待�
 - `WORLD_BIBLE.md` 新增 §9 连续性规则（**代码为准**；prototype/experimental 不写 Lore；DOCUMENTATION DEBT 清单）；`CHARACTERS.md` 新增初次相遇设计；`MISTVALE.md` 新增 §8 魔法生活痕迹。
 - 请求已编号并进板：`NAR-ART-01/02/03/04`、`NAR-AUDIO-01/02`、`NAR-MAIN-01/02`。
 - **下一步**：交 DESIGN / MAIN Review，确认可实施为 Narrative Vertical Slice。**通过前不推进 Act II、不开始 Dialogue Pass。**
+
+## COMBAT · 战斗矩阵第一版 · 2026-09-27（COMBAT 会话）
+
+本轮把"一个流派 + 一把剑"扩成 **Universal + 藏锋 + 回风（可玩）+ 白蔷庭（早期）+ 火 / 冰 / 风 + 五种剑 × 魔法交互**，并交付了第一条 **SEKAI Combat Matrix**。
+
+### 交付
+
+| 项 | 内容 |
+| --- | --- |
+| 回风式补齐 | 势(Flow) 内部值（**不加伤害**，只买恢复/转向/衔接）、流云、折柳（`SwordSkill.Kind.SLIP`，让攻击落空）、惊鸿、**长风**三段（`player_aimed` + `followup_from_start`，玩家定向、不锁动画） |
+| 白蔷庭 Prototype | **Measure**（正前方 55° 锥内 `combat_target` 分组最近者，三档：close / ideal / far → 起手、伸距、姿态变化，**零伤害加成**）、三段短链（第三式**回接第一式**，命中才开）、重击 **穿庭**（短起手 + 长伸距）、防御 = **缠剑**（完美格挡不弹开、不侧移，0.30s 三岔：轻=合围刺 / 重=脱手斩（负 lunge）/ 闪=侧步）、技能 **假章**（`feint_cancel_from`，唯一在 startup 内开出口的字段）与 **白蔷刺** |
+| 元素数据层 | `ElementDefinition` / `ElementState` / `ElementField` / `ElementLibrary`。**敌人里已无 `if element == ...`**；三系定义为**共享单例**，改 definition 行为即变 |
+| 魔法层 | `SpellDefinition` / `MagicSchool` / `MagicLibrary`，三系各 2 法术，数值与原 `.tres` 对齐 |
+| 五种交互 | Shatter（参考组）/ 风吹撞墙 / 风扩火场 / Frosted + 断水 = Brittle Break / 风步喂势 |
+| 环境占位 | `WindProps`：一面墙 + 2 个可推 `RigidBody3D`，`blow()` 真施加冲量 |
+| Combat Lab | 升级为 **style × magic × enemy state × environment 矩阵**（F8） |
+| 藏锋 P2 | 只做 **loop polish**：完美格挡（截锋）免除归鞘前摇（`guard.parry_sheath_waiver = 1.2`）。**未加任何新招**，并有测试钉住这一点 |
+| 第四剑术 坠星式 | **仅设计**（`COMBAT_DESIGN.md` §10），不实现 |
+
+### 测试
+
+- **18 项 headless 集成测试全部通过**。本轮新增：`element_magic_integration`、`white_rose_integration`、`combat_lab_integration`、`hidden_edge_loop_integration`。
+- 新增的断言都是**行为性**的，不是数值性的：
+  - 元素：改 definition 行为必须跟着变（"规则即数据"）；三系必须**结构上**不同（火无阶梯有 DOT、冰四阶、风按重量）；风必须能真推物体并撞墙。
+  - 白蔷：Measure 在三个距离上**伤害完全相同**但起手/伸距/姿态不同；第三式命中才续链；假章的出口**在自己的起手之内**打开而真招不行；缠剑三岔各自的出口，以及窗口关闭后 Heavy 必须退回普通重击。
+  - Lab：4 流派 × 3 元素**全排列**；敌人状态预设走真实 `_on_hit`；墙体距离必须在一推可达范围内。
+  - 藏锋：截锋必须**真的**让归鞘提前，且豁免不得泄漏到其它流派。
+- **稳定但非确定**：`combat_music_integration` 连续快速重跑时偶发退出即段错误（rc=139），判定仍为 PASS；单跑 3/3 rc=0。属 headless 音频设备关闭竞态。
+
+### 本轮修掉的真问题（不是测试凑数）
+
+1. `ElementLibrary` 每次调用都新建 definition → "唯一书写处"是假的，且每击都在分配资源。改为**共享单例**。
+2. `WindProps.blow()` 未压平方向 → 低头瞄准会把阵风打进地板，**俯仰角悄悄变成风的强度乘数**，且与敌人 `_push_from`（本就水平）不一致。
+3. Combat Lab 的 `wind_props` 用 `@onready` 解析 → 子节点先于父节点 `_ready`，**整个环境区是死的**；改为使用时解析。
+4. `moveset_integration` 的"riposte 窗口必须 0.5–0.9s"规则与缠剑设计冲突 → 给绑剑流派留**显式例外**（0.2–0.4s），而不是把白蔷硬掰成别的流派。
+5. 藏锋的 `guard_recoil` 只有 0.31s 生命（是镜头量），最初拿它当归鞘豁免的判据不合适 → 改为 guard 上的独立时长 `parry_sheath_waiver`。
+
+### 未验收（诚实标注）
+
+- **所有"是否有趣"的验收都没做，本环境 Godot 无可见窗口句柄**：阶段一（通用剑）、阶段二（换流派可辨）、回风"为不断势而主动跑"、白蔷"主动控制距离"、三系"只看行为能否分辨"，全部需要**动起来看**。
+- 动画：无手部、无骨骼动画（`TempSwordVisual` 程序化姿态）。本轮新增需求见 `COMBAT_ANIMATION_REQUIREMENTS.md`。
+- 音效：`COMBAT_SFX_BRIEF.md` Priority A / A2 / D / E 全未落地；本轮新增 **Priority F（元素行为音层）** 与白蔷庭 10 个 cue。
+- 环境：`WindProps` 是程序化盒子，ART 可整体替换网格。
+
+### 对账
+
+- 本会话**未** `git add -A`，只暂存战斗线文件；Iaido 演出线 / ART / AUDIO 的未提交改动仍留在各自工作区。
+- 为注册 8 个新 `class_name` 跑过 1 次 `--editor --quit`。**该次之后 `IaidoTuning.tres` 的 md5 未变**（`d8437620…`），此前记录过的 `.tres` 重写与 import 之间不是稳定因果。**Iaido 线请自行确认当前 diff 是否是自己的意图。**
+- 下一步：把"任何一行 × 任何一列"在可见桌面上跑一遍（`F8` → 切流派 → 切法术 → 切敌人状态 → 就位撞墙），
+  先回答 §53 的五个自问，再谈平衡数值。

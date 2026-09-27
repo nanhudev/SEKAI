@@ -13,6 +13,10 @@ extends CanvasLayer
 @onready var iaido: IaidoDirector = sandbox.get_node("IaidoDirector")
 @onready var ultimate: MomentOfNoMoonDirector = sandbox.get_node("MomentOfNoMoonDirector")
 @onready var parry_debug: ParryDebugOverlay = sandbox.get_node("ParryDebugOverlay")
+# NOT @onready: children are readied before the sandbox's own _ready(), which is
+# where WindProps is built. Resolving it here would leave the whole environment
+# section silently dead.
+var wind_props: WindProps
 
 const STAGES: Array[Array] = [
 	["A · Freeze", 0.25],
@@ -42,6 +46,14 @@ var status_label: Label
 var skill_buttons: Array[Button] = []
 var scrub_slider: HSlider
 var scrub_label: Label
+# The Lab is a MATRIX now, not a menu: style x magic x enemy state x environment.
+# The point is that any row can be crossed with any column in a few seconds, so
+# the 3x3 combat tendencies can actually be found rather than argued about.
+var magic_label: Label
+var enemy_label: Label
+var world_label: Label
+var spell_buttons: Array[Button] = []
+var school_buttons: Dictionary = {}
 
 
 func _ready() -> void:
@@ -85,6 +97,27 @@ func _ready() -> void:
 	_add_button(rows, "聚合斩 · Signature (SIGNATURE)", func() -> void: combat.request(&"iaido"))
 	_add_button(rows, "无明一刻 · Ultimate", func() -> void: combat.request(&"ultimate"))
 
+	# --- MAGIC -------------------------------------------------------------
+	# Magic is a school you carry, not a skill bar: pick the school, watch the
+	# blade, and check that the three behave differently without reading numbers.
+	_add_section(rows, "MAGIC")
+	magic_label = Label.new()
+	magic_label.custom_minimum_size = Vector2(280, 0)
+	magic_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	rows.add_child(magic_label)
+	for school_id in MagicLibrary.all().keys():
+		var school: MagicSchool = MagicLibrary.get_school(school_id)
+		var id: StringName = school_id
+		var button := _add_button(rows, "School · %s" % school.display_name, func() -> void: _select_school(id))
+		button.set_meta("label", "School · %s" % school.display_name)
+		school_buttons[id] = button
+	for i in 3:
+		var index := i
+		var button := _add_button(rows, "-", func() -> void: _select_spell(index))
+		spell_buttons.append(button)
+	_add_button(rows, "Cast (Quick Magic, sword stays)", func() -> void: combat.request(&"cast"))
+	_add_button(rows, "Wind Spread (blow fields + objects)", _wind_spread)
+
 	_add_section(rows, "ENEMY")
 	_add_button(rows, "Reset Enemy", _reset_enemy)
 	_add_button(rows, "Attack · Sweep (dodge check)", func() -> void: _force_attack(0))
@@ -92,6 +125,31 @@ func _ready() -> void:
 	_add_button(rows, "Attack · Lunge (position check)", func() -> void: _force_attack(2))
 	_add_button(rows, "Freeze Enemy", _freeze_enemy)
 	_add_button(rows, "Spawn Enemy", _spawn_enemy)
+
+	# --- ENEMY STATE -------------------------------------------------------
+	# The states the Sword x Magic matrix is built out of. Each one goes through
+	# the enemy's real hit path, so what the panel shows is what the player gets.
+	_add_section(rows, "ENEMY STATE")
+	enemy_label = Label.new()
+	enemy_label.custom_minimum_size = Vector2(280, 0)
+	enemy_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	rows.add_child(enemy_label)
+	for entry in [["Normal", &"normal"], ["Burning", &"burning"], ["Frosted", &"frosted"], ["Frozen", &"frozen"]]:
+		var label: StringName = entry[1]
+		_add_button(rows, "State · " + String(entry[0]), func() -> void: dummy.call("apply_debug_state", label))
+	_add_button(rows, "Shatter (FROZEN + Heavy)", _shatter)
+	_add_button(rows, "Brittle Break (FROSTED + Heavy)", _brittle_break)
+
+	# --- ENVIRONMENT -------------------------------------------------------
+	# A wall to be thrown into and light bodies that actually move. Without these
+	# Wind is a knockback number; with them it converts position into damage.
+	_add_section(rows, "ENVIRONMENT")
+	world_label = Label.new()
+	world_label.custom_minimum_size = Vector2(280, 0)
+	world_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	rows.add_child(world_label)
+	_add_button(rows, "Place for Wall Impact (Wind)", _place_for_wall_impact)
+	_add_button(rows, "Reset Wind Objects", _reset_wind_objects)
 
 	_add_section(rows, "RESOURCES")
 	unlock_button = _add_button(rows, "Unlimited Resources: ON", _toggle_unlimited)
@@ -114,6 +172,65 @@ func _add_section(parent: VBoxContainer, caption: String) -> void:
 	var label := Label.new()
 	label.text = "— " + caption + " —"
 	parent.add_child(label)
+
+
+func _refresh_magic_label() -> void:
+	if magic_label == null:
+		return
+	var school := combat.current_school()
+	if school == null:
+		magic_label.text = "no school selected"
+		return
+	var spell := combat.current_spell()
+	magic_label.text = "%s · %s\nspell: %s (%.1f mana, cast %s)\nblade: %s" % [
+		school.display_name, school.tagline,
+		spell.display_name if spell != null else "-",
+		spell.mana_cost if spell != null else 0.0,
+		"quick" if (spell != null and spell.cast_mode == SpellDefinition.Cast.QUICK) else "full",
+		"%s for %.1fs" % [combat.blade_element, combat.blade_infusion_left] if combat.is_infused() else "plain",
+	]
+	_refresh_school_buttons()
+
+
+# Both button rows are refreshed from one place so the ▸ / ● markers can never
+# disagree with the controller's actual selection.
+func _refresh_school_buttons() -> void:
+	var school := combat.current_school()
+	for id in school_buttons:
+		var button: Button = school_buttons[id]
+		var active: bool = school != null and school.id == id
+		button.text = ("▸ %s" % button.get_meta("label", String(id))) if active else ("   %s" % button.get_meta("label", String(id)))
+	for i in spell_buttons.size():
+		var button := spell_buttons[i]
+		if school == null or i >= school.spells.size():
+			button.visible = false
+			continue
+		button.visible = true
+		var spell: SpellDefinition = school.spells[i]
+		button.text = "%s %s" % [("●" if combat.spell_id == spell.id else "○"), spell.display_name]
+
+
+func _refresh_enemy_label() -> void:
+	if enemy_label == null:
+		return
+	var stages := PackedStringArray()
+	for id in [ElementLibrary.FIRE, ElementLibrary.FROST, ElementLibrary.WIND]:
+		var value := 0.0
+		var stage := &""
+		if dummy.has_method("element_stage"):
+			stage = dummy.call("element_stage", id)
+		if id == ElementLibrary.FIRE:
+			value = float(dummy.get("burn"))
+		elif id == ElementLibrary.FROST:
+			value = float(dummy.get("frost"))
+		stages.append("%s %s%s" % [
+			id, ("%.0f" % value) if id != ElementLibrary.WIND else "-",
+			(" " + stage) if stage != &"" else "",
+		])
+	var state_name: String = str(dummy.get("state"))
+	enemy_label.text = "%s  ·  brittle=%s\n%s\nwall impact %.2f" % [
+		state_name, str(dummy.call("is_brittle")), "  ·  ".join(stages), float(dummy.get("last_wall_impact")),
+	]
 
 
 func _build_iaido_section(rows: VBoxContainer) -> void:
@@ -176,6 +293,9 @@ func _process(_delta: float) -> void:
 		combat.moveset.guard.riposte_window,
 		combat.debug_state_line(),
 	]
+	_refresh_magic_label()
+	_refresh_enemy_label()
+	_refresh_world_label()
 	var lines: Array[String] = []
 	for i in combat.moveset.skills.size():
 		var skill: SwordSkill = combat.moveset.skills[i]
@@ -236,6 +356,89 @@ func _spawn_enemy() -> void:
 
 func _freeze_enemy() -> void:
 	dummy.call("freeze_for_debug")
+
+
+# --- magic ---------------------------------------------------------------
+
+func _select_school(school_id: StringName) -> void:
+	combat.select_school(school_id)
+
+
+func _select_spell(index: int) -> void:
+	var school := combat.current_school()
+	if school == null or index >= school.spells.size():
+		return
+	combat.spell_id = school.spells[index].id
+
+
+func _wind_spread() -> void:
+	# The mechanical half of Wind x Fire: widen whatever field is burning and
+	# shove the light bodies, both through the same call the spell uses.
+	var spread := combat.wind_spread()
+	world_label.text = "Wind spread: %s" % ("yes" if spread else "nothing in front to move")
+	_refresh_world_label()
+
+
+func _shatter() -> void:
+	dummy.call("apply_debug_state", &"frozen")
+	await get_tree().process_frame
+	var enemy_hitbox: CombatHitbox = dummy.get_node("AttackHitbox")
+	enemy_hitbox.set_active(false)
+	combat.finish_action()
+	combat.set_state(CombatController.State.CHARGE)
+	combat.release_heavy()
+
+
+func _brittle_break() -> void:
+	dummy.call("apply_debug_state", &"frosted")
+
+
+# --- environment ---------------------------------------------------------
+
+# Resolved on use, because the sandbox builds its environment in its own _ready.
+func _wind() -> WindProps:
+	if wind_props == null or not is_instance_valid(wind_props):
+		wind_props = sandbox.get_node_or_null("WindProps") as WindProps
+	return wind_props
+
+
+func _place_for_wall_impact() -> void:
+	player.global_position = WindProps.WALL_TEST_PLAYER
+	dummy.global_position = WindProps.WALL_TEST_TARGET
+	# Aim HORIZONTALLY at the target's centre: look_at from the eye to a target
+	# below the eye tilts the whole body down, and the wind shot with it.
+	player.look_at_from_position(
+		player.global_position,
+		dummy.global_position + Vector3(0.0, WindProps.WALL_TEST_PLAYER.y - WindProps.WALL_TEST_TARGET.y, 0.0),
+		Vector3.UP
+	)
+	var props := _wind()
+	if props != null:
+		props.reset()
+	_refresh_world_label()
+
+
+func _reset_wind_objects() -> void:
+	var props := _wind()
+	if props != null:
+		props.reset()
+	_refresh_world_label()
+
+
+func _refresh_world_label() -> void:
+	if world_label == null:
+		return
+	var props := _wind()
+	if props == null:
+		world_label.text = "no wind environment in this scene"
+		return
+	var moved := 0
+	for body in props.light_objects:
+		if is_instance_valid(body) and body.linear_velocity.length() > 0.1:
+			moved += 1
+	world_label.text = "Wall at z=%.1f  ·  light objects moving: %d/%d  ·  last wall impact %.2f" % [
+		WindProps.WALL_POSITION.z, moved, props.light_objects.size(), float(dummy.get("last_wall_impact")),
+	]
 
 
 func _toggle_slow_motion() -> void:

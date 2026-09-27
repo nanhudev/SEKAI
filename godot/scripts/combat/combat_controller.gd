@@ -60,8 +60,29 @@ var combo_index := 0
 var last_light_at := -10.0
 var selected_spell: StringName = &"frost"
 var casting_spell: StringName = &"frost"
+# --- magic, as data ----------------------------------------------------------
+var schools: Dictionary = {}
+var spell_id: StringName = &"frost_stream"
+var active_spell: SpellDefinition
+var active_field: ElementField
+var blade_infusion_left := 0.0
+var blade_element: StringName = &"physical"
+var wind_step_left := 0.0
 var iaido_ready_at := 0.0
 var ultimate_ready_at := 0.0
+
+# --- measure (白蔷庭) -------------------------------------------------------
+# Distance is read live so the player can watch the state change while they move,
+# but it is SAMPLED at commit time when a move begins: closing the gap mid-swing
+# must not retrofit the reward onto a swing that was started out of position.
+var measure_range := -1.0
+var measure_state: StringName = &""
+# Reach bonus carried into the hitbox for the move currently being committed.
+var move_reach_bonus := 0.0
+var measure_ideal_count := 0
+var bind_until := 0.0
+# 藏锋's loop closer: set by a perfect guard, waives the pre-sheath wait.
+var sheath_waive_until := 0.0
 
 # --- style state -------------------------------------------------------------
 var movesets: Dictionary = {}
@@ -139,7 +160,110 @@ func _ready() -> void:
 	_bind_mouse("light_attack", MOUSE_BUTTON_LEFT)
 	_bind_mouse("block", MOUSE_BUTTON_RIGHT)
 	movesets = SwordMovesetLibrary.build_all()
+	schools = MagicLibrary.all()
 	set_style(starting_style, true)
+	select_school(&"frost")
+
+
+# ---------------------------------------------------------------- magic data
+
+func select_school(school_id: StringName) -> bool:
+	if not schools.has(school_id):
+		return false
+	var school: MagicSchool = schools[school_id]
+	var primary := school.primary()
+	if primary == null:
+		return false
+	selected_spell = school_id
+	casting_spell = school_id
+	spell_id = primary.id
+	return true
+
+
+func current_school() -> MagicSchool:
+	# selected_spell is the school the Ability Wheel confirmed, so it — not the
+	# in-flight cast — decides what "current" means. The cast snapshots its own
+	# spell so a wheel change mid-cast cannot swap it underneath.
+	return schools.get(selected_spell)
+
+
+func current_spell() -> SpellDefinition:
+	var school := current_school()
+	if school == null:
+		return null
+	return school.get_spell(spell_id) if school.get_spell(spell_id) != null else school.primary()
+
+
+func spell_by_id(wanted: StringName) -> SpellDefinition:
+	for school in schools.values():
+		var found := (school as MagicSchool).get_spell(wanted)
+		if found != null:
+			return found
+	return null
+
+
+func is_infused() -> bool:
+	return blade_infusion_left > 0.0 and blade_element != &"physical"
+
+
+func grant_infusion(element_id: StringName, duration: float) -> void:
+	blade_infusion_left = maxf(blade_infusion_left, duration)
+	blade_element = element_id
+
+
+func _update_magic(delta: float) -> void:
+	if blade_infusion_left > 0.0:
+		blade_infusion_left = maxf(0.0, blade_infusion_left - delta)
+		if blade_infusion_left == 0.0:
+			blade_element = &"physical"
+	if wind_step_left > 0.0:
+		wind_step_left = maxf(0.0, wind_step_left - delta)
+	# Carrying the blade through a live field lights it. The sword joins the
+	# magic system by being moved through it, never by opening a menu.
+	if active_field != null and is_instance_valid(active_field) and active_field.is_alive():
+		var element := ElementLibrary.get_element(active_field.element_id)
+		if element != null and element.infusion_duration > 0.0:
+			if player.global_position.distance_to(active_field.global_position) <= active_field.radius:
+				grant_infusion(element.id, element.infusion_duration)
+
+
+func _spend_wind_step() -> void:
+	wind_step_left = 2.6
+
+
+# Wind crossing a live element carries it outward: fire spreads, frost chills
+# whatever is standing nearby. This is the mechanical reason the two elements
+# are worth combining instead of stacking.
+func wind_spread() -> bool:
+	var spread_any := false
+	var parent := player.get_parent()
+	for node in parent.get_children():
+		if node is ElementField and (node as ElementField).is_alive():
+			var field := node as ElementField
+			var element := ElementLibrary.get_element(field.element_id)
+			if element != null and element.spread_by_wind:
+				field.spread()
+				spread_any = true
+	# The gust also has to reach the world, not only the actors: pushing a crate
+	# is the visible proof that wind is force rather than damage.
+	if parent.has_node("WindProps"):
+		var props: WindProps = parent.get_node("WindProps")
+		var blown := props.blow(
+			player.global_position, -player.global_transform.basis.z, 7.0, 55.0, 6.0
+		)
+		if blown > 0:
+			spread_any = true
+	if spread_any:
+		style_message.emit("风 · 扩散")
+	return spread_any
+
+
+func speed_multiplier() -> float:
+	# 风步 is momentum, not a teleport: it changes how fast you can change where
+	# you are, and it decays.
+	if wind_step_left > 0.0:
+		return 1.28
+	return 1.0
 
 
 func _bind_key(action: StringName, key: Key) -> void:
@@ -172,13 +296,13 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif event.is_action_pressed("style_skill_3"):
 		trigger_skill(2)
 	elif event.is_action_pressed("fire_cast"):
-		selected_spell = &"fire"
+		select_school(&"fire")
 		request(&"cast")
 	elif event.is_action_pressed("frost_cast"):
-		selected_spell = &"frost"
+		select_school(&"frost")
 		request(&"cast")
 	elif event.is_action_pressed("wind_cast"):
-		selected_spell = &"wind"
+		select_school(&"wind")
 		request(&"cast")
 	elif event.is_action_pressed("dodge"):
 		request(&"dodge")
@@ -206,6 +330,9 @@ func _process(delta: float) -> void:
 			style_message.emit("纳息 · 结束")
 	_update_sheath(delta)
 	_update_flow(delta)
+	_update_magic(delta)
+	measure_range = measure_distance_now()
+	measure_state = measure_label()
 
 	match state:
 		State.ATTACK, State.RIPOSTE, State.SKILL:
@@ -251,10 +378,16 @@ func _process_charge(delta: float) -> void:
 
 func _process_cast() -> void:
 	var ability := _current_ability()
+	if ability == null:
+		finish_action()
+		return
 	var should_open := state_time >= ability.startup and state_time < ability.startup + ability.active
 	if should_open != hitbox_open:
 		hitbox_open = should_open
 		_current_spell_hitbox().set_active(should_open)
+		if should_open:
+			# Fires exactly once per cast, when the active window opens.
+			_spend_spell()
 	if state_time >= ability.startup + ability.active + ability.recovery:
 		finish_action()
 
@@ -266,7 +399,12 @@ func _update_sheath(delta: float) -> void:
 		return
 	if state == State.IDLE:
 		idle_time += delta
-		if idle_time >= moveset.sheath_delay:
+		# 截锋 shortens the wait before the sword starts going home: a clean
+		# deflect IS 藏锋's moment, so it must also feed the style's own loop.
+		var delay := moveset.sheath_delay
+		if _now() <= sheath_waive_until:
+			delay = 0.0
+		if idle_time >= delay:
 			var speed := 1.0 / maxf(moveset.sheath_time * _sheathe_time_scale(), 0.05)
 			sheath_amount = minf(1.0, sheath_amount + delta * speed)
 	else:
@@ -331,8 +469,111 @@ func reset_flow() -> void:
 
 # ------------------------------------------------------------------ requests
 
+# ------------------------------------------------------- measure (白蔷庭)
+
+# The nearest actor standing in the small cone in front of the player. Group
+# membership is the entire contract — the controller never asks what kind of
+# thing it found, exactly as it never asks what an element means.
+func measure_target() -> Node3D:
+	var best: Node3D = null
+	var best_distance := moveset.measure_max_range
+	var origin := player.global_position
+	var forward := -player.global_transform.basis.z
+	var cos_limit := cos(deg_to_rad(moveset.measure_cone_degrees))
+	for node in get_tree().get_nodes_in_group(CombatTuning.TARGET_GROUP):
+		var actor := node as Node3D
+		if actor == null or not is_instance_valid(actor):
+			continue
+		if actor.has_method("is_alive") and not actor.call("is_alive"):
+			continue
+		var to_actor := actor.global_position - origin
+		to_actor.y = 0.0
+		var distance := to_actor.length()
+		if distance <= 0.001 or distance > best_distance:
+			continue
+		if forward.dot(to_actor / distance) < cos_limit:
+			continue
+		best = actor
+		best_distance = distance
+	return best
+
+
+func measure_distance_now() -> float:
+	if not moveset.measure_enabled:
+		return -1.0
+	var target := measure_target()
+	if target == null:
+		return -1.0
+	var to_target := target.global_position - player.global_position
+	to_target.y = 0.0
+	return to_target.length()
+
+
+# &"" means "the style has no measure" or "nobody is in front of you". An empty
+# lane is not "too far" — there is simply no fight to measure yet.
+func measure_label() -> StringName:
+	if not moveset.measure_enabled or measure_range < 0.0:
+		return &""
+	if measure_range < moveset.measure_close:
+		return &"close"
+	if measure_range > moveset.measure_far:
+		return &"far"
+	return &"ideal"
+
+
+# Measure buys startup, reach and posture. It must never buy damage, or the style
+# stops being about controlling distance and becomes about standing still in the
+# right spot.
+func _apply_measure_scale(move: SwordMove) -> void:
+	move_reach_bonus = 0.0
+	if not moveset.measure_enabled:
+		return
+	match measure_label():
+		&"close":
+			move_startup_scale *= moveset.measure_close_startup_scale
+			move_poise_scale *= moveset.measure_close_poise_scale
+		&"far":
+			move_startup_scale *= moveset.measure_far_startup_scale
+			move_poise_scale *= moveset.measure_far_poise_scale
+		&"ideal":
+			move_startup_scale *= moveset.measure_ideal_startup_scale
+			move_poise_scale *= moveset.measure_ideal_poise_scale
+			# Only a properly extended point is longer: 穿庭 and 白蔷刺 gain
+			# reach, a short horizontal cut gains nothing.
+			if move.hitbox_offset.z < -1.6:
+				move_reach_bonus = moveset.measure_ideal_reach
+			measure_ideal_count += 1
+
+
+# ----------------------------------------------------------- bind (白蔷庭)
+
+# The perfect guard did not push the attacker away; it trapped the blade. The
+# player now has a very short window with three exits, and the choice is the
+# reward — not a damage number.
+func _bind_open(now: float) -> bool:
+	return moveset.guard.bind_enabled and now <= bind_until and state == State.PARRY
+
+
+func _start_bind_exit(move_id: StringName) -> bool:
+	var move := moveset.get_move(move_id)
+	if move == null:
+		return false
+	bind_until = 0.0
+	riposte_until = 0.0
+	move_startup_scale = 1.0
+	move_poise_scale = 1.0
+	attack_kind = &"bind"
+	_begin_move(move, State.RIPOSTE)
+	return true
+
+
 func request(action: StringName) -> bool:
 	var now := _now()
+	# 合围: Heavy inside the bind window cuts on the way back out. Light inside
+	# the same window is the riposte and is handled immediately below, because
+	# in a bind the deck window and the riposte window are the same window.
+	if action == &"heavy" and _bind_open(now) and moveset.guard.bind_heavy_id != &"":
+		return _start_bind_exit(moveset.guard.bind_heavy_id)
 	# Riposte is a real reward window: Light inside it always wins.
 	if action == &"light" and _riposte_open(now):
 		return _start_riposte()
@@ -353,6 +594,10 @@ func request(action: StringName) -> bool:
 func _can_cancel(action: StringName) -> bool:
 	match state:
 		State.PARRY:
+			# A bind adds one exit to the parry state: Heavy. Light and Dodge are
+			# already the other two.
+			if action == &"heavy":
+				return _bind_open(_now()) and moveset.guard.bind_heavy_id != &""
 			return action in [&"light", &"dodge", &"block"]
 		State.ATTACK, State.RIPOSTE:
 			if active_move == null:
@@ -372,13 +617,22 @@ func _can_cancel(action: StringName) -> bool:
 				+ active_move.strike
 				+ active_move.pose_span() * active_move.cancel_open * transition
 			)
+			# 假章: a feint is the ONE move whose exit opens during the wind-up.
+			# The threat is the pose; taking the pose back is the technique.
+			if active_move.feint_cancel_from < 1.0:
+				cancel_at = minf(cancel_at, effective_startup() * active_move.feint_cancel_from)
 			if state_time < cancel_at:
 				return false
 			if action == &"dodge":
 				# Dodging out is allowed once the blade has actually been
 				# committed past contact: the swing cannot be free, or attacks
 				# stop meaning anything. 回风 opens earliest, 藏锋 latest.
-				return state_time >= effective_startup() + active_move.strike * moveset.dodge_cancel_from * transition
+				# A feint pulls this gate back with its wind-up, or the style
+				# could bluff but not leave.
+				var dodge_at := effective_startup() + active_move.strike * moveset.dodge_cancel_from * transition
+				if active_move.feint_cancel_from < 1.0:
+					dodge_at = minf(dodge_at, effective_startup() * active_move.feint_cancel_from)
+				return state_time >= dodge_at
 			return action in [&"light", &"heavy", &"block"]
 		State.SKILL:
 			return action == &"dodge" and state_time >= 0.12
@@ -397,6 +651,7 @@ func finish_action() -> void:
 		_finish_skill()
 	_close_hitbox()
 	magic_circle.set_casting(false)
+	active_spell = null
 	# A whiff costs momentum. If missing were free, 回风 would just be a faster
 	# Universal and the style would have no idea behind it.
 	if (
@@ -416,6 +671,7 @@ func finish_action() -> void:
 	move_startup_override = -1.0
 	move_startup_scale = 1.0
 	move_poise_scale = 1.0
+	move_reach_bonus = 0.0
 	charge_ratio = 0.0
 	chain_active = false
 	# The chain stays open for the style's grace window even if nothing was
@@ -623,18 +879,76 @@ func _start_dodge() -> bool:
 
 
 func _start_cast() -> bool:
-	casting_spell = selected_spell
+	var school := current_school()
+	var spell := current_spell()
+	if spell == null or school == null:
+		return false
+	casting_spell = school.id
+	spell_id = spell.id
+	active_spell = spell
 	var mana: float = player.get("mana")
-	var ability := _current_ability()
-	if not player.unlimited_resources and mana < ability.mana_cost:
+	if not player.unlimited_resources and mana < spell.mana_cost:
+		active_spell = null
 		return false
 	if not player.unlimited_resources:
-		player.set("mana", mana - ability.mana_cost)
-	camera_feedback.fov_kick(1.5)
-	magic_circle.circle_color = Color(1.0, 0.55, 0.2, 0.85) if casting_spell == &"fire" else (Color(0.75, 0.8, 0.8, 0.8) if casting_spell == &"wind" else Color(0.55, 0.85, 1.0, 0.8))
+		player.set("mana", mana - spell.mana_cost)
+	camera_feedback.fov_kick(1.5 if spell.cast_mode == SpellDefinition.Cast.QUICK else 2.6)
+	# Colour comes from the element definition, not from a ternary on a string.
+	if school.element != null:
+		magic_circle.circle_color = Color(
+			school.element.tint.r, school.element.tint.g, school.element.tint.b, 0.85
+		)
+	_configure_spell_hitbox(spell)
 	magic_circle.set_casting(true)
 	set_state(State.CAST)
 	return true
+
+
+func _configure_spell_hitbox(spell: SpellDefinition) -> void:
+	var target := _current_spell_hitbox()
+	target.configure(spell.hitbox_size, spell.hitbox_offset)
+	target.damage = spell.hitbox_damage
+	target.poise_damage = spell.hitbox_poise
+	target.impulse = spell.hitbox_impulse
+	target.element = spell.element_id
+
+
+func _spend_spell() -> void:
+	# Called once per cast, when the active window opens, so a spell that leaves
+	# something behind does it exactly once.
+	var spell := active_spell if active_spell != null else current_spell()
+	if spell == null:
+		return
+	if spell.infuses_blade:
+		for school in schools.values():
+			var element: ElementDefinition = (school as MagicSchool).element
+			if element != null and element.id == spell.element_id:
+				grant_infusion(element.id, element.infusion_duration)
+				break
+	if spell.field_radius > 0.0:
+		_spawn_field(spell)
+	if spell.id == &"wind_step":
+		_spend_wind_step()
+	if spell.element_id == ElementLibrary.WIND:
+		wind_spread()
+
+
+func _spawn_field(spell: SpellDefinition) -> void:
+	if active_field != null and is_instance_valid(active_field):
+		active_field.queue_free()
+	var field := ElementField.new()
+	field.element_id = spell.element_id
+	field.radius = spell.field_radius
+	field.duration = spell.field_duration
+	field.tick_interval = spell.field_tick_interval
+	var element := ElementLibrary.get_element(spell.element_id)
+	field.setup(element, player)
+	field.position = Vector3(0.0, 0.0, -spell.field_offset)
+	player.get_parent().add_child(field)
+	field.global_position = player.global_position + (-player.global_transform.basis.z * spell.field_offset)
+	active_field = field
+	if element != null:
+		style_message.emit("%s · 区域封锁" % spell.display_name)
 
 
 func _start_signature() -> bool:
@@ -734,6 +1048,10 @@ func _begin_move(move: SwordMove, next_state: State) -> void:
 	move_mirror = 1.0
 	if move.player_aimed:
 		apply_player_aimed_mirror()
+	# Measure is sampled HERE, at the moment of commitment: walking forward during
+	# the wind-up must not retrofit an ideal-measure reward onto a swing that was
+	# started out of position.
+	_apply_measure_scale(move)
 	chain_active = attack_kind in [&"light", &"sprint", &"retreat"]
 	_write_hitbox(move, 1.0)
 	_emit_move_camera(move)
@@ -742,11 +1060,17 @@ func _begin_move(move: SwordMove, next_state: State) -> void:
 
 
 func _write_hitbox(move: SwordMove, damage_scale: float) -> void:
-	var offset := Vector3(move.hitbox_offset.x * move_mirror, move.hitbox_offset.y, move.hitbox_offset.z)
+	var offset := Vector3(
+		move.hitbox_offset.x * move_mirror,
+		move.hitbox_offset.y,
+		move.hitbox_offset.z - move_reach_bonus
+	)
 	hitbox.configure(move.hitbox_size, offset)
 	hitbox.damage = move.damage * damage_scale
 	hitbox.poise_damage = move.poise_damage * move_poise_scale
-	hitbox.element = move.element
+	# An infused blade carries its element into the cut, which is how a sword
+	# interacts with a state the magic system created.
+	hitbox.element = blade_element if is_infused() else move.element
 	hitbox.hit_delay = 0.0
 
 
@@ -860,6 +1184,12 @@ func set_style(wanted: StringName, force: bool = false) -> bool:
 	slip_until = 0.0
 	slip_skill = null
 	move_mirror = 1.0
+	move_reach_bonus = 0.0
+	bind_until = 0.0
+	sheath_waive_until = 0.0
+	measure_range = -1.0
+	measure_state = &""
+	measure_ideal_count = 0
 	edge_glint = false
 	guard_recoil = 0.0
 	parry_lateral = 0.0
@@ -1209,17 +1539,25 @@ func _perfect_guard(hit: Dictionary) -> void:
 	guard_recoil = 1.0
 	edge_glint = true
 	riposte_until = _now() + guard.riposte_window
-	if guard.parry_steer > 0.0:
-		var side := 1.0 if not Input.is_action_pressed("move_left") else -1.0
-		parry_lateral = side * guard.parry_steer
-		get_tree().create_timer(guard.parry_duration + 0.12).timeout.connect(func() -> void:
-			if is_instance_valid(self):
-				parry_lateral = 0.0
-		)
+	if guard.parry_sheath_waiver > 0.0:
+		sheath_waive_until = _now() + guard.parry_sheath_waiver
+	if guard.bind_enabled:
+		# 合围: nothing is flung away and the player does not leave the line. The
+		# blade is trapped; the next 0.3s belong to whoever decides fastest.
+		bind_until = _now() + maxf(guard.bind_deck_window, guard.riposte_window)
+	else:
+		bind_until = 0.0
+		if guard.parry_steer > 0.0:
+			var side := 1.0 if not Input.is_action_pressed("move_left") else -1.0
+			parry_lateral = side * guard.parry_steer
+			get_tree().create_timer(guard.parry_duration + 0.12).timeout.connect(func() -> void:
+				if is_instance_valid(self):
+					parry_lateral = 0.0
+			)
 	set_state(State.PARRY)
 	state_time = 0.0
 	perfect_guard_landed.emit()
-	style_message.emit("截锋 · RIPOSTE 窗口")
+	style_message.emit(guard.bind_message if guard.bind_enabled else "截锋 · RIPOSTE 窗口")
 
 
 # -------------------------------------------------------------------- helpers
@@ -1247,6 +1585,14 @@ func _retreating() -> bool:
 
 
 func _current_ability() -> AbilityData:
+	# During a cast the snapshot wins, so changing the wheel mid-cast cannot
+	# swap the spell's timings out from under it.
+	if state == State.CAST and active_spell != null:
+		return active_spell
+	var spell := current_spell()
+	if spell != null:
+		return spell
+	# Fallback to the original resources if the school table is ever empty.
 	match casting_spell:
 		&"fire": return fire_ability
 		&"wind": return wind_ability
@@ -1267,8 +1613,16 @@ func _now() -> float:
 func debug_state_line() -> String:
 	var move_name := active_move.display_name if active_move != null else "-"
 	var flow_text := " · 势=%.0f%%" % (flow_ratio() * 100.0) if moveset.flow_enabled else ""
-	return "%s · %s · %.2fs · glint=%s · sheathed=%.2f · chain=%d%s" % [
-		moveset.display_name, move_name, state_time, str(edge_glint), sheath_amount, combo_index, flow_text,
+	var measure_text := ""
+	if moveset.measure_enabled:
+		var label := measure_state
+		if label == &"":
+			label = &"-"
+		measure_text = " · 距离=%.2fm/%s" % [measure_range, label]
+	var bind_text := " · BIND" if _bind_open(_now()) else ""
+	return "%s · %s · %.2fs · glint=%s · sheathed=%.2f · chain=%d%s%s%s" % [
+		moveset.display_name, move_name, state_time, str(edge_glint), sheath_amount,
+		combo_index, flow_text, measure_text, bind_text,
 	]
 
 

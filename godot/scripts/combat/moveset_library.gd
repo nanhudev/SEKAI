@@ -10,6 +10,7 @@ class_name SwordMovesetLibrary
 const STYLE_UNIVERSAL := &"universal"
 const STYLE_HIDDEN_EDGE := &"hidden_edge"
 const STYLE_FLOWING_WIND := &"flowing_wind"
+const STYLE_WHITE_ROSE := &"white_rose"
 
 # ---------------------------------------------------------------- pose anchors
 
@@ -42,7 +43,7 @@ static func _skill(params: Dictionary) -> SwordSkill:
 
 
 static func all_styles() -> Array[StringName]:
-	return [STYLE_UNIVERSAL, STYLE_HIDDEN_EDGE, STYLE_FLOWING_WIND]
+	return [STYLE_UNIVERSAL, STYLE_HIDDEN_EDGE, STYLE_FLOWING_WIND, STYLE_WHITE_ROSE]
 
 
 static func build(style_id: StringName) -> SwordMoveset:
@@ -51,6 +52,8 @@ static func build(style_id: StringName) -> SwordMoveset:
 			return hidden_edge()
 		STYLE_FLOWING_WIND:
 			return flowing_wind()
+		STYLE_WHITE_ROSE:
+			return white_rose()
 		_:
 			return universal()
 
@@ -450,6 +453,9 @@ static func hidden_edge() -> SwordMoveset:
 	guard.glint_move_id = &"he_ichimonji"
 	guard.glint_startup_scale = 0.74
 	guard.glint_poise_scale = 1.50
+	# The loop closer. The style's whole promise is "wait for that moment", so
+	# blocking well has to COUNT as that moment.
+	guard.parry_sheath_waiver = 1.2
 	moveset.guard = guard
 	_resolve_shared(moveset)
 	return moveset
@@ -709,6 +715,273 @@ static func flowing_wind() -> SwordMoveset:
 	guard.glint_move_id = &"fw_l3"
 	guard.glint_startup_scale = 0.82
 	guard.glint_poise_scale = 1.30
+	moveset.guard = guard
+	_resolve_shared(moveset)
+	return moveset
+
+
+# ============================================================== WHITE ROSE
+# 白蔷庭剑术 · White Rose School — "win with distance".
+#
+# The third style asks a question neither of the others asks. 藏锋 is TIMING
+# (stop, then burst), 回风 is MOVEMENT (never let the sword stop), 白蔷 is
+# DISTANCE (make the opponent fight at your measure or not at all).
+#
+# Consequences that follow from that, and are the reason this is a style rather
+# than a reskin:
+#   · no big swings — the whole chain is short cut → point thrust → backhand cut
+#   · the third cut is NOT a finisher; it keeps the threat alive and feeds back
+#     into the chain, because a finisher would end the conversation the style is
+#     trying to keep at its own range
+#   · the heavy 穿庭 rewards a fully extended point and punishes crowding
+#   · the guard BINDS: a perfect guard does not throw the attacker away, it traps
+#     the blade and hands the player three exits
+static func white_rose() -> SwordMoveset:
+	var moveset := SwordMoveset.new()
+	moveset.style_id = STYLE_WHITE_ROSE
+	moveset.display_name = "白蔷庭剑术 · White Rose"
+	moveset.tagline = "Win with distance — measure, point, bind."
+	# Point already on the line, blade compact: the style never shows a big shape.
+	moveset.idle_pose = Vector3(0.30, -0.34, -1.00)
+	moveset.idle_pose_rot = Vector3(-0.08, 0.06, 0.30)
+
+	var moves := {}
+
+	# 第一式 横 — a SHORT crossing cut. Deliberately the smallest hitbox in the
+	# game: it exists to keep the point alive at close measure, not to sweep.
+	moves[&"wr_l1"] = _move(&"wr_l1", "白蔷 · 横", {
+		"startup": 0.078, "strike": 0.070, "follow_time": 0.055, "recovery": 0.168,
+		"damage": 13.0, "poise_damage": 13.0, "hitstop": 0.020,
+		"anchor": Vector3(0.26, -0.34, -0.96), "anchor_rot": Vector3(-0.04, 0.10, 0.42),
+		"wind": Vector3(0.40, -0.32, -0.94), "wind_rot": Vector3(0.02, -0.10, -0.10),
+		"contact": Vector3(-0.24, -0.34, -1.06), "contact_rot": Vector3(0.02, 0.24, 0.80),
+		"follow": Vector3(-0.34, -0.38, -1.02), "follow_rot": Vector3(0.04, 0.30, 0.94),
+		"recover": Vector3(0.30, -0.34, -1.00), "recover_rot": Vector3(-0.08, 0.06, 0.32),
+		"anticipation_power": 2.4, "strike_power": 3.4, "follow_power": 1.8,
+		"recovery_power": 2.2, "follow_overshoot": 0.03, "recover_sag": 0.004,
+		"lunge": 0.22, "lunge_lead": 0.35, "steer": 0.52,
+		"camera_impulse": Vector2(-0.003, 0.002), "camera_roll": 1.0, "fov_kick": 1.0,
+		"hitbox_size": Vector3(2.0, 0.9, 1.0), "hitbox_offset": Vector3(0.0, -0.20, -1.05),
+	})
+
+	# 第二式 刺 — the point. Long, narrow, and it commits straight: steering drops
+	# because a thrust that can be walked sideways is not a thrust.
+	moves[&"wr_l2"] = _move(&"wr_l2", "白蔷 · 刺", {
+		"startup": 0.072, "strike": 0.076, "follow_time": 0.050, "recovery": 0.172,
+		"damage": 15.0, "poise_damage": 18.0, "hitstop": 0.024,
+		"anchor": Vector3(0.22, -0.30, -1.02), "anchor_rot": Vector3(-0.10, 0.06, 0.30),
+		"wind": Vector3(0.34, -0.26, -0.88), "wind_rot": Vector3(-0.22, 0.08, 0.20),
+		"contact": Vector3(0.14, -0.24, -1.44), "contact_rot": Vector3(-0.58, 0.04, 0.10),
+		"follow": Vector3(0.12, -0.26, -1.56), "follow_rot": Vector3(-0.66, 0.04, 0.08),
+		"recover": Vector3(0.30, -0.34, -1.00), "recover_rot": Vector3(-0.10, 0.06, 0.28),
+		"anticipation_power": 2.8, "strike_power": 4.2, "follow_power": 1.2,
+		"recovery_power": 2.4, "recover_sag": 0.005,
+		"lunge": 0.46, "lunge_lead": 0.20, "steer": 0.30,
+		"camera_impulse": Vector2(0.0, 0.008), "fov_kick": 2.4,
+		"hitbox_size": Vector3(0.7, 0.8, 2.3), "hitbox_offset": Vector3(0.0, -0.18, -1.72),
+	})
+
+	# 第三式 反 — the backhand cut that does NOT finish. Recovery is the shortest
+	# in the school and connecting feeds back into 第一式, so the chain stays open
+	# instead of resolving. "Keeps the threat alive" is a mechanic here, not a
+	# description: the follow-up only opens on contact, so a whiff does end it.
+	moves[&"wr_l3"] = _move(&"wr_l3", "白蔷 · 反", {
+		"startup": 0.070, "strike": 0.068, "follow_time": 0.048, "recovery": 0.150,
+		"damage": 16.0, "poise_damage": 15.0, "hitstop": 0.024,
+		"anchor": Vector3(-0.26, -0.36, -1.00), "anchor_rot": Vector3(0.04, 0.26, 0.84),
+		"wind": Vector3(-0.40, -0.34, -0.94), "wind_rot": Vector3(0.06, 0.34, 1.02),
+		"contact": Vector3(0.30, -0.30, -1.08), "contact_rot": Vector3(-0.06, -0.26, -0.62),
+		"follow": Vector3(0.40, -0.34, -1.04), "follow_rot": Vector3(-0.08, -0.34, -0.76),
+		"recover": Vector3(0.30, -0.34, -1.00), "recover_rot": Vector3(-0.08, 0.06, 0.32),
+		"anticipation_power": 2.6, "strike_power": 3.4, "follow_power": 1.8,
+		"recovery_power": 3.0, "follow_overshoot": 0.03, "recover_sag": 0.004,
+		"lunge": 0.24, "lunge_lead": 0.30, "steer": 0.50,
+		"camera_impulse": Vector2(0.003, 0.002), "camera_roll": -1.0, "fov_kick": 1.0,
+		"hitbox_size": Vector3(1.9, 0.9, 1.0), "hitbox_offset": Vector3(0.0, -0.20, -1.06),
+		# Contact feeds the chain back to the top instead of ending on a finisher.
+		"on_hit_next_startup_scale": 0.84,
+		"followup_id": &"wr_l1", "followup_window": 0.42,
+	})
+
+	# Heavy · 穿庭 — a very SHORT wind-up for a heavy, and almost no lunge lead,
+	# because the point is the reach rather than the step. At ideal measure the
+	# posture multiplier turns it into a posture break; face-hugging it is merely
+	# an ordinary heavy. That asymmetry is the whole style in one move.
+	moves[&"wr_chuanting"] = _move(&"wr_chuanting", "穿庭", {
+		"startup": 0.135, "strike": 0.090, "follow_time": 0.095, "recovery": 0.250,
+		"damage": 26.0, "poise_damage": 34.0, "hitstop": 0.040,
+		"charged_damage_bonus": 1.25, "charged_poise_bonus": 1.50,
+		"anchor": Vector3(0.24, -0.28, -1.02), "anchor_rot": Vector3(-0.12, 0.06, 0.28),
+		"wind": Vector3(0.42, -0.22, -0.78), "wind_rot": Vector3(-0.34, 0.10, 0.16),
+		"contact": Vector3(0.10, -0.22, -1.78), "contact_rot": Vector3(-0.74, 0.02, 0.06),
+		"follow": Vector3(0.08, -0.24, -1.94), "follow_rot": Vector3(-0.82, 0.02, 0.04),
+		"recover": Vector3(0.30, -0.34, -1.00), "recover_rot": Vector3(-0.10, 0.06, 0.28),
+		"anticipation_power": 3.2, "strike_power": 4.6, "follow_power": 1.1,
+		"recovery_power": 2.6, "recover_sag": 0.006,
+		"lunge": 1.10, "lunge_lead": 0.10, "steer": 0.25,
+		"camera_impulse": Vector2(0.0, 0.012), "fov_kick": 3.6,
+		"hitbox_size": Vector3(0.8, 1.0, 3.2), "hitbox_offset": Vector3(0.0, -0.14, -2.20),
+	})
+
+	# Bind exit · Light → Riposte Thrust. Stay inside the measure and answer.
+	moves[&"wr_bind_thrust"] = _move(&"wr_bind_thrust", "白蔷 · 合围刺", {
+		"startup": 0.052, "strike": 0.062, "follow_time": 0.045, "recovery": 0.215,
+		"damage": 22.0, "poise_damage": 26.0, "hitstop": 0.034,
+		"anchor": Vector3(0.20, -0.30, -1.08), "anchor_rot": Vector3(-0.14, 0.04, 0.26),
+		"wind": Vector3(0.32, -0.26, -0.90), "wind_rot": Vector3(-0.26, 0.06, 0.18),
+		"contact": Vector3(0.10, -0.24, -1.52), "contact_rot": Vector3(-0.62, 0.02, 0.08),
+		"follow": Vector3(0.08, -0.26, -1.64), "follow_rot": Vector3(-0.70, 0.02, 0.06),
+		"recover": Vector3(0.30, -0.34, -1.00), "recover_rot": Vector3(-0.10, 0.06, 0.28),
+		"anticipation_power": 3.0, "strike_power": 4.4, "follow_power": 1.2,
+		"recovery_power": 2.4, "recover_sag": 0.005,
+		"lunge": 0.55, "lunge_lead": 0.15, "steer": 0.30,
+		"camera_impulse": Vector2(0.0, 0.009), "fov_kick": 2.8,
+		"hitbox_size": Vector3(0.7, 0.8, 2.4), "hitbox_offset": Vector3(0.0, -0.16, -1.78),
+	})
+
+	# Bind exit · Heavy → Disengage Cut. The opposite answer: cut WHILE leaving,
+	# so the negative lunge is the move. This is why the bind is a decision —
+	# the two Light/Heavy exits resolve in opposite directions.
+	moves[&"wr_bind_disengage"] = _move(&"wr_bind_disengage", "白蔷 · 脱手斩", {
+		"startup": 0.080, "strike": 0.082, "follow_time": 0.080, "recovery": 0.250,
+		"damage": 22.0, "poise_damage": 20.0, "hitstop": 0.032,
+		"anchor": Vector3(0.16, -0.32, -1.02), "anchor_rot": Vector3(-0.10, 0.04, 0.28),
+		"wind": Vector3(0.30, -0.28, -0.90), "wind_rot": Vector3(-0.14, 0.06, 0.22),
+		"contact": Vector3(-0.30, -0.36, -1.16), "contact_rot": Vector3(0.06, 0.28, 0.90),
+		"follow": Vector3(-0.40, -0.42, -1.10), "follow_rot": Vector3(0.08, 0.36, 1.06),
+		"recover": Vector3(0.30, -0.34, -1.00), "recover_rot": Vector3(-0.08, 0.06, 0.32),
+		"anticipation_power": 2.6, "strike_power": 3.6, "follow_power": 1.9,
+		"recovery_power": 2.2, "follow_overshoot": 0.05, "recover_sag": 0.005,
+		# Negative lunge: the cut happens on the way OUT.
+		"lunge": -0.95, "lunge_lead": 0.10, "steer": 0.45,
+		"camera_impulse": Vector2(0.004, 0.004), "camera_roll": -1.6, "fov_kick": 1.4,
+		"hitbox_size": Vector3(2.2, 1.2, 1.6), "hitbox_offset": Vector3(0.0, -0.22, -1.28),
+	})
+
+	# Skill 假章 — the feint. A wind-up that is indistinguishable from 穿庭 until
+	# the moment it is not. `feint_cancel_from` is the only field in the whole
+	# move vocabulary that opens an exit DURING the wind-up; that is precisely
+	# what a feint is, and why it needs its own flag rather than a tuning value.
+	moves[&"wr_jiazhang"] = _move(&"wr_jiazhang", "假章", {
+		"startup": 0.200, "strike": 0.070, "follow_time": 0.050, "recovery": 0.160,
+		"damage": 12.0, "poise_damage": 12.0, "hitstop": 0.020,
+		"anchor": Vector3(0.24, -0.28, -1.02), "anchor_rot": Vector3(-0.12, 0.06, 0.28),
+		"wind": Vector3(0.42, -0.22, -0.78), "wind_rot": Vector3(-0.34, 0.10, 0.16),
+		"contact": Vector3(0.12, -0.24, -1.42), "contact_rot": Vector3(-0.54, 0.04, 0.10),
+		"follow": Vector3(0.10, -0.26, -1.50), "follow_rot": Vector3(-0.60, 0.04, 0.08),
+		"recover": Vector3(0.30, -0.34, -1.00), "recover_rot": Vector3(-0.10, 0.06, 0.28),
+		# High anticipation: the pose barely moves, so the bluff reads as a real
+		# commitment right up to the moment the player takes it back.
+		"anticipation_power": 4.0, "strike_power": 3.8, "follow_power": 1.4,
+		"lunge": 0.30, "lunge_lead": 0.20, "steer": 0.35,
+		"fov_kick": 1.2,
+		"hitbox_size": Vector3(0.8, 0.8, 2.0), "hitbox_offset": Vector3(0.0, -0.18, -1.50),
+		"feint_cancel_from": 0.55,
+	})
+
+	# Skill 白蔷刺 — precision, expressed spatially: the narrowest long hitbox in
+	# the game. It is easy to miss and hard to aim, and at ideal measure the
+	# posture multiplier carries it past a break threshold.
+	moves[&"wr_baqiangci"] = _move(&"wr_baqiangci", "白蔷刺", {
+		"startup": 0.045, "strike": 0.060, "follow_time": 0.045, "recovery": 0.205,
+		"damage": 22.0, "poise_damage": 30.0, "hitstop": 0.038,
+		"anchor": Vector3(0.20, -0.30, -1.04), "anchor_rot": Vector3(-0.14, 0.04, 0.26),
+		"wind": Vector3(0.30, -0.28, -0.92), "wind_rot": Vector3(-0.20, 0.06, 0.20),
+		"contact": Vector3(0.08, -0.22, -1.66), "contact_rot": Vector3(-0.68, 0.02, 0.06),
+		"follow": Vector3(0.06, -0.24, -1.78), "follow_rot": Vector3(-0.76, 0.02, 0.04),
+		"recover": Vector3(0.30, -0.34, -1.00), "recover_rot": Vector3(-0.10, 0.06, 0.28),
+		"anticipation_power": 3.4, "strike_power": 5.0, "follow_power": 1.0,
+		"recovery_power": 2.6, "recover_sag": 0.005,
+		"lunge": 0.60, "lunge_lead": 0.12, "steer": 0.26,
+		"camera_impulse": Vector2(0.0, 0.010), "fov_kick": 3.2,
+		"hitbox_size": Vector3(0.55, 0.7, 2.6), "hitbox_offset": Vector3(0.0, -0.15, -1.92),
+	})
+
+	moveset.moves = moves
+	# Three cuts, none of them a finisher. The chain is short on purpose: the
+	# style is not trying to end the fight, it is trying to hold the range.
+	moveset.light_chain = [&"wr_l1", &"wr_l2", &"wr_l3"]
+	moveset.heavy_id = &"wr_chuanting"
+	moveset.sprint_light_id = &"uni_sprint_light"
+	moveset.retreat_light_id = &"uni_retreat_light"
+	moveset.riposte_id = &"wr_bind_thrust"
+	# No signature and no ultimate yet. The brief asked for a prototype, and
+	# inventing a ceremony before the Measure loop is proven would be exactly the
+	# content-first mistake this round is meant to avoid.
+	moveset.signature_id = &""
+	moveset.ultimate_id = &""
+	moveset.skills = [
+		_skill({
+			"id": &"wr_jiazhang", "display_name": "假章", "kind": SwordSkill.Kind.ATTACK,
+			"cooldown": 6.0, "move_id": &"wr_jiazhang",
+			"note": "像穿庭一样的起手，但在剑真正出去之前就能收回。骗格挡、骗反击用。",
+		}),
+		_skill({
+			"id": &"wr_baqiangci", "display_name": "白蔷刺", "kind": SwordSkill.Kind.ATTACK,
+			"cooldown": 7.0, "move_id": &"wr_baqiangci",
+			"note": "极窄极长的精准刺击。理想距离下姿态伤害会过线，贴脸则形同虚设。",
+		}),
+	]
+
+	# Rhythm: 白蔷 commits hardest and turns slowest. It is the style that loses
+	# the most by being in the wrong place, so it must not also be nimble.
+	moveset.combo_window = 0.50
+	moveset.dodge_cancel_from = 0.46
+	moveset.flow_on_hit_recovery = 1.0
+	moveset.pose_stiffness = 112.0
+	moveset.pose_damping = 0.95
+	# Steady hands and a thin trail: precision reads as less noise, not more.
+	moveset.tremor = 0.0022
+	moveset.trail_width = 0.018
+	moveset.sheath_enabled = false
+
+	# Measure. 1.50m is where the point stops having room; 3.20m is where it
+	# stops arriving. Between them the attack starts faster, reaches further and
+	# breaks posture harder — and nowhere does it simply hit for more.
+	moveset.measure_enabled = true
+	moveset.measure_close = 1.50
+	moveset.measure_far = 3.20
+	moveset.measure_cone_degrees = 55.0
+	moveset.measure_max_range = 6.0
+	moveset.measure_ideal_startup_scale = 0.80
+	moveset.measure_ideal_poise_scale = 1.55
+	moveset.measure_ideal_reach = 0.30
+	moveset.measure_close_startup_scale = 1.25
+	moveset.measure_close_poise_scale = 0.70
+	moveset.measure_far_startup_scale = 1.20
+	moveset.measure_far_poise_scale = 0.85
+
+	var guard := SwordGuardProfile.new()
+	# Guard · Bind. The point stays on the line and the profile stays small: this
+	# style does not cover up, it contests the measure.
+	guard.pose = Vector3(0.22, -0.30, -1.06)
+	guard.pose_rot = Vector3(-0.10, 0.04, 0.30)
+	guard.damage_multiplier = 0.34
+	guard.stamina_per_hit = 11.0
+	guard.heavy_stamina_multiplier = 2.0
+	guard.move_scale = 0.46
+	guard.perfect_guard_window = 0.12
+	guard.perfect_guard_hitstop = 0.065
+	guard.perfect_guard_trauma = 0.22
+	guard.perfect_guard_impulse = Vector2(0.014, -0.018)
+	# The bind pose is barely a pose: the point does not leave the line, because
+	# the blade is trapped, not swept aside.
+	guard.parry_pose = Vector3(0.22, -0.36, -1.14)
+	guard.parry_pose_rot = Vector3(-0.12, 0.02, 0.24)
+	guard.parry_duration = 0.24
+	# Zero: a bind holds the line. Leaving is one of the three CHOICES, not
+	# something the guard does to you.
+	guard.parry_steer = 0.0
+	# The deck window and the riposte window are the same window.
+	guard.riposte_window = 0.30
+	guard.riposte_id = &"wr_bind_thrust"
+	guard.glint_move_id = &"wr_bind_thrust"
+	guard.glint_startup_scale = 0.86
+	guard.glint_poise_scale = 1.35
+	guard.bind_enabled = true
+	guard.bind_deck_window = 0.30
+	guard.bind_heavy_id = &"wr_bind_disengage"
+	guard.bind_message = "合围 · BIND"
 	moveset.guard = guard
 	_resolve_shared(moveset)
 	return moveset

@@ -60,10 +60,20 @@ func _verify_style_data() -> void:
 			moveset.guard.perfect_guard_window >= 0.08 and moveset.guard.perfect_guard_window <= 0.16,
 			"%s perfect guard window outside the 80-160ms band (%.3f)" % [tag, moveset.guard.perfect_guard_window]
 		)
-		_check(
-			moveset.guard.riposte_window >= 0.5 and moveset.guard.riposte_window <= 0.9,
-			"%s riposte window outside the 0.5-0.9s band (%.2f)" % [tag, moveset.guard.riposte_window]
-		)
+		# The answer window is wide for a style whose perfect guard is a PAYOFF.
+		# A binding style is the documented exception: it deliberately shortens
+		# the window to the bind's deck window (0.2-0.4s), because there the
+		# reward is the choice between three exits, not the time to make it.
+		if moveset.guard.bind_enabled:
+			_check(
+				moveset.guard.riposte_window >= 0.20 and moveset.guard.riposte_window <= 0.40,
+				"%s bind deck window outside the 0.2-0.4s band (%.2f)" % [tag, moveset.guard.riposte_window]
+			)
+		else:
+			_check(
+				moveset.guard.riposte_window >= 0.5 and moveset.guard.riposte_window <= 0.9,
+				"%s riposte window outside the 0.5-0.9s band (%.2f)" % [tag, moveset.guard.riposte_window]
+			)
 		for move_id in moveset.moves:
 			var move: SwordMove = moveset.moves[move_id]
 			_check(move.startup > 0.0, "%s/%s has no startup" % [tag, move_id])

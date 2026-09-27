@@ -57,6 +57,29 @@ class_name SwordMoveset
 # Fraction earlier that cancels open at full Flow: transitions stop snagging.
 @export var flow_transition_bonus := 0.50
 
+@export_group("Measure")
+# 白蔷庭's core mechanic. Distance IS the resource, and it deliberately has no
+# bar: the style reads the space between you and the opponent and changes the
+# QUALITY of the attack from it. Ideal measure buys startup, reach and posture —
+# never plain damage, or the style collapses into "stand at the magic distance
+# and collect numbers".
+@export var measure_enabled := false
+# Closer than this the point has no room to extend: crowding.
+@export var measure_close := 1.50
+# Past this the thrust arrives late and the point is spent.
+@export var measure_far := 3.20
+# Which way counts as "in front of me", and how far the style bothers to read.
+@export var measure_cone_degrees := 55.0
+@export var measure_max_range := 6.0
+@export var measure_ideal_startup_scale := 0.80
+@export var measure_ideal_poise_scale := 1.55
+# Ideal measure also extends the reach: a properly extended point is longer.
+@export var measure_ideal_reach := 0.30
+@export var measure_close_startup_scale := 1.25
+@export var measure_close_poise_scale := 0.70
+@export var measure_far_startup_scale := 1.20
+@export var measure_far_poise_scale := 0.85
+
 @export_group("Pose solver")
 @export var pose_stiffness := 96.0
 @export var pose_damping := 0.94

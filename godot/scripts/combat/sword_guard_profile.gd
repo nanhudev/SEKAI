@@ -31,6 +31,32 @@ class_name SwordGuardProfile
 @export var glint_poise_scale := 1.45
 @export var glint_move_id: StringName = &""
 
+@export_group("Sheath")
+# 藏锋 only. A clean deflect IS the moment the style was waiting for, so the
+# sword should already be on its way home: for this many seconds after a perfect
+# guard the pre-sheath wait is waived. Without it the loop can only close while
+# the enemy happens to be walking away, which is not a decision the player made.
+# 0 = a perfect guard does not help you re-sheathe (true for every other style).
+@export var parry_sheath_waiver := 0.0
+
+@export_group("Bind")
+# 白蔷庭 does not fling the attacker away on a perfect guard. It traps the blade
+# for a beat and hands the player a CHOICE — three exits, one short window.
+# This is why the style's perfect guard is a decision rather than a payoff:
+#   Light  → the riposte move (stay inside the measure and answer)
+#   Heavy  → the disengage move (cut on the way back out)
+#   Dodge  → side step (leave the line entirely)
+# The window is deliberately 0.2–0.4s: long enough to choose, short enough that
+# not choosing is itself a choice.
+# Bind does not invent a second window for Light: the deck window IS the riposte
+# window, and the riposte move IS the Light exit. Only Heavy needs a new field,
+# because "cut on the way back out" is a decision the standard guard has no slot
+# for.
+@export var bind_enabled := false
+@export var bind_deck_window := 0.30
+@export var bind_heavy_id: StringName = &""
+@export var bind_message := "合围 · BIND"
+
 
 func on_hit_recovery(hit: Dictionary, move: SwordMove) -> float:
 	return move.recovery

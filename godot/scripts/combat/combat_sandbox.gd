@@ -9,10 +9,17 @@ extends Node3D
 @onready var screen_fx: CombatScreenFX = $CombatScreenFX
 @onready var time_effects: TimeEffectManager = $TimeEffectManager
 
+# Placeholder wind environment: a wall to be thrown into and light bodies that
+# actually move. Built in code so ART can replace it wholesale later.
+var wind_props: WindProps
+
 
 func _ready() -> void:
 	dummy.shattered.connect(_on_shattered)
 	player.unlimited_resources = sandbox_unlimited_resources
+	wind_props = WindProps.new()
+	wind_props.name = "WindProps"
+	add_child(wind_props)
 	screen_fx.reset()
 	call_deferred("_check_visual_state")
 
