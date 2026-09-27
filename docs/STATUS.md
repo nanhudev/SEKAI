@@ -216,6 +216,19 @@ NARRATIVE / WORLD BUILDING 线启动，与 Combat Sandbox 并行，**不等待�
 - 请求已编号并进板：`NAR-ART-01/02/03/04`、`NAR-AUDIO-01/02`、`NAR-MAIN-01/02`。
 - **下一步**：交 DESIGN / MAIN Review，确认可实施为 Narrative Vertical Slice。**通过前不推进 Act II、不开始 Dialogue Pass。**
 
+### NARRATIVE PASS 03 / 04 · 可实施叙事 + 槽位回填
+
+PASS 03 已产出 `NARRATIVE_VERTICAL_SLICE_N01.md`（Scene Spec P00–P06 / A1–A7、8 个 Dialogue Scene、Readable R-01·R-02、16 条环境对白、Cluster 五状态、VO 11 句、分钟级 Playthrough）与 `NARRATIVE_STATE_V01.md`（flag / INFORMATION GRAPH F1–F10 / HARD vs SOFT / MISS MATRIX / 最小存档结构）。
+**ECHO-01 采纳方案 EC**：钟塔「无主物拾得登记」里三年前一条记录，描述玩家身上那枚未被任何人见过的铜扣 + 一截不属于衣服的短带，登记人未署名；薇尔只说"这行没署名。不对。"。EA / EB（写玩家名字 / 直接描述本人）**已淘汰**——它们会让 Act I 变成"天选之子"。
+
+PASS 04 **顺序调整**（提前于 MAIN Review）：ART 的 `docs/LD-01-MISTVALE-REGION-MASTERPLAN.md` 已把 `NAR-01..07` + 22 个微叙事槽位的位置留好并写明「文案填内容，地编保位置」，回填是时间敏感的，因此先交付：
+
+- `MICRO_NARRATIVE_SLOTS.md`：NAR-01..07 内容 + **22 槽位逐条**（是什么 / 读到什么 / 形态 / 可错过）+ 4 个 Readable（R-03..R-06）。规则：**槽位不弹提示、90% 纯视觉、全部 SOFT、不写答案**。
+- `ACT1_QUESTS.md`：**无 XP / 无等级**，奖励只有钱 / 住处 / 担保 / 路线知识 / 一句信息；MQ-C 五状态机；`took_cart_blade` 在 C2 造成"记录与事实"的第一次裂缝；五条支线（S-01 屋顶 / S-02 今天不冷 / S-03 河西·第三日 / S-04 木桩不算任务 / S-05 被划掉的那一行）+ 模板黑名单 + 11 个 flag 增量 + MAIN 实施顺序 6 步。
+- `DIALOGUE_PASS_02.md`：第二层 6 场 + **三条能力入口（藏锋 / 回风 / 魔法，不规定顺序，只给动作不给招式名与理论）** + 环境对白 Pass 02（18 条）+ VO 增量 11 句。
+
+**一条顺序硬约束**：S-05 必须先于 ECHO-01 可被遇到——薇尔得先变成"关心记错了"的人，才会在三年前那行前皱眉。做反了 ECHO-01 白写。
+
 ## COMBAT · 战斗矩阵第一版 · 2026-09-27（COMBAT 会话）
 
 本轮把"一个流派 + 一把剑"扩成 **Universal + 藏锋 + 回风（可玩）+ 白蔷庭（早期）+ 火 / 冰 / 风 + 五种剑 × 魔法交互**，并交付了第一条 **SEKAI Combat Matrix**。

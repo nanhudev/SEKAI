@@ -186,13 +186,19 @@ ChatGPT Web → Blender Python → Blender MCP → GLB → Godot
 | **`NAR-MAIN-01..06` 交 MAIN 实施** | P0 | TODO | `Readable`、最小 flag、`took_cart_blade`、N01 背景信号三件套、**南岸"路还在但没意义"不用空气墙**。详见 slice 文档 §12.3 |
 | **`NAR-SPATIAL-01..06` 交 ART（地编）** | P1 | TODO | 事故点声学开放 / Reveal 视角 / 进镇第一帧的魔法生活痕迹 / 奥伦后院不在主街正面 / 渡口看得到不好走 / 南岸不可见墙。见 `MISTVALE.md` §10 |
 | **`NAR-AUDIO-01..07` V0.2 交 AUDIO** | P1 | TODO | 第五钟独立音型 / 遗迹低频 / **泰姆远处声音（有距离感的空间声）** / 醒来点来源不明低频 / 镇子生活层 / 冷屋子声 / 后院只有劈柴 |
-| Dialogue Pass | P2 | BLOCKED | 前置：五条冻结门（见 `MAIN_STORY.md` §13）。通过后优先写 Prologue 真正会用的那几句 |
-| `TIMELINE.md` / `FACTIONS.md` / `QUESTS.md` / `TERMINOLOGY.md` / `NARRATIVE_BACKLOG.md` | P3 | TODO | 第一轮不建，按需再开 |
+| `MICRO_NARRATIVE_SLOTS.md`（PASS 04） | P0 | DONE | **回填 LD-01 §10/§11**：NAR-01..07 内容 + 22 槽位逐条（是什么/读到什么/形态/可错过）+ 4 个 Readable（R-03..R-06）+ `NAR-ART-05..08` / `NAR-AUDIO-08..09`。**地编保位置，文案填内容** |
+| `ACT1_QUESTS.md`（PASS 04） | P0 | DONE | 八条设计规则（**无 XP/无等级**）/ MQ-C 五状态机 / `took_cart_blade` 裂缝 / Q1–Q7 展开 / 五条支线（S-01..S-05）/ 模板黑名单 / 奖励表 / 11 个 flag 增量 / MAIN 实施顺序 6 步 |
+| `DIALOGUE_PASS_02.md`（PASS 04） | P1 | DONE | 第二层 6 场（奥伦木桩/米拉/莉娅/薇尔/格兰/阿诺）+ **三条能力入口（不规定顺序）** + 环境对白 Pass 02（18 条）+ VO 增量 11 句 + 自查 8 项 |
+| Dialogue Pass | P2 | DONE | 五条冻结门已过（`MAIN_STORY.md` §13）；PASS 02 只覆盖 Act I 前半第二层，**Act I 后半对白仍冻结** |
+| `TIMELINE.md` / `FACTIONS.md` / `TERMINOLOGY.md` / `NARRATIVE_BACKLOG.md` | P3 | TODO | 第一轮不建，按需再开（`QUESTS.md` 已由 `ACT1_QUESTS.md` 承担） |
 
 未决事项：`COMBAT_DESIGN.md` 与 `moveset_library.gd` 不同步（折柳/惊鸿/长风三段已实现但文档写"未实现"），请 MAIN 回写；Narrative 现按**已实现**为准。
 **Combat 同步（PASS 03 只读）**：`white_rose`（白蔷庭）当前为 **prototype** → 本轮**不写它的 Lore**（continuity rule）；三系法术已实现 `火矢/焚环`、`寒流/凝霜`、`风压/风步`，与"火=转化 / 霜=停滞 / 风=动量"的底层规则一致，已用于 §8 的生活痕迹设计。聚合斩来历仍不解释。
 
-**PASS 04 门**：MAIN Review 通过 N01 可实施性 → 才进 Act I Quest Design + Dialogue Pass 02。**仍不进 Act II。**
+**PASS 04 顺序调整说明**：原计划先等 MAIN Review N01 再做 Act I Quest + Dialogue 02，本轮**提前做**，原因是 ART 的 `LD-01` 已把 `NAR-01..07` + 22 个槽位的位置留好并写明「文案填内容，地编保位置」——**槽位回填是时间敏感的，等地编铺完再给就要返工**。任务与对白因此全部**锚定 LD-01 的真实坐标**（Z-01..Z-12 / C-01..C-08 / V1..V9）。
+
+**PASS 05 门**：MAIN Review 通过 `NARRATIVE_VERTICAL_SLICE_N01.md` + `ACT1_QUESTS.md` 的可实施性 → 才进 Act I 后半与 FA-01 本体。**仍不进 Act II。**
+**顺序硬约束**：S-05（薇尔·被划掉的那一行）**必须先于** ECHO-01 可被遇到，否则 ECHO-01 效果减半（见 `ACT1_QUESTS.md` §4.6）。
 
 ---
 
