@@ -3,10 +3,12 @@ extends CanvasLayer
 @onready var sandbox: Node3D = get_parent()
 @onready var player: CharacterBody3D = sandbox.get_node("Player")
 @onready var combat: CombatController = player.get_node("CombatController")
+@onready var camera_feedback: CameraFeedbackController = player.get_node("CameraFeedbackController")
 @onready var dummy: Node3D = sandbox.get_node("TechnicalDummy")
 
 var panel: PanelContainer
 var slow_motion := false
+var camera_preset_button: Button
 
 
 func _ready() -> void:
@@ -28,6 +30,7 @@ func _ready() -> void:
 	_add_button(rows, "Reset Action", combat.finish_action)
 	_add_button(rows, "Trigger Iaido", func() -> void: combat.request(&"iaido"))
 	_add_button(rows, "Slow Motion", _toggle_slow_motion)
+	camera_preset_button = _add_button(rows, "Camera: Normal", _cycle_camera_preset)
 	_add_unavailable(rows, "Hitbox View · pending")
 
 
@@ -38,11 +41,16 @@ func _unhandled_input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 
 
-func _add_button(parent: VBoxContainer, title: String, callback: Callable) -> void:
+func _add_button(parent: VBoxContainer, title: String, callback: Callable) -> Button:
 	var button := Button.new()
 	button.text = title
 	button.pressed.connect(callback)
 	parent.add_child(button)
+	return button
+
+
+func _cycle_camera_preset() -> void:
+	camera_preset_button.text = "Camera: " + camera_feedback.cycle_preset()
 
 
 func _add_unavailable(parent: VBoxContainer, title: String) -> void:
