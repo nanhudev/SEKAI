@@ -11,6 +11,18 @@ class_name SwordGuardProfile
 @export var heavy_stamina_multiplier := 2.2
 @export var move_scale := 0.5
 
+@export_group("Absorb")
+# §28. Holding a guard is the fourth answer in the hitstop taxonomy and the only
+# one the game forgot: it had a number for landing a cut, a number for reading
+# one perfectly, and NOTHING for eating one. Zero does not read as "short", it
+# reads as "that did not touch me" — so a heavy squashing the guard felt exactly
+# like a light brushing it, apart from the stamina bar moving afterwards.
+# Deliberately the SHORTEST stop there is: it is the absorption of someone
+# else's intent, not the expression of your own, so it must never compete with
+# the hitstop you get for connecting.
+@export var block_hitstop := 0.022
+@export var heavy_block_hitstop := 0.042
+
 @export_group("Perfect Guard")
 # 0.08–0.16s. Measured from the moment Guard was pressed, not from the hit.
 @export var perfect_guard_window := 0.12

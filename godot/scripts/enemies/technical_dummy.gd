@@ -42,6 +42,8 @@ var attack_active_end := 0.53
 var attack_shape: BoxShape3D
 var cue_material := StandardMaterial3D.new()
 var phase: StringName = &"idle"
+# What the last hit DID to this body, for whoever landed it. See `take_hit_outcome`.
+var hit_outcome: StringName = &""
 
 var telegraph: MeshInstance3D
 var telegraph_material: StandardMaterial3D
@@ -293,9 +295,29 @@ func _start_attack() -> void:
 	attack_started.emit(attack_variant)
 
 
+	# 6) The body tells the attacker what it just became.
+	#
+	# A hit has always travelled one way: the hitbox delivers a dictionary and
+	# learns nothing back, so the sword could only ever answer its own numbers
+	# and never what it DID. Shatter is the loudest thing that can happen in this
+	# game and it was invisible to the hand that caused it — same sound, same
+	# stop, same shake as poking a stranger. This is read ONCE, by whoever landed
+	# the hit, and cleared on read: it is an answer to a question, not a state
+	# anyone may poll.
+	hit_outcome = &"interrupt"
+
+
+# Read once, cleared on read: see `hit_outcome`.
+func take_hit_outcome() -> StringName:
+	var taken := hit_outcome
+	hit_outcome = &""
+	return taken
+
+
 func _on_hit(hit: Dictionary) -> void:
 	if state == State.DEAD:
 		return
+	hit_outcome = &"hit"
 	var element_id: StringName = hit.get("element", &"physical")
 	var def: ElementDefinition = element_defs.get(element_id)
 	var heavy: bool = float(hit.get("poise_damage", 0.0)) >= 35.0
@@ -309,6 +331,7 @@ func _on_hit(hit: Dictionary) -> void:
 	if frozen and heavy:
 		var shatter_damage := 55.0 * float(hit.get("frozen_bonus", 1.0))
 		health -= shatter_damage
+		hit_outcome = &"shatter"
 		_clear_element(ElementLibrary.FROST)
 		state = State.STAGGER
 		state_timer = 1.0
@@ -323,6 +346,7 @@ func _on_hit(hit: Dictionary) -> void:
 	#    brittle layer for real damage. Not Frozen — deliberately a rung earlier,
 	#    so 藏锋's heavy has a reason to exist against frost that is not Shatter.
 	if heavy and frost_stage >= 2 and frost_stage < 3:
+		hit_outcome = &"brittle"
 		damage_brittle_break(hit)
 		return
 

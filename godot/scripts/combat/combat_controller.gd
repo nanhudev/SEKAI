@@ -24,6 +24,15 @@ enum State {
 signal state_changed(previous: State, current: State)
 signal style_changed(style_id: StringName)
 signal move_started(move: SwordMove)
+# THE MOMENT THE BLADE LEAVES.
+#
+# `move_started` is the instant the KEY went down. Everything describing motion
+# used to ride it, which meant the whoosh and the camera kick arrived a whole
+# startup before the blade they claim to describe: 0.085s on a light, 0.185s on
+# a charged heavy — five to eleven frames of sound leading a sword that has not
+# moved yet. Startup is not dead air, it is the wind-up, and a promise made in
+# the wind-up belongs in the wind-up. Everything else belongs here.
+signal swing_started(move: SwordMove)
 signal hit_landed(move: SwordMove, hit: Dictionary)
 signal perfect_guard_landed()
 signal style_message(text: String)
@@ -50,15 +59,49 @@ signal style_message(text: String)
 
 var state := State.IDLE
 var state_time := 0.0
+# THE CLOCK EVERY COMBAT WINDOW IS MEASURED IN. Not wall time.
+#
+# Every window in this controller — combo, follow-up, riposte, bind, slip, skill
+# cooldown — used to be asked for with `Time.get_ticks_msec()`, which keeps
+# running at full speed while a hitstop has the world at 0.05x. Measured that
+# way a 0.25s follow-up window spends a tenth of a second completely frozen and
+# the player is handed two thirds of the decision they bargained for: the stop
+# stops being feedback and starts being rent.
+#
+# Summing the same scaled delta the moves themselves advance on makes every
+# window a duration IN SIMULATION. A time scale then costs the player nothing
+# they were going to spend anyway, because during a freeze the game does not
+# advance and neither does anything the player is waiting on.
+#
+# IT ALSO STARTS AT ZERO, which is the whole point of a clock that is not the
+# wall — and it is a trap. Every window in this file is a timestamp compared
+# against it, and every one of those timestamps is initialised to 0.0. Reading
+# "open while now <= until" then says 0 <= 0, which is TRUE, so on the very
+# first frame of a fresh game the riposte window and the sheath waiver are both
+# open and the player's first attack of the run comes out as a RIPOSTE. The
+# wall clock hid this for free by starting at whatever second the engine
+# happened to be on. So every window below is asked for with a STRICT `<`: a
+# window that expires at `until` is closed AT `until`, and 0.0 — the value a
+# window has before it has ever been opened — is closed by construction.
+var combat_time := 0.0
 var buffer := CombatInputBuffer.new()
 var attack_kind: StringName = &""
+# Whether this move's own departure has been announced yet. One announcement per
+# move, at `startup` — see the `swing_started` signal.
+var _swing_announced := false
+# Sampled when a move is committed, spent when it lands. See _begin_move.
+var commit_moving := false
 var hitbox_open := false
 var dodge_direction := Vector3.FORWARD
 var dodge_speed := 11.0
 var perfect_guard_count := 0
 var combo_index := 0
 var last_light_at := -10.0
-var selected_spell: StringName = &"frost"
+# Renamed from selected_spell, which is the name that hid a real bug: it has
+# always held a SCHOOL id, so every read site looked like it was reading the
+# armed spell, and nobody noticed that the second spell of each school could not
+# be armed at all. The armed spell is spell_id.
+var selected_school: StringName = &"frost"
 var casting_spell: StringName = &"frost"
 # --- magic, as data ----------------------------------------------------------
 var schools: Dictionary = {}
@@ -168,23 +211,40 @@ func _ready() -> void:
 # ---------------------------------------------------------------- magic data
 
 func select_school(school_id: StringName) -> bool:
+	# The quick-swap keys (Z / R / C): pick a school and take its default spell.
 	if not schools.has(school_id):
 		return false
 	var school: MagicSchool = schools[school_id]
 	var primary := school.primary()
 	if primary == null:
 		return false
-	selected_spell = school_id
-	casting_spell = school_id
-	spell_id = primary.id
+	_adopt_spell(school_id, primary.id)
 	return true
 
 
+func select_spell(wanted: StringName) -> bool:
+	# The Ability Wheel's only entry point, and deliberately the only way to arm
+	# a spell. Routing every source of "what is in my hand" through one function
+	# is what makes "is this spell reachable?" a question a test can answer by
+	# walking the library instead of a hope.
+	var spell := spell_by_id(wanted)
+	if spell == null:
+		return false
+	_adopt_spell(spell.school_id, spell.id)
+	return true
+
+
+func _adopt_spell(school_id: StringName, wanted: StringName) -> void:
+	selected_school = school_id
+	casting_spell = school_id
+	spell_id = wanted
+
+
 func current_school() -> MagicSchool:
-	# selected_spell is the school the Ability Wheel confirmed, so it — not the
+	# selected_school is the school the Ability Wheel confirmed, so it — not the
 	# in-flight cast — decides what "current" means. The cast snapshots its own
 	# spell so a wheel change mid-cast cannot swap it underneath.
-	return schools.get(selected_spell)
+	return schools.get(selected_school)
 
 
 func current_spell() -> SpellDefinition:
@@ -258,6 +318,24 @@ func wind_spread() -> bool:
 	return spread_any
 
 
+func on_the_move_hit_bonus() -> bool:
+	# Whether the last attack was committed by a player who was moving of their
+	# own accord. Public so the Lab and the movie renderer can show it instead of
+	# asking a viewer to trust the caption.
+	return commit_moving
+
+
+func _player_intends_to_move() -> bool:
+	# Input intent, not velocity: the attack's own lunge can fake velocity, and
+	# it cannot fake a held direction. Indices on purpose as well, because with
+	# the action map missing this must degrade to "standing", not to an error.
+	if not InputMap.has_action(&"move_forward"):
+		return false
+	return (
+		Input.get_vector(&"move_left", &"move_right", &"move_forward", &"move_back").length() > 0.1
+	)
+
+
 func speed_multiplier() -> float:
 	# 风步 is momentum, not a teleport: it changes how fast you can change where
 	# you are, and it decays.
@@ -283,6 +361,35 @@ func _bind_mouse(action: StringName, button: MouseButton) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	# ---------------------------------------------------------------- THE BODY
+	# Dodge is legs and magic is the off hand, so both survive a weapon switch
+	# (§2: main hand sword, off hand magic). 风 × 链 is only reachable at all
+	# because casting does not stop when the chain comes out.
+	if event.is_action_pressed("dodge"):
+		request(&"dodge")
+		return
+	if event.is_action_pressed("fire_cast"):
+		select_school(&"fire")
+		request(&"cast")
+		return
+	if event.is_action_pressed("frost_cast"):
+		select_school(&"frost")
+		request(&"cast")
+		return
+	if event.is_action_pressed("wind_cast"):
+		select_school(&"wind")
+		request(&"cast")
+		return
+	if event.is_action_pressed("cast_selected"):
+		request(&"cast")
+		return
+	# ----------------------------------------------------------------- THE SWORD
+	# Everything below belongs to the sword, and the sword is not always in the
+	# player's hands. This one gate is the whole arbitration: no style branch, no
+	# second CombatController, and the chain reads the same slot to decide whether
+	# it is the one being held.
+	if not _holds_sword():
+		return
 	if event.is_action_pressed("light_attack"):
 		request(&"light")
 	elif event.is_action_pressed("heavy_attack"):
@@ -295,32 +402,29 @@ func _unhandled_input(event: InputEvent) -> void:
 		trigger_skill(1)
 	elif event.is_action_pressed("style_skill_3"):
 		trigger_skill(2)
-	elif event.is_action_pressed("fire_cast"):
-		select_school(&"fire")
-		request(&"cast")
-	elif event.is_action_pressed("frost_cast"):
-		select_school(&"frost")
-		request(&"cast")
-	elif event.is_action_pressed("wind_cast"):
-		select_school(&"wind")
-		request(&"cast")
-	elif event.is_action_pressed("dodge"):
-		request(&"dodge")
 	elif event.is_action_pressed("iaido"):
 		request(&"iaido")
 	elif event.is_action_pressed("ultimate"):
 		request(&"ultimate")
-	elif event.is_action_pressed("cast_selected"):
-		request(&"cast")
 	elif event.is_action_pressed("block"):
 		request(&"block")
 	elif event.is_action_released("block") and state in [State.BLOCK, State.PARRY]:
 		finish_action()
 
 
+func _holds_sword() -> bool:
+	# No slot at all means a stage that predates the weapon switch: the sword is
+	# then simply always the active weapon.
+	var slot := player.get_node_or_null("WeaponSlot")
+	if slot == null:
+		return true
+	return bool(slot.call("holds", WeaponSlot.SWORD))
+
+
 # ---------------------------------------------------------------- lifecycle
 
 func _process(delta: float) -> void:
+	combat_time += delta
 	state_time += delta
 	pose_time += delta
 	guard_recoil = maxf(0.0, guard_recoil - delta * 3.2)
@@ -360,6 +464,13 @@ func _process_move() -> void:
 	if should_open != hitbox_open:
 		hitbox_open = should_open
 		hitbox.set_active(should_open)
+	# Announced once, at the moment the blade actually departs. A move that is
+	# cancelled inside its own wind-up never gets here, which is correct: there
+	# was no swing to describe.
+	if not _swing_announced and state_time >= startup and active_move.strike > 0.0:
+		_swing_announced = true
+		swing_started.emit(active_move)
+		_emit_move_camera(active_move)
 	if state_time >= _move_end_time():
 		finish_action()
 
@@ -402,7 +513,7 @@ func _update_sheath(delta: float) -> void:
 		# 截锋 shortens the wait before the sword starts going home: a clean
 		# deflect IS 藏锋's moment, so it must also feed the style's own loop.
 		var delay := moveset.sheath_delay
-		if _now() <= sheath_waive_until:
+		if _now() < sheath_waive_until:
 			delay = 0.0
 		if idle_time >= delay:
 			var speed := 1.0 / maxf(moveset.sheath_time * _sheathe_time_scale(), 0.05)
@@ -551,7 +662,7 @@ func _apply_measure_scale(move: SwordMove) -> void:
 # player now has a very short window with three exits, and the choice is the
 # reward — not a damage number.
 func _bind_open(now: float) -> bool:
-	return moveset.guard.bind_enabled and now <= bind_until and state == State.PARRY
+	return moveset.guard.bind_enabled and now < bind_until and state == State.PARRY
 
 
 func _start_bind_exit(move_id: StringName) -> bool:
@@ -825,8 +936,8 @@ func release_heavy() -> void:
 	_write_hitbox(move, damage_scale)
 	charge_ratio = ratio
 	_restart_state(State.ATTACK)
+	_swing_announced = false
 	move_started.emit(move)
-	_emit_move_camera(move)
 
 
 func _start_riposte() -> bool:
@@ -911,6 +1022,7 @@ func _configure_spell_hitbox(spell: SpellDefinition) -> void:
 	target.poise_damage = spell.hitbox_poise
 	target.impulse = spell.hitbox_impulse
 	target.element = spell.element_id
+	target.element_scale = spell.element_application_scale
 
 
 func _spend_spell() -> void:
@@ -931,6 +1043,21 @@ func _spend_spell() -> void:
 		_spend_wind_step()
 	if spell.element_id == ElementLibrary.WIND:
 		wind_spread()
+		# 风 × 链 (§24). Wind does not add damage to a chain — it adds SPIN, which
+		# is the chain's own currency, so the most natural pairing in the whole
+		# system is one line: ask the other weapon, if there is one, to speed up.
+		# Asked here because this is the one place a wind spell actually resolves.
+		var chain := player.get_node_or_null("ChainDirector")
+		if chain != null:
+			chain.call("apply_wind_boost")
+
+
+# One place, so the chain's guard cannot be applied twice and cannot be skipped.
+func _chain_deflect(hit: Dictionary) -> bool:
+	var chain := player.get_node_or_null("ChainDirector")
+	if chain == null:
+		return false
+	return bool(chain.call("try_deflect", hit))
 
 
 func _spawn_field(spell: SpellDefinition) -> void:
@@ -1052,9 +1179,21 @@ func _begin_move(move: SwordMove, next_state: State) -> void:
 	# the wind-up must not retrofit an ideal-measure reward onto a swing that was
 	# started out of position.
 	_apply_measure_scale(move)
+	# Movement intent is sampled here for the same reason, and because the old
+	# test at hit time was measuring the wrong thing entirely: `velocity > 3.0`
+	# sampled a few hundred ms after the input is satisfied by the attack's OWN
+	# lunge, so every lunging cut scored as a moving hit and 势 could not tell "I
+	# ran into this" from "I stood still" — both phases of a side-by-side take
+	# peaked at exactly the same value. Intent is also the honest measure of what
+	# 回风's fantasy is about: the player choosing to move, not the animation
+	# dragging them.
+	commit_moving = _player_intends_to_move()
 	chain_active = attack_kind in [&"light", &"sprint", &"retreat"]
 	_write_hitbox(move, 1.0)
-	_emit_move_camera(move)
+	# NOT here. The camera used to describe the swing at the moment the input was
+	# received, which is the wind-up; it now belongs to `swing_started`, which is
+	# the departure. Here we only arm the flag that lets it fire exactly once.
+	_swing_announced = false
 	_restart_state(next_state)
 	move_started.emit(move)
 
@@ -1402,27 +1541,48 @@ func _on_hitbox_landed(hit: Dictionary) -> void:
 	# 势: connecting is what keeps the style alive, and connecting *while moving*
 	# feeds it faster. That is the loop 回风 asks the player to chase.
 	if moveset.flow_enabled:
-		var on_the_move := attack_kind in [&"sprint", &"retreat"] or player.velocity.length() > 3.0
+		var on_the_move := attack_kind in [&"sprint", &"retreat"] or commit_moving
 		_gain_flow(moveset.flow_gain_movement_hit if on_the_move else moveset.flow_gain_hit)
 	var target = hit.get("target")
+	hit_landed.emit(active_move, hit)
+	# ASKED AFTER THE BODY HAS ANSWERED, not before: the target decides what it
+	# became while `hit_landed` was being delivered, so the outcome is only
+	# readable once the blow has actually landed on something capable of opinion.
+	var outcome := &""
+	if target != null and target.has_method("take_hit_outcome"):
+		outcome = target.call("take_hit_outcome")
+	# Four answers, one place each, and only ONE of them gets to fire — see §28.
+	# Every branch sets what is DIFFERENT about this hit; what a hit does in
+	# common is below, once, so adding a fifth answer can never accidentally
+	# double the shake the way bolting another `add_trauma` on top would.
+	var stop := active_move.hitstop
+	var extra_trauma := 0.0
+	var flash := 0.09
 	# 断章: only meaningful against an enemy that was mid-action.
 	if active_move.interrupt_bonus > 1.0 and target != null and target.has_method("is_telegraphing") and target.call("is_telegraphing"):
 		hit["damage"] = float(hit.get("damage", 0.0)) * active_move.interrupt_bonus
 		hit["poise_damage"] = float(hit.get("poise_damage", 0.0)) * active_move.interrupt_bonus
 		hit["interrupt"] = true
-		time_effects.request_hitstop(0.075 * hitstop_scale)
-		screen_fx.flash_hit(0.16)
+		stop = 0.075
+		flash = 0.16
 		style_message.emit("断章 · INTERRUPT")
+	elif outcome == &"shatter":
+		# Not a bigger hit — a STATE ending. Longest stop in the game, and more
+		# weight in the hands, because this is the one result the player built
+		# deliberately (freeze first) rather than got for swinging hard.
+		stop = tuning.shatter_hitstop
+		flash = 0.20
+		extra_trauma = 0.22
+		style_message.emit("碎 · SHATTER")
 	else:
 		if active_move.frozen_bonus != 1.0:
 			hit["frozen_bonus"] = active_move.frozen_bonus
-		if hitstop_scale > 0.0:
-			time_effects.request_hitstop(active_move.hitstop * hitstop_scale)
-	hit_landed.emit(active_move, hit)
+	if hitstop_scale > 0.0 and stop > 0.0:
+		time_effects.request_hitstop(stop * hitstop_scale)
 	last_hit_strength = clampf(float(hit.get("damage", 0.0)) / 40.0, 0.2, 1.6)
 	camera_feedback.add_impulse(active_move.camera_impulse * 1.7 + Vector2(0.0, 0.004))
-	camera_feedback.add_trauma(0.06 + active_move.trauma)
-	screen_fx.flash_hit(0.09 * hitstop_scale if hitstop_scale > 0.0 else 0.045)
+	camera_feedback.add_trauma(0.06 + active_move.trauma + extra_trauma)
+	screen_fx.flash_hit(flash * hitstop_scale if hitstop_scale > 0.0 else flash * 0.5)
 	if active_move.on_hit_next_startup_scale != 1.0:
 		next_move_startup_scale = active_move.on_hit_next_startup_scale
 	if active_move.followup_id != &"":
@@ -1431,6 +1591,13 @@ func _on_hitbox_landed(hit: Dictionary) -> void:
 
 
 func _on_player_hit(hit: Dictionary) -> void:
+	# THE CHAIN'S GUARD IS ASKED FIRST, because it does not work like a guard: it
+	# disturbs the attack before the body ever meets it, so it has to be offered
+	# the hit rather than applied after one. This is also the single place the
+	# player's hurtbox is read — a second handler would mean two systems both
+	# reacting to one hit, and one of them would always be wrong.
+	if _chain_deflect(hit):
+		return
 	# 折柳: the attack is allowed to pass by. Deliberately checked before dodge
 	# and before guard — declining the exchange is the fastest answer available,
 	# and it is the exact opposite of what Perfect Guard does.
@@ -1456,6 +1623,13 @@ func _on_player_hit(hit: Dictionary) -> void:
 		guard_recoil = minf(1.0, guard_recoil + 0.55 * block_scale)
 		camera_feedback.add_trauma(0.10 * block_scale)
 		camera_feedback.add_impulse(Vector2(-0.012, -0.010) * block_scale)
+		# §28: absorbing has always been the missing fourth answer. A heavy
+		# squashing the guard and a light brushing it produced the same moment,
+		# because the only difference between them was a number in a stamina bar
+		# nobody was looking at during the hit.
+		var stop := guard.heavy_block_hitstop if heavy else guard.block_hitstop
+		if stop > 0.0 and hitstop_scale > 0.0:
+			time_effects.request_hitstop(stop * hitstop_scale)
 		return
 	var damage := float(hit.get("damage", 0.0))
 	var health: float = player.get("health")
@@ -1476,7 +1650,7 @@ func _on_player_hit(hit: Dictionary) -> void:
 
 
 func _slip_open() -> bool:
-	return slip_until > 0.0 and _now() <= slip_until
+	return _now() < slip_until
 
 
 func _resolve_slip(hit: Dictionary) -> void:
@@ -1572,11 +1746,11 @@ func _close_hitbox() -> void:
 
 
 func _riposte_open(now: float) -> bool:
-	return now <= riposte_until and state in [State.IDLE, State.PARRY]
+	return now < riposte_until and state in [State.IDLE, State.PARRY]
 
 
 func _followup_open(now: float) -> bool:
-	return now <= followup_until and pending_followup_id != &""
+	return now < followup_until and pending_followup_id != &""
 
 
 func _retreating() -> bool:
@@ -1607,7 +1781,7 @@ func _current_spell_hitbox() -> CombatHitbox:
 
 
 func _now() -> float:
-	return Time.get_ticks_msec() / 1000.0
+	return combat_time
 
 
 func debug_state_line() -> String:

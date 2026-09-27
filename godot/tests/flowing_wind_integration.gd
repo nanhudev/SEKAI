@@ -38,7 +38,11 @@ func _wait(frames: int) -> void:
 
 
 func _now() -> float:
-	return Time.get_ticks_msec() / 1000.0
+	# The controller owns the clock its windows are stamped in. Comparing a
+	# combat timestamp against wall time is comparing two currencies, and it
+	# stops being true the moment the controller stops using the wall — which
+	# is exactly what happened when every window moved onto simulation time.
+	return combat._now()
 
 
 func _run() -> void:
@@ -201,6 +205,29 @@ func _verify_zheliu_declines_the_exchange() -> void:
 	await _wait(2)
 
 
+# The baseline cut has to BE the baseline cut.
+#
+# `request(&"light")` returns whichever move the controller's open windows point
+# at, and 折柳 has just opened a 0.9s counter window immediately before this runs:
+# inside it, "light" is the RIPOSTE — a different song with a different cancel
+# window. Whether the helper lands inside that window depends on how many frames
+# the machine happened to spend getting here, which is why this test was FLAKY
+# rather than broken, and why its failure read "the baseline cut was never
+# cancellable" about a move that was never the baseline cut. Same class of bug
+# as measuring the third light of a chain and calling it a light.
+func _neutralise() -> void:
+	combat.chain_expires_at = 0.0
+	combat.combo_index = 0
+	combat.last_light_at = -10.0
+	combat.pending_followup_id = &""
+	combat.followup_until = 0.0
+	combat.riposte_until = 0.0
+	combat.bind_until = 0.0
+	combat.slip_until = 0.0
+	combat.slip_skill = null
+	combat.buffer.clear()
+
+
 func _frames_until_dodge_cancel() -> int:
 	# Start a fresh cut and count how long the style makes us hold it before we
 	# are allowed to leave. Measuring the WAIT is the honest way to test a
@@ -209,7 +236,18 @@ func _frames_until_dodge_cancel() -> int:
 	combat.finish_action()
 	combat.reset_flow()
 	await physics_frame
+	_neutralise()
 	combat.request(&"light")
+	await physics_frame
+	# And SAY which cut was timed. A rig that counts ninety frames of the wrong
+	# move and reports a number is worse than one that says nothing.
+	_check(
+		combat.active_move_id == &"" or combat.active_move_id in combat.moveset.light_chain,
+		"%s came out of a neutralised `light` — the windows are not the only thing deciding the move, so the frame count below is that move's number and not the baseline cut's"
+			% combat.active_move_id
+	)
+	if combat.active_move_id != &"" and not (combat.active_move_id in combat.moveset.light_chain):
+		return 999
 	var frames := 0
 	while frames < 90:
 		await physics_frame

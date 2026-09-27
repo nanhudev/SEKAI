@@ -42,6 +42,36 @@ const IDLE_ROTATION := Vector3(0.0, 0.0, -0.18)
 @export var landing_spring_k := 120.0
 @export var landing_spring_c := 13.0
 
+# §27 / §30. THE BLADE HAS TO ANSWER CONTACT, NOT ONLY REPORT IT.
+#
+# The pose is a pure function of the move timeline, and the timeline does not
+# know what happened. So a cut that met a body and a cut that met air were the
+# same motion for the one channel that cannot be compensated for: the hand.
+# Everything the player was told about contact arrived from somewhere else — an
+# impact sound, a screen flash, a number — and all of those are things the player
+# can be told ABOUT. The weapon itself said nothing, which is why whiffing read
+# as hitting.
+#
+# So contact is authored as a FORCE rather than a pose: the blade was travelling,
+# something stopped it, and the wrist could not hold its line. What follows is a
+# deflection against the direction of travel and the arm winning the line back.
+# Whiffing gets none of it, and the absence of the deflection IS the information.
+@export_group("Contact")
+# How far the TIP is knocked off its line by meeting something, in metres.
+@export var contact_deflection := 0.05
+@export var contact_spring_k := 190.0
+@export var contact_spring_c := 21.0
+# Radians of wrist break at full deflection. Small number, enormous lever: the
+# tip is 0.95m away from the joint, so 0.3 rad here is twenty-six degrees of
+# blade and forty-five centimetres of travel — the rotation was the entire effect
+# and the translation was decoration. Authored against what the tip should MOVE,
+# not against how much the wrist can lose.
+@export var contact_roll := 0.05
+# A blade that was barely moving when it met something should barely be stopped
+# by it, otherwise blocking puts the same dent in the wrist as a full swing.
+@export var contact_floor := 0.35
+@export var contact_full_speed := 7.0
+
 var _loc_vel := Vector3.ZERO
 var _loc_turn := 0.0
 var _prev_forward := Vector2.ZERO
@@ -52,6 +82,26 @@ var _land_vel := 0.0
 var _loc_offset := Vector3.ZERO
 var _loc_rotation := Vector3.ZERO
 var _accel_local := 0.0
+
+var _contact_dir := Vector3.ZERO
+var _contact_dip := 0.0
+var _contact_vel := 0.0
+var _contact_offset := Vector3.ZERO
+var _contact_rotation := Vector3.ZERO
+var _contact_wrist := Vector3.ZERO
+var _tip_prev := Vector3.ZERO
+# THE BLADE'S OWN LAST FRAME OF TRAVEL, recorded when it is computed rather
+# than reconstructed later. Contact arrives as a SIGNAL, and a signal does not
+# arrive at a convenient moment — by the time `_on_sword_hit` runs, `_tip_prev`
+# has already been assigned this frame's tip, so asking for
+# `_pose_tip() - _tip_prev` there asks for the distance the blade covered
+# between the end of this frame and the end of this frame, which is always
+# zero. The only thing that ever made it non-zero was the tremor, which is
+# applied AFTER `_tip_prev` is sampled — so the sword had been taking its
+# contact direction from the authored wobble, at random, for its whole life.
+var _travel_step := Vector3.ZERO
+var _tip_speed := 0.0
+var _have_tip := false
 
 const BLADE_TINT := Color(0.84, 0.92, 1.0)
 const VOID_TINT := Color(0.72, 0.85, 1.0)
@@ -132,6 +182,8 @@ func _ready() -> void:
 	_build_click_flash()
 	if player != null and player.has_signal("landed"):
 		player.landed.connect(_on_player_landed)
+	if combat != null:
+		combat.hit_landed.connect(_on_sword_hit)
 
 
 func _build_sword() -> void:
@@ -377,6 +429,74 @@ func _on_player_landed(impact_speed: float, tier: StringName) -> void:
 	_land_vel -= impact_speed * landing_dip_gain * weight * 8.0
 
 
+# Where the tip is WITHOUT any of the forces above on it — the pose alone. This
+# is the blade's own opinion of where it is going, and both the travel direction
+# and its speed have to be read off that, never off the final drawn position:
+# reading the result of the deflection back into the direction of travel makes
+# the next contact argue with the last one.
+func _pose_tip() -> Vector3:
+	return pose_position + (Basis.from_euler(pose_rotation) * Vector3.UP) * blade_length
+
+
+# The body was hit. Not "damage was dealt" — those are two different sentences
+# and only one of them belongs to a hand: even a cut that lands for nothing is a
+# cut that met something solid and got stopped by it.
+func _on_sword_hit(_move: SwordMove, _hit: Dictionary) -> void:
+	if not _have_tip:
+		return
+	# The travel the blade HAD, not the travel it can be asked for now. See
+	# `_travel_step`: this handler runs whenever the hitbox decides to deliver,
+	# which is not inside this node's `_process`, so the only honest answer is
+	# the one that was recorded when the blade actually moved.
+	var travel := _travel_step
+	if travel.length() < 0.0004:
+		return
+	_contact_dir = travel.normalized()
+	var into := _contact_dir
+	var reach := clampf(_tip_speed / maxf(contact_full_speed, 0.001), contact_floor, 1.4)
+	var kick := _peak_to_velocity(contact_deflection * reach)
+	_contact_vel += kick
+	# The wrist breaks ACROSS the cut: something with sideways travel rolls the
+	# blade, something with vertical travel pitches it, because that is the only
+	# direction the joint can lose. Aiming this by hand instead of by `contact_roll`
+	# alone is what lets one number cover 直刺 and 斜斩 alike.
+	_contact_wrist = Vector3(-into.y, 0.0, into.x) * contact_roll / maxf(contact_deflection, 0.0001)
+
+
+# A spring authored in metres, not in "impulse units". Given the stiffness above,
+# this is the kick velocity that peaks at exactly `peak` metres, so tuning the
+# spring later cannot silently change how hard the sword reads.
+func _peak_to_velocity(peak: float) -> float:
+	var omega := sqrt(maxf(contact_spring_k, 1.0))
+	var damping := contact_spring_c / maxf(2.0 * omega, 0.0001)
+	var omega_d := omega * sqrt(maxf(1.0 - damping * damping, 0.0001))
+	var t_peak := atan2(omega_d, maxf(damping * omega, 0.0001)) / maxf(omega_d, 0.0001)
+	var metres_per_unit := exp(-damping * omega * t_peak) * sin(omega_d * t_peak) / omega_d
+	if is_zero_approx(metres_per_unit):
+		return 0.0
+	return peak / metres_per_unit
+
+
+func _contact_step(delta: float, posed_tip: Vector3) -> void:
+	if not _have_tip:
+		_tip_prev = posed_tip
+		_have_tip = true
+		return
+	var step := posed_tip - _tip_prev
+	# Recorded here, where the blade's own motion is actually known, and
+	# deliberately BEFORE the tremor is added to `pose_position` below: the
+	# tremor is authored wobble, not intent, and letting it into this number
+	# hands the sword a contact direction that has nothing to do with the cut.
+	_travel_step = step
+	var instant := step / maxf(delta, 0.0001)
+	_tip_prev = posed_tip
+	_tip_speed = lerpf(_tip_speed, instant.length(), 1.0 - exp(-delta / 0.06))
+	_contact_vel += (-contact_spring_k * _contact_dip - contact_spring_c * _contact_vel) * delta
+	_contact_dip += _contact_vel * delta
+	_contact_offset = -_contact_dir * _contact_dip
+	_contact_rotation = _contact_wrist * _contact_dip
+
+
 func locomotion_readout() -> Dictionary:
 	return {
 		"offset": _loc_offset,
@@ -386,6 +506,8 @@ func locomotion_readout() -> Dictionary:
 		"turn": _loc_turn,
 		"sprint": _sprint_blend,
 		"land_dip": _land_dip,
+		"contact": _contact_dip,
+		"tip_speed": _tip_speed,
 	}
 
 
@@ -410,6 +532,7 @@ func _process(delta: float) -> void:
 	pose_position = pose_position.lerp(target, follow)
 	pose_rotation = pose_rotation.lerp(target_rotation, follow)
 	_locomotion(delta)
+	_contact_step(delta, _pose_tip())
 	if intensity > 0.02:
 		var amp := float(snapshot.tremor) * intensity
 		pose_position += Vector3(
@@ -417,8 +540,8 @@ func _process(delta: float) -> void:
 			sin(pose_time * 39.0 + 1.7),
 			sin(pose_time * 53.0 + 3.1),
 		) * amp
-	position = pose_position + _loc_offset
-	rotation = pose_rotation + _loc_rotation
+	position = pose_position + _loc_offset + _contact_offset
+	rotation = pose_rotation + _loc_rotation + _contact_rotation
 	# Transform from this node's space back into the WeaponRoot's space, so the
 	# scabbard and the trail can be authored in root space while parented here.
 	root_inverse = Transform3D(Basis.from_euler(pose_rotation), pose_position).affine_inverse()

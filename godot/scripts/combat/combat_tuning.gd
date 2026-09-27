@@ -60,6 +60,12 @@ class_name CombatTuning
 # How long a follow-up window survives the end of the move it belongs to, so
 # the player is never punished for watching their own animation.
 @export var followup_grace := 0.12
+# §28. Shattering is its own answer, and it belongs here rather than on a move
+# because no STYLE delivers it: the player's cut is ordinary, the frozen body is
+# what was extraordinary. The longest stop in the game, above even a heavy
+# connect — this is the one moment where the world should fully let go, because
+# a body coming apart is not a hit landing, it is a state ending.
+@export var shatter_hitstop := 0.105
 # Cooldown for style signatures that are short player-driven sequences (长风)
 # rather than full ceremonies (聚合斩, which times itself off the director).
 @export var signature_cooldown := 12.0

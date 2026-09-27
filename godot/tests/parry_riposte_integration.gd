@@ -71,7 +71,7 @@ func _verify_perfect_guard_opens_riposte() -> void:
 	_check(combat.perfect_guard_count == before + 1, "Guard pressed just before the hit did not perfect-guard")
 	_check(combat.state == CombatController.State.PARRY, "Perfect guard did not enter the parry beat (state=%s)" % combat.state)
 	_check(combat.edge_glint, "Perfect guard did not light the edge")
-	_check(combat.riposte_until > Time.get_ticks_msec() / 1000.0, "Riposte window did not open")
+	_check(combat.riposte_until > combat._now(), "Riposte window did not open")
 	_check(dummy.state == dummy.State.STAGGER, "The interrupted enemy attack was not stopped")
 	combat.finish_action()
 	await physics_frame
@@ -128,11 +128,11 @@ func _verify_glint_reaches_the_next_light() -> void:
 	while combat.edge_glint and waited < 1.2:
 		await physics_frame
 		waited += 1.0 / 60.0
-		if Time.get_ticks_msec() / 1000.0 > combat.riposte_until:
+		if combat._now() >= combat.riposte_until:
 			break
 	combat.finish_action()
 	await physics_frame
-	if Time.get_ticks_msec() / 1000.0 <= combat.riposte_until:
+	if combat._now() < combat.riposte_until:
 		await _wait(4)
 	combat.request(&"light")
 	var move := combat.moveset.get_move(&"he_ichimonji")

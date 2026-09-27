@@ -366,7 +366,7 @@ func _verify_bind_is_a_choice() -> void:
 	_check(bound, "The bind never happened: perfect guard did not land")
 	_check(combat.state == CombatController.State.PARRY, "A bind did not enter the parry beat")
 	_check(is_zero_approx(combat.parry_lateral), "The bind threw the player off the line")
-	_check(combat.bind_until > Time.get_ticks_msec() / 1000.0, "The bind deck window did not open")
+	_check(combat.bind_until > combat._now(), "The bind deck window did not open")
 	# The attacker is not flung: it is stopped, in place, in front of you.
 	_check(
 		dummy.global_position.distance_to(dummy_before) < 0.4,

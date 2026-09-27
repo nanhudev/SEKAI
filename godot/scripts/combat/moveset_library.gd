@@ -92,8 +92,16 @@ static func universal() -> SwordMoveset:
 	var moves := {}
 
 	# L1 右上 → 左下. The opener: fast, wide, forgiving.
+	#
+	# HIT AND MISS ARE DIFFERENT MOVES NOW. They were the same animation wearing
+	# two outcome labels, because the pose is a function of the timeline and the
+	# timeline did not know; §31 says the weight of a weapon is what happens AFTER
+	# it lands. Connecting shortens the settle — the blade found what it was
+	# looking for and the body can come back. Missing leaves the arm out there
+	# holding nothing, longer, because there was nothing to stop against.
 	moves[&"uni_l1"] = _move(&"uni_l1", "Light 1", {
 		"startup": 0.085, "strike": 0.085, "follow_time": 0.075, "recovery": 0.175,
+		"hit_recovery_scale": 0.86, "miss_recovery_scale": 1.22,
 		"damage": 18.0, "poise_damage": 15.0, "hitstop": 0.026,
 		"anchor": IDLE, "anchor_rot": IDLE_R,
 		"wind": Vector3(0.76, -0.20, -0.84), "wind_rot": Vector3(0.0, -0.34, -1.05),
@@ -110,6 +118,7 @@ static func universal() -> SwordMoveset:
 	# L2 左 → 右. Slightly horizontal, widens the melee footprint.
 	moves[&"uni_l2"] = _move(&"uni_l2", "Light 2", {
 		"startup": 0.095, "strike": 0.090, "follow_time": 0.075, "recovery": 0.180,
+		"hit_recovery_scale": 0.86, "miss_recovery_scale": 1.24,
 		"damage": 19.0, "poise_damage": 16.0, "hitstop": 0.028,
 		"anchor": Vector3(0.24, -0.42, -0.92), "anchor_rot": Vector3(-0.05, 0.24, 0.85),
 		"wind": Vector3(-0.12, -0.42, -0.94), "wind_rot": Vector3(-0.06, 0.34, 1.05),
@@ -127,6 +136,7 @@ static func universal() -> SwordMoveset:
 	# be a bigger horizontal.
 	moves[&"uni_l3"] = _move(&"uni_l3", "Light 3 · Thrust", {
 		"startup": 0.125, "strike": 0.085, "follow_time": 0.090, "recovery": 0.200,
+		"hit_recovery_scale": 0.88, "miss_recovery_scale": 1.30,
 		"damage": 26.0, "poise_damage": 24.0, "hitstop": 0.036,
 		"anchor": Vector3(0.30, -0.36, -0.94), "anchor_rot": Vector3(-0.10, 0.10, 0.30),
 		"wind": Vector3(0.42, -0.30, -0.80), "wind_rot": Vector3(-0.35, 0.06, 0.22),
@@ -144,6 +154,7 @@ static func universal() -> SwordMoveset:
 	# posture damage, not for looking like a windmill.
 	moves[&"uni_heavy"] = _move(&"uni_heavy", "Heavy · Cleave", {
 		"startup": 0.185, "strike": 0.105, "follow_time": 0.100, "recovery": 0.300,
+		"hit_recovery_scale": 0.90, "miss_recovery_scale": 1.34,
 		"damage": 36.0, "poise_damage": 45.0, "hitstop": 0.058,
 		"charged_poise_bonus": 1.85, "charged_damage_bonus": 1.30,
 		"anchor": IDLE, "anchor_rot": IDLE_R,
@@ -160,6 +171,7 @@ static func universal() -> SwordMoveset:
 
 	moves[&"uni_sprint_light"] = _move(&"uni_sprint_light", "Sprint Cut", {
 		"startup": 0.075, "strike": 0.085, "follow_time": 0.075, "recovery": 0.190,
+		"hit_recovery_scale": 0.86, "miss_recovery_scale": 1.24,
 		"damage": 22.0, "poise_damage": 18.0, "hitstop": 0.030,
 		"anchor": Vector3(0.50, -0.28, -0.86), "anchor_rot": Vector3(0.06, -0.10, -0.45),
 		"wind": Vector3(0.70, -0.18, -0.78), "wind_rot": Vector3(0.04, -0.30, -0.85),
@@ -176,6 +188,7 @@ static func universal() -> SwordMoveset:
 	# Retreat + Light: a short back-step cut. Negative lunge = away from facing.
 	moves[&"uni_retreat_light"] = _move(&"uni_retreat_light", "Retreat Cut", {
 		"startup": 0.080, "strike": 0.080, "follow_time": 0.070, "recovery": 0.200,
+		"hit_recovery_scale": 0.86, "miss_recovery_scale": 1.20,
 		"damage": 17.0, "poise_damage": 14.0, "hitstop": 0.024,
 		"anchor": IDLE, "anchor_rot": IDLE_R,
 		"wind": Vector3(0.60, -0.36, -0.80), "wind_rot": Vector3(0.02, -0.24, -0.70),
@@ -192,6 +205,7 @@ static func universal() -> SwordMoveset:
 	# animation: it has to feel like the fight restarts instantly.
 	moves[&"uni_riposte"] = _move(&"uni_riposte", "Riposte", {
 		"startup": 0.055, "strike": 0.070, "follow_time": 0.060, "recovery": 0.200,
+		"hit_recovery_scale": 0.84, "miss_recovery_scale": 1.30,
 		"damage": 26.0, "poise_damage": 34.0, "hitstop": 0.050,
 		"anchor": Vector3(0.20, -0.42, -0.98), "anchor_rot": Vector3(-0.20, 0.16, 0.62),
 		"wind": Vector3(0.34, -0.34, -0.86), "wind_rot": Vector3(-0.42, 0.10, 0.40),
