@@ -189,6 +189,8 @@ ChatGPT Web → Blender Python → Blender MCP → GLB → Godot
 | `MICRO_NARRATIVE_SLOTS.md`（PASS 04） | P0 | DONE | **回填 LD-01 §10/§11**：NAR-01..07 内容 + 22 槽位逐条（是什么/读到什么/形态/可错过）+ 4 个 Readable（R-03..R-06）+ `NAR-ART-05..08` / `NAR-AUDIO-08..09`。**地编保位置，文案填内容** |
 | `ACT1_QUESTS.md`（PASS 04） | P0 | DONE | 八条设计规则（**无 XP/无等级**）/ MQ-C 五状态机 / `took_cart_blade` 裂缝 / Q1–Q7 展开 / 五条支线（S-01..S-05）/ 模板黑名单 / 奖励表 / 11 个 flag 增量 / MAIN 实施顺序 6 步 |
 | `DIALOGUE_PASS_02.md`（PASS 04） | P1 | DONE | 第二层 6 场（奥伦木桩/米拉/莉娅/薇尔/格兰/阿诺）+ **三条能力入口（不规定顺序）** + 环境对白 Pass 02（18 条）+ VO 增量 11 句 + 自查 8 项 |
+| `VO_PIPELINE.md`（Narrative 侧接口契约） | P1 | DONE | 链路 `Scene → VO Spec → TTS Router → Raw → Post → QA → Manifest → Dialogue Player` 的**划界表**；补两环：**Voice Identity 在 Router 之前** / **Manifest 必带 `text_hash` 做改词检测**；字段标准 + 文本清洗规则 + 9 个 `voice_id` 画像 + **VO MASTER LIST 22 句（`VO-001..022`）** + Player 体验需求 |
+| **`VO-001..006`（泰姆）先做** | P1 | TODO | **第一批只验这 6 句**：空间声 + 可中断 + "战后把世界接回来"的节奏。成立才扩到 22 句。交 AUDIO（后端与后期）+ MAIN（Player） |
 | Dialogue Pass | P2 | DONE | 五条冻结门已过（`MAIN_STORY.md` §13）；PASS 02 只覆盖 Act I 前半第二层，**Act I 后半对白仍冻结** |
 | `TIMELINE.md` / `FACTIONS.md` / `TERMINOLOGY.md` / `NARRATIVE_BACKLOG.md` | P3 | TODO | 第一轮不建，按需再开（`QUESTS.md` 已由 `ACT1_QUESTS.md` 承担） |
 
