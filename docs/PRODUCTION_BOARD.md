@@ -37,6 +37,9 @@ Godot / Gameplay / Combat / Camera / UI / VFX / Save / Git / Testing
 | Enemy telegraph / AI | P1 | TODO | 现为 technical_dummy，非 Lesser Ruin Sentinel |
 | Iaido 5–8s Cinematic Tension Pass | P0 | REVIEW | 已到 7.2s，超出目标区间上限；待视听验收后再谈压缩 |
 | Git：提交本轮未落地改动 | P0 | DONE | 已由 MAIN 提交并推送：`c485aeb` + `8c71561`（7.2s Iaido 全序列）。远端 `godot-combat-mvp` = `8c71561` |
+| `NAR-MAIN-01` 可复用 `Readable` 阅读物 | P1 | REQUESTED | 看向纸/书/登记簿 → Interact → 可阅读 → 关闭。第一版不做书籍系统；ECHO-01、货单、告示、信件、日记共用 |
+| `NAR-MAIN-02` 雾的可视距离 + 南岸"回不去"暗示 | P2 | REQUESTED | 让"晚上不出门"成为体感；用塌方/水涨代替不可见墙 |
+| 回写 `COMBAT_DESIGN.md`（DOCUMENTATION DEBT） | P2 | TODO | 折柳 / 惊鸿 / 长风三段已在 `moveset_library.gd` 实现；见 `narrative/WORLD_BIBLE.md` §9 |
 
 ### 战斗线验收现状（COMBAT 会话 · 2026-09-27）
 
@@ -80,6 +83,8 @@ Suno / SFX / 裁切 / 分层 / FFmpeg / Godot 总线 / 战斗时序
 | 无明一刻 8 cue（含 `mom_click`） | P0 | TODO | `COMBAT_SFX_BRIEF.md` Priority E；与聚合斩 cue 严格分开 |
 | 元素 SFX（火/冰/风/shatter） | P1 | TODO | `COMBAT_SFX_BRIEF.md` Priority B |
 | BGM | P2 | DONE | 4 首 Suno 已接入（Web 原型期） |
+| `NAR-AUDIO-01` 第五次钟声 | P1 | REQUESTED | 独立音型，但**不要"恐怖片第五声"**——只是让细心玩家觉得节奏不太对 |
+| `NAR-AUDIO-02` 遗迹方向夜间极低频 | P1 | REQUESTED | barely audible：玩家应该不确定那是风，还是别的东西 |
 
 ---
 
@@ -104,8 +109,38 @@ ChatGPT Web → Blender Python → Blender MCP → GLB → Godot
 | 藏锋流 8 招动画 | C2B-12 | P1 | REQUESTED | 需 SheathAnchor 左腰变体 |
 | 回风式 5 招动画 | C2B-13 | P1 | REQUESTED | — |
 | 白蔷庭 Bind 四动作 | C2B-14 | P2 | TODO | 设计态，未实现；见 `COMBAT_DESIGN.md` §6 |
+| `NAR-ART-01` 翻倒的商队车（**模块化**） | — | P1 | REQUESTED | cart / wheel / crates / cloth / rope / cargo 可重组；不要一张固定"事故照片" |
+| `NAR-ART-02` 钟塔（远景 Landmark） | — | P1 | REQUESTED | 重点 **Silhouette**；雾起时只剩轮廓 |
+| `NAR-ART-03` 奥伦后院道具 | — | P1 | REQUESTED | chopping block / wood pile / tool rack。是普通后院，不是训练场；木桩有积年切痕 |
+| `NAR-ART-04` 魔法在日常的痕迹 | — | P1 | REQUESTED | 渡口定向磨痕 / 市场结霜库房 / 铁匠铺"看火"。**不做发光特效** |
 
-阻塞原因：Blender MCP 未连接本会话；ChatGPT Web 需用户登录态。Producer 已产出可直接粘贴的 prompt 包（`docs/asset_briefs/C2B-01-CHATGPT-PROMPT.md`），人工或连接后即可执行。
+### C2 · ART 地编 / 道具 / UI（本轮新增）
+
+规划全文见 `docs/ART_KIT_PLAN.md`，UI 规范见 `docs/UI_STYLE_BOARD.md`。
+
+| 资产 | ID | 优先级 | 状态 | 备注 |
+| --- | --- | --- | --- | --- |
+| Mistvale Ground / Stair / Terrace Kit（12 件） | ENV-01 | P0 | SPEC READY | brief 已成文；替代 `arena_dressing.gd` 占位几何 |
+| Adventurer Guild Exterior Set（8 件） | ENV-02 | P0 | REQUESTED | — |
+| Town Prop Set A（12 件） | ENV-05 | P0 | REQUESTED | 道具家族制，见 KIT PLAN §4 |
+| UI Style Board + UI Kit V1 | UI-01 | P0 | DONE | 5 件 SVG 已入 `godot/ui/kit_v1/`；场景接入待 MAIN |
+| 主菜单 V1 | UI-02 | P0 | REQUESTED | 依赖 ENV-01 + ENV-02 作为实景背景 |
+| Ability Wheel V1 | UI-03 | P0 | REQUESTED | 环与扇区资产已备；逻辑沿用 `radial_wheel.gd` |
+| HUD Frame V1 + 状态条 | UI-04 | P0 | REQUESTED | 底板与三态已备；接入 `CombatHUD.tscn` |
+| Town House Kit A（9 件） | ENV-03 | P1 | REQUESTED | **须先与 `assets/models/mistvale/` 既有 12 件做一致性审计再合并** |
+| Town Market / Stall Kit（7 件） | ENV-04 | P1 | REQUESTED | — |
+
+### C3 · 里程碑问题（须长期对账）
+
+- `assets/models/mistvale/` 的 12 件 GLB 此前被记为 "Integrated"，实际**从未接入 Godot**，`godot/` 下无任何 `mistvale` 引用。已更正。
+- `godot/scenes/ui/*.tscn` 各 7–10 行，`radial_wheel.gd` 为纯 `_draw()` 占位 —— UI 此前完全没有视觉资产。UI Kit V1 是首次补齐。
+
+### C4 · 阻塞与工具链
+
+- **美术线浏览器已独立**：ART 用 Chrome `:9333` + profile `F:\tools\chrome-profile-art`；音频线保留 `:9222` + `F:\tools\chrome-profile`。两者不再互相抢标签页。
+- `:9222` 实例的 CDP 浏览器级通道已失效（WebSocket 可连、握手无响应），人类窗口仍可用，但**任何 agent 都无法再连上它** —— 音频线如需自动化，须重启该实例。
+- 阻塞原因（原）：Blender MCP 未连接本会话；ChatGPT Web 需用户登录态。Producer 已产出可直接粘贴的 prompt 包（`docs/asset_briefs/C2B-01-CHATGPT-PROMPT.md`，以及新的 `docs/asset_briefs/prompts/ENV-01-01-send.txt`）。
+- 已解除：Blender MCP 直连 `127.0.0.1:9876` 可用（裸 JSON over TCP，`execute_code` / `get_scene_info` / `get_viewport_screenshot`），Blender 5.1.2 在线。
 
 ---
 
@@ -121,10 +156,15 @@ ChatGPT Web → Blender Python → Blender MCP → GLB → Godot
 | `WORLD_BIBLE.md` V0.1 | P1 | DONE | 魔法=理解性质；三种剑=信息/位置/距离；最大悬念=古代文明"不再需要留在这里" |
 | `MISTVALE.md` V0.1 | P1 | DONE | 空间 0–9 段各设叙事功能；三股力量（公会/商团/钟塔）+ 治安官；三条独特文化 |
 | `CHARACTERS.md` V0.1 | P1 | DONE | 7 位 Act I 人物 + 1 影子角色；每人回答"玩家不在时在做什么"；含学习来源表 |
-| `MAIN_STORY.md` V0.1 | P1 | DONE | Premise/Theme/Prologue/Act I 节点 1–12/Day 10 Anchor 六种状态/60 分钟表；Act II·III 仅一行 |
+| `MAIN_STORY.md` V0.1 | P1 | DONE | Premise/Theme/Prologue/Act I 节点/FA-01 六种参与状态/第一段可玩体验 50–70 分钟表；PASS 02 已细化并指向 `ACT1_BEATS.md` |
 | `STYLE_GUIDE.md` V0.1 | P1 | DONE | 对白长度、禁用 AI 套话表、命名规则、技能与任务文案标准、自查清单 |
-| Narrative Request → ART/AUDIO/MAIN | P1 | TODO | 商队车、钟塔第五钟、奥伦柴堆、遗迹低频声、登记簿"看纸"交互。见 `MAIN_STORY.md` §12 与 `MISTVALE.md` §8 |
-| Prologue/Act I dialogue pass | P2 | BLOCKED | **等骨架冻结后再进**，避免世界观一改就全废 |
+| Narrative Request → ART/AUDIO/MAIN | P1 | DONE | 已编号并入各线：`NAR-ART-01/02/03/04`、`NAR-AUDIO-01/02`、`NAR-MAIN-01/02`。权威清单见 `narrative/ACT1_BEATS.md` §7 |
+| `ACT1_BEATS.md`（PASS 02） | P1 | DONE | 七个问题答案 / Prologue beat sheet P0–P6 / Arrival A1–A7 / Act I 脊椎 Q1–Q7 / ECHO-01·02 规格 / FA-01 完整设计 / 请求清单 |
+| `RELATIONSHIPS.md`（PASS 02） | P1 | DONE | 关系矩阵（公开关系/真实态度/过去事件/潜在冲突）+ 鲁斯克 + 泰姆 + 作息表 + FA-01 后关系变化 |
+| PASS 02 修正落地 | P1 | DONE | 莉娅作息（可被错过）/ Soul Echo #2 改为 NPC 自我否认 / 魔法升格为世界底层规则 + 日常使用 3 例 |
+| 连续性规则 + 文档债 | P1 | DONE | 写入 `WORLD_BIBLE.md` §9：代码为准；prototype 不写 Lore；`COMBAT_DESIGN.md` 待 MAIN 回写 |
+| **Review：Prologue + Act I Early Game** | P0 | REVIEW | 交 DESIGN / MAIN 确认可实施为 Narrative Vertical Slice；**未通过前不推进 Act II、不开始对白** |
+| Dialogue Pass | P2 | BLOCKED | 前置：五条冻结门（见 `MAIN_STORY.md` §13）。通过后优先写 Prologue 真正会用的那几句 |
 | `TIMELINE.md` / `FACTIONS.md` / `QUESTS.md` / `TERMINOLOGY.md` / `NARRATIVE_BACKLOG.md` | P3 | TODO | 第一轮不建，按需再开 |
 
 未决事项：`COMBAT_DESIGN.md` 与 `moveset_library.gd` 不同步（折柳/惊鸿/长风三段已实现但文档写"未实现"），请 MAIN 回写；Narrative 现按**已实现**为准。

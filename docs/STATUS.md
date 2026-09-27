@@ -1,5 +1,47 @@
 # SEKAI MVP 0.1 状态
 
+## 2026-09-27 · 聚合斩 · 世界切裂 V3（虚空为什么一直像一根深蓝棒子）
+
+用户对上一版逐帧录影的判定是：结构对，但每一段仍像原型；P0 是「把粗蓝斜光带变成真正的世界切裂 + 细蓝虚空缝」。
+放大 3 倍、扫描线取像素值、再对单一变量做 A/B 差图之后，找到**四个可测量的原因** —— 都不是"效果不够强"，
+是参数和数学错了：
+
+- **裂口宽度被写成 `gap + separation`**（1080p 下 23px、横向 41px），而预算是 10–16px。真正在卖位移的
+  separation 只有 20px：**裂口比它自己的位移还宽，把证据盖住了**。现在 `half_gap = 0.5 * gap_px`，
+  裂口严格等于 `gap_px`（2 → 6 → 16）；`separation_px` 改为**每一半沿斩法线的刚体平移**，两侧错位 = 2×separation。
+- **缝隙填色是「中间黑、两侧亮」的对称渐变**，这就是圆柱着色 —— 在纯色场地上必然读成一根躺着的棒子。
+  改为**非对称**：近边全黑，远壁微弱受光。扫描线现在能依次读出 WORLD → 亮唇 `#b3b8b7` → 黑 `#00020d`
+  → 逐级受光的远壁 `#061933` → 透出来的远侧 `#666a6b` → WORLD。**这才叫「看进去」。**
+- **缺口噪声被缩到亚像素**（±0.67px），两条边在数学上完全笔直、且互为镜像。镜像是冲切模具，不是断裂。
+  现在两个面各用独立噪声，以 authored px 计量（`void_edge_width_px` 1 → 3）。
+- **裂缝的 `push` 是对称的、且沿斩法线** —— 主裂缝本身沿法线生长，等于**沿着裂缝推**，两侧同向位移，
+  永远不分离，所以只剩一条灰线。正确解是带符号的**垂直剪切**（新增 `crack_shear()`）。
+
+一并改掉的：玻璃失效改为「暗槽 + 亮斜面 + 跨缝可见台阶」，缝按噪声打断（连续等宽蜂窝 = 网格，不是损伤）；
+`edge_px` 更名 `cut_face_px` 并新增 `cut_lip_px`（断裂截面厚度 / 外缘亮唇），四处同步。
+
+**验证方法**（这一轮的教训不在美术判断，在怎么验）：
+
+- **单变量 A/B 差图**：渲染器新增 `arg5` 调参覆盖。`separation_px=0` vs `12` 在同一 debug-hold 时刻 →
+  6.18% 像素变化、分块峰值 103。位移**确实存在且可见** —— 靠肉眼盯柱体边缘永远得不出这个结论。
+- **先算再看**：扫描线找亮阶，y=340 处所有边缘一致位移 **+4px**，恰好等于 `12 × 0.667 × cos60°` + 视差。
+- **`print()` 是块缓冲**：重定向到管道会整段丢失，一次**成功**的渲染看起来像挂死。一律重定向到文件，
+  用帧文件数判断进度。
+- **AMD OpenGL 驱动会被重着色器卡死**：把 `crack_field` 改成返回 `vec3` 并在展开循环里累加向量后，
+  第一帧永远不呈现（`timeout` 退出、0 帧）。用只加载着色器的 `godot/tools/frame_probe.gd -- shader` 二分定位。
+  修法 = 保留已验证能编译的 float 距离场，另加一个**无分支**的小函数。**GPU 编程里「能编译」是约束条件，不是细节。**
+- **并发**：另一条线在跑 `tests/element_integration.gd`，会重写 `.godot/global_script_class_cache.cfg`，
+  让渲染进程满屏 `Could not find type`；渲染窗口被遮挡时 `frame_post_draw` 永不触发。**只 kill 自己的 PID。**
+
+渲染器新增能力：`arg4` 分镜表（直接产出具名验收帧，跳过 pre-roll/tail）、`arg5` 调参覆盖、
+`_clear_existing_frames()` 现在清理目录内**全部** PNG（旧命名残留曾混进视频）。
+
+**状态：IMPLEMENTED / TECHNICALLY VERIFIED。** 六张验收帧已产出并逐张核对像素结构：
+`F:\SEKAI\.render\verify\01_SHEATH_READY.png` … `06_FINAL_COLLAPSE.png`；完整录影
+`F:\SEKAI\.render\iaido_signature_ceremony.mp4`。
+**尚未 VISUALLY VERIFIED**：「两侧世界错位」这一条在 720p 静帧上偏克制，必须在**动起来的录影**上判定。
+本环境 Godot 无可见窗口句柄，观感验收只能由用户在可见桌面完成 —— 不因为技术跑通就宣布视觉完成。
+
 ## 2026-09-27 · 单手剑通用语言与三个流派原型
 
 把战斗层从"几招散装的连击"重做成**一套通用剑语言 + 流派数据改写**：`CombatController` 只认识剑语言，
@@ -162,3 +204,14 @@ NARRATIVE / WORLD BUILDING 线启动，与 Combat Sandbox 并行，**不等待�
 - **V0.1 文档**：`WORLD_BIBLE.md`（魔法=理解性质；三种剑=信息/位置/距离；历史悬念只留三件物证）、`MISTVALE.md`（空间 0–9 段 + 三股力量 + 三条独特文化）、`CHARACTERS.md`（7 位 Act I 人物 + 1 影子角色）、`MAIN_STORY.md`（Prologue / Act I 节点 1–12 / Day 10 Anchor 六种状态 / 60 分钟表）、`STYLE_GUIDE.md`（禁用 AI 套话、命名规则、文案标准）。
 - **纪律**：本阶段**不写完整对白**，先钉"世界为什么这样运转"。骨架冻结后再进 dialogue pass，避免世界观一改全部报废。
 - **未决**：`COMBAT_DESIGN.md` 与 `moveset_library.gd` 不同步（折柳/惊鸿/长风三段已实现、文档写未实现），请 MAIN 回写；Narrative 现按已实现为准。
+
+### NARRATIVE PASS 02 · 可玩故事骨架
+
+从"世界 Bible"进入**可玩 Act I 场景骨架**，仍然**不写完整对白**（只写 scene purpose / intent / 信息给出 / 情绪转折 / 台词碎片）。
+
+- 三项裁决正式通过并落地：**莉娅**不做引导（天亮前出船、白天在河上，玩家第一次到渡口可能只见一条离岸的船）；**Soul Echo** Act I 严格两次（① 钟塔旧记录 ② 一句被 NPC 自己否认的口误）；**魔法升格为世界底层规则**（火=转化 / 霜=停滞 / 风=动量，渗进生活、生产、交通、职业、教育、宗教；每种性质 3 个生活应用）。
+- 新增 `docs/narrative/ACT1_BEATS.md`：Prologue beat sheet **P0–P6（15–25 分钟）**、**Arrival A1–A7**、Act I 任务脊椎 **Q1–Q7**、ECHO-01/02 场景规格、**FA-01**（原 Day 10，不与日历绑定）完整设计（信号阶梯 4 级 / PATH A·B·C / 五条硬性要求 / 6 条持久后果）。
+- 新增 `docs/narrative/RELATIONSHIPS.md`：关系矩阵（公开关系 / 真实态度 / 过去事件 / 潜在冲突）+ 新增两个配角（**鲁斯克** 公会负责人、**泰姆** 赶车人）+ 作息表 + FA-01 后的关系变化触发器。
+- `WORLD_BIBLE.md` 新增 §9 连续性规则（**代码为准**；prototype/experimental 不写 Lore；DOCUMENTATION DEBT 清单）；`CHARACTERS.md` 新增初次相遇设计；`MISTVALE.md` 新增 §8 魔法生活痕迹。
+- 请求已编号并进板：`NAR-ART-01/02/03/04`、`NAR-AUDIO-01/02`、`NAR-MAIN-01/02`。
+- **下一步**：交 DESIGN / MAIN Review，确认可实施为 Narrative Vertical Slice。**通过前不推进 Act II、不开始 Dialogue Pass。**
