@@ -41,6 +41,7 @@ Godot / Gameplay / Combat / Camera / UI / VFX / Save / Git / Testing
 ### 战斗线验收现状（COMBAT 会话 · 2026-09-27）
 
 - **技术验证通过**：**13 项 headless 集成测试全部绿**（`moveset` / `parry_riposte` / `style` / `ultimate` 四项为本次新增）。期间 `iaido_integration` 曾因 Iaido 演出线并行改动 `iaido_tear_3d.gd` 短暂变红，**非战斗线回归**，对方改完后已自愈。
+- **已提交**：`59d983c`（40 files, +4415/−233）。**仅提交战斗线文件** —— Iaido 演出线、ART、AUDIO 的未完成改动**未纳入**，仍在各自工作区。**尚未 push**（远端可能正在接收 Iaido 线的提交，避免交错，交由 MAIN 或用户决定）。
 - **交互验收未完成**：`阶段一 通用剑对 Dummy 是否已经有趣` 与 `阶段二 切藏锋后不看 UI 是否可辨` **均未验收**。headless 只能证明逻辑正确，不能证明好玩。
 - **本会话运行过一次 `--editor --quit`**（为注册新 `class_name`），该操作会重写 `.godot/global_script_class_cache.cfg`。**Iaido 线如需再次 import，请注意与本题解冲突。**
 - 视觉当前为 `TempSwordVisual` 程序化姿态 + 刀光，**无手部、无骨骼动画**；需求见 `docs/COMBAT_ANIMATION_REQUIREMENTS.md`。
