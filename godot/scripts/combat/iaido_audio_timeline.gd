@@ -6,13 +6,16 @@ class_name IaidoAudioTimeline
 # are synthesised placeholders (see godot/tools/generate_iaido_placeholders.py);
 # replacing them with Suno renders does not change any timing below.
 #
-# Timeline intent:
-#   0.00 music pause        0.20 air disappears     0.80 sheath movement
-#   1.20 reverse waveform   2.20 deep pressure      2.85 lock click
-#   2.97 instant slash      3.10 world tear         3.40 void resonance
-#   4.25 glass stress       4.58 glass cracking     4.60 sword spin
-#   5.50 sheath friction    6.20 FINAL CLICK        6.25 large collapse
-#   6.80 reality restore    7.00+ music resume
+# Timeline intent (V3):
+#   0.00 music pause        0.20 air disappears     0.85 sheath movement
+#   1.35 reverse waveform   2.30 deep pressure      3.15 lock click
+#   3.30 instant draw       3.40 world tear         3.78 void resonance
+#   4.35 glass stress       4.90 sword spin         5.15 first panes detach
+#   5.95 sheath friction    6.85 FINAL CLICK        6.95 large collapse
+#   7.50 reality restore    7.85+ music resume
+#
+# Note where the noise is NOT: the 0.60s absolute hold (2.55 - 3.15) carries no
+# cue at all. The silence is the effect.
 
 const BUS_NAME := "Iaido"
 
@@ -39,22 +42,28 @@ func _ensure_bus() -> void:
 
 func _build() -> void:
 	cues.clear()
-	_add(&"air_suck", 0.20, "res://audio/sfx/iaido_air_suck.wav", -6.0, 1.0)
-	_add(&"sheath_move", tuning.sheath_move_cue, "res://audio/sfx/iaido_sheath_move.wav", -11.0, 1.0)
-	_add(&"reverse_wave", tuning.wave_start, "res://audio/sfx/iaido_reverse_wave.wav", -7.0, 1.0)
-	_add(&"pressure", tuning.hold_start, "res://audio/sfx/iaido_pressure.wav", -5.0, 1.0)
-	_add(&"lock_click", tuning.first_click, "res://audio/sfx/iaido_lock_click.wav", -4.0, 1.0)
-	_add(&"draw", tuning.draw_start + 0.02, "res://audio/sfx/iaido_draw.wav", -3.0, 1.0)
-	_add(&"world_cut", tuning.cut_start + 0.02, "res://audio/sfx/iaido_world_cut.wav", -3.0, 1.0)
-	_add(&"void_open", tuning.cut_end, "res://audio/sfx/iaido_void_open.wav", -5.0, 1.0)
-	_add(&"glass_stress", tuning.glass_start, "res://audio/sfx/iaido_glass_stress.wav", -8.0, 1.0)
-	_add(&"glass_break", tuning.shard_burst, "res://audio/sfx/iaido_glass_break.wav", -6.0, 1.0)
-	_add(&"spin", tuning.spin_start + 0.20, "res://audio/sfx/iaido_spin.wav", -9.0, 1.0)
-	_add(&"slow_sheathe", tuning.slow_sheathe_start + 0.15, "res://audio/sfx/iaido_slow_sheathe.wav", -10.0, 1.0)
-	_add(&"final_click", tuning.final_click, "res://audio/sfx/iaido_final_click.wav", -2.0, 1.0)
+	# Suno-rendered cues (audio_source/suno/raw -> build_iaido_cues.py).
+	# Relative hierarchy lives in volume_db; baked peaks sit at -3..-8 dBFS.
+	_add(&"air_suck", 0.20, "res://audio/sfx/iaido/world_suck.wav", -6.0, 1.0)
+	_add(&"sheath_move", tuning.sheath_move_cue, "res://audio/sfx/iaido/sheath_move.wav", -11.0, 1.0)
+	_add(&"reverse_wave", tuning.wave_start, "res://audio/sfx/iaido/reverse_compression.wav", -7.0, 1.0)
+	_add(&"pressure", tuning.suck_start, "res://audio/sfx/iaido/pressure_thud.wav", -5.0, 1.0)
+	# Signature click pair: the prepare click is brighter, the final click is
+	# the same identity pitched down with more body - one sword language.
+	_add(&"lock_click", tuning.first_click, "res://audio/sfx/iaido/sheath_lock.wav", -4.0, 1.1)
+	_add(&"draw", tuning.draw_start + 0.02, "res://audio/sfx/iaido/draw.wav", -3.0, 1.0)
+	_add(&"world_cut", tuning.cut_start + 0.02, "res://audio/sfx/iaido/reality_cut.wav", -3.0, 1.0)
+	_add(&"void_open", tuning.cut_end, "res://audio/sfx/iaido/void_open.wav", -5.0, 1.0)
+	_add(&"glass_stress", tuning.glass_start, "res://audio/sfx/iaido/glass_stress.wav", -8.0, 1.0)
+	# The first panes coming loose is a small break. The world collapsing is the
+	# big one, and it belongs to the final click, not to the draw.
+	_add(&"glass_detach", tuning.shard_detach, "res://audio/sfx/iaido/glass_detach.wav", -11.0, 1.0)
+	_add(&"spin", tuning.spin_start + 0.15, "res://audio/sfx/iaido/spin.wav", -9.0, 1.0)
+	_add(&"slow_sheathe", tuning.slow_sheathe_start + 0.15, "res://audio/sfx/iaido/slow_sheathe.wav", -10.0, 1.0)
+	_add(&"final_click", tuning.final_click, "res://audio/sfx/iaido/final_sheathe.wav", -2.0, 0.92)
 	# The real glass collapse belongs to the final click, not to the draw.
-	_add(&"collapse", tuning.collapse_start + 0.05, "res://audio/sfx/iaido_glass_break.wav", -2.5, 0.78)
-	_add(&"reality_restore", tuning.restore_start + 0.15, "res://audio/sfx/iaido_reality_restore.wav", -7.0, 1.0)
+	_add(&"collapse", tuning.collapse_start + 0.05, "res://audio/sfx/iaido/reality_collapse.wav", -2.5, 1.0)
+	_add(&"reality_restore", tuning.restore_start + 0.15, "res://audio/sfx/iaido/reality_restore.wav", -7.0, 1.0)
 
 
 func _add(cue_name: StringName, time: float, path: String, volume_db: float, pitch: float) -> void:

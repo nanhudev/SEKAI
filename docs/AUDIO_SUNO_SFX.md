@@ -35,22 +35,44 @@
 
 现有 `godot/audio/sfx/iaido_*.wav` 是 `godot/tools/generate_iaido_placeholders.py` 合成的占位件，节奏对、质感假。Suno 版只换文件，**不改 `iaido_audio_timeline.gd` 的触发时间点**。
 
-| Cue ID | Suno prompt（原样粘贴） | Target | 时间线位置 | 替换占位 |
-| --- | --- | --- | --- | --- |
-| `iaido_draw` | `A sword drawn slowly from a lacquered wooden scabbard, tight sheath friction with a restrained human breath, recorded dry and very close, 0.35 second one-shot, slow controlled rise then a small release, intimate Japanese sword foley, no music, no room tail.` | 0.35 s | draw_start +0.02 | `iaido_draw.wav` |
-| `iaido_world_cut` | `An extremely fast single blade cut that seems to slice the space itself, one thin tearing edge layered over the steel, dry hyper-close recording, 0.25 second one-shot, instant attack and very short decay, reality-cut anime sound design, no music, no explosion.` | 0.25 s | cut_start +0.02 | `iaido_world_cut.wav` |
-| `iaido_void_open` | `A brief silence that opens into a widening brittle crack followed by a deep low impact, dry dark recording, 0.55 second one-shot, delayed onset then sudden widening and a heavy low body at the end, dimensional rupture sound design, no music, no drums.` | 0.55 s | cut_end | `iaido_void_open.wav` |
-| `iaido_final_click` | `One distinct hard scabbard click as a sword is fully seated, dry close recording with a very short room tail, 0.25 second one-shot, sharp wooden and steel click then quick natural decay, precise Japanese sword foley, no music.` | 0.25 s | final_click | `iaido_final_click.wav` |
-| `iaido_reality_restore` | `Reality snapping back into place after a cut, air rushing back in with glass-like fragments settling and a soft low closure, dry recording with a short natural decay, 0.80 second one-shot, quick reversed intake then a settling body, subtle anime space restoration sound design, no music, no riser.` | 0.80 s | restore_start +0.15 | `iaido_reality_restore.wav` |
-| `iaido_pressure` | `Deep sub pressure building under a held sword stance, a low non-musical rumble with air being compressed, dry dark recording, 1.20 second one-shot, slow swell with no pitch movement, tension sound design, no music, no drums, no impact.` | 1.20 s | hold_start | `iaido_pressure.wav` |
-| `iaido_glass_stress` | `Thin glass under stress before breaking, microscopic creaks and high ticks rising slightly in density, extremely dry close recording, 0.60 second one-shot, quiet start and rising tension, no break yet, sound design texture, no music.` | 0.60 s | glass_start | `iaido_glass_stress.wav` |
-| `iaido_glass_break` | `A sheet of thin glass bursting into many sharp shards, bright brittle transient then short scattered debris, dry close recording, 0.70 second one-shot, instant attack and quick granular decay, no music, no low boom.` | 0.70 s | shard_burst / collapse | `iaido_glass_break.wav` |
-| `iaido_reverse_wave` | `A reversed air waveform being pulled inward, a short inhale-like sweep that rises in pitch then stops abruptly, dry recording, 0.60 second one-shot, smooth build then hard stop, abstract anime space sound design, no music, no drums.` | 0.60 s | wave_start | `iaido_reverse_wave.wav` |
-| `iaido_slow_sheathe` | `A sword sliding very slowly back into a scabbard, long controlled friction with faint cloth, dry close recording, 1.00 second one-shot, steady movement with no click at the end, restrained Japanese sword foley, no music.` | 1.00 s | slow_sheathe_start | `iaido_slow_sheathe.wav` |
-| `iaido_spin` | `A single sword spun once through the air after a strike, controlled mid-speed blade whoosh with a faint metal shimmer, dry recording, 0.45 second one-shot, smooth attack and decay, gameplay weapon foley, no music.` | 0.45 s | spin_start +0.20 | `iaido_spin.wav` |
-| `iaido_air_suck` | `All air being pulled out of a space in one instant, a very short inward vacuum gasp, hyper-dry recording, 0.25 second one-shot, instant attack and abrupt end, negative-space sound design, no music.` | 0.25 s | 0.20 | `iaido_air_suck.wav` |
-| `iaido_lock_click` | `A small mechanical lock engaging, one precise metallic click with a tiny spring, dry close recording, 0.15 second one-shot, extremely short, UI-grade precision foley, no music, no tail.` | 0.15 s | first_click | `iaido_lock_click.wav` |
-| `iaido_sheath_move` | `A scabbard shifting slightly at the hip, soft leather and wood movement with cloth, dry close recording, 0.30 second one-shot, quiet body and quick decay, Japanese sword foley, no music.` | 0.30 s | sheath_move_cue | `iaido_sheath_move.wav` |
+### 时间预算（`IaidoTuning.tres` 实测，restore_end = 7.20 s 硬截断）
+
+| Cue | 触发点 | 下一个事件 | 允许长度 | 现占位 | 结论 |
+| --- | --- | --- | ---: | ---: | --- |
+| `air_suck` | 0.20 | sheath_move 0.80 | ≤ 0.60 | 0.90 | 超长，压住拔刀准备 |
+| `sheath_move` | 0.80 | reverse_wave 1.20 | ≤ 0.40 | 0.75 | 超长 |
+| `reverse_wave` | 1.20 | pressure 2.20 | ≤ 1.00 | 1.15 | 超长 |
+| `pressure` | 2.20 | lock_click 2.85 | ≤ 0.65 | 1.05 | 超长，会盖住锁扣与拔刀 |
+| `lock_click` | 2.85 | draw 2.97 | ≤ 0.12 | 0.14 | 略长 |
+| `draw` | 2.97 | world_cut 3.10 | ≤ 0.28（尾音可压在斩击下） | 0.24 | 可用 |
+| `world_cut` | 3.10 | void_open 3.40 | ≤ 0.30 | 0.60 | 超长 |
+| `void_open` | 3.40 | glass_stress 4.25 | ≤ 0.85 | 1.60 | **超长一倍，压住整段玻璃** |
+| `glass_stress` | 4.25 | shard_burst 4.58 | ≤ 0.50（尾音可压在破裂下） | 0.65 | 略长 |
+| `glass_break` | 4.58 | slow_sheathe 5.50 | ≤ 0.92 | 1.25 | 超长 |
+| `spin` | 4.60 | slow_sheathe 5.50 | ≤ 0.90 | 1.00 | 略长 |
+| `slow_sheathe` | 5.50 | final_click 6.20 | ≤ 0.70 | 0.90 | 超长 |
+| `final_click` | 6.20 | collapse 6.25 | ≤ 0.25 | 0.30 | 略长 |
+| `collapse` | 6.25 | restore_end 7.20 | ≤ 0.95 | 1.25 | **溢出总时长，会被硬截断** |
+| `reality_restore` | 6.80 | restore_end 7.20 | ≤ 0.40 | 1.05 | **溢出，收尾被切** |
+
+### 生成清单
+
+| Cue ID | Suno prompt（原样粘贴） | Target | 替换占位 |
+| --- | --- | --- | --- |
+| `iaido_draw` | `A sword drawn from a lacquered wooden scabbard in one fast motion, tight sheath friction with a restrained human breath, recorded dry and very close, 0.28 second one-shot, immediate friction rise then a small release, intimate Japanese sword foley, no music, no room tail.` | 0.28 s | `iaido_draw.wav` |
+| `iaido_world_cut` | `An extremely fast single blade cut that seems to slice the space itself, one thin tearing edge layered over the steel, dry hyper-close recording, 0.25 second one-shot, instant attack and very short decay, reality-cut anime sound design, no music, no explosion.` | 0.25 s | `iaido_world_cut.wav` |
+| `iaido_void_open` | `A brief silence that opens into a widening brittle crack followed by a deep low impact, dry dark recording, 0.55 second one-shot, delayed onset then sudden widening and a heavy low body at the end, dimensional rupture sound design, no music, no drums.` | 0.55 s | `iaido_void_open.wav` |
+| `iaido_final_click` | `One distinct hard scabbard click as a sword is fully seated, dry close recording with a very short room tail, 0.22 second one-shot, sharp wooden and steel click then quick natural decay, precise Japanese sword foley, no music.` | 0.22 s | `iaido_final_click.wav` |
+| `iaido_reality_restore` | `Reality snapping back into place after a cut, air rushing back in with glass-like fragments settling, dry recording with a fast natural decay, 0.40 second one-shot, quick reversed intake then a settling body, subtle anime space restoration sound design, no music, no riser.` | 0.40 s | `iaido_reality_restore.wav` |
+| `iaido_pressure` | `Deep sub pressure building under a held sword stance, a low non-musical rumble with air being compressed, dry dark recording, 0.65 second one-shot, fast swell with no pitch movement, tension sound design, no music, no drums, no impact.` | 0.65 s | `iaido_pressure.wav` |
+| `iaido_glass_stress` | `Thin glass under stress before breaking, microscopic creaks and high ticks rising in density, extremely dry close recording, 0.50 second one-shot, quiet start and rising tension with no break yet, sound design texture, no music.` | 0.50 s | `iaido_glass_stress.wav` |
+| `iaido_glass_break` | `A sheet of thin glass bursting into many sharp shards, bright brittle transient then short scattered debris, dry close recording, 0.70 second one-shot, instant attack and quick granular decay, no music, no low boom.` | 0.70 s | `iaido_glass_break.wav`（同时供 collapse，pitch 0.78） |
+| `iaido_reverse_wave` | `A reversed air waveform being pulled inward, a short inhale-like sweep that rises in pitch then stops abruptly, dry recording, 0.60 second one-shot, smooth build then hard stop, abstract anime space sound design, no music, no drums.` | 0.60 s | `iaido_reverse_wave.wav` |
+| `iaido_slow_sheathe` | `A sword sliding slowly back into a scabbard, controlled friction with faint cloth, dry close recording, 0.70 second one-shot, steady movement with no click at the end, restrained Japanese sword foley, no music.` | 0.70 s | `iaido_slow_sheathe.wav` |
+| `iaido_spin` | `A single sword spun once through the air after a strike, controlled mid-speed blade whoosh with a faint metal shimmer, dry recording, 0.45 second one-shot, smooth attack and decay, gameplay weapon foley, no music.` | 0.45 s | `iaido_spin.wav` |
+| `iaido_air_suck` | `All air being pulled out of a space in one instant, a very short inward vacuum gasp, hyper-dry recording, 0.25 second one-shot, instant attack and abrupt end, negative-space sound design, no music.` | 0.25 s | `iaido_air_suck.wav` |
+| `iaido_lock_click` | `A small mechanical lock engaging, one precise metallic click with a tiny spring, dry close recording, 0.12 second one-shot, extremely short, UI-grade precision foley, no music, no tail.` | 0.12 s | `iaido_lock_click.wav` |
+| `iaido_sheath_move` | `A scabbard shifting slightly at the hip, soft leather and wood movement with cloth, dry close recording, 0.30 second one-shot, quiet body and quick decay, Japanese sword foley, no music.` | 0.30 s | `iaido_sheath_move.wav` |
 
 ## 批次 3 · 元素与连携（Priority B）
 
