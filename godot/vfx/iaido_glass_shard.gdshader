@@ -197,7 +197,16 @@ void fragment() {
 	float arrived = iaido_arrived(stream, travel);
 
 	float front = iaido_front(fracture, shatter);
+	// `grown` stays the STRESS number: it decides how much of the crack network
+	// this pane carries, and the network is allowed to reach the whole front.
 	float grown = iaido_grown(front, ad) * arrived * ready;
+	// `claim` is the GLASS number, and it is what the ALPHA below is gated on.
+	// A pane may only be opaque where the world underneath it has actually been
+	// taken; anywhere else it is a card lying over live picture, and a mosaic of
+	// cards over an intact frame is the exact read this pass exists to avoid.
+	// The world's eat calls the SAME function, so the pane and the hole it fills
+	// are the same shape by construction rather than by tuning.
+	float claim = max(iaido_claimed(front, ad), iaido_unleashed(shatter));
 	float weight = iaido_weight(rel);
 	float lit = iaido_lit(fracture, shatter, grown, dissolve, weight);
 
@@ -268,6 +277,6 @@ void fragment() {
 	ALBEDO = body + edge + sheen;
 	ALPHA = clamp(
 		body_alpha + rim_break * 0.14 + fresnel_v * 0.10 + seam_lit * 0.10,
-		0.0, 1.0) * opacity;
+		0.0, 1.0) * opacity * claim;
 	}
 }

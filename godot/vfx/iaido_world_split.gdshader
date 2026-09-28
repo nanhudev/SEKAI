@@ -389,6 +389,15 @@ void fragment() {
 	float arrived = iaido_arrived(stream, travel);
 
 	float front = iaido_front(fracture, shatter);
+	// THE COLLAR.
+	//
+	// `grown_reach` below is how far the fracture NETWORK has spread across the
+	// surface; `claim` is how much of it the panes have actually TAKEN OVER.
+	// Only `claim` may remove world. They are no longer the same number, and
+	// the reason is the whole of FINAL LOCK PART A/B: the network is thin seams
+	// and wants reach; the eat is a filled region, and the reach of a filled
+	// region is how much of the picture goes. See IAIDO_CLAIM_CORE.
+	float claim = max(iaido_claimed(front, ad), iaido_unleashed(shatter));
 	// HOW FAR OUT OF THE WOUND THE GLASS HAS GROWN. 玻璃从裂痕蔓延.
 	//
 	// The front is a DISTANCE FROM THE CUT, not a position along it. The panes
@@ -540,7 +549,7 @@ void fragment() {
 		// direction at once and does not need the slash to point anywhere.
 		float wedge = 1.0 - smoothstep(
 			lead + IAIDO_EAT_BEGIN, lead + IAIDO_EAT_BEGIN + IAIDO_EAT_TAIL, travel);
-		eaten = max(eaten, wedge * grown_reach);
+		eaten = max(eaten, wedge * claim);
 	}
 	// THE VOID IS NOT PERMANENT.
 	//
@@ -575,7 +584,7 @@ void fragment() {
 	// that the surface has stopped being world and started being glass. Without
 	// this the change reads as a hole opening next to a pane rather than as the
 	// pane being the thing that came away.
-	float vitrified = arrived * grown_reach * clamp(fracture * 1.25, 0.0, 1.0) * (1.0 - dissolve);
+	float vitrified = arrived * claim * clamp(fracture * 1.25, 0.0, 1.0) * (1.0 - dissolve);
 
 	// ---- composite ---------------------------------------------------------
 	vec3 col = mix(world, void_col, in_void);

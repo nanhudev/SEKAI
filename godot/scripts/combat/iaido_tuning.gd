@@ -251,17 +251,23 @@ class_name IaidoTuning
 @export var hero_hold_end := 5.90
 # THE HOLE AS A FRACTION OF THE SEPARATION. See the note above: under 0.75.
 #
-# 0.68 rather than 0.60 is 裂缝大一点, and it is the half of it that is actually
-# visible. Raising `separation_px` alone widens the misregistration but leaves
-# the OPENING where it was, and the opening is the thing the eye measures as
-# "how wide is the break" — the step across it is read as damage. At 26px of
-# displacement this puts the slit at 17.7 authored pixels, which is 1.6% of the
-# frame height: wider than it was, still a slit the world is seen past rather
-# than a band it is seen through, and still a long way under the 0.75 ceiling.
-@export var gap_ratio := 0.68
+# 裂缝大一点, and it is the half of it that is actually visible. Raising
+# `separation_px` alone widens the misregistration but leaves the OPENING where
+# it was, and the opening is the thing the eye measures as "how wide is the
+# break" — the step across it is read as damage.
+#
+# THE CEILING IS 0.75 AND PASS 4 IS NOWHERE NEAR IT. 0.60 here, against a
+# separation of 11, puts the slit at 6.6 authored px: 4.4 real px at 720p,
+# which is the middle of FINAL LOCK PART A's 2-5px band. It sat at 0.34 for
+# one round of this pass and that was a misreading of PART A — the numbers
+# PART A asks to be cut by 50-70% are the EAT COLLAR (which was ±148 authored
+# px and is now ±14.4, see CLAIM_TAIL), not the slit. The slit is what the
+# reviewer is being asked to LOOK INTO, and at 0.34 it was under two real
+# pixels: present in the frame, absent from the read.
+@export var gap_ratio := 0.60
 # A sub-pixel floor, so the wound exists as a hairline the instant the split
 # begins rather than appearing at a threshold.
-@export var gap_min_px := 0.4
+@export var gap_min_px := 0.3
 # The blade passing: a 1-3px ivory line that exists for 30ms and is then gone
 # for the rest of the performance. This is the ONLY line allowed.
 @export var blade_flash_duration := 0.030
@@ -291,7 +297,12 @@ class_name IaidoTuning
 # Both are far below the threshold of noticing individually. What they do is
 # stop the wound reading as a slide transition.
 @export_group("H · Separation")
-@export var separation_px := 26.0
+# FINAL LOCK PART B — 4-6px on side A, 5-8px on side B, 8-14px total, "根据分辨
+# 率缩放". 11 authored px is 7.3 real px per half at 720p, i.e. a 14.7px step:
+# the top of the brief's band, and half of what the reviewer watched and called
+# an overlay. The step is still what carries the read — every silhouette that
+# crosses the wound moves — it is simply no longer a wide slide.
+@export var separation_px := 11.0
 @export var split_bias := 0.45
 # The halves do not only separate along the normal — each also slides a little
 # ALONG the cut, so the misregistration is not perpendicular to the wound. This
@@ -350,8 +361,8 @@ class_name IaidoTuning
 # the hole, so it is the third and widest way the break reads bigger without a
 # single new thing being drawn: the hole widened, its edge got raggeder, and
 # the material that has visibly changed state around it widened with them.
-@export var edge_band_px := 8.0
-@export var edge_refract_px := 3.5
+@export var edge_band_px := 4.0
+@export var edge_refract_px := 3.0
 @export var edge_spec_strength := 0.22
 @export var edge_spec_low := 0.56
 @export var edge_spec_high := 0.72
@@ -411,9 +422,16 @@ class_name IaidoTuning
 @export var spin_start := 6.30
 @export var spin_first_end := 6.78
 @export var spin_end := 7.30
-@export var spin_radius_first := 0.052
-@export var spin_radius_second := 0.021
-@export var spin_lift := 0.016
+# FINAL LOCK PART I — the sword yields the centre of the frame to the break.
+#
+# After the world is in two pieces the first subject is THE BROKEN WORLD and the
+# blade is the second, so both arcs are tighter, lower and further right than
+# they were — the sweep no longer carries the blade back across the wound. The
+# lift is nearly gone for the same reason: it was pulling the arcs up into the
+# middle of the frame, which is where the cut is.
+@export var spin_radius_first := 0.038
+@export var spin_radius_second := 0.015
+@export var spin_lift := 0.004
 
 # --- PHASE L · RETURN TO SHEATH ------------------------------------------
 # The last 5-10cm have to be the slowest physical process in the whole
@@ -434,18 +452,25 @@ class_name IaidoTuning
 # the world's disappearance in the middle of the one beat that is supposed to be
 # about the sword.
 @export_group("M · Devour")
-@export var devour_start := 8.46
+# FINAL LOCK PART K — THE CLICK IS THE TRIGGER, NOT A PRELUDE TO ONE.
+#
+# The collapse used to begin 0.25s AFTER the final sheath click, which made the
+# click a sound effect and let the world break on its own schedule. The brief
+# makes the click the second climax, with world / enemy / audio all firing off
+# it within ±1-3 frames. 8.42 is two frames after `final_click` — inside the
+# brief's spread, so the three are one event rather than three coincidences.
+@export var devour_start := 8.40
 @export var devour_end := 9.15
-@export var seated_hold_end := 8.46
-@export var collapse_start := 8.65
+@export var seated_hold_end := 8.40
+@export var collapse_start := 8.42
 @export var collapse_end := 9.15
 # The collapse is the one moment the opening is ALLOWED to beat the displacement:
 # reality is letting go, not being cut, so the hole widening past the step is the
 # correct read for a single transient frame. It is held to 15px because it is
 # 1.4% of the frame height — a collapse, not a wipe — and it lasts 0.5s against
 # 40px of separation, so it can never be mistaken for the wound itself.
-@export var collapse_gap_px := 15.0
-@export var collapse_impulse := 0.034
+@export var collapse_gap_px := 18.0
+@export var collapse_impulse := 0.018
 # How far a failed world cell is allowed to slide off its neighbours. This is
 # the cue that reads as "material", not the seam line: a seam drawn on a flat
 # surface is a grey line on a screen, a seam with a visible step across it is a
@@ -469,8 +494,15 @@ class_name IaidoTuning
 # the same lift the void palette took — otherwise the collapse ends on a black
 # frame while the wound that caused it was blue, and the two read as unrelated
 # events instead of one absence arriving.
-@export var drained_world_color := Color(0.070, 0.130, 0.250)
-@export var drained_world_deep := Color(0.020, 0.045, 0.105)
+# FINAL LOCK PART N — THE DEVOUR RESOLVES INTO THE WOUND, NOT INTO A FADE.
+#
+# These were a full step brighter and bluer than the void palette, so the end of
+# the ceremony emptied the frame into a different absence than the one the cut
+# opened onto — two unrelated events instead of one absence arriving. They now
+# sit just above `void_back_color` / `void_deep_color`: the corners the stream
+# never reached go to the SAME place the wound already was.
+@export var drained_world_color := Color(0.038, 0.068, 0.140)
+@export var drained_world_deep := Color(0.014, 0.026, 0.058)
 # The crack network belongs to the surface that is leaving, so it goes with it.
 @export var drain_crack_fade := 1.0
 
@@ -552,7 +584,7 @@ class_name IaidoTuning
 
 # --- Framing --------------------------------------------------------------
 @export_group("Framing")
-@export var drawn_position := Vector3(0.38, -0.50, -1.05)
+@export var drawn_position := Vector3(0.44, -0.55, -1.05)
 @export var drawn_rotation := Vector3(-0.22, 0.06, -1.02)
 @export var cut_angle_degrees := -30.0
 @export var cut_center := Vector2(0.5, 0.5)
@@ -566,7 +598,7 @@ class_name IaidoTuning
 # both faces, so it is the second place the break gets wider without anything
 # new being drawn. A perfectly straight edge reads as a slit cut in a print;
 # these few pixels are what make it a broken one.
-@export var void_edge_width_px := 6.0
+@export var void_edge_width_px := 4.5
 
 # --- Void palette (cold, airless, NOT sci-fi portal) ---------------------
 # THE PALETTE HAS TO SURVIVE THE WIDTH THE WOUND ACTUALLY HAS.
@@ -578,11 +610,18 @@ class_name IaidoTuning
 # holding the same hue, so the slot shows DEPTH instead of absence. Sampled at
 # the hero hold the band now sits around rgb(22,44,84) against a world of
 # rgb(150,160,175): unmistakably dark, unmistakably blue, unmistakably a hole.
+# FINAL LOCK PART C — "near-black navy / deep indigo / desaturated cyan depth /
+# tiny pale core occasionally. 不要 neon blue." These were lifted ~3x in the
+# previous pass because a hole with nothing in it reads as a black LINE — but
+# that pass was buying legibility with width, and it paid for it twice: the slot
+# was 17.7 authored px wide AND bright enough to read as a blue band across the
+# frame. Now that PART A has narrowed it to 3.7px, the slot can be dark again.
+# Roughly 45% off the previous values, holding the hue.
 @export_group("Void Palette")
-@export var void_back_color := Color(0.055, 0.098, 0.196)
-@export var void_deep_color := Color(0.110, 0.208, 0.400)
-@export var void_lip_color := Color(0.170, 0.330, 0.560)
-@export var void_core_color := Color(0.560, 0.740, 0.850)
+@export var void_back_color := Color(0.030, 0.052, 0.110)
+@export var void_deep_color := Color(0.070, 0.132, 0.260)
+@export var void_lip_color := Color(0.105, 0.208, 0.365)
+@export var void_core_color := Color(0.420, 0.580, 0.700)
 @export var void_life := 1.0
 # The void drifts while the world does not. 0.1 is deliberate: any faster and
 # it reads as an effect running on top of the frame rather than as somewhere
@@ -852,16 +891,42 @@ func stream_arrived(t: float, travel: float) -> float:
 # takes those later, which is what the devour is for.
 #
 # These four numbers live here AND in `iaido_fracture_field.gdshaderinc` (as
-# IAIDO_FRONT_PER_FRACTURE / _PER_SHATTER / _CORE / _TAIL). Both sides read them
-# for the same event — the glass layer decides a pane exists with `grown_at()`,
-# and the world pass decides a point stops existing with the SAME reach, because
-# the eat boundary and the pane's opaque boundary are one boundary. A drift
-# between the two puts either a hole or a pane in the wrong place, so
-# `_verify_the_glass_grows_out_of_the_wound()` asserts they agree.
-const FRONT_PER_FRACTURE := 360.0
+# IAIDO_FRONT_PER_FRACTURE / _PER_SHATTER / _CORE / _TAIL), and they are the
+# STRESS reach: how far the fracture NETWORK has spread across the surface. The
+# network is thin seams plus a few pixels of displacement, it is secondary
+# detail, and NOTHING is removed from the world for it.
+#
+# HOW MUCH OF THE PICTURE THE PANES TAKE OVER IS A SECOND, MUCH NARROWER
+# NUMBER — see CLAIM_CORE / CLAIM_TAIL below. Driving the eat off the stress
+# reach is what put a ±45-authored-px near-black band along the cut (60 real px
+# at 720p): the network may be wide because it is thin, and the eat may not
+# because it is not.
+const FRONT_PER_FRACTURE := 90.0
 const FRONT_PER_SHATTER := 480.0
-const FRONT_CORE := 0.78
-const FRONT_TAIL := 2.0
+const FRONT_CORE := 0.50
+const FRONT_TAIL := 1.0
+
+
+# ---- THE COLLAR ----------------------------------------------------------
+#
+# FINAL LOCK PART A/B. The panes are FILLED regions with an alpha, and the world
+# is DELETED underneath them — so their reach is how much of the frame goes,
+# not a detail. Measured at fracture 1 (front 90) the wall of the wound is fully
+# glass out to `90 * 0.05 = 4.5` authored px and the last of it is gone by 14.4:
+# a skin that hugs the slot the break actually opened.
+#
+# SIZED AGAINST THE SLIT, NOT AGAINST THE FRONT. `gap_ratio` 0.60 of an 11px
+# separation is a 6.6 authored px hole, so the collar is the hole plus the two
+# or three pixels of transition PART D asks for as the broken edge band — and
+# nothing more, because everything past the slit is a band around a slit and a
+# band around a slit is the 世界裂口像 Overlay read arriving through the EAT.
+#
+# The collapse is the exception and gets its own term (`unleashed_at`), because
+# a surface coming apart is all of its pieces at once.
+#
+# Mirrors IAIDO_CLAIM_CORE / IAIDO_CLAIM_TAIL in the shared field.
+const CLAIM_CORE := 0.05
+const CLAIM_TAIL := 0.16
 
 
 ## How far out of the wound the fracture front has reached, in authored pixels
@@ -882,9 +947,33 @@ func grown_at(t: float, ad_px: float) -> float:
 	return 1.0 - (x * x * (3.0 - 2.0 * x))
 
 
-## THE ONE NUMBER THE GLASS AND THE WORLD MUST AGREE ON: how much of this point
-## the glass has claimed. 1 = the surface here has become glass and may not be
-## world any more; 0 = untouched.
+## 1 where the panes have taken the surface over, 0 where it is still world.
+## The mirror of `iaido_claimed()`.
+##
+## THIS IS NOT `grown_at()`. `grown_at()` is the STRESS gate — it is what the
+## crack network is drawn with, wide on purpose. This is the GLASS gate, and it
+## is what the world's EAT is driven from and what the pane's alpha is gated on,
+## so it is narrow on purpose. See CLAIM_CORE.
+func claimed_at(t: float, ad_px: float) -> float:
+	var front := front_at(t)
+	var inner := front * CLAIM_CORE
+	var x := clampf(
+		(ad_px - inner) / maxf(front * CLAIM_TAIL - inner, 0.0001), 0.0, 1.0)
+	return 1.0 - (x * x * (3.0 - 2.0 * x))
+
+
+## 1 once the collapse has the frame, 0 through the whole of the hold.
+## The mirror of `iaido_unleashed()`.
+func unleashed_at(t: float) -> float:
+	return smoothstep(0.02, 0.34, shatter_at(t))
+
+
+## The STRESS number, and only that: how much of the fracture network this
+## point carries. Used to decide whether a pane is WORTH DRAWING at all and how
+## it arrives along the slash — the pane's actual opacity is shaped per pixel by
+## the collar in `iaido_glass_shard.gdshader`, because a per-pane opacity taken
+## from the pane's CENTRE can never match a per-pixel eat, and the mismatch
+## between the two is a visible band.
 ##
 ## `ad_px` is the distance from the cut in authored pixels (see the shared
 ## field), `travel` the position along the slash.

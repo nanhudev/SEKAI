@@ -8,7 +8,13 @@ extends SceneTree
 ##
 ## Usage:
 ##   godot --path . --resolution 1280x720 --audio-driver Dummy \
-##         --script res://tools/iaido_movie_renderer.gd -- <output_dir>
+##         --script res://tools/iaido_movie_renderer.gd -- <output_dir> [MAX_TIME]
+##         [start_time] [overlay 0/1] [shot_list "t:label,..."]
+##         [overrides "k=v,k=v"] [ablations "glass,crack,void,sword"]
+##
+## The last argument is PART S's test matrix: it switches off the thing that is
+## supposed to be carrying the read, so a frame can prove the effect is not
+## resting on it.
 ##
 ## Then encode the sequence, for example:
 ##   ffmpeg -y -framerate 30 -i frame_%04d.png -pix_fmt yuv420p ../iaido.mp4
@@ -85,6 +91,37 @@ func _initialize() -> void:
 	for pair in overrides:
 		tuning.set(String(pair[0]), pair[1])
 		print("override %s = %s" % [pair[0], pair[1]])
+	# ---- TEST MATRIX ABLATIONS (PART S) ------------------------------------
+	#
+	# PART S asks for frames in which the thing that is supposed to be carrying
+	# the read is switched OFF — "no glass" and "no crack network" both still
+	# have to be legible as a world cut in two. Driven through the director's
+	# own flags rather than by editing the scene, so an ablation frame is
+	# otherwise identical to the frame it is compared against.
+	var ablations := String(args[6]) if args.size() > 6 else ""
+	for flag in ablations.split(","):
+		match flag.strip_edges():
+			"glass":
+				director.set("suppress_glass", true)
+				print("ABLATION: glass OFF")
+			"crack":
+				director.set("suppress_crack", true)
+				print("ABLATION: crack network OFF")
+			"void":
+				# TEST 2's twin: keep the displacement, delete the hole. If the
+				# step alone reads as a break, the void is not carrying it. The
+				# shader floors `open_px` at 0.45 authored px so a hairline
+				# always exists — at 720p that is six tenths of a pixel, which
+				# is to say not there.
+				tuning.set("gap_ratio", 0.02)
+				tuning.set("gap_min_px", 0.0)
+				print("ABLATION: void slot OFF (displacement only)")
+			"sword":
+				var weapon_root: Node = player.get_node_or_null(
+					"CameraRig/LookPivot/MotionPivot/ShakePivot/WeaponRoot")
+				if weapon_root != null:
+					(weapon_root as Node3D).visible = false
+					print("ABLATION: weapon OFF")
 	_build_overlay()
 
 	var total := float(tuning.get("restore_end"))

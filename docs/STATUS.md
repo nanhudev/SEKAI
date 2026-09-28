@@ -671,3 +671,44 @@ PASS 04 **顺序调整**（提前于 MAIN Review）：ART 的 `docs/LD-01-MISTVA
 - 为注册 8 个新 `class_name` 跑过 1 次 `--editor --quit`。**该次之后 `IaidoTuning.tres` 的 md5 未变**（`d8437620…`），此前记录过的 `.tres` 重写与 import 之间不是稳定因果。**Iaido 线请自行确认当前 diff 是否是自己的意图。**
 - 下一步：把"任何一行 × 任何一列"在可见桌面上跑一遍（`F8` → 切流派 → 切法术 → 切敌人状态 → 就位撞墙），
   先回答 §53 的五个自问，再谈平衡数值。
+
+
+---
+
+## IAIDO 线 · FINAL LOCK PASS 4（2026-09-28）
+
+> 本节由 Iaido 线追加，只涉及本线文件。COMBAT 的未暂存改动未被触碰。
+
+**结论：PART A–F/J/K/Q 已落地并可复现；PART B 的「只留位移」极限情形不成立，如实标注。**
+
+### 两个根因（都是量出来的）
+
+1. **应力门被当成「世界被吃掉多少」的门。** 前缘 `FRONT_PER_FRACTURE` 360 时在切口两侧各吃掉 ±148 authored px（720p ≈197px 的近黑楔形）。用户说的"世界裂口像 Overlay"是**经由 EAT** 到达的，不是经由 slot。→ 360→90，`FRONT_CORE` 0.78→0.50，`FRONT_TAIL` 2.0→1.0。
+2. **一个门在干两件事。** 裂纹网是细缝、该宽；被删掉的世界是**填充区域**、宽度就是画面损失。拆成 `iaido_grown()`（STRESS，宽）+ `iaido_claimed()`（GLASS，窄）：只有后者能删世界，且同时门住 pane 的 alpha，所以洞和盖住洞的玻璃**按构造同形**，不再靠调参对齐。GDScript 侧镜像 `claimed_at()`。
+3. **敌人不在刀面上**（独立 bug）。`collector.collect_targets()` / `executions` 一直是健康的 —— 不是管线断了，是几何：`signed_dist` origin 0.25m / head 1.15m，刀面从身体上方掠过。`TechnicalDummy` → `(-2.45, 0.25, -3)` 后两侧异号。
+
+### 新增不变量（已做双向突变检验）
+
+`CLAIM_TAIL * FRONT_PER_FRACTURE ≥ slit_half`（否则洞内露出活世界）**且** `≤ slit_half + 14 authored px`（否则读成「带子」）。`gap_ratio` 仍受项目原有 0.75 硬顶约束。
+
+### 关键数值
+
+`separation_px` 26→11｜`gap_ratio` 0.34→0.60｜`CLAIM_CORE/TAIL` 0.07/0.32→0.05/0.16｜`void_edge_width_px` 3→4.5｜`collapse_gap_px` 8→18｜void 三色 −45%｜`drained_world_*` 与 void 对齐。
+
+### 消融（PART S）
+
+| 检验 | 结果 |
+|---|---|
+| TEST 1 关玻璃 | 仍读成世界断开 ✓ |
+| TEST 2 关裂纹贴图 | 仍读成世界断开 ✓ |
+| 额外：删掉洞、只留位移 | ✗ 8–14px 位移在这套白亮低对比构图里单独读不出来 |
+
+第三项**未修**：项目有 `gap_ratio < 0.75` 的既有硬规则（洞必须比位移窄），且真正的问题是机位把切口放在了天空与空地上。
+
+### 交付
+
+`.render/iaido_final_pass4.mp4`（330 帧 / 11.0s，15 条 cue 由 `dump_iaido_cues.gd` 读出）、`iaido_pass4_split_hold.png` / `_pre_click.png` / `_post_click.png`、`iaido_pass4_before_after.png`（`tools/iaido_pass_compare.py` 生成）。编码脚本自带的首/末帧 luma 检查通过（178 → 183）→ restore 确实把世界还回来了。
+
+### 未做
+
+PART J 的敌人断面视觉未在最终帧里单独验收；PART L 的 SPLIT VARIANT 走的是现有 `cleave` 回退；PART R 的 UE5 fracture topology 未动。

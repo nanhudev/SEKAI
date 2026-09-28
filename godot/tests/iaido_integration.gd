@@ -543,6 +543,7 @@ func _const_value(source: String, name: String) -> float:
 #      front crosses blinks dark before the glass arrives ("the world appears
 #      twice").
 func _verify_glass_carries_the_split() -> void:
+	var tuning: IaidoTuning = iaido.tuning
 	var director_source := FileAccess.get_file_as_string("res://scripts/combat/iaido_director.gd")
 	var glass_source := FileAccess.get_file_as_string("res://scripts/combat/iaido_glass_layer.gd")
 	_check(
@@ -609,13 +610,94 @@ func _verify_glass_carries_the_split() -> void:
 	# longer do. If the eat is left ungated the frame is consumed corner to
 	# corner while the glass only covers a band of it, and the glass phase is
 	# spent looking through a hole at nothing.
+	# THE GATE IS THE COLLAR, NOT THE STRESS REACH — and that distinction is
+	# the whole of FINAL LOCK PART A/B. `grown_reach` spreads as far as the
+	# crack NETWORK does (thin seams, secondary detail, nothing removed);
+	# `claim` is how much of the surface the panes have TAKEN OVER, and it is
+	# what the world may be deleted for. The eat was driven off `grown_reach`
+	# until this pass, which put a ±45-authored-px near-black band along the
+	# cut — the reviewer's 世界裂口像 Overlay, arrived at through the EAT.
 	_check(
-		world_source.contains("eaten = max(eaten, wedge * grown_reach);"),
-		"The world's stream eat is not gated by the radial front, so it consumes the frame faster than the glass arrives"
+		world_source.contains("eaten = max(eaten, wedge * claim);"),
+		"The world's stream eat is not gated by the glass collar, so it removes world the panes do not claim and the wound reads as a drawn dark band"
 	)
 	_check(
 		world_source.contains("float grown_reach = iaido_grown(front, ad);"),
-		"The world pass no longer reads the radial front the glass is gated on in the same term"
+		"The world pass no longer reads the stress reach at all; the fracture network has nothing to be drawn from"
+	)
+	_check(
+		world_source.contains("float claim = max(iaido_claimed(front, ad), iaido_unleashed(shatter));"),
+		"The world pass does not open the collar at the collapse, so the shatter leaves four intact corners in the frame"
+	)
+	# THE COLLAR HAS TO BE INSIDE THE NETWORK. If the glass claims further than
+	# the stress has reached, the picture is eaten where nothing is even broken
+	# yet, and the wound is a hole cut ahead of its own cause.
+	_check(
+		IaidoTuning.CLAIM_TAIL < IaidoTuning.FRONT_CORE,
+		"CLAIM_TAIL (%s) is not inside FRONT_CORE (%s): the glass reaches past the fracture network, so the frame is eaten where nothing has broken"
+			% [IaidoTuning.CLAIM_TAIL, IaidoTuning.FRONT_CORE]
+	)
+	_check(
+		IaidoTuning.CLAIM_CORE < IaidoTuning.CLAIM_TAIL,
+		"CLAIM_CORE (%s) is not below CLAIM_TAIL (%s), so the collar has no falloff and is a hard-edged slot"
+			% [IaidoTuning.CLAIM_CORE, IaidoTuning.CLAIM_TAIL]
+	)
+	# AND IT HAS TO BE SMALL. The number that matters is the collar's real width
+	# at 720p, in the window where it is widest — fracture has reached 1, so the
+	# front IS `FRONT_PER_FRACTURE` and the collar is `front * CLAIM_TAIL`
+	# authored px either side of the cut. Both sides of this are constants, so
+	# the assertion cannot drift with the timeline.
+	var collar_px := (
+		IaidoTuning.FRONT_PER_FRACTURE * IaidoTuning.CLAIM_TAIL * 720.0 / 1080.0)
+	_check(
+		collar_px < 26.0,
+		"The glass collar is %.1f real px either side of the cut at 720p — a band, not a slot" % collar_px
+	)
+
+	# AND IT HAS TO BE SIZED AGAINST THE SLIT, NOT AGAINST THE FRONT.
+	#
+	# This is the relationship the whole of PART A/B lives in, and it is the one
+	# that was wrong for a round: the collar was ±148 authored px around a
+	# 17.7 authored px hole, which is a BAND AROUND A SLIT. The band is what the
+	# eye reads, and the eye then reports 世界裂口像 Overlay — correctly, because
+	# it is one, and it arrived through the EAT rather than through the slot.
+	#
+	# Both ends matter. The collar may not be SMALLER than the slit, because the
+	# panes are what replaces the world that was eaten and a hole wider than the
+	# panes leaves a strip of live world showing inside the wound. And it may
+	# not be much LARGER, because everything past the slit plus PART D's broken
+	# edge band is a band. Asserted in authored px so it is resolution free.
+	var collar_half: float = IaidoTuning.FRONT_PER_FRACTURE * IaidoTuning.CLAIM_TAIL
+	var slit_half: float = tuning.separation_px * tuning.gap_ratio * 0.5
+	_check(
+		collar_half >= slit_half,
+		"The collar (%.1f authored px) is narrower than the slit it has to cover (%.1f): live world shows through inside the wound"
+			% [collar_half, slit_half]
+	)
+	_check(
+		collar_half <= slit_half + 14.0,
+		"The collar (%.1f authored px) is more than a 14px band around a %.1f px slit — the band is what the eye will read"
+			% [collar_half, slit_half]
+	)
+
+	# ---- and the PANE is gated by the same collar ----------------------------
+	#
+	# THE OTHER HALF OF THE BAND, AND THE ONE THAT WOULD SURVIVE EVERY FIX
+	# ABOVE. The pane's alpha was `body_alpha * opacity`, where `opacity` comes
+	# from `cover_at()` on the pane's CENTRE — a single scalar for a whole piece
+	# of surface — while the world's eat is per PIXEL. Whatever the collar is
+	# tuned to, a per-pane opacity can only ever approximate it, and the mismatch
+	# is a strip of eaten world showing through between the hole and the glass
+	# that is meant to be filling it. Reading the collar in the pane's own
+	# fragment makes the pane and the hole ONE SHAPE by construction.
+	var pane_source := FileAccess.get_file_as_string(PANE_SHADER)
+	_check(
+		pane_source.contains("float claim = max(iaido_claimed(front, ad), iaido_unleashed(shatter));"),
+		"The pane pass never reads the glass collar; its opacity is decided by its centre where the world's eat is decided per pixel, and the difference is a band"
+	)
+	_check(
+		pane_source.contains("0.0, 1.0) * opacity * claim;"),
+		"The pane's alpha is not multiplied by the collar, so a pane is opaque over world that was never taken and the mosaic reads as cards laid on the picture"
 	)
 
 
@@ -665,6 +747,8 @@ func _verify_the_glass_grows_out_of_the_wound() -> void:
 		["IAIDO_FRONT_PER_SHATTER", IaidoTuning.FRONT_PER_SHATTER],
 		["IAIDO_FRONT_CORE", IaidoTuning.FRONT_CORE],
 		["IAIDO_FRONT_TAIL", IaidoTuning.FRONT_TAIL],
+		["IAIDO_CLAIM_CORE", IaidoTuning.CLAIM_CORE],
+		["IAIDO_CLAIM_TAIL", IaidoTuning.CLAIM_TAIL],
 	]
 	for pair in pairs:
 		var declared := _const_value(field, String(pair[0]))
@@ -848,7 +932,13 @@ func _verify_shared_fracture_field() -> void:
 		["IAIDO_WEIGHT_FREQ", "3.4"],
 		["IAIDO_WEIGHT_MIN", "0.05"],
 		["IAIDO_STRESS_PER_FRACTURE", "1.20"],
-		["IAIDO_FRONT_PER_FRACTURE", "360.0"],
+		# SOURCED FROM THE TUNING, NOT COPIED. This list used to spell the front
+		# out as the literal "360.0", which made it a second source of truth: the
+		# moment the front was retuned the test failed for a reason that had
+		# nothing to do with the shader. The constants that have a GDScript
+		# mirror are stringified from that mirror, so this only ever asks "does
+		# the field declare it".
+		["IAIDO_FRONT_PER_FRACTURE", str(IaidoTuning.FRONT_PER_FRACTURE)],
 		["IAIDO_FRONT_PER_SHATTER", "480.0"],
 		["IAIDO_LIT_PER_FRACTURE", "1.15"],
 		["IAIDO_LIT_PER_SHATTER", "0.85"],

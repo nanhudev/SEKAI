@@ -81,7 +81,7 @@ shape = SubResource("PlatformShape")
 [node name="Player" parent="." instance=ExtResource("1")]
 
 [node name="TechnicalDummy" parent="." instance=ExtResource("2")]
-position = Vector3(0, 0.25, -3)
+position = Vector3(-2.45, 0.25, -3)
 
 [node name="DeveloperPanel" type="CanvasLayer" parent="."]
 script = ExtResource("3")

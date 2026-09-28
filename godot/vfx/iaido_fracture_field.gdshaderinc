@@ -88,12 +88,67 @@ const float IAIDO_WEIGHT_MIN = 0.05;
 // moved it to 360: the network now reads across rather more than half the frame
 // height instead of stopping in the middle distance, while the corners still
 // have something left to lose when the collapse runs.
-const float IAIDO_FRONT_PER_FRACTURE = 360.0;
+// FINAL LOCK PART G — THE FRONT IS A BAND OUT OF THE WOUND, NOT A WASH OVER THE
+// FRAME.
+//
+// This is the term that decides how much of the picture the glass claims, and
+// therefore — because what the stream eats is exactly what the panes cover —
+// how much of the picture goes black. 360 put a fully-eaten band ±148 authored
+// px either side of the cut, which at 720p is a 197px near-black wedge: the
+// reviewer's 世界裂口像 Overlay, arrived at through the EAT rather than through
+// the slot. 190 halved it and still read as a band.
+//
+// At 90 with a 0.50 core the fully-eaten strip is ±45 authored px and it is
+// gone by 91 — a seam that hugs the wound, ~60 real px wide at 720p. The
+// corners stay structurally intact until the click, which is what §PRE-CLICK
+// asks for, and the shatter front (480) is what takes them afterwards.
+const float IAIDO_FRONT_PER_FRACTURE = 90.0;
 // The shatter finishes the job: the collapse front has to reach the corners or
 // the collapse leaves four untouched triangles in the frame.
 const float IAIDO_FRONT_PER_SHATTER = 480.0;
-const float IAIDO_FRONT_CORE = 0.78;
-const float IAIDO_FRONT_TAIL = 2.0;
+// 0.78 made the inner four fifths of the front fully grown, so the front behaved
+// as a hard-edged band and the only gradient in the picture was its last few
+// pixels. 0.50 gives the falloff half the reach to work with, so the fracture
+// density genuinely falls away from the cut instead of stopping at a line.
+const float IAIDO_FRONT_CORE = 0.50;
+const float IAIDO_FRONT_TAIL = 1.0;
+
+// ---- HOW NARROWLY THE GLASS HUGS THE WOUND ------------------------------
+//
+// THE STRESS GATE AND THE GLASS GATE ARE NOT THE SAME QUESTION, AND CONFLATING
+// THEM IS WHAT PUT A 60px NEAR-BLACK BAND ALONG THE CUT.
+//
+// `iaido_grown()` above is the STRESS gate: how far the fracture NETWORK has
+// spread across the surface. The network is thin seams plus a few pixels of
+// displacement, it is secondary detail, and it is allowed — wanted — to reach
+// the whole front. Nothing is removed from the world for it.
+//
+// `iaido_claimed()` below is the GLASS gate: how much of the surface the panes
+// have taken over. The panes are FILLED regions with an alpha and the world is
+// DELETED underneath them, so their reach is not a detail — it is how much of
+// the picture goes. Driving that gate off the whole front ate a band of
+// ±(front * 0.50) = ±45 authored px either side of the cut (the earlier 360
+// made it ±148), which at 720p is a 60px near-black wedge: the reviewer's
+// 世界裂口像 Overlay, arrived at through the EAT rather than through the slot.
+//
+// The claim is a COLLAR. At fracture 1 the front is 90, so the wall of the
+// wound is fully glass out to 4.5 authored px and the last of it is gone by
+// 14.4 — a thin skin hugging the slot the break actually opened, which is the
+// only place a pane genuinely REPLACES world rather than merely covers it.
+//
+// IT IS SIZED AGAINST THE SLOT, NOT AGAINST THE FRONT. The slit the break
+// opens is `gap_ratio` of the separation, so at the PASS 4 values that is
+// 6.6 authored px of hole; the collar has to be the hole plus a couple of
+// pixels of transition on either side and not one pixel more, or the frame
+// acquires a band around a slit and the eye reads the band. 0.16 of 90 is
+// 14.4 authored px ≈ 9.6 real px at 720p, which is the hole plus the broken
+// edge band and nothing else.
+//
+// The collapse is the exception and it is expressed separately, because a
+// surface coming apart IS all of its pieces at once and pretending otherwise
+// would leave four intact corners in the frame.
+const float IAIDO_CLAIM_CORE = 0.05;
+const float IAIDO_CLAIM_TAIL = 0.16;
 
 // ---- HOW HARD IT OPENS --------------------------------------------------
 const float IAIDO_STRESS_PER_FRACTURE = 1.20;
@@ -194,9 +249,30 @@ float iaido_front(float fracture, float shatter) {
 
 // 1 inside the front, 0 beyond it. `ad` is distance from the cut, in authored
 // pixels.
+//
+// THE STRESS GATE — see IAIDO_CLAIM_CORE. This one is allowed to be wide.
 float iaido_grown(float front, float ad) {
 	return 1.0 - smoothstep(
 		front * IAIDO_FRONT_CORE, front + IAIDO_FRONT_TAIL, ad);
+}
+
+// 1 where the panes have taken the surface over, 0 where it is still world.
+//
+// THE GLASS GATE — see IAIDO_CLAIM_CORE. This one must not be wide: it is the
+// boundary of a filled region whose alpha replaces the picture, and whatever
+// it reaches is deleted from the world and painted over.
+float iaido_claimed(float front, float ad) {
+	return 1.0 - smoothstep(
+		front * IAIDO_CLAIM_CORE, front * IAIDO_CLAIM_TAIL, ad);
+}
+
+// 1 once the collapse has the frame, 0 through the whole of the hold.
+//
+// Opens the glass gate for every pane at once. This is not a net switching on:
+// a surface coming apart is all of its pieces at once, and what the pieces
+// expose is the void behind them.
+float iaido_unleashed(float shatter) {
+	return smoothstep(0.02, 0.34, shatter);
 }
 
 // How wide this region's seams open, 0..1. Never zero: at full stress every
