@@ -1,0 +1,101 @@
+=== FOLLOW-UP: KIT-02a - ASSEMBLY DEMOS (D1 / D2 / D3) ===
+
+The 20 pieces are built and I have looked at them. Now build three assemblies.
+
+These are COMPOSITIONS, not layout proofs. Showing that modules tile is not the
+requirement. The requirement is that each assembly produces a FEELING. An assembly
+that only demonstrates "the modules fit together" is a FAIL.
+
+Reuse the existing 20 pieces as objects. You may rotate them in 90 degree steps
+around the vertical axis and place them at positions of your choosing. You may NOT
+stretch them, and you may NOT change the modulus.
+
+Everything goes in ONE collection named SEKAI_KIT02A_ASSEMBLY, and all three
+assemblies go into one export file. Add the pieces as LINKED copies or as separate
+mesh data - whichever keeps the file exportable - but each assembly must be
+visually distinct in width, step count, riser and side treatment. Differing only
+in length is a FAIL.
+
+---------------------------------------------------------------------------
+D1 - GUILD TERRACE  (civic / proud / functional)
+---------------------------------------------------------------------------
+
+A town's civic stair. NOT a mountain path.
+
+Build: market-edge plaza -> Stair_R16_7W4 -> Terrace_Landing_2x2 with a balustrade
+-> Stair_R20_7W4 -> upper terrace -> forecourt, with a simple guild frontage
+(a wall with a doorway opening is enough) as the terminating axis.
+
+Use Alcove_2 as the mid-landing seat. Put End_2 where flights meet the terraces so
+no flight ends in mid-air.
+
+It must show: the WIDTH, the public space, and evidence that residents would really
+walk this way - drainage, worn centre lines, a lamp or post footings, a place to
+stand and talk.
+
+ACCEPTANCE: photographed from the plaza, it must read as "I am climbing the steps
+of an important public building" - not "I am climbing a hill path".
+
+---------------------------------------------------------------------------
+D2 - CLIFF ASCENT  (the highest-spec assembly of this pass)
+---------------------------------------------------------------------------
+
+A long climb in three distinct height stages. "Eight identical modules in a line"
+is explicitly forbidden, and so is pure symmetry and one single composition
+throughout.
+
+Between the stages there must be: a landing - a retaining wall - rock interaction -
+a rail where there is a real drop - ONE ancient fragment - ONE vista opening.
+
+Suggested build:
+    End_2 -> Stair_R24_7W2 x 4 -> Alcove_2 -> Stair_R24_7W2 x 3 ->
+    Cantilever_Deck_2 -> Stair_R16_7W2 x 2 -> Stair_Broken_2 -> Terrace_Landing_2x2
+Wrap the flank in Cheek_R_2 and Retain_Wall_Step_2, and put the ancient fragment
+where the stair changes direction, so the turn is disguised by something old.
+
+The route must TURN at least once. It must not be a straight run. The player should
+lose sight of the top from the bottom.
+
+ACCEPTANCE - the two shots that decide it:
+  - from the bottom: the image must produce "I need to climb that"
+  - from the top, looking back: the image must produce "I came up from there"
+The whole ascent must read as PROGRESSION, not as a stamina test.
+
+---------------------------------------------------------------------------
+D3 - HALF-BURIED OLD PATH
+---------------------------------------------------------------------------
+
+This one is about VISUAL INTEGRATION, not geometry.
+
+Build from Rock_Stair_Half_2 x 4 with an End_2 and a Broken_2 in the middle.
+
+The stairs must not stand NEXT TO a rock - they must GROW OUT OF THE HILL. Rock
+overlaps the cheeks. Soil covers the outer nosings. Vegetation slots sit between
+the flights. Corners are broken and rounded. Some treads have lost their shape
+entirely and read only as a change in the rock.
+
+ACCEPTANCE: the primary read must be "an old path that has been in this mountain
+for a very long time" - the stones are the SUBSTRATE, not the subject.
+
+---------------------------------------------------------------------------
+PLACEMENT RULES FOR ALL THREE
+---------------------------------------------------------------------------
+
+- Build each assembly around its own local origin so the three do not overlap, and
+  so I can export them as one file without them intersecting.
+- Do not scale anything. rotation 0 or a whole 90 degree multiple, scale 1.
+- Do not add new materials. Only the four ENV-01 materials.
+- Do not add textures or node trees that GLB cannot export.
+- Keep the assemblies inside the same triangle budget as the kit (under 26,000 for
+  the whole scene).
+
+OUTPUT
+One fenced Python code block:
+
+    # C2B:CHUNK assembly_demo
+
+that creates all three assemblies. No prose. Then print, for each assembly, its
+bounding box, its object count, its step count and its riser mix, so I can verify
+that the three really do differ in width, step count, riser and side treatment.
+
+Do not write an export chunk - I export with my own tooling.

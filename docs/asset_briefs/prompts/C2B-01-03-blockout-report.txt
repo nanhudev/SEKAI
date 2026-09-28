@@ -1,0 +1,47 @@
+BLOCKOUT RUN REPORT — Blender 5.1.2, executed with no exceptions.
+
+GEOMETRY: correct.
+- Blade 152 tris, dims 0.054 x 0.779 x 0.008
+- Guard 188 tris, dims 0.128 x 0.020 x 0.018
+- Grip 188 tris, dims 0.036 x 0.194 x 0.036
+- Pommel 188 tris, dims 0.044 x 0.025 x 0.044
+- Empties present: blade_tip (0, 0.91, 0), blade_mid (0, 0.52, 0), hilt (0, 0, 0), cutting_edge_center (-0.022, 0.52, 0)
+- All transforms applied, origin at grip centre, blade along +Y, cutting edge toward -X. Rendered broadside, the proportion of blade to grip to guard is right and the taper to the tip is clean.
+
+ONE DEFECT — materials never apply.
+
+mat.node_tree.nodes.get("Principled BSDF") returns None on this machine, because the Blender interface is localised to Chinese and the node is named "原理化 BSDF". The `if bsdf:` guard then silently skips Base Color, Metallic and Roughness, so all four parts render pure white in EEVEE. mat.diffuse_color IS set correctly, but EEVEE shades from the node tree, so it has no effect.
+
+Fix required: resolve the node by type, never by display name:
+
+def principled(mat):
+    for node in mat.node_tree.nodes:
+        if node.type == 'BSDF_PRINCIPLED':
+            return node
+    return None
+
+Input socket names may be localised too. Address sockets by a lookup that tries the English name, then falls back to a stable index, for example:
+
+def set_input(node, names, value):
+    if isinstance(names, str):
+        names = [names]
+    for name in names:
+        if name in node.inputs:
+            node.inputs[name].default_value = value
+            return True
+    return False
+
+Please give me a corrected material helper that works on both English and localised Blender builds, and apply it to all four materials.
+
+FOR THE DETAILS CHUNK:
+- Add a central ridge or fuller so the blade is not a flat slab at close range (this asset is seen from 0.3 m).
+- The guard currently reads as a flat bar; give it a slight forward sweep and a restrained ancient motif, per the brief.
+- Keep every existing object name, the empty names and the parent hierarchy unchanged so nothing downstream breaks.
+
+REQUIRED MATERIAL VALUES (max 4 slots, procedural only, no image textures):
+1. MAT_Sword_Steel  base (0.24, 0.28, 0.31), metallic 0.88, roughness 0.24
+2. MAT_Sword_Grip   base (0.028, 0.032, 0.038), metallic 0.02, roughness 0.68
+3. MAT_Sword_Fittings base (0.25, 0.145, 0.065), metallic 0.82, roughness 0.34
+4. MAT_Sword_Inlay (only if you add the guard motif) subtle emission, must not glow like a torch
+
+Send the corrected material helper plus the details chunk. I will re-run the blockout with the fix first and report back before the export chunk.

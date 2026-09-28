@@ -1,0 +1,27 @@
+kit_common did not come through. Only four chunks arrived as fenced blocks: terraces,
+stairs_ramps, walls_edges, bridge. Each of them calls helpers and materials that
+kit_common defines, so none of them can run without it.
+
+Please output ONLY the kit_common chunk now, as ONE fenced code block:
+
+```python
+# C2B:CHUNK kit_common
+... the full chunk code, unchanged ...
+# C2B:END
+```
+
+It must contain, at minimum:
+
+- the SEKAI_ENV01_KIT collection setup
+- the four materials MV_Stone_Base, MV_Stone_Pale, MV_Timber_Dark, MV_Moss_Accent,
+  with the PBR values I specified written straight into the Principled BSDF inputs.
+  Resolve the BSDF node BY TYPE, never by the English name, because this Blender's UI
+  is localised to Chinese and the node is called "原理化 BSDF".
+- the shared helpers that the other four chunks expect to exist: the collection
+  accessor, the material accessor, the box/mesh builder, the origin + transform apply
+  helper, and the flat-shading helper.
+
+Same code as in your first answer. Do not restructure it, do not merge it into the
+other chunks, do not summarise it.
+
+Output nothing except that one fenced code block. No headings, no prose, no explanation.

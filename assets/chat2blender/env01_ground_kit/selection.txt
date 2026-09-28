@@ -1,0 +1,1428 @@
+
+=== ROLE ===
+You are the Blender modeling code author for SEKAI, a first-person stylized next-gen fantasy RPG.
+
+I will provide one asset brief at a time. Generate executable Blender 4.x / 5.x Python using bpy.
+
+For complex assets, output incremental standalone chunks labelled:
+
+# C2B:CHUNK <name>
+...
+# C2B:END
+
+Each chunk must be independently runnable, in a scene that may already contain the chunks that came before it.
+
+HARD RULES — these were learned from real failures in this project. Violating any of them causes silent, hard-to-trace breakage:
+
+1. NEVER look up shader nodes or sockets by English name. This Blender instance has a localised (Chinese) UI, so the Principled BSDF node is actually named "原理化 BSDF". Always resolve by type:
+
+       bsdf = next((n for n in mat.node_tree.nodes if n.type == 'BSDF_PRINCIPLED'), None)
+
+   and resolve inputs by scanning node.inputs for a matching identifier, with a name-based fallback. Never do nodes.get("Principled BSDF").
+
+2. Never swallow a failure with a bare if x: guard. If something is required, raise an explicit exception or print a loud warning. Silent no-ops have already cost this project a full re-iteration.
+
+3. Metric scale only. 1 Blender unit = 1 metre.
+
+4. Set each object's origin deliberately and state where it is. Modular kit pieces must have their origin on the grid footprint so that placing them at integer coordinates snaps cleanly.
+
+5. Use clean ASCII object and material names, prefixed with the asset id.
+
+6. Real-time geometry only: low to mid poly. Write PBR values straight into Principled BSDF inputs (Base Color, Metallic, Roughness). No external textures, no addons, no node trees that GLB cannot export. Multiple materials per object are fine via material slots.
+
+7. Leave object transforms clean: rotation 0, scale 1. Apply transforms before the chunk finishes.
+
+8. Do not explain the code unless I ask. Output executable Blender Python only.
+
+=== ASSET BRIEF: ENV-01 Mistvale Ground / Stair / Terrace Kit V1 ===
+
+PURPOSE
+Modular buildable ground system for the Mistvale starting region, and the wholesale
+replacement of a placeholder combat arena that is currently made of untextured boxes.
+
+STYLE
+Stylized next-gen fantasy. Anime-readable, clean, consciously designed masonry.
+NOT generic low-poly, NOT mobile-toy, NOT photoreal noise. Blocky stone courses with
+subtle chamfered edges so the silhouettes read without relying on texture detail.
+
+MODULAR GRID
+Base grid = 2.00 metres. Every piece's footprint is an exact multiple of 2 m.
+Origin sits on the ground plane at the centre of the footprint, except stairs and
+ramps where the origin is at the bottom of the run, centred across the width.
+All pieces must be placeable at integer grid coordinates and snap cleanly against
+each other, and must still work when rotated in 90 degree steps.
+
+DELIVER 12 PIECES (object name | dimensions X x Y x Z in metres | notes)
+
+ 1. ENV01_Terrace_4x4          | 4.0 x 4.0 x 0.30 | raised stone slab; visible stone courses on the side; 0.10 pale edge trim on the top rim
+ 2. ENV01_Terrace_8x8          | 8.0 x 8.0 x 0.30 | plaza slab; inset pale paving lines dividing the top into 4x4 metre cells
+ 3. ENV01_Terrace_StepEdge_4   | 4.0 x 0.60 x 0.30 | low lip / bench edge, intended to sit on top of a terrace slab
+ 4. ENV01_Stair_Straight_4     | 4.0 run x 2.0 wide x 1.44 tall | 8 risers, 0.18 rise, 0.50 tread; solid stone, no floating steps
+ 5. ENV01_Stair_Landing_2x2    | 2.0 x 2.0 x 0.30 | flat landing; its top face height must match the top of a terrace slab
+ 6. ENV01_Ramp_4x2             | 4.0 x 2.0, rises 0.90 | about 12.7 degrees; solid cheeks either side; paved walking surface
+ 7. ENV01_RetainingWall_4x1p5  | 4.0 x 0.45 x 1.50 | stone courses; cap stone overhanging by 0.04
+ 8. ENV01_RetainingWall_Corner | 4.0 x 4.0 L-plan x 1.50 | inner corner variant of piece 7, must join it seamlessly
+ 9. ENV01_Curb_4               | 4.0 x 0.30 x 0.16 | kerb strip with a chamfered top edge
+10. ENV01_CliffEdge_4          | 4.0 x 1.0 x 1.20 | broken rock edge, irregular top profile built from 5 to 7 distinct chunks so it does not read as a box
+11. ENV01_BridgeDeck_4         | 4.0 x 2.0 x 0.35 | timber plank deck over stone stringers
+12. ENV01_BridgeRail_4         | 4.0 x 0.15 x 1.05 | posts every 1.0 m plus two horizontal rails
+
+MATERIALS — exactly 4, no more. Write the PBR values directly into the Principled BSDF inputs.
+
+  MV_Stone_Base  : Base Color 0.42, 0.44, 0.47 | Metallic 0.0 | Roughness 0.85
+  MV_Stone_Pale  : Base Color 0.68, 0.64, 0.55 | Metallic 0.0 | Roughness 0.80
+  MV_Timber_Dark : Base Color 0.20, 0.15, 0.12 | Metallic 0.0 | Roughness 0.70
+  MV_Moss_Accent : Base Color 0.32, 0.38, 0.30 | Metallic 0.0 | Roughness 0.90
+
+Use MV_Moss_Accent sparingly, only on a few individual stone blocks and on the cliff edge,
+so the kit does not look uniformly grey.
+
+TECHNICAL
+Poly budget: under 30,000 triangles for the entire kit, target 20,000 to 25,000.
+Terraces must stay under 1,200 triangles each. Stairs and cliff edge may be heavier.
+Sharp edges should be flat shaded, which is the correct look for this style.
+Put every piece in a collection named SEKAI_ENV01_KIT.
+No collision shapes needed, Godot generates those.
+
+CHUNKS — produce them in this order, each one independently runnable:
+
+  # C2B:CHUNK kit_common
+  helpers: localisation-safe material factory, box/mesh builder, origin helper,
+  transform apply helper, collection setup, and the 4 material definitions
+
+  # C2B:CHUNK terraces
+  pieces 1, 2, 3, 5, 9
+
+  # C2B:CHUNK stairs_ramps
+  pieces 4, 6
+
+  # C2B:CHUNK walls_edges
+  pieces 7, 8, 10
+
+  # C2B:CHUNK bridge
+  pieces 11, 12
+
+EXPORT TARGETS
+Blender source: assets_source/environment/mistvale/env01_ground_kit.blend
+GLB: one GLB per piece into assets/models/environment/mistvale/
+Godot: godot/models/environment/mistvale/
+
+Do not write an export chunk. I export with my own tooling.
+…
+C2B:CHUNK kit_common
+import bpy
+import math
+from mathutils import Vector, Matrix
+
+COLLECTION_NAME = "SEKAI_ENV01_KIT"
+
+MAT_SPECS = {
+"MV_Stone_Base": ((0.42, 0.44, 0.47, 1.0), 0.0, 0.85),
+"MV_Stone_Pale": ((0.68, 0.64, 0.55, 1.0), 0.0, 0.80),
+"MV_Timber_Dark": ((0.20, 0.15, 0.12, 1.0), 0.0, 0.70),
+"MV_Moss_Accent": ((0.32, 0.38, 0.30, 1.0), 0.0, 0.90),
+}
+
+def env01_get_collection():
+col = bpy.data.collections.get(COLLECTION_NAME)
+if col is None:
+col = bpy.data.collections.new(COLLECTION_NAME)
+bpy.context.scene.collection.children.link(col)
+
+if col is None:
+    raise RuntimeError("ENV-01: failed to create/find SEKAI_ENV01_KIT collection")
+return col
+def env01_find_socket(node, identifiers, fallback_names=()):
+identifiers = tuple(identifiers)
+fallback_names = tuple(fallback_names)
+
+for socket in node.inputs:
+    identifier = getattr(socket, "identifier", "")
+    if identifier in identifiers:
+        return socket
+
+for socket in node.inputs:
+    identifier = str(getattr(socket, "identifier", "")).lower()
+    for wanted in identifiers:
+        if identifier == str(wanted).lower():
+            return socket
+
+for socket in node.inputs:
+    name = str(getattr(socket, "name", ""))
+    if name in fallback_names:
+        return socket
+
+for socket in node.inputs:
+    name = str(getattr(socket, "name", "")).lower()
+    for wanted in fallback_names:
+        if name == str(wanted).lower():
+            return socket
+
+raise RuntimeError(
+    "ENV-01: required shader socket not found. "
+    f"Identifiers={identifiers}, fallback_names={fallback_names}"
+)
+def env01_make_material(name, base_color, metallic, roughness):
+mat = bpy.data.materials.get(name)
+if mat is None:
+mat = bpy.data.materials.new(name)
+
+if mat is None:
+    raise RuntimeError(f"ENV-01: failed to create material {name}")
+
+mat.use_nodes = True
+
+if mat.node_tree is None:
+    raise RuntimeError(f"ENV-01: material {name} has no node tree")
+
+bsdf = next(
+    (n for n in mat.node_tree.nodes if n.type == 'BSDF_PRINCIPLED'),
+    None
+)
+if bsdf is None:
+    raise RuntimeError(
+        f"ENV-01: material {name} has no BSDF_PRINCIPLED node"
+    )
+
+base_socket = env01_find_socket(
+    bsdf,
+    ("Base Color", "BaseColor"),
+    ("Base Color", "基础色", "基色")
+)
+metallic_socket = env01_find_socket(
+    bsdf,
+    ("Metallic",),
+    ("Metallic", "金属度", "金属")
+)
+roughness_socket = env01_find_socket(
+    bsdf,
+    ("Roughness",),
+    ("Roughness", "粗糙度")
+)
+
+base_socket.default_value = base_color
+metallic_socket.default_value = metallic
+roughness_socket.default_value = roughness
+
+return mat
+def env01_require_material(name):
+mat = bpy.data.materials.get(name)
+if mat is None:
+if name not in MAT_SPECS:
+raise RuntimeError(f"ENV-01: unknown required material {name}")
+spec = MAT_SPECS[name]
+mat = env01_make_material(name, spec[0], spec[1], spec[2])
+
+if mat is None:
+    raise RuntimeError(f"ENV-01: failed to resolve material {name}")
+return mat
+def env01_remove_object(name):
+obj = bpy.data.objects.get(name)
+if obj is None:
+return
+
+mesh = obj.data if obj.type == 'MESH' else None
+bpy.data.objects.remove(obj, do_unlink=True)
+
+if mesh is not None and mesh.users == 0:
+    bpy.data.meshes.remove(mesh)
+def env01_apply_transforms(obj):
+if obj is None:
+raise RuntimeError("ENV-01: apply_transforms received None")
+
+bpy.ops.object.select_all(action='DESELECT')
+obj.select_set(True)
+bpy.context.view_layer.objects.active = obj
+
+bpy.ops.object.transform_apply(
+    location=False,
+    rotation=True,
+    scale=True
+)
+
+obj.rotation_euler = (0.0, 0.0, 0.0)
+obj.scale = (1.0, 1.0, 1.0)
+def env01_flat_shade(obj):
+if obj is None or obj.type != 'MESH':
+raise RuntimeError("ENV-01: flat_shade requires mesh object")
+
+for poly in obj.data.polygons:
+    poly.use_smooth = False
+def env01_apply_bevel(obj, width=0.018, segments=1):
+if obj is None or obj.type != 'MESH':
+raise RuntimeError("ENV-01: apply_bevel requires mesh object")
+
+mod = obj.modifiers.new(name="ENV01_Chamfer", type='BEVEL')
+mod.width = float(width)
+mod.segments = int(segments)
+mod.limit_method = 'ANGLE'
+mod.angle_limit = math.radians(20.0)
+
+bpy.ops.object.select_all(action='DESELECT')
+obj.select_set(True)
+bpy.context.view_layer.objects.active = obj
+
+try:
+    bpy.ops.object.modifier_apply(modifier=mod.name)
+except Exception as exc:
+    raise RuntimeError(
+        f"ENV-01: failed applying bevel to {obj.name}: {exc}"
+    ) from exc
+def env01_add_box_geometry(vertices, faces, material_indices, center, size, material_index):
+cx, cy, cz = center
+sx, sy, sz = size
+
+if sx <= 0.0 or sy <= 0.0 or sz <= 0.0:
+    raise ValueError(
+        f"ENV-01: invalid box size {size}; all dimensions must be positive"
+    )
+
+hx = sx * 0.5
+hy = sy * 0.5
+hz = sz * 0.5
+
+base = len(vertices)
+
+vertices.extend([
+    (cx - hx, cy - hy, cz - hz),
+    (cx + hx, cy - hy, cz - hz),
+    (cx + hx, cy + hy, cz - hz),
+    (cx - hx, cy + hy, cz - hz),
+    (cx - hx, cy - hy, cz + hz),
+    (cx + hx, cy - hy, cz + hz),
+    (cx + hx, cy + hy, cz + hz),
+    (cx - hx, cy + hy, cz + hz),
+])
+
+local_faces = [
+    (0, 3, 2, 1),
+    (4, 5, 6, 7),
+    (0, 1, 5, 4),
+    (1, 2, 6, 5),
+    (2, 3, 7, 6),
+    (3, 0, 4, 7),
+]
+
+for face in local_faces:
+    faces.append(tuple(base + i for i in face))
+    material_indices.append(material_index)
+def env01_create_mesh_object(
+name,
+vertices,
+faces,
+material_indices,
+materials,
+origin_rule,
+bevel_width=0.018
+):
+if not vertices or not faces:
+raise RuntimeError(f"ENV-01: {name} has no geometry")
+
+if len(faces) != len(material_indices):
+    raise RuntimeError(
+        f"ENV-01: {name} face/material count mismatch "
+        f"{len(faces)} != {len(material_indices)}"
+    )
+
+env01_remove_object(name)
+
+mesh = bpy.data.meshes.new(name + "_MESH")
+mesh.from_pydata(vertices, [], faces)
+mesh.update(calc_edges=True)
+
+if len(mesh.polygons) != len(material_indices):
+    raise RuntimeError(
+        f"ENV-01: polygon count mismatch on {name}"
+    )
+
+for mat in materials:
+    if mat is None:
+        raise RuntimeError(
+            f"ENV-01: None material passed while building {name}"
+        )
+    mesh.materials.append(mat)
+
+for poly, mat_index in zip(mesh.polygons, material_indices):
+    if mat_index < 0 or mat_index >= len(materials):
+        raise RuntimeError(
+            f"ENV-01: bad material index {mat_index} on {name}"
+        )
+    poly.material_index = mat_index
+    poly.use_smooth = False
+
+obj = bpy.data.objects.new(name, mesh)
+col = env01_get_collection()
+col.objects.link(obj)
+
+obj.location = (0.0, 0.0, 0.0)
+obj.rotation_euler = (0.0, 0.0, 0.0)
+obj.scale = (1.0, 1.0, 1.0)
+
+obj["sekai_asset_id"] = "ENV-01"
+obj["sekai_grid_m"] = 2.0
+obj["sekai_origin_rule"] = origin_rule
+obj["sekai_units"] = "metres"
+
+env01_apply_transforms(obj)
+
+if bevel_width > 0.0:
+    env01_apply_bevel(obj, bevel_width, 1)
+
+env01_flat_shade(obj)
+env01_apply_transforms(obj)
+
+return obj
+kit_collection = env01_get_collection()
+
+for mat_name, spec in MAT_SPECS.items():
+env01_make_material(mat_name, spec[0], spec[1], spec[2])
+
+required_names = set(MAT_SPECS.keys())
+resolved = [bpy.data.materials.get(n) for n in required_names]
+
+if any(m is None for m in resolved):
+raise RuntimeError("ENV-01: one or more required materials failed creation")
+
+print(
+"ENV-01 KIT COMMON READY | "
+"collection=SEKAI_ENV01_KIT | "
+"materials=4 | "
+"metric scale: 1 BU = 1 m"
+)
+
+C2B:END
+C2B:CHUNK terraces
+import bpy
+import math
+
+COLLECTION_NAME = "SEKAI_ENV01_KIT"
+
+MAT_NAMES = (
+"MV_Stone_Base",
+"MV_Stone_Pale",
+"MV_Timber_Dark",
+"MV_Moss_Accent",
+)
+
+def _env01_collection():
+col = bpy.data.collections.get(COLLECTION_NAME)
+if col is None:
+raise RuntimeError(
+"ENV-01 terraces: SEKAI_ENV01_KIT missing. Run kit_common first."
+)
+return col
+
+def _env01_mat(name):
+mat = bpy.data.materials.get(name)
+if mat is None:
+raise RuntimeError(
+f"ENV-01 terraces: required material {name} missing. "
+"Run kit_common first."
+)
+return mat
+
+def _env01_remove(name):
+obj = bpy.data.objects.get(name)
+if obj is None:
+return
+mesh = obj.data if obj.type == 'MESH' else None
+bpy.data.objects.remove(obj, do_unlink=True)
+if mesh is not None and mesh.users == 0:
+bpy.data.meshes.remove(mesh)
+
+def _env01_box(v, f, mi, center, size, mat_index):
+cx, cy, cz = center
+sx, sy, sz = size
+if min(sx, sy, sz) <= 0:
+raise ValueError(f"ENV-01 terraces: invalid box size {size}")
+
+hx, hy, hz = sx * 0.5, sy * 0.5, sz * 0.5
+b = len(v)
+
+v.extend([
+    (cx-hx, cy-hy, cz-hz),
+    (cx+hx, cy-hy, cz-hz),
+    (cx+hx, cy+hy, cz-hz),
+    (cx-hx, cy+hy, cz-hz),
+    (cx-hx, cy-hy, cz+hz),
+    (cx+hx, cy-hy, cz+hz),
+    (cx+hx, cy+hy, cz+hz),
+    (cx-hx, cy+hy, cz+hz),
+])
+
+fs = (
+    (0,3,2,1),
+    (4,5,6,7),
+    (0,1,5,4),
+    (1,2,6,5),
+    (2,3,7,6),
+    (3,0,4,7),
+)
+for face in fs:
+    f.append(tuple(b+i for i in face))
+    mi.append(mat_index)
+def _env01_finish(name, v, f, mi, origin_rule, bevel=0.014):
+_env01_remove(name)
+
+mats = [
+    _env01_mat("MV_Stone_Base"),
+    _env01_mat("MV_Stone_Pale"),
+    _env01_mat("MV_Timber_Dark"),
+    _env01_mat("MV_Moss_Accent"),
+]
+
+mesh = bpy.data.meshes.new(name + "_MESH")
+mesh.from_pydata(v, [], f)
+mesh.update(calc_edges=True)
+
+if len(mesh.polygons) != len(mi):
+    raise RuntimeError(
+        f"ENV-01 terraces: material assignment mismatch on {name}"
+    )
+
+for mat in mats:
+    mesh.materials.append(mat)
+
+for poly, idx in zip(mesh.polygons, mi):
+    poly.material_index = idx
+    poly.use_smooth = False
+
+obj = bpy.data.objects.new(name, mesh)
+_env01_collection().objects.link(obj)
+
+obj.location = (0.0, 0.0, 0.0)
+obj.rotation_euler = (0.0, 0.0, 0.0)
+obj.scale = (1.0, 1.0, 1.0)
+
+obj["sekai_asset_id"] = "ENV-01"
+obj["sekai_origin_rule"] = origin_rule
+obj["sekai_grid_m"] = 2.0
+
+bpy.ops.object.select_all(action='DESELECT')
+obj.select_set(True)
+bpy.context.view_layer.objects.active = obj
+bpy.ops.object.transform_apply(
+    location=False,
+    rotation=True,
+    scale=True
+)
+
+if bevel > 0:
+    mod = obj.modifiers.new("ENV01_Chamfer", 'BEVEL')
+    mod.width = bevel
+    mod.segments = 1
+    mod.limit_method = 'ANGLE'
+    mod.angle_limit = math.radians(20)
+
+    try:
+        bpy.ops.object.modifier_apply(modifier=mod.name)
+    except Exception as exc:
+        raise RuntimeError(
+            f"ENV-01 terraces: bevel failed on {name}: {exc}"
+        ) from exc
+
+for poly in obj.data.polygons:
+    poly.use_smooth = False
+
+obj.rotation_euler = (0.0, 0.0, 0.0)
+obj.scale = (1.0, 1.0, 1.0)
+
+return obj
+1. ENV01_Terrace_4x4
+v, f, mi = [], [], []
+
+Three stone courses. The mesh itself is centred on the grid-footprint origin.
+for zc in (0.0475, 0.1425, 0.2375):
+_env01_box(v, f, mi, (0.0, 0.0, zc), (4.0, 4.0, 0.095), 0)
+
+Top central inset.
+_env01_box(v, f, mi, (0.0, 0.0, 0.2925), (3.80, 3.80, 0.015), 0)
+
+0.10 m pale rim.
+_env01_box(v, f, mi, (0.0, -1.95, 0.2925), (4.0, 0.10, 0.015), 1)
+_env01_box(v, f, mi, (0.0, 1.95, 0.2925), (4.0, 0.10, 0.015), 1)
+_env01_box(v, f, mi, (-1.95, 0.0, 0.2925), (0.10, 3.80, 0.015), 1)
+_env01_box(v, f, mi, ( 1.95, 0.0, 0.2925), (0.10, 3.80, 0.015), 1)
+
+_env01_finish(
+"ENV01_Terrace_4x4",
+v, f, mi,
+"ground-plane centre of 4.0 x 4.0 m footprint",
+bevel=0.012
+)
+
+2. ENV01_Terrace_8x8
+v, f, mi = [], [], []
+
+for zc in (0.0475, 0.1425, 0.2375):
+_env01_box(v, f, mi, (0.0, 0.0, zc), (8.0, 8.0, 0.095), 0)
+
+line = 0.055
+half_cell = (4.0 - line * 0.5) * 0.5
+cell_size = 4.0 - line * 0.5
+
+for x in (-2.0, 2.0):
+for y in (-2.0, 2.0):
+_env01_box(
+v, f, mi,
+(x, y, 0.2925),
+(cell_size, cell_size, 0.015),
+0
+)
+
+Pale inset paving cross, splitting the top into 4 x 4 m cells.
+_env01_box(v, f, mi, (0.0, 0.0, 0.2925), (line, 8.0, 0.015), 1)
+_env01_box(v, f, mi, (0.0, 0.0, 0.2925), (8.0, line, 0.015), 1)
+
+_env01_finish(
+"ENV01_Terrace_8x8",
+v, f, mi,
+"ground-plane centre of 8.0 x 8.0 m footprint",
+bevel=0.012
+)
+
+3. ENV01_Terrace_StepEdge_4
+v, f, mi = [], [], []
+
+Main low lip / bench body.
+_env01_box(v, f, mi, (0.0, 0.0, 0.135), (4.0, 0.60, 0.27), 0)
+
+Pale seat/cap surface.
+_env01_box(v, f, mi, (0.0, 0.0, 0.285), (4.0, 0.60, 0.03), 1)
+
+Sparse moss accent on one side block only.
+_env01_box(v, f, mi, (1.25, -0.291, 0.115), (0.58, 0.018, 0.11), 3)
+
+_env01_finish(
+"ENV01_Terrace_StepEdge_4",
+v, f, mi,
+"ground-plane centre of 4.0 x 0.60 m footprint",
+bevel=0.014
+)
+
+5. ENV01_Stair_Landing_2x2
+v, f, mi = [], [], []
+
+for zc in (0.05, 0.15, 0.25):
+_env01_box(v, f, mi, (0.0, 0.0, zc), (2.0, 2.0, 0.10), 0)
+
+_env01_finish(
+"ENV01_Stair_Landing_2x2",
+v, f, mi,
+"ground-plane centre of 2.0 x 2.0 m footprint; top Z = 0.30 m",
+bevel=0.012
+)
+
+9. ENV01_Curb_4
+v, f, mi = [], [], []
+
+_env01_box(v, f, mi, (0.0, 0.0, 0.08), (4.0, 0.30, 0.16), 0)
+
+_env01_finish(
+"ENV01_Curb_4",
+v, f, mi,
+"ground-plane centre of 4.0 x 0.30 m footprint",
+bevel=0.025
+)
+
+for name in (
+"ENV01_Terrace_4x4",
+"ENV01_Terrace_8x8",
+"ENV01_Terrace_StepEdge_4",
+"ENV01_Stair_Landing_2x2",
+"ENV01_Curb_4",
+):
+obj = bpy.data.objects.get(name)
+if obj is None:
+raise RuntimeError(f"ENV-01 terraces: expected object {name} missing")
+
+print("ENV-01 TERRACES READY | 5 pieces")
+
+C2B:END
+C2B:CHUNK stairs_ramps
+import bpy
+import math
+
+COLLECTION_NAME = "SEKAI_ENV01_KIT"
+
+def _sr_collection():
+col = bpy.data.collections.get(COLLECTION_NAME)
+if col is None:
+raise RuntimeError(
+"ENV-01 stairs_ramps: SEKAI_ENV01_KIT missing. Run kit_common first."
+)
+return col
+
+def _sr_mat(name):
+mat = bpy.data.materials.get(name)
+if mat is None:
+raise RuntimeError(
+f"ENV-01 stairs_ramps: required material {name} missing"
+)
+return mat
+
+def _sr_remove(name):
+obj = bpy.data.objects.get(name)
+if obj is None:
+return
+mesh = obj.data if obj.type == 'MESH' else None
+bpy.data.objects.remove(obj, do_unlink=True)
+if mesh is not None and mesh.users == 0:
+bpy.data.meshes.remove(mesh)
+
+def _sr_box(v, f, mi, center, size, mat_index):
+cx, cy, cz = center
+sx, sy, sz = size
+
+if min(sx, sy, sz) <= 0:
+    raise ValueError(f"ENV-01 stairs_ramps: invalid box {size}")
+
+hx, hy, hz = sx/2, sy/2, sz/2
+b = len(v)
+
+v.extend([
+    (cx-hx, cy-hy, cz-hz),
+    (cx+hx, cy-hy, cz-hz),
+    (cx+hx, cy+hy, cz-hz),
+    (cx-hx, cy+hy, cz-hz),
+    (cx-hx, cy-hy, cz+hz),
+    (cx+hx, cy-hy, cz+hz),
+    (cx+hx, cy+hy, cz+hz),
+    (cx-hx, cy+hy, cz+hz),
+])
+
+for face in (
+    (0,3,2,1),
+    (4,5,6,7),
+    (0,1,5,4),
+    (1,2,6,5),
+    (2,3,7,6),
+    (3,0,4,7),
+):
+    f.append(tuple(b+i for i in face))
+    mi.append(mat_index)
+def _sr_wedge(v, f, mi, x0, x1, y0, y1, z0, z1, side_mat, top_mat):
+if x1 <= x0 or y1 <= y0 or z1 <= z0:
+raise ValueError("ENV-01 stairs_ramps: invalid wedge dimensions")
+
+b = len(v)
+
+v.extend([
+    (x0, y0, z0),
+    (x1, y0, z0),
+    (x1, y1, z0),
+    (x0, y1, z0),
+
+    (x0, y0, z0),
+    (x1, y0, z1),
+    (x1, y1, z1),
+    (x0, y1, z0),
+])
+
+faces = [
+    ((0,3,2,1), side_mat),
+    ((4,5,6,7), top_mat),
+    ((0,1,5,4), side_mat),
+    ((3,7,6,2), side_mat),
+    ((1,2,6,5), side_mat),
+]
+
+for face, mat_idx in faces:
+    f.append(tuple(b+i for i in face))
+    mi.append(mat_idx)
+def _sr_finish(name, v, f, mi, origin_rule, bevel):
+_sr_remove(name)
+
+mats = [
+    _sr_mat("MV_Stone_Base"),
+    _sr_mat("MV_Stone_Pale"),
+    _sr_mat("MV_Timber_Dark"),
+    _sr_mat("MV_Moss_Accent"),
+]
+
+mesh = bpy.data.meshes.new(name + "_MESH")
+mesh.from_pydata(v, [], f)
+mesh.update(calc_edges=True)
+
+if len(mesh.polygons) != len(mi):
+    raise RuntimeError(
+        f"ENV-01 stairs_ramps: polygon/material mismatch on {name}"
+    )
+
+for mat in mats:
+    mesh.materials.append(mat)
+
+for poly, idx in zip(mesh.polygons, mi):
+    poly.material_index = idx
+    poly.use_smooth = False
+
+obj = bpy.data.objects.new(name, mesh)
+_sr_collection().objects.link(obj)
+
+obj.location = (0.0, 0.0, 0.0)
+obj.rotation_euler = (0.0, 0.0, 0.0)
+obj.scale = (1.0, 1.0, 1.0)
+
+obj["sekai_asset_id"] = "ENV-01"
+obj["sekai_grid_m"] = 2.0
+obj["sekai_origin_rule"] = origin_rule
+
+bpy.ops.object.select_all(action='DESELECT')
+obj.select_set(True)
+bpy.context.view_layer.objects.active = obj
+bpy.ops.object.transform_apply(
+    location=False,
+    rotation=True,
+    scale=True
+)
+
+if bevel > 0:
+    mod = obj.modifiers.new("ENV01_Chamfer", 'BEVEL')
+    mod.width = bevel
+    mod.segments = 1
+    mod.limit_method = 'ANGLE'
+    mod.angle_limit = math.radians(20)
+
+    try:
+        bpy.ops.object.modifier_apply(modifier=mod.name)
+    except Exception as exc:
+        raise RuntimeError(
+            f"ENV-01 stairs_ramps: bevel failed on {name}: {exc}"
+        ) from exc
+
+for poly in obj.data.polygons:
+    poly.use_smooth = False
+
+obj.rotation_euler = (0.0, 0.0, 0.0)
+obj.scale = (1.0, 1.0, 1.0)
+
+return obj
+4. ENV01_Stair_Straight_4
+Origin = bottom of run, centered across width, on ground plane.
+Local footprint: X = 0..4, Y = -1..1, Z = 0..1.44.
+v, f, mi = [], [], []
+
+TREAD = 0.50
+RISE = 0.18
+STEPS = 8
+
+for i in range(STEPS):
+x0 = i * TREAD
+x1 = x0 + TREAD
+height = (i + 1) * RISE
+
+_sr_box(
+    v, f, mi,
+    ((x0+x1)*0.5, 0.0, height*0.5),
+    (TREAD, 2.0, height),
+    0
+)
+
+# Pale nosing on selected treads keeps the hierarchy readable.
+if i in (1, 3, 5, 7):
+    _sr_box(
+        v, f, mi,
+        (x0 + 0.055, 0.0, height - 0.0125),
+        (0.11, 1.96, 0.025),
+        1
+    )
+Sparse moss, confined to one low riser.
+_sr_box(
+v, f, mi,
+(0.49, -0.991, 0.26),
+(0.26, 0.018, 0.16),
+3
+)
+
+_sr_finish(
+"ENV01_Stair_Straight_4",
+v, f, mi,
+"bottom of 4.0 m run at local (0,0,0), centred across 2.0 m width",
+bevel=0.010
+)
+
+6. ENV01_Ramp_4x2
+Origin = bottom of run at X=0, centred across width.
+Walking centre uses pale paving. Side strips form solid stone cheeks.
+v, f, mi = [], [], []
+
+_sr_wedge(
+v, f, mi,
+0.0, 4.0,
+-0.75, 0.75,
+0.0, 0.90,
+0, 1
+)
+
+_sr_wedge(
+v, f, mi,
+0.0, 4.0,
+-1.0, -0.75,
+0.0, 0.90,
+0, 0
+)
+
+_sr_wedge(
+v, f, mi,
+0.0, 4.0,
+0.75, 1.0,
+0.0, 0.90,
+0, 0
+)
+
+_sr_finish(
+"ENV01_Ramp_4x2",
+v, f, mi,
+"bottom of 4.0 m run at local (0,0,0), centred across 2.0 m width",
+bevel=0.008
+)
+
+for name in ("ENV01_Stair_Straight_4", "ENV01_Ramp_4x2"):
+obj = bpy.data.objects.get(name)
+if obj is None:
+raise RuntimeError(
+f"ENV-01 stairs_ramps: expected object {name} missing"
+)
+
+print("ENV-01 STAIRS/RAMPS READY | 2 pieces")
+
+C2B:END
+C2B:CHUNK walls_edges
+import bpy
+import math
+
+COLLECTION_NAME = "SEKAI_ENV01_KIT"
+
+def _we_collection():
+col = bpy.data.collections.get(COLLECTION_NAME)
+if col is None:
+raise RuntimeError(
+"ENV-01 walls_edges: SEKAI_ENV01_KIT missing. Run kit_common first."
+)
+return col
+
+def _we_mat(name):
+mat = bpy.data.materials.get(name)
+if mat is None:
+raise RuntimeError(
+f"ENV-01 walls_edges: required material {name} missing"
+)
+return mat
+
+def _we_remove(name):
+obj = bpy.data.objects.get(name)
+if obj is None:
+return
+mesh = obj.data if obj.type == 'MESH' else None
+bpy.data.objects.remove(obj, do_unlink=True)
+if mesh is not None and mesh.users == 0:
+bpy.data.meshes.remove(mesh)
+
+def _we_box(v, f, mi, center, size, mat_index):
+cx, cy, cz = center
+sx, sy, sz = size
+
+if min(sx, sy, sz) <= 0:
+    raise ValueError(f"ENV-01 walls_edges: invalid box {size}")
+
+hx, hy, hz = sx/2, sy/2, sz/2
+b = len(v)
+
+v.extend([
+    (cx-hx, cy-hy, cz-hz),
+    (cx+hx, cy-hy, cz-hz),
+    (cx+hx, cy+hy, cz-hz),
+    (cx-hx, cy+hy, cz-hz),
+    (cx-hx, cy-hy, cz+hz),
+    (cx+hx, cy-hy, cz+hz),
+    (cx+hx, cy+hy, cz+hz),
+    (cx-hx, cy+hy, cz+hz),
+])
+
+for face in (
+    (0,3,2,1),
+    (4,5,6,7),
+    (0,1,5,4),
+    (1,2,6,5),
+    (2,3,7,6),
+    (3,0,4,7),
+):
+    f.append(tuple(b+i for i in face))
+    mi.append(mat_index)
+def _we_rock(
+v, f, mi,
+x0, x1,
+y_back, y_front,
+top_left, top_right,
+mat_index,
+inset_left=0.0,
+inset_right=0.0
+):
+if x1 <= x0:
+raise ValueError("ENV-01 walls_edges: invalid rock segment")
+
+b = len(v)
+
+xl_b = x0
+xr_b = x1
+xl_t = x0 + inset_left
+xr_t = x1 - inset_right
+
+v.extend([
+    (xl_b, y_back, 0.0),
+    (xr_b, y_back, 0.0),
+    (xr_b, y_front, 0.0),
+    (xl_b, y_front, 0.0),
+
+    (xl_t, y_back + 0.06, top_left),
+    (xr_t, y_back + 0.04, top_right),
+    (xr_t, y_front - 0.05, top_right * 0.96),
+    (xl_t, y_front - 0.03, top_left * 0.95),
+])
+
+for face in (
+    (0,3,2,1),
+    (4,5,6,7),
+    (0,1,5,4),
+    (1,2,6,5),
+    (2,3,7,6),
+    (3,0,4,7),
+):
+    f.append(tuple(b+i for i in face))
+    mi.append(mat_index)
+def _we_finish(name, v, f, mi, origin_rule, bevel):
+_we_remove(name)
+
+mats = [
+    _we_mat("MV_Stone_Base"),
+    _we_mat("MV_Stone_Pale"),
+    _we_mat("MV_Timber_Dark"),
+    _we_mat("MV_Moss_Accent"),
+]
+
+mesh = bpy.data.meshes.new(name + "_MESH")
+mesh.from_pydata(v, [], f)
+mesh.update(calc_edges=True)
+
+if len(mesh.polygons) != len(mi):
+    raise RuntimeError(
+        f"ENV-01 walls_edges: polygon/material mismatch on {name}"
+    )
+
+for mat in mats:
+    mesh.materials.append(mat)
+
+for poly, idx in zip(mesh.polygons, mi):
+    poly.material_index = idx
+    poly.use_smooth = False
+
+obj = bpy.data.objects.new(name, mesh)
+_we_collection().objects.link(obj)
+
+obj.location = (0.0, 0.0, 0.0)
+obj.rotation_euler = (0.0, 0.0, 0.0)
+obj.scale = (1.0, 1.0, 1.0)
+
+obj["sekai_asset_id"] = "ENV-01"
+obj["sekai_grid_m"] = 2.0
+obj["sekai_origin_rule"] = origin_rule
+
+bpy.ops.object.select_all(action='DESELECT')
+obj.select_set(True)
+bpy.context.view_layer.objects.active = obj
+bpy.ops.object.transform_apply(
+    location=False,
+    rotation=True,
+    scale=True
+)
+
+if bevel > 0:
+    mod = obj.modifiers.new("ENV01_Chamfer", 'BEVEL')
+    mod.width = bevel
+    mod.segments = 1
+    mod.limit_method = 'ANGLE'
+    mod.angle_limit = math.radians(20)
+
+    try:
+        bpy.ops.object.modifier_apply(modifier=mod.name)
+    except Exception as exc:
+        raise RuntimeError(
+            f"ENV-01 walls_edges: bevel failed on {name}: {exc}"
+        ) from exc
+
+for poly in obj.data.polygons:
+    poly.use_smooth = False
+
+obj.rotation_euler = (0.0, 0.0, 0.0)
+obj.scale = (1.0, 1.0, 1.0)
+
+return obj
+7. ENV01_RetainingWall_4x1p5
+Overall max dimensions including cap: 4.0 x 0.45 x 1.50.
+Body is reduced by 0.04 m each exposed side so the cap can overhang by 0.04.
+v, f, mi = [], [], []
+
+body_len = 3.92
+body_depth = 0.37
+course_h = 0.284
+courses = 5
+
+for row in range(courses):
+zc = row * course_h + course_h * 0.5
+
+if row % 2 == 0:
+    blocks = [
+        (-1.47, 0.98),
+        (-0.49, 0.98),
+        ( 0.49, 0.98),
+        ( 1.47, 0.98),
+    ]
+else:
+    blocks = [
+        (-1.715, 0.49),
+        (-0.98, 0.98),
+        ( 0.00, 0.98),
+        ( 0.98, 0.98),
+        ( 1.715, 0.49),
+    ]
+
+for bi, (xc, sx) in enumerate(blocks):
+    mat_idx = 3 if (row == 1 and bi == 3) else 0
+    _we_box(
+        v, f, mi,
+        (xc, 0.0, zc),
+        (sx, body_depth, course_h),
+        mat_idx
+    )
+Cap reaches exact outer dimensions.
+_we_box(v, f, mi, (0.0, 0.0, 1.46), (4.0, 0.45, 0.08), 1)
+
+_we_finish(
+"ENV01_RetainingWall_4x1p5",
+v, f, mi,
+"ground-plane centre of 4.0 x 0.45 m overall footprint",
+bevel=0.012
+)
+
+8. ENV01_RetainingWall_Corner
+Overall footprint = 4 x 4 m L-plan.
+Outer edges at X/Y +/-2.0. Inner open quadrant faces +X/+Y.
+v, f, mi = [], [], []
+
+body_outer = 3.92
+body_t = 0.37
+cap_outer = 4.0
+cap_t = 0.45
+course_h = 0.284
+
+Horizontal arm near negative Y outer edge.
+for row in range(5):
+zc = row * course_h + course_h * 0.5
+
+seg_count = 4 if row % 2 == 0 else 5
+seg_len = body_outer / seg_count
+
+for i in range(seg_count):
+    xc = -body_outer * 0.5 + seg_len * (i + 0.5)
+    mat_idx = 3 if (row == 2 and i == seg_count - 2) else 0
+
+    _we_box(
+        v, f, mi,
+        (xc, -2.0 + 0.04 + body_t*0.5, zc),
+        (seg_len, body_t, course_h),
+        mat_idx
+    )
+Vertical arm near negative X outer edge.
+Start above the horizontal-arm inner boundary to avoid excessive overlap.
+arm_y_min = -2.0 + 0.04 + body_t
+arm_y_max = 1.96
+arm_len = arm_y_max - arm_y_min
+
+for row in range(5):
+zc = row * course_h + course_h * 0.5
+seg_count = 4 if row % 2 == 1 else 5
+seg_len = arm_len / seg_count
+
+for i in range(seg_count):
+    yc = arm_y_min + seg_len * (i + 0.5)
+    _we_box(
+        v, f, mi,
+        (-2.0 + 0.04 + body_t*0.5, yc, zc),
+        (body_t, seg_len, course_h),
+        0
+    )
+Cap stones, maximum outer footprint exactly 4 x 4.
+_we_box(
+v, f, mi,
+(0.0, -2.0 + cap_t*0.5, 1.46),
+(4.0, cap_t, 0.08),
+1
+)
+
+vertical_cap_len = 4.0 - cap_t
+_we_box(
+v, f, mi,
+(-2.0 + cap_t0.5, -2.0 + cap_t + vertical_cap_len0.5, 1.46),
+(cap_t, vertical_cap_len, 0.08),
+1
+)
+
+_we_finish(
+"ENV01_RetainingWall_Corner",
+v, f, mi,
+"ground-plane centre of 4.0 x 4.0 m L-plan footprint",
+bevel=0.012
+)
+
+10. ENV01_CliffEdge_4
+Six distinct rock masses, full footprint bounds = 4 x 1 m.
+v, f, mi = [], [], []
+
+rock_specs = [
+(-2.00, -1.28, -0.50, 0.44, 0.82, 1.02, 0, 0.00, 0.07),
+(-1.28, -0.62, -0.46, 0.50, 1.02, 0.91, 3, 0.05, 0.02),
+(-0.62, 0.02, -0.50, 0.43, 0.91, 1.20, 0, 0.02, 0.06),
+( 0.02, 0.70, -0.43, 0.50, 1.20, 0.96, 0, 0.07, 0.03),
+( 0.70, 1.36, -0.50, 0.46, 0.96, 1.10, 3, 0.03, 0.05),
+( 1.36, 2.00, -0.45, 0.50, 1.10, 0.84, 0, 0.04, 0.00),
+]
+
+for spec in rock_specs:
+_we_rock(v, f, mi, *spec)
+
+_we_finish(
+"ENV01_CliffEdge_4",
+v, f, mi,
+"ground-plane centre of 4.0 x 1.0 m footprint",
+bevel=0.018
+)
+
+for name in (
+"ENV01_RetainingWall_4x1p5",
+"ENV01_RetainingWall_Corner",
+"ENV01_CliffEdge_4",
+):
+obj = bpy.data.objects.get(name)
+if obj is None:
+raise RuntimeError(
+f"ENV-01 walls_edges: expected object {name} missing"
+)
+
+print("ENV-01 WALLS/EDGES READY | 3 pieces")
+
+C2B:END
+C2B:CHUNK bridge
+import bpy
+import math
+
+COLLECTION_NAME = "SEKAI_ENV01_KIT"
+
+def _br_collection():
+col = bpy.data.collections.get(COLLECTION_NAME)
+if col is None:
+raise RuntimeError(
+"ENV-01 bridge: SEKAI_ENV01_KIT missing. Run kit_common first."
+)
+return col
+
+def _br_mat(name):
+mat = bpy.data.materials.get(name)
+if mat is None:
+raise RuntimeError(
+f"ENV-01 bridge: required material {name} missing"
+)
+return mat
+
+def _br_remove(name):
+obj = bpy.data.objects.get(name)
+if obj is None:
+return
+mesh = obj.data if obj.type == 'MESH' else None
+bpy.data.objects.remove(obj, do_unlink=True)
+if mesh is not None and mesh.users == 0:
+bpy.data.meshes.remove(mesh)
+
+def _br_box(v, f, mi, center, size, mat_index):
+cx, cy, cz = center
+sx, sy, sz = size
+
+if min(sx, sy, sz) <= 0:
+    raise ValueError(f"ENV-01 bridge: invalid box {size}")
+
+hx, hy, hz = sx/2, sy/2, sz/2
+b = len(v)
+
+v.extend([
+    (cx-hx, cy-hy, cz-hz),
+    (cx+hx, cy-hy, cz-hz),
+    (cx+hx, cy+hy, cz-hz),
+    (cx-hx, cy+hy, cz-hz),
+    (cx-hx, cy-hy, cz+hz),
+    (cx+hx, cy-hy, cz+hz),
+    (cx+hx, cy+hy, cz+hz),
+    (cx-hx, cy+hy, cz+hz),
+])
+
+for face in (
+    (0,3,2,1),
+    (4,5,6,7),
+    (0,1,5,4),
+    (1,2,6,5),
+    (2,3,7,6),
+    (3,0,4,7),
+):
+    f.append(tuple(b+i for i in face))
+    mi.append(mat_index)
+def _br_finish(name, v, f, mi, origin_rule, bevel):
+_br_remove(name)
+
+mats = [
+    _br_mat("MV_Stone_Base"),
+    _br_mat("MV_Stone_Pale"),
+    _br_mat("MV_Timber_Dark"),
+    _br_mat("MV_Moss_Accent"),
+]
+
+mesh = bpy.data.meshes.new(name + "_MESH")
+mesh.from_pydata(v, [], f)
+mesh.update(calc_edges=True)
+
+if len(mesh.polygons) != len(mi):
+    raise RuntimeError(
+        f"ENV-01 bridge: polygon/material mismatch on {name}"
+    )
+
+for mat in mats:
+    mesh.materials.append(mat)
+
+for poly, idx in zip(mesh.polygons, mi):
+    poly.material_index = idx
+    poly.use_smooth = False
+
+obj = bpy.data.objects.new(name, mesh)
+_br_collection().objects.link(obj)
+
+obj.location = (0.0, 0.0, 0.0)
+obj.rotation_euler = (0.0, 0.0, 0.0)
+obj.scale = (1.0, 1.0, 1.0)
+
+obj["sekai_asset_id"] = "ENV-01"
+obj["sekai_grid_m"] = 2.0
+obj["sekai_origin_rule"] = origin_rule
+
+bpy.ops.object.select_all(action='DESELECT')
+obj.select_set(True)
+bpy.context.view_layer.objects.active = obj
+
+bpy.ops.object.transform_apply(
+    location=False,
+    rotation=True,
+    scale=True
+)
+
+if bevel > 0:
+    mod = obj.modifiers.new("ENV01_Chamfer", 'BEVEL')
+    mod.width = bevel
+    mod.segments = 1
+    mod.limit_method = 'ANGLE'
+    mod.angle_limit = math.radians(20)
+
+    try:
+        bpy.ops.object.modifier_apply(modifier=mod.name)
+    except Exception as exc:
+        raise RuntimeError(
+            f"ENV-01 bridge: bevel failed on {name}: {exc}"
+        ) from exc
+
+for poly in obj.data.polygons:
+    poly.use_smooth = False
+
+obj.rotation_euler = (0.0, 0.0, 0.0)
+obj.scale = (1.0, 1.0, 1.0)
+
+return obj
+11. ENV01_BridgeDeck_4
+Overall dimensions = 4.0 x 2.0 x 0.35 m.
+v, f, mi = [], [], []
+
+Stone stringers: run along X below the timber.
+_br_box(v, f, mi, (0.0, -0.72, 0.115), (4.0, 0.28, 0.23), 0)
+_br_box(v, f, mi, (0.0, 0.72, 0.115), (4.0, 0.28, 0.23), 0)
+
+Eight transverse timber plank modules along the run.
+plank_count = 8
+plank_len_x = 4.0 / plank_count
+gap = 0.025
+actual_plank_x = plank_len_x - gap
+
+for i in range(plank_count):
+xc = -2.0 + plank_len_x * (i + 0.5)
+_br_box(
+v, f, mi,
+(xc, 0.0, 0.29),
+(actual_plank_x, 2.0, 0.12),
+2
+)
+
+End boards ensure exact X bounds while preserving the board rhythm.
+_br_box(v, f, mi, (-1.9875, 0.0, 0.29), (0.025, 2.0, 0.12), 2)
+_br_box(v, f, mi, ( 1.9875, 0.0, 0.29), (0.025, 2.0, 0.12), 2)
+
+_br_finish(
+"ENV01_BridgeDeck_4",
+v, f, mi,
+"ground-plane centre of 4.0 x 2.0 m footprint",
+bevel=0.010
+)
+
+12. ENV01_BridgeRail_4
+Overall dimensions = 4.0 x 0.15 x 1.05 m.
+v, f, mi = [], [], []
+
+Five posts at exactly 1.0 m spacing.
+for x in (-2.0, -1.0, 0.0, 1.0, 2.0):
+post_w = 0.12
+
+# End posts are shifted inward by half their width so the global bounds
+# remain exactly X=-2..+2.
+if x == -2.0:
+    xc = -2.0 + post_w * 0.5
+elif x == 2.0:
+    xc = 2.0 - post_w * 0.5
+else:
+    xc = x
+
+_br_box(
+    v, f, mi,
+    (xc, 0.0, 0.525),
+    (post_w, 0.15, 1.05),
+    2
+)
+Two continuous horizontal rails.
+_br_box(v, f, mi, (0.0, 0.0, 0.42), (4.0, 0.11, 0.10), 2)
+_br_box(v, f, mi, (0.0, 0.0, 0.78), (4.0, 0.11, 0.10), 2)
+
+Small stone shoe accents at the two terminal posts.
+_br_box(v, f, mi, (-1.94, 0.0, 0.075), (0.12, 0.15, 0.15), 1)
+_br_box(v, f, mi, ( 1.94, 0.0, 0.075), (0.12, 0.15, 0.15), 1)
+
+_br_finish(
+"ENV01_BridgeRail_4",
+v, f, mi,
+"ground-plane centre of 4.0 x 0.15 m footprint",
+bevel=0.010
+)
+
+for name in ("ENV01_BridgeDeck_4", "ENV01_BridgeRail_4"):
+obj = bpy.data.objects.get(name)
+if obj is None:
+raise RuntimeError(
+f"ENV-01 bridge: expected object {name} missing"
+)
+
+print("ENV-01 BRIDGE READY | 2 pieces")
+
+C2B:END
+
+
+

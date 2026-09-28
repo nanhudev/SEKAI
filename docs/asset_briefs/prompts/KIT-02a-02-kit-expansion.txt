@@ -1,0 +1,121 @@
+=== FOLLOW-UP: KIT-02a - BUILD THE REST OF THE KIT ===
+
+The single piece `KIT02A_Stair_R20_7W4` passed the quality gate. Do not change its
+look. Now extend the same code path to the rest of the kit.
+
+Everything from the previous message still holds: the modulus, the riser meanings,
+the origin rule, the collision contract, the four materials, the cause-driven
+detail rule and the three tiers. Reuse the helpers you already wrote; do not
+redefine them.
+
+THE MODULUS, RESTATED BECAUSE IT IS NOT NEGOTIABLE
+
+    tread = 2.00 / 7 = 0.285714 m        every flight is exactly one 2.00 m grid cell of run
+    slope = atan(7 * riser / 2.00)
+
+The four risers are NOT interchangeable options. They are cultural statements:
+
+    0.160 -> 29.25 deg   civic      comfortable public circulation - installed, dressed stone
+    0.200 -> 34.99 deg   town-steep the town chose steepness over distance
+    0.220 -> 37.60 deg   old/built  hand-built by people who carried the stone
+    0.240 -> 40.03 deg   harsh      the RUIN dialect, intentionally difficult
+
+Never mix two risers inside one flight. Never use 0.240 for anything the town built.
+
+A TWELFTH FLIGHT LENGTH MAKES A MAP LONGER. AN END MAKES A MAP READABLE.
+Most of this pass is variants, not long stairs. Read the "what it is for" column
+and let it drive the silhouette - a Corner and a Broken module must not be the
+same object with different numbers.
+
+DELIVER 19 MORE PIECES
+
+Flights - all from ONE parametric builder, differing only in arguments:
+   1. KIT02A_Stair_R16_7W2   | 2.00 x 1.12 x 2.00 | riser 0.160, civic
+   2. KIT02A_Stair_R20_7W2   | 2.00 x 1.40 x 2.00 | riser 0.200, town-steep
+   3. KIT02A_Stair_R22_7W2   | 2.00 x 1.54 x 2.00 | riser 0.220, old/built
+   4. KIT02A_Stair_R24_7W2   | 2.00 x 1.68 x 2.00 | riser 0.240, harsh - the ruin dialect
+   5. KIT02A_Stair_R16_7W4   | 2.00 x 1.12 x 4.00 | the gentle civic flight, 4 m waist
+   (the R20 4 m piece already exists - do not rebuild it)
+
+Variants - one per distinct silhouette. These are the pieces that let the same
+modulus produce a town, a mountain path and a ruin:
+   6.  KIT02A_Stair_End_2        | 2.00 x 0.30 x 2.60 | TERMINAL. The flight's last step
+       widens into a threshold stone overhanging 0.30. Absorbs run residual and hides
+       the terrain plane cutting the top step. An END is what makes a stair finish.
+   7.  KIT02A_Stair_Corner_L_2   | 2.00 x rise x 2.00 | 90-degree TURN. A square
+       half-landing carrying a flight stub on the perpendicular face. Build L and R as
+       two separate meshes - a rotated copy is not acceptable.
+   8.  KIT02A_Stair_Corner_R_2   | mirror of 7     |
+   9.  KIT02A_Stair_Broken_2     | 2.00 x 1.54 x 2.00 | COLLAPSED MODULE. Two treads
+       missing, rubble in the gap, one cheek sheared off. Crossed on the ramp proxy -
+       the step you cannot see is the step you do not stumble on.
+   10. KIT02A_Stair_Edge_Open_2  | 2.00 x rise x 2.20 | OPEN OUTER EDGE. Kerb only, no
+       wall. For the exposed side of a hillside stair.
+   11. KIT02A_Stair_Edge_Wall_2  | 2.00 x rise x 2.20 | WALL-SIDE. Outer edge cut hard
+       against a rock face; used where the path is a notch.
+   12. KIT02A_Terrace_Landing_2x2| 2.00 x 0.24 x 2.00 | level landing slab with a
+       retaining lip on the downhill edge.
+   13. KIT02A_Alcove_2           | 2.00 run x 3.40 tall x 2.80 DEEP | REACH BAY, CUT
+       INTO THE HILL. Floor level ACROSS the width, follows the grade ALONG the path.
+       A 0.90 m bench at the back. Costs zero run.
+   14. KIT02A_Cantilever_Deck_2  | 2.00 run x 0.60 deck x 3.40 PROJECTION | REACH BAY,
+       PROJECTING INTO AIR. Three corbels under, low parapet. Costs zero run.
+   15. KIT02A_Rock_Stair_Half_2  | 2.00 run x 1.54 tall x 2.00 | the OLD PATH hero
+       piece. A standard R22 flight whose cheeks are overgrown by rock and soil: the
+       stones are the SUBSTRATE, not the object. Rock overlaps the cheeks, soil covers
+       the outer nosings, corners are broken and rounded, edges eroded.
+
+Structural and rails:
+   16. KIT02A_Stair_Cheek_L_2 / _R_2 | 2.00 run x 1.96 tall x 0.40 | stepped flank wall
+       whose top follows the nosing line plus 0.28, so a flight on a hillside never
+       floats. Two separate meshes.
+   17. KIT02A_Retain_Wall_Step_2 | 2.00 x 0.45 x steps 0.60 to 1.50 | stepped retaining
+       wall; the slope-following companion to ENV-01's flat wall.
+   18. KIT02A_Retain_Cap_2       | 2.00 x 0.14 x 0.50 | cap stone, overhanging 0.05.
+   19. KIT02A_Stair_Rail_2       | 2.00 x 1.05 x 0.16 | 3 posts at 0 / 1.0 / 2.0 m plus
+       2 horizontal rails. This rail is what makes a 13 m stair read as built rather
+       than exposed.
+
+TWO THINGS THAT WILL BE CHECKED, SO GET THEM RIGHT
+
+1. Alcove and Cantilever cost ZERO RUN. They are WIDTH features, not length features.
+   A bay in a 40 degree face is cut sideways into the hill (alcove) or cantilevered
+   sideways off it (deck). The path keeps the ground's grade ALONG its length. If you
+   level them along the path instead, you consume run and force the neighbouring
+   flight to about 46 degrees. Do not do that.
+
+2. Every variant that is a WALK rather than a FLIGHT (Alcove, Cantilever, Landing,
+   Edge, End) still gets a flat or gently-sloped collision proxy on the same terms -
+   a plain box, rotation 0, scale 1, slope baked into mesh data, MV_Stone_Base, named
+   <object name>_RAMP. The split between visual and collision is absolute.
+
+DETAIL HELPERS
+Add the cause-driven detail helpers as their own chunk: `worn_nosing(side)`,
+`moss_pocket(side)`, `drainage_cut()`, `chipped_corner()`, `loose_stones(edge)`.
+Each must implement one of the stated causes. If a detail cannot be given a cause,
+do not generate it. Random noise is not detail.
+
+BUDGET AND HOUSEKEEPING
+Whole kit under 26,000 triangles, target 19,000 to 23,000.
+  each 2 m flight 1,400 - 2,600 | the 4 m civic flight 2,600 - 4,000
+  Alcove_2 and Cantilever_Deck_2 1,200 - 2,200 each | cheeks, walls, caps, rails under 800
+  Rock_Stair_Half_2 2,600 - 4,000
+Bevels baked, no live modifiers, sharp edges flat shaded.
+Every piece: rotation 0, scale 1, transforms applied, origin on the stated footprint.
+Exactly four materials, no fifth. All pieces in collection SEKAI_KIT02A_KIT.
+
+CHUNKS - each must sit entirely inside its own fenced Python code block, each
+independently runnable, in this order:
+
+    # C2B:CHUNK wear            the detail helpers above
+    # C2B:CHUNK flights_core    pieces 1-4
+    # C2B:CHUNK flights_civic   piece 5
+    # C2B:CHUNK variants         pieces 6-15
+    # C2B:CHUNK structure       pieces 16-19
+
+At the end print a table: object name, dimensions measured on the mesh, step count,
+measured tread, triangle count. I will check the tread of every flight against
+0.285714 and the total against the budget.
+
+No prose. No export chunk - I export with my own tooling. Do not build the
+assembly demos yet; I will ask for those separately once I have looked at these.

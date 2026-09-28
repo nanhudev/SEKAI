@@ -1,0 +1,1 @@
+Ready. Send the first SEKAI asset brief.
