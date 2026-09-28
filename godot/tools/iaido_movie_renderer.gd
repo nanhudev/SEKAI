@@ -17,12 +17,20 @@ const FPS := 30.0
 const STEP := 1.0 / FPS
 const PRE_ROLL := 12        # frames held at t=0, so the "before" is visible
 const TAIL_FRAMES := 20     # frames after everything is released again
-var MAX_TIME := 8.2
+var MAX_TIME := 9.90
 
 var output_dir := ""
 var frame_index := 0
 var overlay: Label
 var overlay_title: Label
+var overlay_layer: CanvasLayer
+var show_overlay := false
+var tuning: Resource
+# Explicit shot list: [time, label] pairs. The verification frames are specific
+# moments, not windows, and hunting for a moment by stepping a window costs a
+# whole render per shot.
+var shots: Array = []
+var overrides: Array = []
 
 
 func _initialize() -> void:
@@ -33,6 +41,24 @@ func _initialize() -> void:
 	# Optional window start, so a single stage can be checked in seconds
 	# instead of re-rendering the whole ceremony.
 	var start_time := float(args[2]) if args.size() > 2 else 0.0
+	# The debug timeline is a developer tool. Anything the user watches must be
+	# rendered without it.
+	show_overlay = args.size() > 3 and int(args[3]) == 1
+	# Optional shot list, "t:label,t:label,..." — renders one named frame per
+	# entry and skips the pre-roll and tail entirely.
+	if args.size() > 4 and args[4].strip_edges() != "":
+		for piece in args[4].split(","):
+			var parts := piece.split(":")
+			shots.append([float(parts[0]), parts[1] if parts.size() > 1 else ""])
+	# Optional tuning overrides, "key=value,key=value". Held in memory only —
+	# the .tres is never written back. This is how a single variable gets A/B'd
+	# against an otherwise identical frame, which is the only honest way to
+	# claim a displacement is or is not visible.
+	if args.size() > 5 and args[5].strip_edges() != "":
+		for piece in args[5].split(","):
+			var kv := piece.split("=")
+			if kv.size() == 2:
+				overrides.append([kv[0].strip_edges(), float(kv[1])])
 	var err := DirAccess.make_dir_recursive_absolute(output_dir)
 	print("output_dir=", output_dir, " mkdir_err=", err)
 	_clear_existing_frames()
@@ -55,13 +81,26 @@ func _initialize() -> void:
 	var player := director.get("player") as Node3D
 	director.get("combat").set("iaido_ready_at", 0.0)
 	player.set("stamina", 100.0)
+	tuning = director.get("tuning")
+	for pair in overrides:
+		tuning.set(String(pair[0]), pair[1])
+		print("override %s = %s" % [pair[0], pair[1]])
 	_build_overlay()
 
-	var tuning: Resource = director.get("tuning")
 	var total := float(tuning.get("restore_end"))
 	print("window size: ", root.size, " scale: ", root.content_scale_size)
 	print("Rendering Iaido ceremony to: ", output_dir)
 	print("Timeline length: %.2fs" % total)
+
+	if not shots.is_empty():
+		for shot in shots:
+			_hold(director, float(shot[0]))
+			await _frame()
+			_save(float(shot[0]), String(shot[1]))
+			print("  shot %s @ %.2fs" % [String(shot[1]), float(shot[0])])
+		print("Wrote %d shot frames" % frame_index)
+		quit()
+		return
 
 	# Pre-roll: what the fight looks like before the world stops.
 	_hold(director, start_time)
@@ -99,17 +138,20 @@ func _hold(director: Node, t: float) -> void:
 
 func _clear_existing_frames() -> void:
 	# Re-rendering into the same folder leaves stale frames from a longer
-	# previous take, which then end up in the encoded video.
+	# previous take, which then end up in the encoded video. Every PNG in the
+	# folder goes, not just the ones matching the current naming scheme — an
+	# older take used different names and its leftovers would otherwise sit
+	# alongside the new shot list.
 	var dir := DirAccess.open(output_dir)
 	if dir == null:
 		return
 	var removed := 0
 	for file in dir.get_files():
-		if file.begins_with("frame_") and file.ends_with(".png"):
+		if file.get_extension().to_lower() == "png":
 			dir.remove(file)
 			removed += 1
 	if removed > 0:
-		print("cleared %d stale frames" % removed)
+		print("cleared %d stale images" % removed)
 
 
 # Two frames: one to let physics/canvas settle, one to land the draw.
@@ -118,8 +160,12 @@ func _frame() -> void:
 	await RenderingServer.frame_post_draw
 
 
-func _save(t: float) -> void:
-	var path := "%s/frame_%04d.png" % [output_dir, frame_index]
+func _save(t: float, label: String = "") -> void:
+	var path := ""
+	if label != "":
+		path = "%s/%s.png" % [output_dir, label]
+	else:
+		path = "%s/frame_%04d.png" % [output_dir, frame_index]
 	var image := root.get_texture().get_image()
 	if image == null:
 		push_error("Viewport texture returned no image at t=%.2f" % t)
@@ -135,9 +181,10 @@ func _save(t: float) -> void:
 
 
 func _build_overlay() -> void:
-	var layer := CanvasLayer.new()
-	layer.layer = 120
-	root.add_child(layer)
+	overlay_layer = CanvasLayer.new()
+	overlay_layer.layer = 120
+	overlay_layer.visible = show_overlay
+	root.add_child(overlay_layer)
 
 	var holder := PanelContainer.new()
 	holder.set_anchors_preset(Control.PRESET_BOTTOM_WIDE, true)
@@ -152,7 +199,7 @@ func _build_overlay() -> void:
 	style.content_margin_top = 8.0
 	style.content_margin_bottom = 8.0
 	holder.add_theme_stylebox_override("panel", style)
-	layer.add_child(holder)
+	overlay_layer.add_child(holder)
 
 	var row := HBoxContainer.new()
 	row.add_theme_constant_override("separation", 28)
@@ -177,33 +224,37 @@ func _label(t: float) -> String:
 	return "t = %.2f s      %s" % [t, _phase(t)]
 
 
+# Phase names are read off the tuning resource, so the debug strip can never
+# disagree with the timeline it is describing.
+#
+# THIS TABLE IS PART OF THE TIMELINE, NOT A CAPTION. It went stale against V7
+# and started throwing `float(null)` on every frame — it still named
+# `freeze_end`, which V7 deleted, and it had no name at all for the hero hold
+# or the consequence delay, so the two beats this pass exists for were the two
+# beats the strip could not label.
 func _phase(t: float) -> String:
-	if t < 0.45:
-		return "A · WORLD SILENCE"
-	if t < 1.20:
-		return "B · RETURN TO SHEATH"
-	if t < 2.20:
-		return "C · REVERSE WAVE"
-	if t < 2.85:
-		return "D · COMPRESSION HOLD"
-	if t < 2.95:
-		return "E · SHEATH LOCK"
-	if t < 3.08:
-		return "F · INSTANT DRAW"
-	if t < 3.40:
-		return "G · WORLD CUT"
-	if t < 3.90:
-		return "H · SEPARATION"
-	if t < 4.25:
-		return "I · TENSION FREEZE"
-	if t < 4.75:
-		return "J · GLASS FAILURE"
-	if t < 5.35:
-		return "K · SWORD CONTROL"
-	if t < 6.20:
-		return "L · SLOW SHEATHE"
-	if t < 6.65:
-		return "M · REALITY COLLAPSE"
-	if t < 7.20:
-		return "N · RESTORE"
+	if tuning == null:
+		return ""
+	var marks := [
+		["A · WORLD SILENCE", float(tuning.get("silence_end"))],
+		["B · RETURN TO HIP", float(tuning.get("sheath_end"))],
+		["C · CHARGING (2.0s)", float(tuning.get("wave_end"))],
+		["D · GREY DRAIN", float(tuning.get("time_stop_start"))],
+		["D · TIME STOP", float(tuning.get("time_stop_end"))],
+		["E · SEAT", float(tuning.get("first_click"))],
+		["E · ONE SECOND", float(tuning.get("wait_end"))],
+		["F · INSTANT DRAW", float(tuning.get("draw_end"))],
+		["G · CONSEQUENCE DELAY", float(tuning.get("cut_start"))],
+		["G · THE SPLIT", float(tuning.get("cut_end"))],
+		["G · HERO HOLD", float(tuning.get("hero_hold_end"))],
+		["H · FRACTURE STREAM", float(tuning.get("glass_stream_end"))],
+		["K · WRIST ARCS", float(tuning.get("spin_end"))],
+		["L · FIRST TO LET GO", float(tuning.get("loosen_start"))],
+		["L · RETURN TO SHEATH", float(tuning.get("final_click"))],
+		["M · DEVOUR + COLLAPSE", float(tuning.get("collapse_end"))],
+		["N · RESTORE", float(tuning.get("restore_end"))],
+	]
+	for mark in marks:
+		if t < float(mark[1]):
+			return String(mark[0])
 	return "RECOVERY"

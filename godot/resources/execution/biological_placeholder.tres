@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="IaidoExecutionProfile" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/combat/iaido_execution_profile.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+enemy_id = &"biological_placeholder"
+iaido_execution_supported = true
+execution_type = &"cleave"
+cuttable_region = &"full"
+fallback_execution = &"dissolve"
+preferred_cut_height = 0.58
+cut_material = &"biological"
+hold_separation_m = 0.018
+release_force = 0.24
+gravity_scale = 1.0
+tip_angle_deg = 22.0
+spin_deg_per_s = 26.0
+fall_asymmetry = 0.09
+debris_count = 4

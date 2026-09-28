@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="IaidoExecutionProfile" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/combat/iaido_execution_profile.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+enemy_id = &"ruin_warden"
+iaido_execution_supported = true
+execution_type = &"special"
+cuttable_region = &"core"
+fallback_execution = &"special"
+special_response = &"armor_split_then_core_cut"
+death_vfx = &"warden_iaido_death"
+cut_material = &"construct"
+preferred_cut_height = 0.62
+hold_separation_m = 0.03
+release_force = 0.14
+gravity_scale = 0.55
+tip_angle_deg = 34.0
+spin_deg_per_s = 11.0
+debris_count = 12

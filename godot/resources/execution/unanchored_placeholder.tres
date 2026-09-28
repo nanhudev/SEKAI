@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="IaidoExecutionProfile" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/combat/iaido_execution_profile.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+enemy_id = &"unanchored_placeholder"
+iaido_execution_supported = true
+execution_type = &"cleave"
+cuttable_region = &"full"
+fallback_execution = &"dissolve"
+preferred_cut_height = 0.5
+cut_material = &"ice"
+hold_separation_m = 0.016
+release_force = 0.2
+gravity_scale = 0.9
+debris_count = 6

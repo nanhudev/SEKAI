@@ -6,16 +6,23 @@ class_name IaidoAudioTimeline
 # are synthesised placeholders (see godot/tools/generate_iaido_placeholders.py);
 # replacing them with Suno renders does not change any timing below.
 #
-# Timeline intent (V3):
-#   0.00 music pause        0.20 air disappears     0.85 sheath movement
-#   1.35 reverse waveform   2.30 deep pressure      3.15 lock click
-#   3.30 instant draw       3.40 world tear         3.78 void resonance
-#   4.35 glass stress       4.90 sword spin         5.15 first panes detach
-#   5.95 sheath friction    6.85 FINAL CLICK        6.95 large collapse
-#   7.50 reality restore    7.85+ music resume
+# Timeline intent (V6, 9.90s total). Every time below is READ OFF IaidoTuning —
+# this list is a description, not a table, and the numbers are the values at the
+# time of writing. `godot/tools/dump_iaido_cues.gd` prints the live table that
+# `encode_iaido_movie.sh` mixes from, which is the only reason a stale copy of it
+# cannot desync the movie any more.
 #
-# Note where the noise is NOT: the 0.60s absolute hold (2.55 - 3.15) carries no
-# cue at all. The silence is the effect.
+#   0.20  air disappears          0.52  sheath movement       1.06  reverse waveform
+#   2.14  deep pressure           3.68  lock click (first)    4.70  instant draw
+#   4.78  glass stress            4.80  world cut             4.90  first panes detach
+#   5.30  void resonance          6.45  spin                  7.45  sheath friction
+#   8.40  FINAL CLICK             8.70  large collapse        9.30  reality restore
+#
+# Note where the noise is NOT. The dead windows — 3.24-3.58 (the grey and the
+# stop) and 3.68-4.68 (the full second with the blade already home) — carry NO
+# cue after the click that opens the second one. Nor is there any music under the
+# two seconds of charging. Those silences are the effect: they are what makes the
+# 100ms draw read as instantaneous against them.
 
 const BUS_NAME := "Iaido"
 
@@ -57,7 +64,7 @@ func _build() -> void:
 	_add(&"glass_stress", tuning.glass_start, "res://audio/sfx/iaido/glass_stress.wav", -8.0, 1.0)
 	# The first panes coming loose is a small break. The world collapsing is the
 	# big one, and it belongs to the final click, not to the draw.
-	_add(&"glass_detach", tuning.shard_detach, "res://audio/sfx/iaido/glass_detach.wav", -11.0, 1.0)
+	_add(&"glass_detach", tuning.loosen_start, "res://audio/sfx/iaido/glass_detach.wav", -11.0, 1.0)
 	_add(&"spin", tuning.spin_start + 0.15, "res://audio/sfx/iaido/spin.wav", -9.0, 1.0)
 	_add(&"slow_sheathe", tuning.slow_sheathe_start + 0.15, "res://audio/sfx/iaido/slow_sheathe.wav", -10.0, 1.0)
 	_add(&"final_click", tuning.final_click, "res://audio/sfx/iaido/final_sheathe.wav", -2.0, 0.92)
