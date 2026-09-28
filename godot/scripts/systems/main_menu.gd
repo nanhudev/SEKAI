@@ -1,6 +1,7 @@
 extends Control
 
 signal start_pressed
+signal region_pressed
 signal settings_pressed
 signal exit_pressed
 
@@ -22,6 +23,10 @@ func _ready() -> void:
 	subtitle.text = "COMBAT SANDBOX"
 	rows.add_child(subtitle)
 	_add_button(rows, "进入战斗沙盒", func() -> void: start_pressed.emit())
+	# The second door. CombatSandbox is the combat instrument — a 24 m arena with
+	# a training dummy on it. It has never contained the region, so the region
+	# needed its own way in or it only ever existed as a still image.
+	_add_button(rows, "探索雾谷（地图漫游）", func() -> void: region_pressed.emit())
 	_add_button(rows, "设置", func() -> void: settings_pressed.emit())
 	_add_button(rows, "退出", func() -> void: exit_pressed.emit())
 
