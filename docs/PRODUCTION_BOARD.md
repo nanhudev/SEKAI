@@ -22,7 +22,7 @@ Godot / Gameplay / Combat / Camera / UI / VFX / Save / Git / Testing
 | Boot / Menu / Pause gate | P0 | REVIEW | TECH VERIFIED；桌面可见交互未验收 |
 | Movement（WASD/sprint/jump/dodge） | P0 | REVIEW | TECH VERIFIED；手感未验收 |
 | Running camera feedback | P0 | REVIEW | 三档预设 + F8 面板；可读性未验收 |
-| Sword combo / heavy / block | P0 | REVIEW | TECH VERIFIED；视觉为 TempSwordVisual 三方块 |
+| Sword combo / heavy / block | P0 | REVIEW | TECH VERIFIED；视觉已换真剑（10,378 tris · `Sword_FP.tscn`），不再是三方块 |
 | Perfect Guard | P0 | REVIEW | 窗口 0.12s（原 0.18s 已收紧）；音效未接入 |
 | Universal single-sword language | P0 | REVIEW | **18/18 集成测试绿**；手感未验收 · 见 `COMBAT_DESIGN.md` |
 | Guard → Perfect Guard → Riposte 闭环 | P0 | REVIEW | 窗口/后坐/微光奖励已实现；音效未接入 |
@@ -106,7 +106,8 @@ ChatGPT Web → Blender Python → Blender MCP → GLB → Godot
 
 | 资产 | ID | 优先级 | 状态 | 备注 |
 | --- | --- | --- | --- | --- |
-| First Person Sword | C2B-01 | P0 | IN GODOT | GLB 已入 `godot/models/weapons/`；832 tris；待替换 TempSwordVisual 并实机验收 |
+| First Person Sword | C2B-01 | P0 | **DONE · 待用户手感验收** | 真剑已入 `godot/models/weapons/fp_sword.glb`（**10,378 tris**，AABB 1.0570 × 0.0777 × 0.0697，4 材质）。**换模型未动位置与技能**：作为子节点挂进 `TempSwordVisual`，`Player.tscn` 一行未改，`SwordHitbox` 仍是 `(0, −0.2, −1.4)` / `1.4×1.2×1.6`。训练场武器架摆出货本体。见 `HERO_ASSET_REPORTS.md` W01 |
+| First Person Saya（剑鞘） | C2B-01b | P0 | **几何 DONE · PASS 2 待做** | 803 mm，膛内衬 790 mm；鞘口 x −3.405 对齐剑护手 x −3.400，刃 47.3 × 8.0 整根在膛内**不穿模**。金具/栗形/口沿磨损仍是 blockout。见 `HERO_ASSET_REPORTS.md` W02 |
 | FP Hand / Forearm | C2B-02 | P0 | SPEC READY | brief 本次补写 |
 | Lesser Ruin Sentinel | C2B-03 | P0 | SPEC READY | brief 本次补写 |
 | Magic Catalyst | C2B-04 | P1 | SPEC READY | brief 本次补写 |
