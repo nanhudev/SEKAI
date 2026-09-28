@@ -58,7 +58,9 @@ static func star_bind() -> ChainMoveset:
 		"start_azimuth_degrees": -72.5, "arc_degrees": 145.0,
 		"radius_from": 2.5, "radius_to": 3.4,
 		"height_from": 1.20, "height_to": 1.05,
-		"ease": ChainMove.Ease.OUT, "ease_power": 2.2,
+		# §8: WHIP, not OUT — the first cut has to hand the second one a chain that
+		# is still travelling. See ChainMove.Ease.WHIP.
+		"ease": ChainMove.Ease.WHIP, "ease_power": 2.2,
 		"momentum_gain": 0.30, "momentum_whiff_cost": 0.14, "steer": 0.35,
 		# A wide sweep is the CHEAPEST way to spend spin: it is meant to be used on
 		# crowds and light bodies, and its landing cost is small enough that a
@@ -77,9 +79,18 @@ static func star_bind() -> ChainMoveset:
 		"startup": 0.10, "active": 0.19, "recovery": 0.19,
 		"damage": 18.0, "poise_damage": 18.0, "impulse": 2.2,
 		"continue_from_head": true, "arc_degrees": -150.0,
-		"radius_from": 3.4, "radius_to": 3.9,
+		# §7 CARRY. 26° of overrun BEFORE the reverse, and the radius opens while
+		# it happens: the head keeps going the way cut 1 threw it, the chain goes
+		# slack, and only then does the return sweep reel it back. That is §3's
+		# loose → tighten → straight spent on a CUT instead of only on a throw —
+		# and it is the difference between 返扫 BEING the second beat and being a
+		# second swing that happens to start nearby.
+		"carry_anticipation_degrees": 26.0,
+		"radius_from": 3.72, "radius_to": 3.9,
 		"height_from": 1.05, "height_to": 1.00,
-		"ease": ChainMove.Ease.OUT, "ease_power": 2.4,
+		# WHIP as well, and for the same reason: 返扫 carries the head through into
+		# the slam instead of stopping in front of it.
+		"ease": ChainMove.Ease.WHIP, "ease_power": 2.4,
 		"momentum_gain": 0.34, "momentum_whiff_cost": 0.12, "steer": 0.38,
 		"impact_momentum_cost": 0.05, "impact_hitstop": 0.032, "impact_deflect_degrees": 5.0,
 		"camera_trauma": 0.05, "fov_kick": -1.1, "roll_kick": -1.1,

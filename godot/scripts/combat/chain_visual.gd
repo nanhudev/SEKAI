@@ -37,6 +37,25 @@ const SAG_LIMIT := 0.95
 const BOW_PER_SPEED := 0.055
 const BOW_LIMIT := 0.85
 const TRAIL_POINTS := 26
+# Below this the head is not travelling and has no direction of its own.
+const HEAD_AIM_MIN_SPEED := 1.2
+# How many links back the fallback tangent is taken from. One link is 17cm, and
+# the LAST one carries the whole of the rope's sag and bow, so aiming a head off
+# it tilts the blade by tens of degrees exactly when the rope is most visible.
+const HEAD_TANGENT_LINKS := 5
+# Time constant of the head's own turn. Long enough that a reversal is a swing and
+# not a flip, short enough that it still reads as following the throw.
+#
+# MEASURED, not chosen. `chain_physicality` group C reads the cosine between the
+# head's blade and its own direction of travel while a 横缚 is in the air, and a
+# first-order filter chasing a direction that is itself rotating lags by `ω·τ`. The
+# strike turns the head's bearing at about 26° per frame — 27 rad/s — so at τ =
+# 0.045 the blade sat ~70° behind its own motion for the whole of the fastest part
+# of every strike: the head spent the strike looking somewhere other than where it
+# was going (§5), which is what a ball on a string does. 0.030 puts the lag inside
+# a right angle while keeping the turn a turn: a 90° reversal still takes ~3 frames.
+const HEAD_TURN_TAU := 0.030
+
 # A LOADED LINE HUMS. At full tension the chain shivers: it is the visual half of
 # §43's "tension must be perceptible", and it is the one cue that says "at the
 # limit" while a straight line alone only says "far away". Deliberately TINY — 13mm
@@ -66,6 +85,8 @@ var _tremor_time := 0.0
 # straight rope is exactly what separates sag, bow and vibration, and a test that
 # cannot ask where the links ARE can only assert that something was drawn.
 var _points: Array[Vector3] = []
+# Where the head is POINTING, kept between frames so it can be eased (§5).
+var _head_dir := Vector3.FORWARD
 
 
 func _ready() -> void:
@@ -145,6 +166,11 @@ func set_chain_visible(shown: bool) -> void:
 		_trail.visible = false
 	if _handle != null:
 		_handle.visible = shown
+	if not shown:
+		# The head's aim is eased from its own history, so a chain put away and
+		# taken out again must not swing round from wherever it was last pointing.
+		_head_dir = Vector3.FORWARD
+		_trail_points.clear()
 
 
 # Is the weapon actually being drawn right now. Asked by tests, and by anything
@@ -202,7 +228,7 @@ func update_chain(
 		points[i] = hand.lerp(head, t) + Vector3.DOWN * sag * arch + (bow + tremor) * arch
 	_points = points
 	_place_links(points)
-	_place_head(head, points)
+	_place_head(head, points, head_velocity, delta)
 	_update_trail(head, delta)
 
 
@@ -265,24 +291,42 @@ func _build_head() -> void:
 	# 刃锤 / ANCHOR BLADE: a weighted head with a short edge. Long on the chain
 	# axis so its direction is legible from any angle — the brief's requirement
 	# that the head identify its own orientation (§36).
+	#
+	# §4 SIZED FOR TRACKING, NOT FOR SCALE. A player has to find the HEAD first and
+	# the chain second; if the head cannot be picked out at a glance while it is
+	# moving, the weapon becomes "a line". So the blade is 1.8 head-radii long
+	# rather than 1.5, and it is 1.6× taller than it is wide, which makes its long
+	# axis unambiguous even in silhouette. Deliberately geometry and material only:
+	# no glow, no trail-as-identity — those are decoration over a shape that has to
+	# work on its own.
 	var blade := BoxMesh.new()
-	blade.size = Vector3(0.10, head_size * 0.55, head_size * 1.5)
+	blade.size = Vector3(0.11, head_size * 0.62, head_size * 1.8)
 	var material := StandardMaterial3D.new()
 	material.albedo_color = HEAD_TINT
-	material.roughness = 0.30
-	material.metallic = 0.9
+	material.roughness = 0.22
+	material.metallic = 0.95
 	blade.material = material
 	_head_blade.mesh = blade
 	_head_blade.position = Vector3.ZERO
 	# A counterweight sphere so the head reads as heavy rather than as a stick.
 	var weight := MeshInstance3D.new()
 	var weight_mesh := SphereMesh.new()
-	weight_mesh.radius = head_size * 0.38
-	weight_mesh.height = head_size * 0.76
+	weight_mesh.radius = head_size * 0.40
+	weight_mesh.height = head_size * 0.80
 	weight.mesh = weight_mesh
 	weight.material_override = material
-	weight.position = Vector3(0.0, 0.0, head_size * 0.35)
+	weight.position = Vector3(0.0, 0.0, head_size * 0.34)
 	_head.add_child(weight)
+	# THE FRONT. A short prong off the leading face, so "which way is it facing"
+	# survives even when the head is small, edge-on, or half off the screen — and
+	# so 咬 has somewhere to visually happen.
+	var prong := MeshInstance3D.new()
+	var prong_mesh := BoxMesh.new()
+	prong_mesh.size = Vector3(head_size * 0.30, head_size * 0.30, head_size * 0.66)
+	prong.mesh = prong_mesh
+	prong.material_override = material
+	prong.position = Vector3(0.0, 0.0, -head_size * 1.05)
+	_head.add_child(prong)
 
 
 func _build_trail() -> void:
@@ -330,13 +374,38 @@ func _basis_along(direction: Vector3) -> Basis:
 	return Basis.looking_at(direction, up)
 
 
-func _place_head(head: Vector3, points: Array[Vector3]) -> void:
-	var tangent := Vector3.FORWARD
-	if points.size() >= 2:
-		tangent = head - points[points.size() - 2]
-	if tangent.length_squared() < 0.000001:
-		tangent = Vector3.FORWARD
-	_head.global_transform = Transform3D(_basis_along(tangent.normalized()), head)
+# §5 · THE HEAD MUST POINT WHERE IT IS GOING.
+#
+# It used to take its direction from the LAST LINK — `head - points[n-1]`, a 17cm
+# segment that carries the whole of the rope's sag and bow on its far end. Measured
+# before this pass: a head doing 76 m/s along a wide sweep was drawn up to 0.33
+# cosine away from its own travel, i.e. pointing most of 70° off, and the reading
+# got WORSE the more slack the rope had. The blade was aimed into the floor while
+# the head flew forward — the "ball on a string" failure, arrived at by arithmetic.
+#
+# While the head is actually travelling, its own velocity IS its direction, and
+# that is the only reading that stays true through a sag, a bow and a whip alike.
+# At rest there is no velocity to point along, so a LONGER slice of the rope takes
+# over — the same idea, with the last link's tilt divided by five.
+func _place_head(head: Vector3, points: Array[Vector3], velocity: Vector3, delta: float) -> void:
+	var solved := Vector3.ZERO
+	if velocity.length() > HEAD_AIM_MIN_SPEED:
+		solved = velocity.normalized()
+	elif points.size() >= 2:
+		var back := maxi(0, points.size() - 1 - HEAD_TANGENT_LINKS)
+		solved = head - points[back]
+		if solved.length_squared() > 0.000001:
+			solved = solved.normalized()
+		else:
+			solved = Vector3.ZERO
+	if solved != Vector3.ZERO:
+		# Eased, so a head that reverses swings round instead of flipping, and a
+		# slow head cannot chatter between the two sources above.
+		var blend := 1.0 - exp(-maxf(delta, 0.0001) / HEAD_TURN_TAU)
+		_head_dir = _head_dir.lerp(solved, blend)
+		if _head_dir.length_squared() > 0.000001:
+			_head_dir = _head_dir.normalized()
+	_head.global_transform = Transform3D(_basis_along(_head_dir), head)
 
 
 func _update_trail(head: Vector3, delta: float) -> void:

@@ -325,28 +325,54 @@ func _check_the_second_cut_carries_the_first() -> void:
 	if reverse == null:
 		_fail("返扫 does not exist")
 		return
-	# THE CARRY (§10). 返扫 has to pick the head up where the first cut left it and
-	# unwind from there — no reset, no second wind-up. An absolute speed cap cannot
-	# answer this, because 返扫's authored ease is deliberately front-loaded: at 3.7m
-	# radius a 2.4-power OUT curve legitimately moves the head 2.5m in the very first
-	# frame of its arc. So this measures the one thing that would differ: how far the
-	# head TRAVELS DURING THE SECOND CUT'S OWN STARTUP. Carrying on, it travels a few
-	# centimetres. Re-authoring a start pose, it travels the whole chord.
+	# THE CARRY (§7). 返扫 has to pick the head up where the first cut left it and
+	# unwind from there — no reset, no second wind-up.
+	#
+	# WHAT THAT IS NOT is "the head barely moves". 返扫 opens with a deliberate 26° of
+	# OVERRUN along cut 1's own direction (`carry_anticipation_degrees`), which at
+	# 3.6m radius is 1.7m of travel — the head MUST travel, or the handover is exactly
+	# the dead beat this check exists to catch. Distance alone therefore cannot be the
+	# question, and the first version of this check asked it: it demanded < 1.0m and
+	# passed only while the handover was dead. The two things that can actually go
+	# wrong are the two measured here.
+	#
+	#   DIRECTION — a re-authored start pose turns the head away from where it was
+	#               already going, and it does it inside a single frame.
+	#   DEADNESS  — a handover with no overrun authored has nothing to travel, so the
+	#               first frame after the cut is a frame with no motion in it.
 	var carry_start := -1
 	for s in labels.size():
 		if labels[s] == &"ch_return":
 			carry_start = s
 			break
-	if carry_start < 0:
-		_fail("返扫 never started")
+	if carry_start < 2 or carry_start + 2 >= heads.size():
+		_fail("返扫 never started, or has no frames either side to read a carry from")
 		return
+	var before := heads[carry_start - 1] - heads[carry_start - 2]
+	var after := heads[carry_start + 1] - heads[carry_start]
+	_check(
+		before.dot(after) > 0.0,
+		"返扫 turned the head %.0f° inside one frame of the cut — the start pose was \
+re-authored rather than carried (§7)"
+			% rad_to_deg(before.angle_to(after))
+	)
+	_check(
+		after.length() > 0.05,
+		"the head travelled %.3fm in 返扫's first frame — the handover is a dead beat, \
+which is the three-tweened-swings read of §8"
+			% after.length()
+	)
 	var startup_frames := maxi(1, int(roundf(reverse.startup / DT)))
 	var carry_end := mini(carry_start + startup_frames, heads.size() - 1)
 	var windup := heads[carry_start].distance_to(heads[carry_end])
+	# A ceiling is still needed, or "carry" could be answered by re-planting the pose
+	# 1.7m away and calling the travel a carry. 返扫's own chord is 150° at ~3.9m ≈
+	# 10m, so 2.5m is far past what an overrun can account for and nowhere near a
+	# re-authored pose.
 	_check(
-		windup < 1.0,
-		"返扫 repositioned the head %.2fm during its own startup — it wound up again instead of carrying the first cut's momentum"
-			% windup
+		windup < 2.5,
+		"返扫 repositioned the head %.2fm during its own startup — that is a re-planted \
+pose, not the 26° of overrun §7 authors" % windup
 	)
 	# And the boundary itself must not be an instant jump: a cut whose startup is 0
 	# would show up here even though the wind-up above is spread over frames.

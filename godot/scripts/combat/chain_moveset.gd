@@ -134,7 +134,17 @@ class_name ChainMoveset
 # How much further out it drifts before coming home, in metres. Same argument: this
 # is what stops the radius collapsing the instant the strike ends — a whirling head
 # keeps its distance while it turns, and only then gets reeled in.
-@export var retract_out := 0.45
+#
+# MEASURED, because the number that matters is the one the player sees (`radius`),
+# not the one authored here. At 0.45 the pose-space bulge peaked at 0.15m — a real
+# bulge — but `radius` is `pose × _radius_scale`, and the whiff cost spends its
+# momentum DURING the reel (1.030 → 1.003 over the 18 frames), so the chain was
+# contracting under the bulge and the visible drift came out at 0.038m: three
+# centimetres on a 3.2m radius is not a drift, it is rounding. At 0.80 the live
+# drift peaks at ~0.15m, against a 2.1m haul — a 7% overshoot, which is what a mass
+# on a rope does. It is still clamped by `max_radius` below, so a reel out of a TAUT
+# chain cannot stretch the rope.
+@export var retract_out := 0.80
 
 @export_group("Tension feel")
 # §43 asks for tension in three channels. Two of them are this file's: the LINE
@@ -145,6 +155,55 @@ class_name ChainMoveset
 @export var taut_snap_trauma := 0.05
 # Tension at which the line counts as LOADED. Below it the chain is just out there.
 @export var taut_feel_threshold := 0.85
+
+# ---------------------------------------------------------------------------
+# §3 · THE SNAP IS THE WHOLE WEAPON, AND IT HAS TO BE A BEAT.
+#
+# Measured on the last clean tour before this pass existed: thrown across the lab
+# the chain was 0.080m off straight while it was still loose, the drawing already
+# read 67% taut well before the head reached the limit, and the whole
+# loose→straight transition took 0.533s — a slow smear with no moment in it. A
+# rope does not do that. It HANGS for as long as it has itself spare, and then at
+# the end of its travel it comes up hard and all at once.
+#
+# `tension_knee` is where that begins, as a fraction of the chain's own length,
+# and the curve is a cube from there to `tension_ratio`. So a chain with a third
+# of itself still coiled is exactly as loose as one hanging at rest, and the
+# entire transition lives in the last few percent of reach — which is the beat.
+@export var tension_knee := 0.70
+# How fast the rope comes up hard, and how fast it pays back out. ASYMMETRIC ON
+# PURPOSE: tightening is an event, relaxing is a rope. A chain that let go as
+# quickly as it tightened would be a spring, which §33 forbids.
+@export var tension_rise := 16.0
+@export var tension_fall := 6.0
+
+# ---------------------------------------------------------------------------
+# §9 · HOW STRAIGHT THE WHIRLING CHAIN GETS AT FULL SPIN. Never anywhere near
+# 1.0: a chain that reached a rod by spinning would have nothing left to snap
+# from, and the orbit's whole job is to hand a straight line to the throw.
+@export var orbit_straighten := 0.42
+
+# ---------------------------------------------------------------------------
+# §13 · THE THIRD BEAT. THROW → CONTACT → BITE → TENSION.
+#
+# Without a bite the sequence is THROW → it is already a straight line, which is
+# indistinguishable from a raycast with a hit registered on the end of it. The
+# bite holds the rope OFF the snap for a moment after the head catches something,
+# so the player sees 挂住了 before they see 绷紧了 — and it is the only reason the
+# two are different events.
+@export var hook_bite_time := 0.09
+
+# ---------------------------------------------------------------------------
+# §17 · A CONNECTION DOES NOT SIT AT FULL LOAD FOREVER.
+#
+# What is caught is ATTACHED, not necessarily at the end of the rope: hooking
+# something three metres away on a 4.7m chain leaves a metre and a half of chain
+# still hanging in the air, and pinning the drawing to "taut" there is what made
+# every bind in the last tour a dead-straight rod. So the drawing reads the rope
+# it can actually see, and the strain on it reads how hard the player is hauling.
+@export var hook_strain_lift := 0.55
+@export var strain_ref_speed := 3.0
+
 
 @export_group("Chain")
 @export var light_window := 0.55

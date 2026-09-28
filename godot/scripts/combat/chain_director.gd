@@ -40,11 +40,47 @@ signal taut_changed(taut: bool)
 signal tug(step: int, total: int, amount: float)
 signal wall_impact(strength: float)
 signal message(text: String)
+# §30: THE AUDIO LINE'S CONTRACT. The combat line owns no sound file and never
+# will — it owns the MOMENTS, named, so the entire voice of this weapon can be
+# replaced without a line changing here. The rhythm of a haul already needed
+# `tug` for exactly this reason; this is the rest of the vocabulary, and the
+# names are the brief's, not this file's.
+#
+#   CHAIN_THROW          the head leaves the hand
+#   CHAIN_RATTLE         links moving — a sweep, the chain's own noise floor
+#   CHAIN_CONTACT        the head meets something (a body, a wall, a target)
+#   CHAIN_BITE           the hook has HOLD of something (§13's third beat)
+#   CHAIN_TENSION_START  the rope begins to come up hard
+#   CHAIN_TENSION_FULL   it is at its limit — the snap
+#   CHAIN_YANK           one tug of a haul
+#   CHAIN_RETRACT        the reel begins
+#   CHAIN_SLAM           the head is driven down
+#   CHAIN_WALL           metal on stone
+signal chain_event(event: StringName, data: Dictionary)
+
+const EV_THROW := &"CHAIN_THROW"
+const EV_RATTLE := &"CHAIN_RATTLE"
+const EV_CONTACT := &"CHAIN_CONTACT"
+const EV_BITE := &"CHAIN_BITE"
+const EV_TENSION_START := &"CHAIN_TENSION_START"
+const EV_TENSION_FULL := &"CHAIN_TENSION_FULL"
+const EV_YANK := &"CHAIN_YANK"
+const EV_RETRACT := &"CHAIN_RETRACT"
+const EV_SLAM := &"CHAIN_SLAM"
+const EV_WALL := &"CHAIN_WALL"
 
 # Layer 1 is the world (floor, walls, pillars) and layer 2 is every hurtbox —
 # the same two layers the sword's Area3D hitboxes already use.
 const WALL_MASK := 1
 const HURTBOX_MASK := 2
+# §30's two tension thresholds, as drawn-tension values. START is where the rope
+# has visibly begun to come up; FULL is where it is at its limit.
+const TENSION_START_AT := 0.25
+const TENSION_FULL_AT := 0.95
+# How much of its own average speed a move's startup is still carrying when it
+# hands the head to the arc. See `_startup_arrive` — 0 is the old smoothstep, and
+# 1 would be a straight line with no settle in it at all.
+const STARTUP_TAIL := 0.42
 # PlayerMovement's own decay constant. A tug is authored as a DISTANCE (see
 # ChainMoveset) and only a body that owns its decay can turn one into motion; a
 # body that only takes velocities gets the matching speed through this number.
@@ -150,6 +186,10 @@ var _orbit_hit_timer := 0.0
 # --------------------------------------------------------------------- hook
 var _hook_actor: Node3D
 var _hook_offset := Vector3.ZERO
+# §13's third beat, counted down in `step`. While it is running the rope is held
+# off the snap on purpose — see ChainMoveset's bite note.
+var _bite_left := 0.0
+var _bite_actor: Node3D
 
 # ----------------------------------------------------------------- the tugs
 # A pull is a HAUL, not a magnet — see ChainMoveset's 顿挫 block. The total distance
@@ -165,6 +205,9 @@ var _tug_timer := 0.0
 
 # ----------------------------------------------------------------- feedback
 var _was_taut := false
+# §30's two tension moments, announced once per episode rather than every frame.
+var _announced_start := false
+var _announced_full := false
 # The facing the current arc was authored around; steer is measured from it.
 var _steer_base := 0.0
 # How fast the head is going ROUND the player, in radians per second. Landing an
@@ -465,6 +508,7 @@ func step(delta: float) -> void:
 		return
 	state_time += delta
 	_decay_momentum(delta)
+	_step_bite(delta)
 	_step_tugs(delta)
 	match state:
 		State.HELD:
@@ -485,9 +529,32 @@ func step(delta: float) -> void:
 	# the seam — which is also the moment 甩星 releases toward the aim.
 	_azimuth_vel = wrapf(_azimuth - _azimuth_prev, -PI, PI) / maxf(delta, 0.0001)
 	_azimuth_prev = _azimuth
-	_update_tension()
+	_update_tension(delta)
 	_resolve_head(delta)
 	_update_feedback(delta)
+
+
+# §13's THIRD BEAT. The head has arrived; this is the moment the player is told it
+# has HOLD. It is announced when the bite ENDS rather than when it begins, because
+# the bite is the length of the pause in front of the snap — the thing the sound
+# and the micro-jerk are placed against is the rope coming up, not the rope
+# touching.
+func _step_bite(delta: float) -> void:
+	if _bite_left <= 0.0:
+		return
+	_bite_left = maxf(0.0, _bite_left - delta)
+	if _bite_left > 0.0:
+		return
+	var actor := _bite_actor
+	_bite_actor = null
+	_announce(EV_BITE, {"target": actor, "weight": weight_of(actor)})
+	# …and the rope starts to come up on the same beat. Not a separate state: the
+	# drawing has been held at zero through the bite, so letting it read the radius
+	# again IS the tension starting.
+	_announce(EV_TENSION_START, {"from": "bite"})
+	# §36: the element verb, offered to whatever is on the end of the chain. Frost
+	# and Wind do not exist here and this file must not know that they might.
+	_call_on_actor(actor, &"on_chain_bite", player)
 
 
 func _step_held(delta: float) -> void:
@@ -521,10 +588,12 @@ func _step_move(delta: float) -> void:
 	# arc giving way rather than as a correction.
 	_deflect += (_deflect_target - _deflect) * minf(1.0, delta * 6.0)
 	if state_time < move.startup:
-		# STARTUP TRAVELS. The head goes to where the move begins instead of
-		# appearing there, so no technique in this weapon can teleport the chain —
-		# which is the difference between a chain and a very long sword.
-		var t := _settle(state_time / maxf(move.startup, 0.0001))
+		# STARTUP TRAVELS, AND ARRIVES MOVING. The head goes to where the move
+		# begins instead of appearing there — no technique in this weapon can
+		# teleport the chain, which is the difference between a chain and a very
+		# long sword — and it gets there still travelling, so the arc it hands over
+		# to does not have to start from a stopped chain (§8).
+		var t := _startup_arrive(state_time / maxf(move.startup, 0.0001), _is_coasting(move))
 		var travel := _lerp_pose(_pose_from, _pose_start, t)
 		travel.x += steer + _deflect
 		_apply_pose(travel)
@@ -721,7 +790,7 @@ func _start_orbit() -> bool:
 	_orbit_hold = 0.0
 	_orbit_hit_timer = 0.0
 	_hit_targets.clear()
-	_pose_from = Vector3(_azimuth, radius, _height)
+	_pose_from = _pose_now()
 	_pose_start = _pose_from
 	_pose_end = _pose_from
 	# The circle starts where the head already is and unwinds from there, so
@@ -773,10 +842,10 @@ func _start(id: StringName) -> bool:
 	_duration = move.active_seconds(momentum)
 	_strike_end = move.startup + _duration
 	_move_end = _strike_end + move.recovery
-	_pose_from = Vector3(_azimuth, radius, _height)
+	_pose_from = _pose_now()
 	_reach_end = radius
 	var start_az := (
-		_azimuth if move.continue_from_head
+		_azimuth + _carry_anticipation(move) if move.continue_from_head
 		else _facing_azimuth() + deg_to_rad(move.start_azimuth_degrees)
 	)
 	var start_h := move.height_from
@@ -796,7 +865,19 @@ func _start(id: StringName) -> bool:
 		if not is_zero_approx(move.roll_kick):
 			camera_feedback.roll_impulse(move.roll_kick)
 	move_started.emit(move)
+	_announce(_move_event(move), {"move": move.id, "radius": radius})
 	return true
+
+
+# Which of §30's moments a technique is. Not a second state machine: the answer is
+# already in the data (does it hook, does it come down), which is why this is three
+# lines and not a table.
+func _move_event(move: ChainMove) -> StringName:
+	if move.hooks:
+		return EV_THROW
+	if move.path == ChainMove.Path.SLAM:
+		return EV_SLAM
+	return EV_RATTLE
 
 
 func _on_active() -> void:
@@ -874,11 +955,14 @@ func _enter_hooked() -> void:
 
 func _retract() -> void:
 	_release_hook()
-	_pose_from = Vector3(_azimuth, radius, _height)
 	state = State.RETRACTING
 	state_time = 0.0
 	active_move = null
+	# AFTER `active_move` is cleared: `_pose_now` inverts `_apply_pose`, and from
+	# here on every pose this state applies has no aim offset to undo.
+	_pose_from = _pose_now()
 	_hit_targets.clear()
+	_announce(EV_RETRACT, {"radius": radius})
 
 
 func _can_act() -> bool:
@@ -942,6 +1026,31 @@ func _apply_pose(p: Vector3) -> void:
 	_height = p.z + _aim_pitch_offset(radius)
 
 
+# THE POSE IN THE SPACE THE MOVES ARE AUTHORED IN — the exact inverse of
+# `_apply_pose` under the move that is about to be applied.
+#
+# A handover is a lerp between "where the head is now" and "where the next
+# technique is written to begin", so both ends have to be the same kind of number.
+# They were not: `_pose_from` was read off the LIVE `radius` (already multiplied by
+# `_radius_scale`) while every authored `radius_from` is not, so the moment momentum
+# was carrying — three cuts in, `_radius_scale` ≈ 1.08 — the next cut's first frame
+# re-applied the scale on top of an already-scaled number and the head hopped
+# outward. Measured on the last clean tour: **13.1 m/s for one frame**, which is
+# both a visible twitch and the reason the startup had no distance left to travel.
+#
+# This must be called AFTER `active_move` is set, because `_apply_pose` folds in
+# the active move's own aim offset: with the same move on both sides the two
+# cancel exactly, `_apply_pose(_pose_now())` is the identity, and a technique still
+# cannot teleport the head. The aim offset is the one thing a
+# `continue_from_head` handover must NOT inherit — it is the throw's business.
+func _pose_now() -> Vector3:
+	return Vector3(
+		_azimuth,
+		radius / maxf(_radius_scale, 0.0001),
+		_height - _aim_pitch_offset(radius)
+	)
+
+
 # §13: THE THROW IS RELEASED TOWARD THE AIM.
 #
 # A chain that always leaves the hand at the same height can hook a pillar but never
@@ -983,6 +1092,72 @@ func _settle(t: float) -> float:
 	return x * x * (3.0 - 2.0 * x)
 
 
+# §7/§8 — WHERE A CARRY CUT'S ANTE COMES FROM.
+#
+# `continue_from_head` is not on its own enough, and measuring it is what proved
+# that: starting the next arc "where the head already is" leaves the startup lerp
+# travelling between two poses that are already the same pose, so the cut begins
+# from a chain that does not move at all. Measured on the last clean tour, the head
+# sat between 0.5 and 1.2 m/s for five frames at every handover against an arc peak
+# of 117 — five frames of nothing is not a whip crack, it is three separate swings.
+#
+# A chain changing direction is not a chain that stops: the handle reverses, the
+# head keeps going, the rope goes slack, and only then is the head snapped back the
+# other way. That follow-through is the anticipation, and it is authored as degrees
+# of OVERRUN measured against the new arc — so the data reads "26° more of the way
+# it was already going before you reel it back", and it stays correct whichever
+# direction the previous cut happened to end in.
+func _carry_anticipation(move: ChainMove) -> float:
+	if is_zero_approx(move.arc_degrees):
+		return 0.0
+	return -signf(move.arc_degrees) * deg_to_rad(move.carry_anticipation_degrees)
+
+
+# A STARTUP THAT ARRIVES MOVING. `_settle` is smoothstep, which is the right shape
+# for lowering the head home and the wrong one for handing it to an arc: it ends at
+# zero velocity, and the arc it is handing over to begins at its fastest. The seam
+# is a stop followed by a yank — the exact "three tweened swings" read of §8.
+#
+# Blending `_settle` with a linear tail keeps the shape (the head still eases off
+# the pose it started in) but leaves it carrying `STARTUP_TAIL` of its own average
+# speed at the boundary, so the arc's first frame is an ACCELERATION rather than a
+# cold start.
+#
+# A CARRY CUT IS THE OTHER CASE, and that blend is wrong for it. Nothing is being
+# delivered anywhere: the handle has already reversed (the inputs have), the head is
+# coasting, the rope is going slack, and the whole startup exists to reach the
+# instant the chain bites and hauls it back. Measured on that shape, the head went
+# 0.66 → 0.40 → **0.19 → 0.37** m/frame across the 横缚 → 返扫 handover: it lost most
+# of its speed dead at the cut and then PICKED IT BACK UP inside its own coast,
+# which is a power stroke the chain is not delivering.
+#
+# A coast is uniform deceleration and can be written down: f(x) = (2−T)·x − (1−T)·x²
+# over a startup of length S covers S·V̄ and has speed (2−T)·V̄ at the seam decaying
+# to T·V̄. T is not a taste knob — the seam speed has to be the speed cut 1 handed
+# over, and cut 1 arrives at 0.40 m/frame against an average of 0.29, i.e. ≈1.4·V̄,
+# so 2 − T ≈ 1.4 and T = 0.6. Two things fall out of that: the handover inherits
+# the previous cut's speed instead of restarting from it, and the coast is still
+# moving (0.6·V̄) when the arc takes over — the chain bites a mass that is still
+# travelling, which is what a reversal is, rather than one that has stopped. How FAR
+# it coasts is the authored overrun in degrees; this only decides its shape.
+const CARRY_TURN_SPEED := 0.60
+
+func _startup_arrive(t: float, carrying: bool) -> float:
+	var x := clampf(t, 0.0, 1.0)
+	if carrying:
+		return (2.0 - CARRY_TURN_SPEED) * x - (1.0 - CARRY_TURN_SPEED) * x * x
+	return _settle(x) * (1.0 - STARTUP_TAIL) + x * STARTUP_TAIL
+
+
+# Is this startup a COAST, or a delivery to a pose? Only a move that deliberately
+# overruns is coasting. 返扫 does; 绷切/曳/拉近斩 share `continue_from_head` but start
+# from a TAUT chain, which is stopped at full stretch by definition and hauls
+# INWARD — so for them "start fast and decay" would be a pop away from the pull.
+# Read off the data rather than off the state, so it cannot drift.
+func _is_coasting(move: ChainMove) -> bool:
+	return move.continue_from_head and not is_zero_approx(move.carry_anticipation_degrees)
+
+
 func _origin() -> Vector3:
 	# The point every polar coordinate is measured from: the player's FEET, so a
 	# height in a ChainMove means the same thing to this weapon as it does to a
@@ -1012,24 +1187,91 @@ func _hand_position() -> Vector3:
 	return _origin() + Vector3.UP * 1.5 - player.global_basis.z * 0.5
 
 
-func _update_tension() -> void:
-	if state == State.HOOKED:
-		tension = 1.0
-	elif state in [State.SWINGING, State.EXTENDING, State.SLAMMING, State.ORBITING]:
-		tension = clampf(radius / moveset.max_radius, 0.0, 1.0) * 0.75
-	elif is_taut():
-		tension = 1.0
-	else:
-		tension = clampf(radius / moveset.max_radius, 0.0, 1.0) * 0.6
+func _update_tension(delta: float) -> void:
+	var want := _tension_want()
+	# ASYMMETRIC ON PURPOSE (§3). Coming up hard is the EVENT and happens fast;
+	# paying back out is the rope relaxing and happens slower, because a chain that
+	# let go as quickly as it tightened would be a spring.
+	var rate := moveset.tension_rise if want > tension else moveset.tension_fall
+	tension = move_toward(tension, want, rate * delta)
+	if tension >= TENSION_START_AT and not _announced_start:
+		_announced_start = true
+		_announce(EV_TENSION_START, {"radius": radius, "ratio": radius / moveset.max_radius})
+	elif tension < TENSION_START_AT - 0.15:
+		_announced_start = false
+	if tension >= TENSION_FULL_AT and not _announced_full:
+		_announced_full = true
+		_announce(EV_TENSION_FULL, {"radius": radius})
+		_call_on_actor(_hook_actor, &"on_chain_tension", player)
+	elif tension < TENSION_FULL_AT - 0.20:
+		_announced_full = false
 	var taut := is_taut()
 	if taut != _was_taut:
 		_was_taut = taut
 		taut_changed.emit(taut)
 
 
+# HOW STRAIGHT THE ROPE IS DRAWN. Not "is the weapon taut" — that is `is_taut()`,
+# and it is a RULE. This is the picture, and the picture is of a rope.
+func _tension_want() -> float:
+	if _bite_left > 0.0:
+		# The bite: the head has hold and the rope has not come up yet. Zero is
+		# the point — a rope that snapped on the contact frame has no bite.
+		return 0.0
+	if state == State.HOOKED:
+		# §17. What is caught is ATTACHED, not necessarily at the end of the rope,
+		# so the drawing reads the rope it can actually see — and a hard haul pulls
+		# it further up than standing still does, which is what makes 拉 read as a
+		# pull rather than as a state the weapon happens to be in.
+		var base := _snap_curve(radius / maxf(0.001, moveset.max_radius))
+		return clampf(base + (1.0 - base) * _strain() * moveset.hook_strain_lift, 0.0, 1.0)
+	if state == State.ORBITING:
+		# §9. The whirling chain straightens as it spins up — one of the channels
+		# that has to say THIS IS GETTING DANGEROUS.
+		return maxf(
+			_snap_curve(radius / maxf(0.001, moveset.max_radius)),
+			moveset.orbit_straighten * momentum
+		)
+	return _snap_curve(radius / maxf(0.001, moveset.max_radius))
+
+
+# §3's curve. Zero for the whole of the rope's spare length, then a cube up to
+# straight across the last few percent — so the transition is a BEAT and not a
+# smear, and a chain with a third of itself still coiled hangs exactly as loosely
+# as one at rest.
+func _snap_curve(ratio: float) -> float:
+	var span := maxf(0.001, moveset.tension_ratio - moveset.tension_knee)
+	var x := clampf((ratio - moveset.tension_knee) / span, 0.0, 1.0)
+	return x * x * x
+
+
+# §17's strain: how hard the rope is being opposed right now, as a fraction of a
+# brisk walk. Zero while standing still — which is why a parked player sees the
+# rope hang, and why walking away from what you caught pulls it dead straight.
+func _strain() -> float:
+	if _hook_actor == null or not is_instance_valid(_hook_actor):
+		return 0.0
+	var bearing := _hook_actor.global_position - player.global_position
+	bearing.y = 0.0
+	if bearing.length_squared() < 0.0001:
+		return 0.0
+	var travel := Vector3(player.velocity.x, 0.0, player.velocity.z)
+	var pushed: Variant = player.get("external_velocity")
+	if pushed is Vector3:
+		travel += pushed
+	return clampf(
+		absf(travel.dot(bearing.normalized())) / maxf(0.001, moveset.strain_ref_speed),
+		0.0, 1.0
+	)
+
+
 func _tension_reset() -> void:
 	_was_taut = false
 	tension = 0.0
+	_announced_start = false
+	_announced_full = false
+	_bite_left = 0.0
+	_bite_actor = null
 
 
 func _decay_momentum(delta: float) -> void:
@@ -1097,6 +1339,12 @@ func _nudge_camera(direction: Vector2, trauma: float) -> void:
 		return
 	camera_feedback.add_impulse(direction)
 	camera_feedback.add_trauma(trauma)
+
+
+# One named moment, on its way to whoever makes the sound (§30). Nothing in this
+# file knows what a sound is; it only knows WHEN.
+func _announce(event: StringName, data: Dictionary = {}) -> void:
+	chain_event.emit(event, data)
 
 
 # ============================================================================
@@ -1182,6 +1430,7 @@ func _deliver(actor: Node3D, area: CombatHurtbox, profile: ChainMove) -> void:
 	hits_landed += 1
 	area.receive_hit(hit)
 	hit_landed.emit(profile, hit)
+	_announce(EV_CONTACT, {"move": profile.id, "target": actor, "weight": weight_of(actor)})
 	_pay_for_the_impact(profile, weight_of(actor))
 
 
@@ -1295,20 +1544,44 @@ func _on_wall_hit() -> void:
 	# retracting now, rather than re-deriving a pose that pushes further out, is
 	# what stops a thrown chain from tunnelling through the second frame.
 	message.emit("撞墙 · WALL")
+	_announce(EV_WALL, {"strength": last_wall_impact})
 	_retract()
 
 
 func _attach(actor: Node3D, contact: Vector3) -> void:
 	_hook_actor = actor
 	_hook_offset = actor.global_transform.affine_inverse() * contact
+	# §14 LOCAL ATTACH POINT. The offset above is kept in the ACTOR'S OWN space,
+	# which is why the head stays on the shoulder it caught when the body turns
+	# instead of sliding round to whatever this file thinks the centre is. For a
+	# parked dummy that is nearly invisible; for an enemy mid-swing it is the
+	# difference between a chain and a magnet.
 	if actor.has_method("on_chain_hooked"):
 		# Being caught mid-swing and dragged off balance is the reward for landing
 		# the throw, so the target is told about it rather than merely damaged.
 		actor.call("on_chain_hooked", player)
 	var weight := weight_of(actor)
 	message.emit("缠锁 · HOOKED  (%s)" % String(weight))
+	# §13's SECOND beat, and it is not the same moment as the first: the head has
+	# ARRIVED. Whether it has HOLD of anything is the bite, which is announced a
+	# few frames later — see _step_bite.
+	_announce(EV_CONTACT, {"target": actor, "weight": weight, "hooking": true})
+	_call_on_actor(actor, &"on_chain_contact", player)
+	_bite_left = moveset.hook_bite_time
+	_bite_actor = actor
 	_enter_hooked()
 	hooked.emit(actor, weight)
+
+
+# §36: THE ELEMENT HOOKS, and nothing else. This pass keeps the NEUTRAL chain and
+# only leaves the verbs where a Frost or Wind modifier will one day find them —
+# called duck-typed, on the actor, so a chain that is hooked to something with no
+# element system is not a special case and this file never learns what frost means.
+func _call_on_actor(actor: Node3D, verb: StringName, source: Node3D) -> void:
+	if actor == null or not is_instance_valid(actor):
+		return
+	if actor.has_method(verb):
+		actor.call(verb, source)
 
 
 func _release_hook() -> void:
@@ -1375,12 +1648,14 @@ func _deliver_tug(amount: float) -> void:
 	var player_move := -_tug_dir * _tug_total * _tug_player_share * amount
 	var moved_something := false
 	tug.emit(_tug_step + 1, moveset.pull_tugs, amount)
+	_announce(EV_YANK, {"step": _tug_step + 1, "total": moveset.pull_tugs, "amount": amount})
 	if target_move.length_squared() > 0.0 and actor != null and is_instance_valid(actor) \
 			and actor.has_method("chain_pull"):
 		# A body that takes a displacement takes it whole: no compensation, no
 		# residual, one move per yank.
 		actor.call("chain_pull", target_move)
 		moved_something = true
+		_call_on_actor(actor, &"on_chain_yank", player)
 	if player_move.length_squared() > 0.0:
 		# A DISPLACEMENT, not a speed: this file knows how far a 缨拉 should move
 		# the player, and the movement code owns how that becomes motion. Asking

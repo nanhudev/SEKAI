@@ -187,7 +187,9 @@ func _initialize() -> void:
 	dummy.set("attack_cooldown", 9999.0)
 
 	_build_overlay()
-	if tour == "chain":
+	if tour == "story":
+		_build_chain_story_segments()
+	elif tour == "chain":
 		_build_chain_segments()
 	elif tour == "movement":
 		_build_movement_segments()
@@ -699,7 +701,203 @@ func _build_chain_segments() -> void:
 				[SETTLE + 0.20, _req.bind(&"cast")],
 				[SETTLE + 1.05, _chain_release_expect.bind(&"ch_launch")],
 			],
+		"duration": SETTLE + 3.4,
+	},
+	]
+
+
+# ============================================================================
+#  §32 · THE CLEAN TOUR — the chain as a PHYSICAL STORY, not a feature list.
+# ============================================================================
+#
+# WHY THIS IS A SECOND TOUR AND NOT A REORDER OF THE FIRST ONE. The tour above was
+# built to answer "does this feature exist", so its takes are named after features
+# and ordered the way the weapon was implemented. That is the right film for a
+# reviewer who has the design document open and the wrong one for the question this
+# pass actually asks, which is:
+#
+#   can a player who cannot see a HUD, a skill name, an effect or a final sound
+#   read 松 / 甩 / 咬 / 绷 / 拉 / 砸 out of the motion alone?
+#
+# So this tour is ordered as a story told in nine beats, each one about a DIFFERENT
+# physical problem, and every take is filmed so the thing that changed is the thing
+# the frame is about. It is shot with `chain <fp|review> clean` (no debug numbers)
+# and there is a `silent` HUD mode that drops the captions too, for the screening
+# where the viewer has been told nothing at all.
+func _build_chain_story_segments() -> void:
+	var wide := {"side": 3.8, "back": 5.4, "up": 4.6, "aim": 2.6}
+	var wider := {"side": 4.4, "back": 6.0, "up": 5.0, "aim": 3.0}
+	var tight := {"side": 3.2, "back": 4.2, "up": 2.2, "aim": 1.8}
+	# The idle beat is the one take that is ABOUT the rope's shape, so it is the one
+	# take that goes low and close: from the wide framing a 1.05m resting chain is
+	# four pixels of a hanging line, and 松 is not something four pixels can argue.
+	var low := {"side": 2.6, "back": 2.4, "up": 1.3, "aim": 0.8}
+	var stand_z := -25.5
+	segments = [
+		# ---------------------------------------------------------------- 1 · 松
+		{
+			"name": "缚星链 · 松",
+			"note": "没有输入。链挂在手里，垂下去、有弧度、链头把末端坠住。全部六个动作里唯一什么都不发生的一拍，也是其余五拍的基准 —— 它必须自己看起来像一条绳子，而不是一根从手到某处的线。",
+			"fov": 44.0,
+			"fp": false,
+			"cam": low,
+			"setup": func() -> void:
+				_enter_lab([])
+				_stand_in_lab(0.0, stand_z),
+			"events": [],
 			"duration": SETTLE + 3.4,
+		},
+		# ---------------------------------------------------------------- 2 · 甩
+		{
+			"name": "缚星链 · 甩",
+			"note": "朝空地扔出去，什么都不钩。看的是绳：刚出头的十几帧它是弯的、松的，链头在飞而绳还在后面；快到长度尽头时它才在 0.05 秒里从松变直 —— 绷是一个事件，不是一条本来就直的线。",
+			"fov": 50.0,
+			"cam": wide,
+			"setup": func() -> void:
+				_enter_lab([])
+				_stand_in_lab(0.0, stand_z),
+			"events": [
+				[SETTLE + 0.10, _chain_req_expect.bind(&"chain_hook", &"ch_hook")],
+			],
+			"duration": SETTLE + 3.2,
+		},
+		# ---------------------------------------------------------------- 3 · 咬
+		{
+			"name": "缚星链 · 咬 —— 三连是一句话",
+			"note": "横 → 返 → 砸。第二击不回收链头：它带着第一击还没停下的惯性再多走 26°，绳在这时是松的，然后才被反方向拽回来。第三击换的是轴，不是更大的数字。三下之间链头一次都没有停下。",
+			"fov": 48.0,
+			"cam": wide,
+			"setup": func() -> void:
+				_enter_lab([ElementLibrary.WEIGHT_LIGHT])
+				_stand_in_lab(0.0, stand_z)
+				_chain_target(ElementLibrary.WEIGHT_LIGHT, 3.2),
+			"events": [
+				[SETTLE + 0.10, _chain_req_expect.bind(&"light", &"ch_sweep")],
+				[SETTLE + 0.50, _chain_req_expect.bind(&"light", &"ch_return")],
+				[SETTLE + 0.90, _chain_req_expect.bind(&"light", &"ch_slam")],
+			],
+			"duration": SETTLE + 2.8,
+		},
+		# ---------------------------------------------------------------- 4 · 蓄
+		{
+			"name": "缚星链 · 蓄",
+			"note": "按住重击，链头开始绕圈。转速、半径、链条被拉直的程度、手柄的阻力 —— 一起涨。蓄得越久甩出去越重，所以「不想乱甩」这句话在这一拍里第一次成立。",
+			"fov": 54.0,
+			"cam": wider,
+			"setup": func() -> void:
+				_enter_lab([])
+				_stand_in_lab(0.0, stand_z),
+			"events": [
+				[SETTLE + 0.10, _chain_req_expect.bind(&"heavy", &"ch_orbit")],
+				# Released with a margin: the orbit throws ITSELF at orbit_max_hold
+				# (1.30s) and a take may not depend on the render frame rate.
+				[SETTLE + 1.08, _chain_release_expect.bind(&"ch_launch")],
+			],
+			"duration": SETTLE + 3.6,
+		},
+		# ---------------------------------------------------------------- 5 · 拉·轻
+		{
+			"name": "缚星链 · 拉 · 轻",
+			"note": "钩住轻的东西，是它被甩过来。同一个输入、同一根链，换的只是链头上挂了什么 —— 重量表是一条物理，不是一行 if。",
+			"fov": 56.0,
+			"fp": false,
+			"cam": tight,
+			"setup": func() -> void:
+				_enter_lab([ElementLibrary.WEIGHT_LIGHT])
+				_stand_in_lab(0.0, stand_z)
+				_chain_target(ElementLibrary.WEIGHT_LIGHT, 3.6),
+			"events": [
+				[SETTLE + 0.10, _chain_req_expect.bind(&"chain_hook", &"ch_hook")],
+				[SETTLE + 1.05, _chain_req.bind(&"chain_lock")],
+			],
+			"duration": SETTLE + 3.6,
+		},
+		# ---------------------------------------------------------------- 6 · 拉·中
+		{
+			"name": "缚星链 · 拉 · 中",
+			"note": "中等重量：两边都被拽。这一拍存在的理由是它必须和另外两拍看起来都不一样 —— 轻的是对方飞过来，重的是你被拖过去，中等的是两个身体一起让一步。",
+			"fov": 56.0,
+			"fp": false,
+			"cam": tight,
+			"setup": func() -> void:
+				_enter_lab([ElementLibrary.WEIGHT_MEDIUM])
+				_stand_in_lab(0.0, stand_z)
+				_chain_target(ElementLibrary.WEIGHT_MEDIUM, 3.6),
+			"events": [
+				[SETTLE + 0.10, _chain_req_expect.bind(&"chain_hook", &"ch_hook")],
+				[SETTLE + 1.05, _chain_req.bind(&"chain_lock")],
+			],
+			"duration": SETTLE + 3.6,
+		},
+		# ---------------------------------------------------------------- 7 · 拉·重
+		{
+			"name": "缚星链 · 拉 · 重",
+			"note": "钩住比自己重的东西，被拉过去的是你 —— 一次一下、看得见地把你拽近，不是一次吸附。重型敌人不是受害者，是锚。",
+			"fov": 56.0,
+			"fp": false,
+			"cam": tight,
+			"setup": func() -> void:
+				_enter_lab([ElementLibrary.WEIGHT_HEAVY])
+				_stand_in_lab(0.0, stand_z)
+				_chain_target(ElementLibrary.WEIGHT_HEAVY, 3.6),
+			# NO THIRD PRESS, AND IT IS NOT AN OMISSION.
+			#
+			# This take used to end with `heavy → 地砸` at +2.30s, and the renderer
+			# logged the mismatch itself:
+			#     !! heavy played ch_orbit, but this take claims ch_ground_slam
+			# The first guess was a mistimed press. It is not. Replayed on the
+			# deterministic clock, 缚's bind lasts its own bound_time (0.40s on a
+			# heavy body), and when it lapses the chain emits 缚 · 松脱 and REELS
+			# IN — so by +2.30s the director is back in HELD with `is_hooked()`
+			# false and `heavy` means "start a spin", which is what it did.
+			#
+			# The deeper reading is the one that matters: 缚 IS the pull. The
+			# caption on this take is a sentence about the WEIGHT TABLE, and the
+			# weight table is applied by 缚, not by 地砸 — 地砸 is §23's exit from
+			# a bind you are still holding, which is a different beat and belongs
+			# to the tour take that is about exits. What the camera has to see
+			# here is: 咬 → 绷 → 拉 (five diminishing yanks, player hauled 0.66m,
+			# target moved 0.00m) → 松脱 → 回抽. All five of those beats are in
+			# these two presses. A third one would only have added a claim the
+			# take does not make.
+			"events": [
+				[SETTLE + 0.10, _chain_req_expect.bind(&"chain_hook", &"ch_hook")],
+				[SETTLE + 1.05, _chain_req.bind(&"chain_lock")],
+			],
+			"duration": SETTLE + 3.4,
+		},
+		# ---------------------------------------------------------------- 8 · 锚
+		{
+			"name": "缚星链 · 锚",
+			"note": "钩住石柱，和钩住一个重型敌人是同一件事：柱子不动，动的是你。没有一行专门为锚写的代码 —— 这就是重量表是物理而不是特例的意思。",
+			"fov": 56.0,
+			"fp": false,
+			"cam": tight,
+			"setup": func() -> void:
+				_enter_lab([])
+				# The pillar is scenery at a fixed spot, so this take cannot walk
+				# deeper — it faces back down the lab instead, which also turns the
+				# haul into a move toward the lens.
+				_stand_in_lab(ChainLab.ANCHOR_POSITION.x, -30.0, 180.0),
+			"events": [
+				[SETTLE + 0.10, _chain_req_expect.bind(&"chain_hook", &"ch_hook")],
+				[SETTLE + 1.05, _chain_req.bind(&"chain_lock")],
+			],
+			"duration": SETTLE + 3.8,
+		},
+		# ---------------------------------------------------------------- 9 · 撞
+		{
+			"name": "缚星链 · 撞",
+			"note": "对着墙扔出去，什么都没钩到。链头不会穿过石面，撞上就丢掉大部分势 —— 空间对这条链是有代价的，这就是它为什么是链而不是一根很长的剑。",
+			"fov": 56.0,
+			"cam": wider,
+			"setup": func() -> void:
+				_enter_lab([])
+				_stand_in_lab(0.0, -38.0),
+			"events": [
+				[SETTLE + 0.10, _chain_req_expect.bind(&"chain_hook", &"ch_hook")],
+			],
+			"duration": SETTLE + 2.6,
 		},
 	]
 
@@ -1446,6 +1644,12 @@ func _build_overlay() -> void:
 	root.add_child(layer)
 
 	var holder := PanelContainer.new()
+	# §32: A TAKE WITH NO TITLE AT ALL. `silent` is for the clip that is shown to
+	# someone who has not been told anything — the argument of the chain pass is that
+	# 松 / 甩 / 咬 / 绷 / 拉 / 砸 can be read out of the motion ALONE, and a caption
+	# that names the beat is the answer key printed on the exam paper. The captions
+	# stay for `clean` (the film's voice) and the numbers for `hud` (diagnosis).
+	holder.visible = hud_mode != "silent"
 	# Top, not bottom: the blade and the player's own position sit low in this
 	# shot, so a bottom strip would cover the one thing the video is about.
 	holder.set_anchors_preset(Control.PRESET_TOP_WIDE, true)

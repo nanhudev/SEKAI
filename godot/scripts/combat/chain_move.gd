@@ -19,7 +19,9 @@ enum Path {
 	SLAM,    # the head rises during startup, then comes down (下砸, 地砸)
 }
 
-enum Ease { LINEAR, OUT, IN_OUT, IN }
+enum Ease { LINEAR, OUT, IN_OUT, IN, WHIP }
+# How much of its own speed the head still has when an arc ENDS. See Ease.WHIP.
+const WHIP_TAIL := 0.32
 
 @export_group("Identity")
 @export var id: StringName = &""
@@ -53,6 +55,20 @@ enum Ease { LINEAR, OUT, IN_OUT, IN }
 # start_azimuth_degrees is ignored — the head is already moving, and asking it to
 # jump back to a start pose is exactly the "teleport" the brief forbids.
 @export var continue_from_head := false
+# §7/§8 — HOW FAR THE HEAD OVERRUNS BEFORE A CARRY CUT REVERSES IT.
+#
+# `continue_from_head` on its own starts the next arc where the head already is,
+# which is a startup lerp between two identical poses: the cut begins from a chain
+# that does not move. Measured, that was five frames at 0.5–1.2 m/s at every
+# handover against an arc peak of 117 — three separate swings, not one sentence.
+#
+# The momentum the previous cut left has to go somewhere, and where it goes is the
+# follow-through: the handle reverses, the head carries on, the rope opens, and
+# only then is the head snapped back. Authored as degrees of overrun and applied
+# AGAINST the new arc, so the data says "keep going 25° further, then reel it
+# back" and stays correct whichever way the previous cut ended. See
+# `ChainDirector._carry_anticipation`.
+@export var carry_anticipation_degrees := 0.0
 @export var arc_degrees := 145.0
 @export var radius_from := 2.5
 @export var radius_to := 3.4
@@ -120,6 +136,33 @@ func eased(t: float) -> float:
 			return pow(x, ease_power)
 		Ease.IN_OUT:
 			return x * x * (3.0 - 2.0 * x)
+		Ease.WHIP:
+			# §8 — A CUT THAT STOPS DEAD HANDS THE NEXT CUT A STOPPED CHAIN.
+			#
+			# Every polynomial ease-out has zero velocity at t = 1, so a three-cut
+			# chain authored with `OUT` decelerates to nothing at the end of each
+			# arc and the next cut accelerates from rest: measured on the last clean
+			# tour, the head fell to 0.5 m/s between cuts against a peak of 142. The
+			# player sees three authored swings, which is exactly what §8 forbids.
+			#
+			# WHIP is that ease-out blended with a linear tail, so the head keeps
+			# `WHIP_TAIL` of its arc speed at the handover and the next beat starts
+			# from a chain that is already travelling. The deceleration is still
+			# there — it is the difference between a follow-through and a stop.
+			#
+			# AND IT IS SYMMETRIC, which matters more than it looks. The first
+			# version kept `OUT`'s explosive start, and measuring the head's aim
+			# (`chain_physicality` group C) showed what that costs: the wind-up
+			# arrives at the arc's start travelling the OTHER way, so an arc that
+			# leaves at 1.8× its own average speed flips the head's direction of
+			# travel ~150° inside one frame. The head is a mass on a rope, and it
+			# then needed six frames to swing its blade back round — a blade that
+			# points 90° off its own motion for a tenth of a second, at the start of
+			# every strike. Smoothstep leaves the arc slowly, so the direction of
+			# travel ROTATES through the handover instead of snapping, and the mass
+			# still cracks through the middle of the arc where a whip's speed
+			# actually lives.
+			return x * x * (3.0 - 2.0 * x) * (1.0 - WHIP_TAIL) + x * WHIP_TAIL
 		_:
 			return x
 
