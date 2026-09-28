@@ -103,6 +103,32 @@ var _travel_step := Vector3.ZERO
 var _tip_speed := 0.0
 var _have_tip := false
 
+# --- the real model ---------------------------------------------------------
+#
+# WHAT IS IN THE HAND, AND WHY THE SWAP IS DONE INSIDE THIS NODE.
+#
+# This node is the carrier.  `iaido_director.gd` and
+# `moment_of_no_moon_director.gd` both `get_node()` it and then WRITE ITS
+# TRANSFORM for the length of a skill, and the trail, the glint band, the void
+# rim, the contact springs and the five locomotion channels are all children of
+# it.  So the real sword is added UNDER this node rather than replacing it: every
+# pose, judgement and animation path keeps driving exactly the node it always
+# drove, and the only thing that changes is which triangle soup is drawn.
+#
+# That is the whole of "换建模不影响位置和技能效果" on this side: no node path
+# moves, no consumer learns the model changed, and if the GLB is ever missing the
+# three placeholder boxes below are still there and still work.
+#
+# The numbers come from `sword_classes.gd`, never from this file.  `BLADE_LENGTH`
+# in particular used to be 0.95 for everything, which drew 185 mm of trail past a
+# tip that stops at 0.765.
+const Registry := preload("res://scripts/weapons/sword_classes.gd")
+const SWORD_RIG_SCENE := "res://scenes/weapons/Sword_FP.tscn"
+const WEAPON_ID := &"iaito"
+## Ablation switch.  False restores the placeholder boxes exactly as they were,
+## which is the one-step way back if the real sword ever regresses a combat read.
+@export var use_real_model := true
+
 const BLADE_TINT := Color(0.84, 0.92, 1.0)
 const VOID_TINT := Color(0.72, 0.85, 1.0)
 const GLINT_TINT := Color(1.0, 0.98, 0.90)
@@ -130,6 +156,15 @@ var trail_mesh: ImmediateMesh
 var trail_material: StandardMaterial3D
 var trail_history: Array[Vector3] = []
 var blade_length := BLADE_LENGTH
+
+## The real rig, when it is in use.  Null means the placeholder boxes are what the
+## player sees, and every guard in this file keys off exactly that.
+var _real_rig: Node3D
+## The real saya, when 藏锋's sheathed idle is showing a scabbard.
+var _real_saya: Node3D
+## The placeholder scabbard's box, held so the real saya can take its place
+## without the box's own geometry being drawn on top of it.
+var _sheath_box_mesh: Mesh
 
 var pose_position := IDLE_POSITION
 var pose_rotation := IDLE_ROTATION
@@ -180,10 +215,135 @@ func _ready() -> void:
 	_build_glint()
 	_build_trail()
 	_build_click_flash()
+	_install_real_model()
 	if player != null and player.has_signal("landed"):
 		player.landed.connect(_on_player_landed)
 	if combat != null:
 		combat.hit_landed.connect(_on_sword_hit)
+
+
+# ===========================================================================
+# THE REAL MODEL
+# ===========================================================================
+#
+# Nothing above this line changed to make the swap possible, and that is the
+# point: the placeholder and the real sword are the same node graph, and this
+# function only decides which one is drawn.
+#
+# It is deliberately ALL-OR-NOTHING.  A half-applied swap -- real blade, box
+# guard still sticking out of it -- is worse than no swap, so if the registry's
+# files are not both present this returns and the placeholder stays whole.
+func _install_real_model() -> void:
+	if not use_real_model:
+		return
+	if not Registry.assets_present(WEAPON_ID):
+		push_warning(
+			"TempSwordVisual: sword-class '%s' names a model or a scabbard that is not on "
+			% WEAPON_ID
+			+ "disk, so the placeholder is staying. See scripts/weapons/sword_classes.gd."
+		)
+		return
+	var scene := load(SWORD_RIG_SCENE) as PackedScene
+	if scene == null:
+		return
+	_real_rig = scene.instantiate()
+	_real_rig.name = "Sword_FP"
+	# Identity: the GLB is authored with its origin at the tsuba and +Y to the
+	# tip, which is the same frame the placeholder boxes are laid out in.  The
+	# importer confirms it -- neither GLB carries a root rotation or scale.
+	_real_rig.transform = Transform3D.IDENTITY
+	add_child(_real_rig)
+
+	# The blade the trail, the glint and the contact model are drawn against is
+	# now the real blade, so every one of those channels has to be resized to it.
+	# `visual_length()` is origin -> tip, which is what a trail is measured from;
+	# it is NOT `blade_reach()`, which is the ceremony's tsuba-face -> tip.
+	blade_length = Registry.visual_length(WEAPON_ID)
+	_resize_blade_overlays()
+	_hide_placeholder_parts()
+	_install_real_saya()
+
+
+# ===========================================================================
+# THE REAL SCABBARD, ON THE MOVESET SIDE
+# ===========================================================================
+#
+# 藏锋's sheathed idle is a real mechanic, not a flourish: `sheath_enabled` is
+# true for that style, the blade sits at `sheath_pose` while `sheath_prop` holds
+# the scabbard at `sheath_scabbard_pose`, and starting from a full sheath scales
+# the opening hit. So the box `_build_sheath()` makes is a live object and it is
+# this function's job to put the real saya in its place WITHOUT moving anything.
+#
+# HOW THE SCABBARD IS PLACED, AND WHY IT IS DERIVED RATHER THAN AUTHORED.
+# The two authored poses -- where the sword sits when sheathed, and where the
+# scabbard sits -- are independent numbers, and nothing makes them agree.  With
+# the placeholder that does not matter, because the blade is hidden by a
+# `visible = false` once it is 55% home and the box never has to contain
+# anything.  With a real closed-tube saya it matters completely: the blade has to
+# be INSIDE the bore or the shot is a fake.
+#
+# Both GLBs are authored in one frame (origin at the mouth plane / at the tsuba,
+# +Y down the bore / to the tip), so `Registry.saya_in_sword_frame()` IS the
+# answer: park the saya at the sword's sheathed pose, translated by the tsuba
+# setback.  Then "fully sheathed" is true by construction at any pose the
+# moveset author picks, instead of being true because two hand-typed euler
+# triples happened to line up.
+#
+# `move.sheath_scabbard_pose/rot` are therefore superseded while the real saya
+# is in use, and remain the fallback the moment it is not.
+func _install_real_saya() -> void:
+	if sheath_prop == null:
+		return
+	var path := Registry.scabbard_path(WEAPON_ID)
+	if not ResourceLoader.exists(path):
+		return
+	var scene := load(path) as PackedScene
+	if scene == null:
+		return
+	_real_saya = scene.instantiate()
+	_real_saya.name = "Saya"
+	_real_saya.transform = Transform3D.IDENTITY
+	sheath_prop.add_child(_real_saya)
+	# `sheath_prop` stays the CARRIER -- it is still the node `_root_space()`
+	# drives and whose `visible` the move toggles -- but a node whose origin is
+	# the mouth cannot also be a box centred on the old pose's midpoint. So the
+	# box geometry goes and the node becomes a pure transform.
+	if sheath_prop.mesh != null:
+		_sheath_box_mesh = sheath_prop.mesh
+		sheath_prop.mesh = null
+
+
+# The two overlays that are drawn along the blade.  Both were sized from
+# `BLADE_LENGTH` and the placeholder's width; both are now sized from the
+# registry, so they cannot be longer than the steel they are supposed to be on.
+func _resize_blade_overlays() -> void:
+	var d := Registry.get_class_def(WEAPON_ID)
+	var half_w := float(d["blade_half_w_base"])
+	var half_t := float(d["blade_half_t_base"])
+	if void_rim != null and void_rim.mesh is BoxMesh:
+		(void_rim.mesh as BoxMesh).size = Vector3(half_w * 2.0, blade_length * 1.07, half_t * 2.0)
+		void_rim.position = Vector3(0.0, blade_length * 0.5, 0.0)
+	if glint_band != null and glint_band.mesh is BoxMesh:
+		(glint_band.mesh as BoxMesh).size = Vector3(half_w * 2.5, blade_length, half_t * 5.0)
+		glint_band.position = Vector3(0.0, blade_length * 0.5, 0.0)
+
+
+# The three boxes.  Kept, not freed: `_apply_fade`, `_update_sheath` and
+# `_update_glint` all still reference them, and the fallback has to cost nothing
+# to return to.
+func _hide_placeholder_parts() -> void:
+	for part in [blade_part, guard_part, grip_part, void_rim]:
+		if part != null:
+			part.visible = false
+
+
+## True when a blade is being drawn, whichever blade it is.  The overlays ask
+## this instead of `blade_part.visible`, which is false in the one case that
+## matters.
+func _blade_is_drawn() -> bool:
+	if _real_rig != null:
+		return true
+	return blade_part != null and blade_part.visible
 
 
 func _build_sword() -> void:
@@ -350,13 +510,17 @@ func _apply_fade() -> void:
 		glint_material.albedo_color = Color(GLINT_TINT.r, GLINT_TINT.g, GLINT_TINT.b, glint * 0.42 * keep)
 	if click_material != null:
 		click_material.albedo_color = Color(1.0, 0.98, 0.86, keep)
-	if sheath_prop != null:
+	if sheath_prop != null and sheath_prop.mesh != null:
 		var sheath_material := sheath_prop.mesh.material as StandardMaterial3D
 		if sheath_material != null:
 			sheath_material.albedo_color = Color(0.13, 0.115, 0.13, keep)
 	# Nothing left to draw once it is gone: stop submitting the body parts at
 	# all, so the layer costs nothing and cannot flicker back on a stray alpha.
-	var solid := keep > 0.001
+	#
+	# `and _real_rig == null` is load-bearing: without it this function, which
+	# runs on the first frame and on every fade, would switch the placeholder
+	# boxes back ON on top of the real sword.
+	var solid := keep > 0.001 and _real_rig == null
 	if blade_part != null:
 		blade_part.visible = solid
 	if grip_part != null:
@@ -559,18 +723,39 @@ func _update_sheath(snapshot: Dictionary) -> void:
 	var move: SwordMoveset = combat.moveset
 	if move == null or not move.sheath_enabled:
 		sheath_prop.visible = false
-		if blade_part != null:
-			blade_part.visible = true
-			guard_part.visible = true
+		if _real_rig == null:
+			if blade_part != null:
+				blade_part.visible = true
+				guard_part.visible = true
+		else:
+			_real_rig.visible = true
 		return
 	sheath_prop.visible = true
-	_root_space(sheath_prop, move.sheath_scabbard_pose, move.sheath_scabbard_rot)
+	if _real_saya != null:
+		# See `_install_real_saya`: the scabbard is FIXED and the blade travels
+		# into it, so this is the pose the blade arrives at, not the one it is at.
+		var seated := Transform3D(Basis.from_euler(move.sheath_pose_rot), move.sheath_pose) \
+			* Registry.saya_in_sword_frame(WEAPON_ID)
+		_root_space(sheath_prop, seated.origin, seated.basis.get_euler())
+	else:
+		_root_space(sheath_prop, move.sheath_scabbard_pose, move.sheath_scabbard_rot)
 	var sheathed: float = snapshot.sheath
 	# The blade is inside the scabbard, so only the hilt stays visible.
+	#
+	# Still a `visible = false` even now that the saya is a real closed tube, and
+	# on purpose: the blade travels to `sheath_pose` along a straight lerp, and a
+	# straight lerp to a pose that is inside the bore is not the same path as
+	# sliding down the bore. Over the last 45% of the travel the real blade would
+	# be seen cutting through the real saya's wall, and hiding it at exactly the
+	# moment the two disagree is what keeps the shot honest. It is also what the
+	# placeholder did, so the read is unchanged.
 	var inside := sheathed > 0.55
-	if blade_part != null:
-		blade_part.visible = not inside
-		guard_part.visible = true
+	if _real_rig == null:
+		if blade_part != null:
+			blade_part.visible = not inside
+			guard_part.visible = true
+	else:
+		_real_rig.visible = not inside
 
 
 func _update_glint(snapshot: Dictionary, delta: float) -> void:
@@ -583,7 +768,7 @@ func _update_glint(snapshot: Dictionary, delta: float) -> void:
 		wanted = 0.16
 	glint = lerpf(glint, wanted, minf(1.0, delta * 9.0))
 	var active := glint > 0.02
-	glint_band.visible = active and (blade_part == null or blade_part.visible) and swallowed < 0.999
+	glint_band.visible = active and _blade_is_drawn() and swallowed < 0.999
 	if active:
 		_apply_fade()
 

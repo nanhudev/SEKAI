@@ -31,30 +31,61 @@ Training Ground carries over the same director stack as `CombatSandbox`.
 
 ---
 
-## REQ-2 · Swap the placeholder sword for the real one — **OPEN**
+## REQ-2 · Swap the placeholder sword for the real one — **CLOSED by ART, differently**
 
-**Asks:** in `Player.tscn`, under
-`CameraRig/LookPivot/MotionPivot/ShakePivot/WeaponRoot`:
+**Status:** done, and **`Player.tscn` was not edited.** Correcting this request is
+the point of this entry, because the plan it originally asked for would have
+broken both ceremonies.
 
-- instance `res://scenes/weapons/Sword_FP.tscn`
-- keep `TempSwordVisual` in the file but `visible = false`, as the one-step
-  fallback the brief asks for
+**What the original ask was.** Instance `Sword_FP.tscn` under `WeaponRoot` and set
+`TempSwordVisual.visible = false`, keeping the placeholder as the fallback.
 
-**Already done by ART:** `Sword_FP.tscn` exists and wraps
-`res://models/weapons/fp_sword.glb`. Measured by the importer
-(`tools/audit_art_import.gd`): **832 tris, 4 materials**
-(`MAT_Sword_Steel`, `MAT_Sword_Fittings`, `MAT_Sword_Grip`, `MAT_Sword_Inlay`),
-AABB **0.131 × 0.044 × 1.047 m**.
+**Why that plan is wrong.** `iaido_director.gd:46` and
+`moment_of_no_moon_director.gd:55` both hard-`get_node()` `TempSwordVisual` and
+then **write its transform for the whole skill**. Hiding the node does not stop
+that — it hides the only thing being animated, so the ceremony would play out on
+an invisible placeholder while the real sword stood still at its idle pose. The
+skill would look broken while every line of its code ran correctly. And
+`temp_sword_visual.gd` is not a passive carrier either: the trail, the glint
+band, the void rim, the contact springs and the five locomotion channels are all
+children of that node.
 
-> **CORRECTION worth recording.** The earlier note in `CHAT2BLENDER_LOG.md` said
-> the blade runs along **+Y**. The importer disagrees: the sword's long axis is
-> **Z** (1.047 m), its thickness is **Y** (0.044 m). That is what the Blender
-> Z-up to glTF Y-up conversion does to a Blender +Y blade. `Sword_FP.tscn` is
-> built on the measured axis, and its `BladeForward` marker points along −Z.
-> Anything that previously hard-coded +Y needs the same fix.
+**What was actually done.**
 
-**Do not** set `layers` on the sword's meshes — `ForegroundWeaponLayer` owns that
-layer and moves everything under `WeaponRoot` to the unlit foreground itself.
+```
+WeaponRoot/TempSwordVisual/Sword_FP      <- the real rig, at identity
+```
+
+The real rig is a **child of the existing carrier**, so every pose, judgement and
+animation path keeps driving exactly the node it always drove and only what is
+drawn changes. The three placeholder boxes are hidden rather than removed, and
+`temp_sword_visual.gd`'s `use_real_model` export puts them back in one step.
+
+**Measured after the swap** (`godot/tools/shot_weapon_rack.gd`, live world AABB):
+
+- exhibit AABB **1.0570 × 0.0777 × 0.0697 m**, **10,378 tris**, four materials
+  (`MAT_Sword_Steel`, `MAT_Sword_Fittings`, `MAT_Sword_Grip`, `MAT_Sword_Inlay`)
+- `WeaponRoot/SwordHitbox` **unchanged** at `(0, −0.2, −1.4)`, size `1.4 × 1.2 ×
+  1.6` — the swing volume is COMBAT's and the model swap does not move it
+- `ForegroundWeaponLayer` copies **32** nodes under `WeaponRoot`; the real rig is
+  among them, which is only true because the rig is created during
+  `TempSwordVisual._ready()` and the layer is later in the scene tree
+- `TempSwordVisual.blade_length` **0.95 → 0.7650**, read from the registry. 0.95
+  drew 185 mm of trail past a tip that stops at 0.765
+
+**Superseded note above:** the `CORRECTION` in the original text said the blade
+runs along −Z. That was true of the old GLB and is no longer true of anything.
+The asset was re-authored to **+Y** so the file matches the contract that
+`Sword_FP.tscn`, `iaido_tuning.gd`, `iaido_director.gd:_bore_pose()` and
+`iaido_scabbard_rig.gd` all already spoke. The importer confirms the new GLBs
+carry **no root rotation or scale**.
+
+**Still true and worth repeating:** **do not set `layers` on the sword's meshes.**
+`ForegroundWeaponLayer` owns `WEAPON_LAYER` and moves everything under
+`WeaponRoot` there itself. The only way to opt a subtree out is
+`ForegroundWeaponLayer.WORLD_DRAWN`, and the sword must not use it — a
+first-person weapon drawn in the world clips into geometry the player stands
+next to.
 
 ---
 
@@ -86,23 +117,123 @@ silently.
 
 ---
 
-## REQ-4 · The scabbard is still fake — **OPEN, waiting on C2B-FP-SCABBARD**
+## REQ-4 · The scabbard is still fake — **PARTLY CLOSED**
 
-**Current state:** `Player.tscn` has `WeaponRoot/SheathAnchor/CeremonyScabbard`
-(a `MeshInstance3D` placeholder) driven by `iaido_scabbard_rig.gd`.
+**The real scabbard now exists.** `godot/models/weapons/fp_saya.glb`,
+**3,130 tris**, 4 materials (`MAT_Saya_Lacquer`, `MAT_Saya_Bore`,
+`MAT_Sword_Fittings`, `MAT_Sword_Grip`), built by `tools/blender/saya_build.py`.
+Measured dimensions:
 
-**Ask (after the real scabbard exists):** make the scabbard an **independent
-node**, not a child of the sword, fixed to a **left-waist anchor**, and support
-the five states the brief names: `Idle hidden / waist` · `Iaido ready` · `Draw` ·
-`Return` · `Final insertion`.
+| | |
+|---|---|
+| mouth bore | **43.5 × 13.7 mm** |
+| mouth outside | **49.9 × 20.1 mm** |
+| body length | **0.803 m** |
+| bore depth | **0.790 m** |
 
-**Ask, explicitly:** if the new scabbard needs anchor adjustment, adjust the
-anchor. **Do not** reshape the Iaido state machine to fit the model.
+Those are derived from the sword, not chosen: `HABAKI` + 1.75 mm of clearance per
+side gives the bore, `SAYA_WALL` 3.2 mm gives the outside, and the tip is left
+22 mm of room past the blade so a sheathed tip cannot wear a hole in its own
+kojiri. `scripts/weapons/sword_classes.gd` recomputes all of them from the sword's
+row, so a new sword cannot silently get a scabbard that does not fit it.
 
-**ART side not started:** the C2B brief and request package are written
-(`docs/asset_briefs/prompts/`) but not yet sent, because the ChatGPT session is
-busy with KIT-02a. The key requirement is that the blade must genuinely enter the
-scabbard — no fake overlap.
+**ART installed it in two places and touched nothing of COMBAT's.**
+
+1. **The Iaido ceremony scabbard.** `iaido_scabbard_rig.gd`'s own header says
+   *"replacing it with the GLB is a geometry-only swap with no runtime change"*,
+   and its published frame (origin at the koiguchi mouth plane, +Y down the bore,
+   −X the edge side, +Z the kurikata side) is **the same frame `saya_build.py`
+   authors in**. So `SwordFPRig.install_real_scabbard()` adds the real saya as a
+   child of `CeremonyScabbard` at **identity**, and retires the stand-in by
+   clearing its `mesh` — which is exactly the hook `iaido_scabbard_rig.gd:49`
+   (`if mesh == null: build()`) publishes. The director keeps toggling the same
+   node's `visible`, and the real saya inherits it. **No COMBAT file was edited.**
+   Verified: `CeremonyScabbard.mesh == null`, one child named `Saya`.
+2. **藏锋's sheathed idle** (`temp_sword_visual.gd:sheath_prop`). Left the same
+   node as the carrier and replaced its box mesh with the real saya.
+
+**One thing here is a decision CONTACT should look at.** With the stand-in, the
+blade was hidden by a `visible = false` at 55 % sheathed, so nothing ever had to
+actually be inside anything. With a real closed tube that stops working: the
+blade travels to `sheath_pose` along a straight lerp, and a straight lerp to a
+pose inside the bore is not the same path as sliding down the bore. ART therefore
+**derives** the scabbard's pose instead of using the authored one:
+
+```
+saya = Transform3D(Basis.from_euler(move.sheath_pose_rot), move.sheath_pose)
+       * sword_classes.saya_in_sword_frame(id)
+```
+
+which makes "fully sheathed" true by construction at any pose a moveset author
+picks. `move.sheath_scabbard_pose/rot` are superseded while the real saya is in
+use and remain the fallback. If COMBAT would rather keep authoring the scabbard
+pose by hand, say so — but then the two poses have to be checked against each
+other, because nothing currently makes them agree.
+
+**Still open, and it is the real remaining ask:** the **left-waist anchor and the
+five states** (`Idle hidden / waist` · `Iaido ready` · `Draw` · `Return` · `Final
+insertion`). The scabbard is currently positioned by `IaidoTuning.sheath_position`
++ `scabbard_basis()` and by the moveset, not by a body-mounted anchor.
+
+**Ask, explicitly (unchanged):** if the new scabbard needs anchor adjustment,
+adjust the anchor. **Do not** reshape the Iaido state machine to fit the model.
+
+**ART side next (W02 ART PASS 2):** the saya is still blockout in its *fittings* —
+plain bands, a blob kurikata, no lacquer sheen break-up and no functional polish
+at the mouth lip (§K). The mouth is the part that matters most (§7): it is what
+every reverse-wave converges on and it is 43.5 mm across.
+
+---
+
+## REQ-8 · `ForegroundWeaponLayer`'s lighting was dead code — **FIXED by ART, please review**
+
+**This is the highest-impact thing ART found this session, and it is in a MAIN
+file, so it is written down rather than left as a quiet edit.**
+
+`_mirror_world_lighting()` guarded on `viewport.world_3d`. With
+`own_world_3d = true`, Godot **never** puts anything in that property — the
+private world lives in a separate slot that only `find_world_3d()` reaches. So
+the guard was always null, the assignment below it errored on a null instance,
+and the `DirectionalLight3D` copy underneath it **was never added**.
+
+Measured on the Training Ground before the fix:
+
+```
+find_world_3d()             -> valid
+find_world_3d().environment -> NULL
+directional lights in it    -> NONE      (with 32 meshes copied into it)
+```
+
+The private world had **no Environment and no light of any kind**, so every lit
+mesh on the weapon layer was rendered by nothing. Same pose, same camera, same
+material (`albedo 0.46, metallic 0.48, roughness 0.20`):
+
+| | |
+|---|---|
+| `assets_source/review/fg_lighting/02_lighting_OFF_before_the_fix.png` | blade, tsuba and grip all a **flat pure black silhouette** (darkest pixel on the blade **0.000** on every scanline) |
+| `assets_source/review/fg_lighting/01_lighting_ON_the_fix.png` | polished flat, edge line, kissaki facet, legible tsuba, wound grip relief (darkest pixel **0.069–0.404**) |
+
+Nothing about the material changed between those two frames.
+
+**Why nobody noticed:** everything on this layer used to be `UNSHADED`.
+`temp_sword_visual.gd` builds its placeholder sword out of
+`SHADING_MODE_UNSHADED` materials, which render at full albedo under no light at
+all. The only lit mesh there was the chain's held bundle — which is exactly why
+V4 recorded the bundle as CHARCOAL against a PALE rope drawn with one
+`LINK_TINT`. That was never a chain bug; its light had been deleted.
+
+**What ART changed** (`scripts/player/foreground_weapon_layer.gd`): `world_3d` →
+`find_world_3d()`, restoring the Environment and the sun copy, plus the sun
+staying in sync in `_process` so the Training Ground's DAY/NEUTRAL toggle still
+moves it. **`WORLD_DRAWN` is untouched and still works** — and with the lighting
+restored, a subtree no longer *has* to opt out to be lit, so the chain's rope and
+handle could be un-split again. That is COMBAT's call, not ART's.
+
+**Ask:** review the change and, if the chain's look was tuned against the
+unlit private world, re-check it. Note also that `tools/shot_fp_sword.gd` had to
+be given a 240-frame settle: quitting the engine too soon after loading this
+scene segfaults in Godot's own teardown, which reproduces with this fix disabled
+and with the attack removed.
 
 ---
 
@@ -197,10 +328,105 @@ the source (`show_vistas = false` etc.) rather than hiding them afterwards. If
 ART renames those flags, this tool breaks silently and only the stills will show
 it.
 
+**PASS 03 addition — re-check the enter-transition fog against the real scene.**
+The menu→world transition passes a bank of fog across the frame to hide the
+camera swap (`ui_web/v2/world/world_bg.css` `.world__wipe`). Its contrast was
+tuned against the *greybox*, which is almost the same value as the fog, so on
+today's background the wipe reads faint (measured opacity 0.12→0.68 crossing the
+frame — the mechanism works, the *read* is weak). When the real scene lands,
+check `menu_to_game_final.mp4` once more: if the wipe disappears against the new
+background, lower its brightness (`rgba(226,231,229,…)` → closer to the scene's
+sky value) rather than raising its opacity past ~0.85 — an over-opaque wipe reads
+as a white flash, not weather.
+
 **Verification:** the current menu still is not "ART reviewed" — it is a
 greybox with atmosphere. See `ui_web/previews/ui_pass02_headline.png` for what it
 looks like in situ. Mark this REQ closed when the file above is a real-material
 render and the vantage is authored in the region scene.
+
+---
+
+## REQ-7 · Every production enemy needs an IAIDO CUT SUPPORT plan — **OPEN**
+
+**Owner:** ART · **Raised by:** MAIN (Iaido execution pass) ·
+**Blocks:** the signature kill reading as authored rather than as a generic death
+
+聚合斩 now kills, and a kill by this刀 has to leave a body that is *evidence the
+刀 happened*: the world is cut open, and so is the thing standing in front of it,
+and the two are cut by the **same plane**. That is a technical contract, not a
+polish pass, and it cannot be bolted on after an enemy is finished — hence this
+request going out now, before the models exist, exactly as §U asks.
+
+### What MAIN has already built (do not rebuild it)
+
+- `IaidoExecutionProfile` (`godot/scripts/combat/iaido_execution_profile.gd`) —
+  a `.tres` per enemy. Templates exist in `godot/resources/execution/`:
+  `construct_sentinel`, `biological_placeholder`, `heavy_construct`,
+  `ruin_warden` (Boss, see below), `unanchored_placeholder` (fallback).
+- `IaidoExecutionLibrary` — the **material table**. One rule, one face per
+  material class: construct / biological / ice / plant / generic, each with its
+  own interior colour, rim, band width, core emission and debris colour. **None
+  of them is blood red.** A profile does not restate this table; it points at it.
+- `iaido_cleave.gdshader` — draws the fine cut line, the dark interior and a
+  small emissive edge on the **live** body, and can discard half of it.
+- `IaidoExecution` (`godot/scripts/combat/iaido_execution.gd`) — the runtime:
+  hold → 1–3 cm creep → release on the sheath click → mass-dependent,
+  deliberately **asymmetric** fall → dissolve from the wound outward.
+
+### What ART owes, per production enemy
+
+Add an `IAIDO CUT SUPPORT` block to the enemy's asset brief:
+
+1. **Cut plane constraints.** Where a cut may pass. A body with a rigid shell
+   over a soft core is not the same body as a slab of stone; if some region must
+   never be separated (a shoulder that carries a silhouette read, a helmet that
+   is the character), say so — the profile has `cuttable_region`
+   (full / upper / core).
+2. **Split geometry.** `Enemy_Cut_A` / `Enemy_Cut_B` — the two halves, modelled
+   as real geometry, **not** a runtime boolean. Runtime arbitrary mesh slicing is
+   forbidden; the budget does not allow it and the visual does not need it.
+   - The halves must be authored so that, in their rest pose, they reassemble
+     into the intact model to the vertex. The handover is a **mesh swap at the
+     release instant**: before it the body is the normal mesh, after it the two
+     halves are already falling. If the seam is visible in the intact pose, the
+     swap will be visible too.
+   - Position/origin convention: same as the normal model, no offsets. The
+     runtime places them from the intact transform.
+3. **Interior material.** The cross-section is *not* a flat colour. It needs its
+   own material with a real interior — for a construct: stone fracture, broken
+   metal, a hint of core emission; for a biological: a stylized dark interior
+   with a restrained pale rim, **explicitly not realistic gore**; ice: crystal
+   section and frost dust; plant: fibre and sap-like stylization.
+4. **Fallback.** If the enemy ships without split geometry the generic path runs
+   (cut-plane shader on one body + brief freeze + dissolve along the wound). It
+   is legible and it is obviously provisional — so **the absence of split
+   geometry must be a decision, not an oversight.** `resolve_mode()` deliberately
+   does *not* treat a missing mesh as a reason to fall back, precisely so that
+   the fallback cannot become the only path anyone ever sees.
+
+### Two special cases, already decided
+
+- **Bosses (Ruins Warden and successors).** A Boss killed by an Iaido Final Blow
+  uses an authored **special response**, not a cleave: armour splits, the core is
+  cut, the mask breaks, a large diagonal scar opens and the body collapses along
+  the cut. `execution_type = "special"`, `cuttable_region = "core"`. It must
+  **not** fall back to an ordinary death — that is the whole point of the beat.
+- **Non-humanoids** (Lesser Ruin Sentinel). Not "top half and bottom half". A
+  construct is separated along the slash plane into two **structural groups** —
+  core shell / body ring / arm module — and the cross-section is stone, aged
+  metal and magic core. See `cut_material` on the profile.
+
+### Verification
+
+`godot/tests/iaido_execution_integration.gd` already asserts the contract:
+non-lethal never splits, a lethal cut holds the body, the sheath click releases
+it, a held body cannot act, every exit path resolves, multi-kill shares one cut
+plane, and the fallback runs when there is no split geometry. When split meshes
+arrive, `_verify_authored_split_meshes()` is the test that has to start
+exercising them **instead of** the fallback.
+
+**Status: OPEN.** Not a blocker for shipping the ceremony — the fallback covers
+every enemy — but a production enemy is not DONE until this block exists.
 
 ---
 
