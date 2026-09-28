@@ -9,11 +9,16 @@ Why a script and not a one-off: §26 of the addendum asks for BUILD / RUN / WALK
 time and was being retyped.
 
 Usage:
-  python before_after.py <before_dir> <before_first_d> <after_dir> <after_first_d> \
-                         <out.png> [d1,d2,...] [step]
+  python before_after.py <before_dir> <before_first_d> <before_step>
+                         <after_dir> <after_first_d> <after_step>
+                         <out.png> [d1,d2,...] [before_label] [after_label]
 
 `before_first_d` / `after_first_d` are the metre marks of frame w000 in each
 directory; frames are indexed as w<NNN>_d<DDDD>.png with a constant step.
+
+The two labels are optional; without them they are built from the directory
+names. They used to be hardcoded to "p19 / pass 03", which quietly lied on
+every subsequent round.
 """
 import os
 import sys
@@ -27,6 +32,8 @@ AFTER_D0 = float(sys.argv[5])
 AFTER_STEP = float(sys.argv[6])
 OUT = sys.argv[7]
 DS = [float(x) for x in sys.argv[8].split(",")]
+LABEL_B = sys.argv[9] if len(sys.argv) > 9 else "BEFORE  %s" % os.path.basename(BEFORE.rstrip("/\\"))
+LABEL_A = sys.argv[10] if len(sys.argv) > 10 else "AFTER   %s" % os.path.basename(AFTER.rstrip("/\\"))
 
 W = 620          # width of each pane
 CAP = 20         # caption strip height
@@ -60,10 +67,10 @@ sheet = Image.new("RGB", (W, H), (14, 14, 16))
 dr = ImageDraw.Draw(sheet)
 y = 0
 for d, b, a in rows:
-    dr.text((6, y + 4), "BEFORE  d=%d m   (p19, greybox + pass 02)" % d, fill=(230, 130, 130))
+    dr.text((6, y + 4), "%s  d=%d m" % (LABEL_B, d), fill=(230, 130, 130))
     y += CAP
     sheet.paste(b, (0, y)); y += pane_h
-    dr.text((6, y + 4), "AFTER   d=%d m   (pass 03)" % d, fill=(130, 230, 150))
+    dr.text((6, y + 4), "%s  d=%d m" % (LABEL_A, d), fill=(130, 230, 150))
     y += CAP
     sheet.paste(a, (0, y)); y += pane_h
     y += CAP
