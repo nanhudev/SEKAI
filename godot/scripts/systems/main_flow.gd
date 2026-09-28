@@ -75,13 +75,46 @@ func start_game() -> void:
 ## Second door: the region, not the arena. Spawn is the East Forest end of
 ## ROAD_SPINE (200, 320) — the masterplan's MISTVALE REVEAL vista, so the first
 ## thing the player sees is the valley opening up rather than a wall of trees.
+##
+## THE BUILD IS SYNCHRONOUS AND SLOW. Measured with tools/build_smoke.gd: the
+## region takes ~11 s to build (terrain heightfield + 1028 ms of flora meshes +
+## town + landmarks). Every one of those builders runs inside _ready(), so
+## clicking this button freezes the process for eleven seconds with the menu
+## already gone — which reads as a hang, not a load. The notice below is drawn
+## and flushed BEFORE the build starts, so the freeze at least has a caption.
 func start_region() -> void:
 	if active_world() != null:
 		return
+	main_menu.visible = false
+	settings_menu.visible = false
+	pause_menu.visible = false
+	var notice := _build_loading_notice("正在生成雾谷 · 地形 / 植被 / 城镇 / 地标 …")
+	add_child(notice)
+	await get_tree().process_frame
+	await get_tree().process_frame
 	region_world = region_scene.instantiate() as Node3D
 	add_child(region_world)
 	move_child(region_world, 0)
+	notice.queue_free()
 	_enter_world()
+
+
+func _build_loading_notice(text: String) -> CanvasLayer:
+	var layer := CanvasLayer.new()
+	layer.layer = 9
+	var bg := ColorRect.new()
+	bg.color = Color(0.03, 0.05, 0.06, 1.0)
+	bg.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	layer.add_child(bg)
+	var label := Label.new()
+	label.text = text
+	label.add_theme_font_size_override("font_size", 18)
+	label.add_theme_color_override("font_color", Color(0.78, 0.86, 0.87))
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	label.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	layer.add_child(label)
+	return layer
 
 
 func _enter_world() -> void:

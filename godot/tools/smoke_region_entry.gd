@@ -31,16 +31,22 @@ func _initialize() -> void:
 		print("    ok: MainMenu exposes region_pressed")
 
 	main.call("start_region")
-	await process_frame
-	await process_frame
+	# start_region() is a coroutine: it flushes a loading notice, then builds.
+	# Wait for the world to appear rather than counting frames, so the test does
+	# not depend on how many frames the notice costs.
+	var waited := 0
+	while main.call("active_world") == null and waited < 600:
+		await process_frame
+		waited += 1
+	print("    ok: region mounted after %d frames" % waited)
 
 	var world: Node3D = main.call("active_world")
 	if world == null:
 		_fail += 1
-		print("[2] FAIL: start_region mounted nothing")
+		print("[2] FAIL: start_region mounted nothing after %d frames" % waited)
 		_done()
 		return
-	print("[2] region mounted: %s" % world.name)
+	print("[2] region: %s" % world.name)
 	if world.name != "MistvaleRegion":
 		_fail += 1
 		print("    FAIL: wrong world: %s" % world.name)
