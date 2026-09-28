@@ -12,7 +12,7 @@ import os
 
 COLLECTION = "SEKAI_FP_SWORD"
 ROOT = "FP_Sword_Root"
-BLEND_PATH = "F:/SEKAI/assets_source/weapons/fp_sword.blend"
+BLEND_PATH = "F:/SEKAI/assets_source/weapons/prototypes/fp_sword.blend"
 GLB_PATH = "F:/SEKAI/assets/models/weapons/fp_sword.glb"
 
 REVIEW_ONLY = ["ReviewCam", "ReviewKey"]
