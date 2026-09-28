@@ -58,7 +58,7 @@ render_mode diffuse_lambert, specular_schlick_ggx, cull_disabled;
 // and the road comes back as asphalt. The comment is the linear target.
 uniform vec3 rut_colour    : source_color = vec3(0.427, 0.376, 0.310); // 0.152 0.117 0.079
 uniform vec3 crown_colour  : source_color = vec3(0.678, 0.612, 0.514); // 0.412 0.330 0.224
-uniform vec3 verge_colour  : source_color = vec3(0.463, 0.553, 0.376); // 0.180 0.264 0.115
+uniform vec3 verge_colour  : source_color = vec3(0.440, 0.610, 0.350); // 0.163 0.330 0.103
 uniform vec3 soil_colour   : source_color = vec3(0.510, 0.435, 0.353); // 0.222 0.160 0.104
 uniform vec3 gravel_colour : source_color = vec3(0.737, 0.686, 0.596); // 0.500 0.430 0.315
 uniform vec3 puddle_colour : source_color = vec3(0.365, 0.400, 0.424); // 0.110 0.132 0.149

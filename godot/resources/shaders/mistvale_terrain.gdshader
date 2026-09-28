@@ -43,14 +43,32 @@ render_mode diffuse_lambert, specular_schlick_ggx, cull_disabled;
 // ground under them was black. It is not a lighting bug, it is arithmetic.
 //
 // The comment beside each line is the linear albedo it is meant to produce.
-uniform vec3 grass_low   : source_color = vec3(0.473, 0.570, 0.403); // 0.190 0.285 0.135
-uniform vec3 grass_dry   : source_color = vec3(0.584, 0.586, 0.449); // 0.300 0.302 0.170
-uniform vec3 soil        : source_color = vec3(0.522, 0.461, 0.396); // 0.235 0.180 0.130
-uniform vec3 road_dirt   : source_color = vec3(0.610, 0.566, 0.501); // 0.330 0.280 0.215
-uniform vec3 gravel      : source_color = vec3(0.622, 0.610, 0.588); // 0.345 0.330 0.305
-uniform vec3 rock        : source_color = vec3(0.549, 0.537, 0.530); // 0.262 0.250 0.243
-uniform vec3 cliff       : source_color = vec3(0.501, 0.493, 0.498); // 0.215 0.208 0.212
-uniform vec3 town_floor  : source_color = vec3(0.588, 0.577, 0.558); // 0.305 0.292 0.272
+// ART DIRECTION: STYLIZED NEXT-GEN ANIME FANTASY — COLOR GROUPING.
+//
+// The PASS 02/03 palette was designed to be "restrained", and restraint was
+// implemented as DESATURATION. Every value below sat within a few percent of
+// neutral, so the measured Hero Frame at d=470 was a single mass of grey-green
+// / grey-brown / grey-blue and the eye had nothing to group. Read at 25% (the
+// thumbnail test, see PART K) that frame was one field of noise — no road, no
+// grass mass, no rock, no town.
+//
+// The rule now: SATURATION SEPARATES THE MASSES, VALUE AND TEXTURE SEPARATE
+// THE PIXELS. Grass is a real green, soil and road are real warm earth, stone
+// is a neutral with a slight hue bias, the town floor is genuinely PALE. What
+// stays restrained is the RANGE — nothing here is a saturated hue — and the
+// amount of per-pixel variation, which is what actually made the old ground
+// read as dirty rather than as designed.
+//
+// Each colour keeps the sRGB-display / linear-albedo comment pair, because the
+// double-conversion bug recorded above is one edit away at all times.
+uniform vec3 grass_low   : source_color = vec3(0.440, 0.620, 0.350); // 0.163 0.342 0.100  fresh muted green
+uniform vec3 grass_dry   : source_color = vec3(0.660, 0.630, 0.400); // 0.393 0.355 0.133  warm straw
+uniform vec3 soil        : source_color = vec3(0.545, 0.455, 0.365); // 0.258 0.175 0.110  warm earth
+uniform vec3 road_dirt   : source_color = vec3(0.645, 0.560, 0.455); // 0.374 0.274 0.175  packed warm dust
+uniform vec3 gravel      : source_color = vec3(0.650, 0.645, 0.630); // 0.380 0.374 0.355  cool pale wash
+uniform vec3 rock        : source_color = vec3(0.565, 0.552, 0.530); // 0.278 0.264 0.242  warm neutral stone
+uniform vec3 cliff       : source_color = vec3(0.492, 0.492, 0.508); // 0.207 0.207 0.222  cool neutral stone
+uniform vec3 town_floor  : source_color = vec3(0.660, 0.645, 0.610); // 0.393 0.374 0.330  PALE town paving
 uniform vec3 ruins_floor : source_color = vec3(0.537, 0.558, 0.577); // 0.250 0.272 0.292
 uniform vec3 wet_dark    : source_color = vec3(0.373, 0.378, 0.381); // 0.115 0.118 0.120
 
