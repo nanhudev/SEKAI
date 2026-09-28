@@ -85,6 +85,10 @@ if world == null: return                  # ← 于是整段静默死掉
 - `blade_length` 0.95 → **0.7650**（`Registry.visual_length()`，注意与 `blade_reach` 0.7608 的区别：前者是原点→尖，后者是护手面→尖）。
 - hitbox 盒尺寸原本是**手打的** `Vector3(0.0565, 0.7608, 0.022)`，现已**改为运行时按几何派生**。
 - 该层复制 **32** 个节点（新 rig 在 `_ready()` 扫描之前就装好，所以进得去）。
+- **换武器（按 2 拿链）仍然正确隐藏真剑**：`weapon_manager.gd` 的做法是
+  `TempSwordVisual.visible = sword_in_hand`，子节点继承可见性，所以真剑跟着走。
+  （该文件 61–62 行的注释把 `Sword_FP` 说成"要来**替换** TempSwordVisual"，
+  已经过时且会误导 —— 已在 REQ-2 里请 COMBAT 改掉。）
 
 ### SELF CRITIQUE — 还有哪 3 处最差
 

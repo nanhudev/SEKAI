@@ -87,6 +87,24 @@ carry **no root rotation or scale**.
 first-person weapon drawn in the world clips into geometry the player stands
 next to.
 
+**One comment COMBAT should correct (`weapon_manager.gd:61-62`).** It currently
+reads:
+
+> `TempSwordVisual is the placeholder; Sword_FP is the real rig ART is building to`
+> `replace it (see scenes/weapons/Sword_FP.tscn), which is why this is a list.`
+
+The first clause is stale and the "which is why this is a list" is now backwards:
+`Sword_FP` is a **child of** `TempSwordVisual`, not its successor, so the right
+answer is that `SWORD_RIGS` lists **exactly one** node and should stay that way.
+Left as-is it invites the next session to "finish the replacement" — put
+`Sword_FP` in `SWORD_RIGS`, or reparent it to `WeaponRoot` — and that breaks the
+ceremonies in the exact way described above. The list being one entry long is
+**correct**, not unfinished.
+
+The line itself needs no behaviour change: `rig.visible = sword_in_hand` sets
+visibility on `TempSwordVisual`, and a child inherits it, so switching to the
+chain still hides the real sword. Verified on the shipped scene.
+
 ---
 
 ## REQ-3 · Weapon switching from a physical rack — **PARTIALLY CLOSED**
