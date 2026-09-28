@@ -70,6 +70,16 @@ const WHIP_TAIL := 0.32
 # `ChainDirector._carry_anticipation`.
 @export var carry_anticipation_degrees := 0.0
 @export var arc_degrees := 145.0
+# §A2 — THE SECOND ARC, INSIDE THE SAME INPUT.
+#
+# 快右左 is not two presses. It is one press that takes the head to the right-hand
+# extreme and then, without stopping, brings it back through the left — and that
+# is not expressible as a longer single arc, because a 300° arc passes through the
+# FRONT, which is a different motion entirely. So a move may author a second arc
+# and `arc_split` says at what fraction of the active window the reversal happens.
+# Zero means "one arc", which is every other move in the weapon.
+@export var arc_degrees_2 := 0.0
+@export var arc_split := 0.45
 @export var radius_from := 2.5
 @export var radius_to := 3.4
 @export var height_from := 1.15
@@ -125,6 +135,21 @@ const WHIP_TAIL := 0.32
 @export var camera_trauma := 0.05
 @export var fov_kick := -1.2
 @export var roll_kick := 0.0
+
+
+# §A2 — THE EASE OF A TURNAROUND SEGMENT, AND IT IS NOT `eased()`.
+#
+# `Ease.WHIP` exists to keep velocity ACROSS A HANDOVER: two techniques, one
+# chain, and the second must not start from a stopped mass. A turnaround is the
+# opposite problem — one technique, and the head really does reach the end of its
+# swing and come back. At an extreme the speed passes through zero, so the honest
+# ease is one that arrives and leaves at rest, and smoothstep is that curve. It is
+# also the only ease that lets the blade keep up: with WHIP the head is still doing
+# 0.32 of its peak in the frame the azimuth flips, which flips its direction of
+# travel inside one frame and leaves the blade pointing at nothing (§5).
+func eased_turnaround(t: float) -> float:
+	var x := clampf(t, 0.0, 1.0)
+	return x * x * (3.0 - 2.0 * x)
 
 
 func eased(t: float) -> float:

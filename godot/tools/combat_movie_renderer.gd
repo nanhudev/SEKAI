@@ -25,6 +25,11 @@ const OUT_DEFAULT := "res://../.render/combat"
 const PLAYER_Y := 1.15
 const DUMMY_DROP := 0.55      # dummy origin is below the player's eye line
 const SETTLE := 0.7           # quiet beat at the top of every segment
+# How long a refused chain beat keeps asking before the take gives up and says so out
+# loud (see _chain_beat). Generous on purpose: at 20fps this is 2s, and a beat that
+# takes 2s to be accepted was never going to be accepted — the point of the number is
+# to turn a SILENT dropped beat into a printed one, not to time the retry.
+const BEAT_PATIENCE_FRAMES := 40
 
 var output_dir := ""
 var frame_index := 0
@@ -75,6 +80,10 @@ var seg_cam: Dictionary = {}
 var seg_fp := false
 # Look pitch in degrees, negative = down. See _stand_in_lab.
 var seg_pitch := -2.3
+# A chain beat that was refused and is still owed (see _chain_beat).
+var _beat_action := &""
+var _beat_expect := &""
+var _beat_frames := 0
 # "review" (outside camera) or "fp" (the player's own eyes); see _run_segment.
 var cam_mode := "review"
 # "clean" (default) or "hud": whether the developer status column is drawn. See the
@@ -716,31 +725,77 @@ func _build_chain_segments() -> void:
 # reviewer who has the design document open and the wrong one for the question this
 # pass actually asks, which is:
 #
-#   can a player who cannot see a HUD, a skill name, an effect or a final sound
-#   read 松 / 甩 / 咬 / 绷 / 拉 / 砸 out of the motion alone?
+# THE V3 UPDATE. The weapon changed shape underneath this film — a 4.6m chain held
+# in a fist became a 10m chain coiled in a fist — and that changes what the first
+# two beats are even ABOUT. So beat 1 is no longer "watch the rope hang" (a 10m rope
+# would be a line running off the bottom of the frame); it is "look at how much
+# chain is still in the hand", which is §26's claim and only exists in first person.
+# Beat 3 is no longer 横 → 返 → 砸: A3 changes the weapon's whole subject, so the
+# take now plays the actual light chain — 左甩 / 快右左 / 直抛 — which is the exact
+# sentence PART O asks a stranger to read off clean video.
 #
-# So this tour is ordered as a story told in nine beats, each one about a DIFFERENT
+#   can a player who cannot see a HUD, a skill name, an effect or a final sound
+#   read 松 / 甩 / 左甩 / 快右左 / 直抛 out of the motion alone?
+#
+# So this tour is ordered as a story told in ten beats, each one about a DIFFERENT
 # physical problem, and every take is filmed so the thing that changed is the thing
 # the frame is about. It is shot with `chain <fp|review> clean` (no debug numbers)
 # and there is a `silent` HUD mode that drops the captions too, for the screening
 # where the viewer has been told nothing at all.
+#
+# V3 films the loop TWICE, from the eyes and from the side, because those two views
+# can see different beats (see the note on `loop`): a sentence verified from only one
+# of them is a sentence verified in one of its two required senses — PART O asks what
+# a PLAYER reads, and PART A asks whether the three beats are really three.
 func _build_chain_story_segments() -> void:
-	var wide := {"side": 3.8, "back": 5.4, "up": 4.6, "aim": 2.6}
 	var wider := {"side": 4.4, "back": 6.0, "up": 5.0, "aim": 3.0}
 	var tight := {"side": 3.2, "back": 4.2, "up": 2.2, "aim": 1.8}
-	# The idle beat is the one take that is ABOUT the rope's shape, so it is the one
-	# take that goes low and close: from the wide framing a 1.05m resting chain is
-	# four pixels of a hanging line, and 松 is not something four pixels can argue.
-	var low := {"side": 2.6, "back": 2.4, "up": 1.3, "aim": 0.8}
+	# 3b's framing — the loop shot from OUTSIDE, and the reason it exists is a
+	# measurement: 直抛 is INVISIBLE in first person. It is the one beat of the three
+	# whose motion is along the view axis, so from the hand that threw it the chain
+	# foreshortens to nothing — the frame at t=2.49s of the first-person take shows
+	# the head 9.6m away as a pale dot beside the fist, because 9.6m straight ahead of
+	# a 1.91m eye is 4.5° below the crosshair. Nine metres of reach, and the shot says
+	# the chain never left. No retiming fixes a view that is edge-on to the motion, so
+	# the sentence is filmed twice: once from the eyes (can the player read it) and
+	# once from the side (are there really three beats).
+	var loop := {"side": 5.0, "back": 5.6, "up": 3.4, "aim": 2.8}
+	# V3 · 松 is no longer a shot of a hanging rope, it is a shot of the BUNDLE — and
+	# the bundle is welded to the player's own hand (ChainHandAnchor), so this is the
+	# one take that has to be shot FIRST PERSON: from the review rig the same bundle
+	# is a fist-sized column two metres from the lens, which is not where §26's claim
+	# lives. Nothing in this dictionary applies to it.
+	#
+	# V3 · the loop take is shot FIRST PERSON, and that is a correction rather than a
+	# preference.
+	#
+	# §PART G is explicit that the chain may leave the screen and that only the hand,
+	# the rope's direction and the tension line have to stay findable — and PART O's
+	# gate is what a PLAYER reads, and the player is inside this camera. Shooting the
+	# loop from the review rig answered a question nobody asked: the first V3 loop take
+	# held the whole 4.3m arc in frame and the verdict on it was still unreadable,
+	# because at 5–6m a 7cm chain is a 6px filament against a light deck. The same
+	# sweep seen from the hand is a bar of chain crossing the lens.
+	#
+	# The far end of the three-beat sentence is the exception, and the 甩 take is the
+	# take that owns it: 直抛 leaving frame IS the read for "this went a long way",
+	# which is exactly what PART G permits.
 	var stand_z := -25.5
 	segments = [
 		# ---------------------------------------------------------------- 1 · 松
 		{
-			"name": "缚星链 · 松",
-			"note": "没有输入。链挂在手里，垂下去、有弧度、链头把末端坠住。全部六个动作里唯一什么都不发生的一拍，也是其余五拍的基准 —— 它必须自己看起来像一条绳子，而不是一根从手到某处的线。",
-			"fov": 44.0,
-			"fp": false,
-			"cam": low,
+			"name": "缚星链 · 松 —— 十米收在手里",
+			"note": "没有输入，而且是全部十拍里两拍第一人称的第一拍 —— 因为这一拍说的正是「玩家第一眼看见什么」。手里是一整把没放出去的链：八圈叠在拳头下面，只有末梢垂出一点点，链头把那一小段坠住。要读出来的是「这条链很长，只是现在收在手里」，而不是「这条武器只有两米」。它也不能看起来像一条从手到某处的线 —— 线读不出重量，一圈圈叠起来的金属读得出。",
+			"fov": 75.0,
+			"fp": true,
+			# This take is shot by the PLAYER'S OWN CAMERA (fov 75, Player.tscn), not by
+			# the review rig, and that is the point: the hand rides LookPivot through
+			# ChainHandAnchor at camera-space (0.30, −0.34, −0.62), so the bundle's
+			# on-screen place is fixed by the rig rather than by a framing choice — it
+			# hangs ~26–28° below centre, well inside the 37.5° half-FOV, and no
+			# `cam`/`pitch` here can move it. The only thing this take controls is
+			# TIME: stand still for three seconds and let the eye count the loops.
+			"pitch": -13.0,
 			"setup": func() -> void:
 				_enter_lab([])
 				_stand_in_lab(0.0, stand_z),
@@ -749,10 +804,13 @@ func _build_chain_story_segments() -> void:
 		},
 		# ---------------------------------------------------------------- 2 · 甩
 		{
-			"name": "缚星链 · 甩",
-			"note": "朝空地扔出去，什么都不钩。看的是绳：刚出头的十几帧它是弯的、松的，链头在飞而绳还在后面；快到长度尽头时它才在 0.05 秒里从松变直 —— 绷是一个事件，不是一条本来就直的线。",
-			"fov": 50.0,
-			"cam": wide,
+			"name": "缚星链 · 甩 —— 绷是一个事件",
+			"note": "朝空地扔出去，什么都不钩，所以这一下把整个武器都放了出去：链头一路飞到九米多，手里那八圈在飞行里被抽干。看的是绳：刚出头的十几帧它是弯的、松的，链头在飞而绳还在后面；快到长度尽头时它才在 0.05 秒里从松变直 —— 绷是一次事件，不是一条本来就直的线。",
+			"fov": 54.0,
+			# The taut beat now happens at 9.6m of reach instead of 4.6m, so the framing
+			# has to hold the far end of the rope: a 2.6m focus would put the snap —
+			# the whole point of the take — off the top of the shot.
+			"cam": wider,
 			"setup": func() -> void:
 				_enter_lab([])
 				_stand_in_lab(0.0, stand_z),
@@ -761,22 +819,65 @@ func _build_chain_story_segments() -> void:
 			],
 			"duration": SETTLE + 3.2,
 		},
-		# ---------------------------------------------------------------- 3 · 咬
+		# ---------------------------------- 3 · 亮链三拍 · 第一人称（A1 · A2 · A3）
 		{
-			"name": "缚星链 · 咬 —— 三连是一句话",
-			"note": "横 → 返 → 砸。第二击不回收链头：它带着第一击还没停下的惯性再多走 26°，绳在这时是松的，然后才被反方向拽回来。第三击换的是轴，不是更大的数字。三下之间链头一次都没有停下。",
-			"fov": 48.0,
-			"cam": wide,
+			"name": "缚星链 · 亮链三拍 · 第一人称 —— 左甩 / 快右左 / 直抛",
+			"note": "一套完整套路的第一句，也是 PART O 要看的那一句。左甩：一条又宽又重的横弧，链头从右手侧绕过身前扫到左边，大部分链还盘在手里 —— 它比剑慢，因为重的东西要花时间。第二拍不回收链头：它带着第一拍没停下来的惯性先往右再往左，两次转向都发生在链头还在飞的时候，所以这两下比第一下更快、更连。第三拍忽然换轴 —— 不再是横的弧，而是沿准星的一条前向长线，链头一路走到九米多，绳在最后 0.05 秒里从松变直。三拍之间链头一次都没有停下，这就是它和一串各自独立的动画的区别。这一拍故意打空：它要说的是动作本身，不是命中的那一下。",
+			"fov": 75.0,
+			# First person, so `fov`/`cam` are the player's own rig (see take 1) and all
+			# this take controls is where the eye is pointed while the loop runs. −10°
+			# and not the rig default of −13°: the sweep's head sits ~20° under the
+			# horizon at its 4.3m reach and the throw's sits ~9° under at 9.6m, so a
+			# flatter eye puts both inside the 37.5° half-FOV and keeps the deck out of
+			# the top two thirds of the shot.
+			"fp": true,
+			"pitch": -10.0,
 			"setup": func() -> void:
-				_enter_lab([ElementLibrary.WEIGHT_LIGHT])
-				_stand_in_lab(0.0, stand_z)
-				_chain_target(ElementLibrary.WEIGHT_LIGHT, 3.2),
+				_enter_lab([])
+				_stand_in_lab(0.0, stand_z),
+			# The first press carries an extra 0.35s of settle on top of SETTLE, and
+			# that is a measured fix, not padding. At `SETTLE + 0.10` the take dropped
+			# its opening beat whenever the chain was still finishing the PREVIOUS
+			# take's reel-in: the renderer logged
+			#     !! light refused at 0.00s
+			# and rendered a three-beat take whose first beat had never happened. It
+			# survived the full nine-take tour by luck of the frame rate and died on a
+			# three-take re-render, which is exactly the kind of flake a take may not
+			# have — the whole loop is the claim.
+			#
+			# The 0.52s CADENCE is the part that is the data: 左甩 runs 0.64s and
+			# 快右左 0.56s, so a press this far in lands inside the previous beat's
+			# RECOVERY — the chain is cut over, never dropped — while still letting
+			# nearly the whole arc of each beat reach the screen. A press past 0.64s
+			# would find the chain back in HELD and the third press would open the
+			# loop at 左甩 again instead of playing 直抛.
+			#
+			# Fired through `_chain_beat` rather than at the exact frame, because
+			# that recovery window is 0.20–0.22s wide and the event clock is wall
+			# time: see the note on the helper. The cadence is unchanged; only the
+			# coin-flip on which frame the scheduler wakes up on is gone.
 			"events": [
-				[SETTLE + 0.10, _chain_req_expect.bind(&"light", &"ch_sweep")],
-				[SETTLE + 0.50, _chain_req_expect.bind(&"light", &"ch_return")],
-				[SETTLE + 0.90, _chain_req_expect.bind(&"light", &"ch_slam")],
+				[SETTLE + 0.45, _chain_beat.bind(&"light", &"ch_sweep")],
+				[SETTLE + 0.97, _chain_beat.bind(&"light", &"ch_return")],
+				[SETTLE + 1.49, _chain_beat.bind(&"light", &"ch_throw")],
 			],
-			"duration": SETTLE + 2.8,
+			"duration": SETTLE + 3.6,
+		},
+		# -------------------------- 3b · 亮链三拍 · 全局（三拍是不是三拍）
+		{
+			"name": "缚星链 · 亮链三拍 · 全局",
+			"note": "同一句话，从外面看一遍。第一人称那一拍回答的是「玩家看不看得懂」，这一拍回答的是「是不是真的三拍」。左甩：一条又宽又重的横弧，链头从右手侧绕过身前扫到左边。快右左：不回收链头，带着上一拍没停下来的惯性先往右再往左，两次转向都发生在链头还在飞的时候，所以比第一下更快更连。直抛：忽然换轴 —— 不再是横的弧，而是沿准星的一条前向长线，一路走到九米多，绳在最后 0.05 秒里从松变直。三拍之间链头一次都没有停下来；也不该有任何一拍回到待机。",
+			"fov": 62.0,
+			"cam": loop,
+			"setup": func() -> void:
+				_enter_lab([])
+				_stand_in_lab(0.0, stand_z),
+			"events": [
+				[SETTLE + 0.45, _chain_beat.bind(&"light", &"ch_sweep")],
+				[SETTLE + 0.97, _chain_beat.bind(&"light", &"ch_return")],
+				[SETTLE + 1.49, _chain_beat.bind(&"light", &"ch_throw")],
+			],
+			"duration": SETTLE + 3.6,
 		},
 		# ---------------------------------------------------------------- 4 · 蓄
 		{
@@ -1271,6 +1372,7 @@ behind the arena far wall — this take will render the wall, not the chain"
 	var duration := float(segment.get("duration", 4.0))
 	var begin := Time.get_ticks_msec()
 	var next_event := 0
+	_beat_action = &""
 	print("--- %s" % seg_name)
 
 	while true:
@@ -1279,6 +1381,7 @@ behind the arena far wall — this take will render the wall, not the chain"
 			var action: Callable = events[next_event][1]
 			action.call()
 			next_event += 1
+		_pump_beat()
 		await _frame()
 		_note_parry()
 		flow_peak = maxf(flow_peak, combat.flow_ratio())
@@ -1286,7 +1389,7 @@ behind the arena far wall — this take will render the wall, not the chain"
 		_update_review_body()
 		_update_overlay(t)
 		_save()
-		if t >= duration and next_event >= events.size():
+		if t >= duration and next_event >= events.size() and _beat_action.is_empty():
 			break
 	print("    %s  frames=%d  perfect_guards=%d%s"
 		% [
@@ -1537,6 +1640,54 @@ func _request_chain(action: StringName, expect: StringName) -> void:
 	if expect != &"" and played != expect:
 		print("    !! %s played %s, but this take claims %s  (%s)"
 			% [String(action), String(played), String(expect), seg_name])
+
+
+# §PART O — a beat that was REFUSED is retried, because a take may not silently drop
+# part of its own claim.
+#
+# The loop's three presses are authored 0.52s apart and that cadence is the data:
+# 左甩 runs 0.64s and 快右左 0.56s, so each press is meant to land inside the previous
+# beat's RECOVERY rather than after the beat has ended. But the renderer's event clock
+# is WALL time (Time.get_ticks_msec) while the chain's is GAME time, and a recovery
+# window is only ~0.2s wide — one slow frame and the press arrives a frame or two after
+# the move has ended in RETRACTING, where `_can_act()` is false and the request is
+# refused. The observed failure was exactly this:
+#
+#     !! light refused at 0.00s in 缚星链 · 亮链三拍 —— 左甩 / 快右左 / 直抛
+#
+# and the take then rendered 左甩 / 快右左 and NO 直抛 — a three-beat sentence with two
+# beats in it, which is precisely the thing the take exists to disprove. It happened in
+# one of two renders of the same build, so it is a frame-rate coin-flip and not a
+# property of the moveset.
+#
+# So a beat scheduled this way is offered on its scheduled frame and then offered again
+# every frame until the chain takes it. When the timing works — the normal case — the
+# first offer lands exactly as before and nothing about the cadence changes; this only
+# removes the dependence on which frame the scheduler happened to wake up on.
+func _chain_beat(action: StringName, expect: StringName) -> void:
+	if not _beat_action.is_empty():
+		print("    !! %s was still owed %s when %s was scheduled in %s"
+			% [String(_beat_action), String(_beat_expect), String(action), seg_name])
+	_beat_action = action
+	_beat_expect = expect
+	_beat_frames = 0
+
+
+func _pump_beat() -> void:
+	if _beat_action.is_empty():
+		return
+	_beat_frames += 1
+	if chain.request(_beat_action):
+		var played := _played_move()
+		if _beat_expect != &"" and played != _beat_expect:
+			print("    !! %s played %s, but this take claims %s  (%s)"
+				% [String(_beat_action), String(played), String(_beat_expect), seg_name])
+		_beat_action = &""
+		return
+	if _beat_frames > BEAT_PATIENCE_FRAMES:
+		print("    !! %s was never accepted after %d frames in %s"
+			% [String(_beat_action), _beat_frames, seg_name])
+		_beat_action = &""
 
 
 func _played_move() -> StringName:

@@ -37,21 +37,94 @@ class_name ChainMoveset
 @export var form_id: StringName = &"solid"
 
 @export_group("Geometry")
-@export var max_radius := 4.6
+# §1 — THE CHAIN IS LONG, AND THE LENGTH IS THE WEAPON.
+#
+# The prototype's 4.7m was a decision about what could be simulated. V3 is a
+# decision about what the player should BELIEVE, and the number that has to be
+# big is the ROPE, not the amount currently in the air. So `chain_length` and
+# `max_radius` are two different numbers for the first time: the 6-7m between
+# them is what the player is holding coiled in their fist while the head is a
+# metre away, and it is the entire subject of PART F.
+@export var chain_length := 10.0
+# THE HARD REACH. `is_taut()` fires at 0.97 of this, so it owns the one beat the
+# weapon is built around — and it must stay UNDER `chain_length`: a chain taut at
+# a radius it cannot reach is a chain that is never taut. 9.7 of 10.0 leaves 3%
+# of rope that never pays out, which is why a full throw reads as "almost all
+# of it" rather than as an arbitrary cut-off.
+@export var max_radius := 9.7
 @export var min_radius := 0.55
-@export var head_radius := 0.30
-@export var chain_length := 4.7
-@export var links := 28
+# §4 — SIZED FOR TRACKING. The head is what the player has to find first, and V3
+# makes it a TRIDENT, so it is longer than the old 刃锤 in every direction.
+@export var head_radius := 0.34
+# THE LINK POOL, NOT THE LINK COUNT (§25).
+#
+# V3 draws as many links as the paid-out rope needs — a constant link SIZE rather
+# than a constant link COUNT — so this is the ceiling of that drawing:
+# `chain_length / link_spacing`, rounded up. A fixed 28 over a 10m rope would be
+# 36cm per link, which is a fence, not a chain.
+@export var links := 96
+# 0.11 STAYS, AND IT WAS TRIED THE OTHER WAY. 0.11 is 9.1 links per metre, which
+# reads thin on a 10m weapon, so V3 raised it to 0.145 (6.9/m) to buy back daylight
+# between links — and `chain_physicality` went red with
+#
+#     - the rope droops 0.926m at 1m of reach and 0.949m at 6m of a 10.00m rope
+#
+# which is NOT a coincidence. The droop is measured on the drawn POLYLINE, and the
+# polyline has one point per link: at 1m of reach a coarser spacing leaves 5 points
+# to describe a 0.95m sag, so the sampled arc falls 2.5% short of its own apex and
+# the §1 saturation reading stops saturating. The measurement is genuinely coupled to
+# the link count, so the honest move is to leave the count alone and get the weight
+# from the link's own SIZE instead (see `_build_links`).
+@export var link_spacing := 0.11
 # Reach grows a little with spin. Small on purpose: momentum's real payoff is
 # speed, and this is the flavour on top.
 @export var radius_momentum_scale := 0.10
 
+@export_group("Held coils")
+# §2 / §26 — THE ONE THING THAT SAYS "THIS WEAPON IS LONG" WHILE YOU STAND STILL.
+#
+# Not a simulation of seven metres of rope in the fist: a PRESET RIG whose count
+# is driven by how much of the rope has been paid out. The head is a metre away
+# and seven loops are in the hand; throw the head nine metres and there is one.
+#
+# Driven by REACH over `chain_length` rather than by an abstract "extension
+# ratio", so the quantity the player is watching (how far the head is) is the
+# same quantity the coils read. One number, not two that can disagree.
+#
+# AND THE COUNT IS A PROPERTY OF THE ROPE, NOT A KNOB OF ITS OWN. A coil of chain
+# in a fist is the same loop size however much chain there is — what changes is how
+# MANY loops. So `coil_max` is `chain_length / coil_per_loop` rounded, which is what
+# makes the idle bundle actually read the weapon's length (§26) instead of reporting
+# "long" at 8m and at 12m alike. `chain_physicality` group I asserts the two agree,
+# because raising the rope without raising the bundle is how a long weapon silently
+# becomes a short one that lies about it.
+@export var coil_per_loop := 1.25
+@export var coil_max := 8
+@export var coil_min := 1
+@export var coil_radius := 0.105
+# 0.052, not 0.040 — the same "make it read" fix as `link_spacing`. The loops are
+# 0.21m across, so at a 0.040 pitch eight of them overlap into a single lump: the
+# first V3 idle frame was a dark blob, and a dark blob is not "look how much chain is
+# in this hand". The bundle's axis points away from the player's own eye, so the only
+# thing that separates one loop from the next on screen is the pitch.
+@export var coil_pitch := 0.052
+
 @export_group("Held pose")
 # 锁链不是永远垂直挂着: the head rests low and slightly to the side, with a slow
 # weight sway. Low because a chain at rest hangs; alive because it is metal.
+#
+# §A1 — WHY THE REST IS ON THE RIGHT. A1 winds up to the right and then sweeps
+# left, so a head resting on the LEFT has to cross the whole body one way and
+# immediately come back the other — and measuring the blade's aim (`chain_
+# physicality` group C) showed exactly what that costs: the direction of travel
+# reversed inside a single frame at the moment the arc took over, and the head
+# spent that frame pointed 77° away from where it was going. Resting on the side
+# the wind-up comes from makes the wind-up SHORT (and therefore slow), so the
+# reversal happens under the head's own aim threshold and the blade never loses
+# the argument. It is also the hand the chain is in.
 @export var home_radius := 1.05
 @export var home_height := 0.62
-@export var home_azimuth_degrees := 26.0
+@export var home_azimuth_degrees := -30.0
 @export var idle_sway_degrees := 4.5
 @export var idle_sway_speed := 1.25
 @export var retract_time := 0.30
@@ -174,7 +247,16 @@ class_name ChainMoveset
 # How fast the rope comes up hard, and how fast it pays back out. ASYMMETRIC ON
 # PURPOSE: tightening is an event, relaxing is a rope. A chain that let go as
 # quickly as it tightened would be a spring, which §33 forbids.
-@export var tension_rise := 16.0
+#
+# RE-MEASURED WHEN THE ROPE WENT TO 10m, and it had to be. The snap curve is a
+# cube over the last 27% of REACH, so on the old 4.6m chain the target tension
+# climbed gradually across a 1.2m band and the ramp spent part of its time chasing
+# a moving number. On a 10m chain that band is 2.6m of a much faster throw, the
+# target saturates almost at once, and the same 16/s produced a 0.033s snap —
+# below the 0.035s floor, i.e. a model swap rather than a beat. 11.0/s restores
+# the measured 0.050s. This is a rate on a curve whose SHAPE did not change; that
+# is why the number and not the knee is what moved.
+@export var tension_rise := 11.0
 @export var tension_fall := 6.0
 
 # ---------------------------------------------------------------------------
@@ -207,7 +289,9 @@ class_name ChainMoveset
 
 @export_group("Chain")
 @export var light_window := 0.55
-@export var light_chain: Array[StringName] = [&"ch_sweep", &"ch_return", &"ch_slam"]
+# §A / PART A. The loop, in order, and the whole of it: 左甩 → 快右左 → 直抛. A4 and
+# A5 are the two beats after this one and are not authored yet (PART O gates them).
+@export var light_chain: Array[StringName] = [&"ch_sweep", &"ch_return", &"ch_throw"]
 @export var heavy_id: StringName = &"ch_launch"
 @export var hook_id: StringName = &"ch_hook"
 @export var taut_light_id: StringName = &"ch_snap"

@@ -46,6 +46,9 @@ var landed: Array[Dictionary] = []
 # them until the day someone tried to place a sound against one.
 var tugs_seen: Array[int] = []
 var walls_seen: Array[float] = []
+# How long the momentum probe actually waited, so the failure message can name it
+# instead of implying the old hard-coded ten frames.
+var _arc_progress_frames := 10
 
 
 func _initialize() -> void:
@@ -251,8 +254,8 @@ func _check_momentum_buys_time_not_damage() -> void:
 	var hot := await _measure_arc_progress(1.0)
 	_check(
 		cold > 0.1 and hot > cold * 1.1,
-		"after the same 10 frames the cold head travelled %.2frad and the spun-up one %.2frad — spin buys nothing"
-			% [cold, hot]
+		"after the same %d frames the cold head travelled %.2frad and the spun-up one %.2frad — spin buys nothing"
+			% [_arc_progress_frames, cold, hot]
 	)
 
 
@@ -317,20 +320,55 @@ func _check_the_second_cut_carries_the_first() -> void:
 			break
 	_check(started.size() >= 3, "the light chain produced %d cut(s)" % started.size())
 	if started.size() >= 3:
+		# §A — THE LOOP IS A SENTENCE, AND THIS IS ITS GRAMMAR.
+		#
+		# The old assertion here was `ch_sweep, ch_return, ch_slam` — 横 · 横 · 纵 —
+		# which was the old loop's grammar and stopped being true the moment V3
+		# replaced the third beat. Re-asserting a new list of ids would be worth
+		# nothing (it is a copy of the data), so what is checked is the three ROLES
+		# the brief gives the beats, each of which can fail on its own:
+		#   OPENER   a wide lateral arc that does not carry (it is where the loop
+		#            starts, so there is nothing to carry from),
+		#   CARRY    takes the head where the opener left it and reverses inside one
+		#            input — the two sweeps of §A2,
+		#   CASH OUT leaves the body behind and goes out along the aim, far enough to
+		#            reach the chain's limit.
+		var opener := moveset.get_move(started[0])
+		var carry := moveset.get_move(started[1])
+		var finisher := moveset.get_move(started[2])
+		if opener == null or carry == null or finisher == null:
+			_fail("the light chain produced %s, which is not three techniques of this weapon" % str(started))
+			return
 		_check(
-			started[0] == &"ch_sweep" and started[1] == &"ch_return" and started[2] == &"ch_slam",
-			"the light chain went %s, so 横/横/纵 is not the order" % str(started)
+			opener.path == ChainMove.Path.ARC and absf(opener.arc_degrees) >= 120.0,
+			"the loop opens on %s, which sweeps %.0f° — §A1 is a wide lateral arc or it is not an opener"
+				% [opener.display_name, opener.arc_degrees]
+		)
+		_check(
+			not opener.continue_from_head,
+			"%s carries from the head, but it is the FIRST beat and there is nothing before it to carry from" % opener.display_name
+		)
+		_check(
+			carry.continue_from_head and absf(carry.arc_degrees) >= 120.0 and not is_zero_approx(carry.arc_degrees_2),
+			"%s does not both continue the head AND reverse inside one input — §A2 is two quick sweeps out of one press, not a second swing"
+				% carry.display_name
+		)
+		_check(
+			finisher.path == ChainMove.Path.RADIAL
+				and finisher.radius_to >= moveset.max_radius * moveset.tension_ratio - 0.05,
+			"the loop's third beat (%s) ends at %.2fm of a %.2fm limit without leaving the body — §A3 is the beat where the arc becomes a LINE, and it is the only way normal play can make the chain taut"
+				% [finisher.display_name, finisher.radius_to, moveset.max_radius]
 		)
 	var reverse := moveset.get_move(&"ch_return")
 	if reverse == null:
 		_fail("返扫 does not exist")
 		return
-	# THE CARRY (§7). 返扫 has to pick the head up where the first cut left it and
+	# THE CARRY (§7). 快右左 has to pick the head up where the first cut left it and
 	# unwind from there — no reset, no second wind-up.
 	#
-	# WHAT THAT IS NOT is "the head barely moves". 返扫 opens with a deliberate 26° of
-	# OVERRUN along cut 1's own direction (`carry_anticipation_degrees`), which at
-	# 3.6m radius is 1.7m of travel — the head MUST travel, or the handover is exactly
+	# WHAT THAT IS NOT is "the head barely moves". It opens with a deliberate overrun
+	# along cut 1's own direction (`carry_anticipation_degrees`), which at 4.3m radius
+	# is well over a metre of travel — the head MUST travel, or the handover is exactly
 	# the dead beat this check exists to catch. Distance alone therefore cannot be the
 	# question, and the first version of this check asked it: it demanded < 1.0m and
 	# passed only while the handover was dead. The two things that can actually go
@@ -346,19 +384,19 @@ func _check_the_second_cut_carries_the_first() -> void:
 			carry_start = s
 			break
 	if carry_start < 2 or carry_start + 2 >= heads.size():
-		_fail("返扫 never started, or has no frames either side to read a carry from")
+		_fail("快右左 never started, or has no frames either side to read a carry from")
 		return
 	var before := heads[carry_start - 1] - heads[carry_start - 2]
 	var after := heads[carry_start + 1] - heads[carry_start]
 	_check(
 		before.dot(after) > 0.0,
-		"返扫 turned the head %.0f° inside one frame of the cut — the start pose was \
+		"快右左 turned the head %.0f° inside one frame of the cut — the start pose was \
 re-authored rather than carried (§7)"
 			% rad_to_deg(before.angle_to(after))
 	)
 	_check(
 		after.length() > 0.05,
-		"the head travelled %.3fm in 返扫's first frame — the handover is a dead beat, \
+		"the head travelled %.3fm in 快右左's first frame — the handover is a dead beat, \
 which is the three-tweened-swings read of §8"
 			% after.length()
 	)
@@ -366,13 +404,15 @@ which is the three-tweened-swings read of §8"
 	var carry_end := mini(carry_start + startup_frames, heads.size() - 1)
 	var windup := heads[carry_start].distance_to(heads[carry_end])
 	# A ceiling is still needed, or "carry" could be answered by re-planting the pose
-	# 1.7m away and calling the travel a carry. 返扫's own chord is 150° at ~3.9m ≈
-	# 10m, so 2.5m is far past what an overrun can account for and nowhere near a
-	# re-authored pose.
+	# metres away and calling the travel a carry. The ceiling is the authored overrun
+	# plus room for the startup's own radius change — derived from the data rather than
+	# typed, because it has to move whenever the overrun or the reach does.
+	var overrun_m := deg_to_rad(reverse.carry_anticipation_degrees) * maxf(reverse.radius_from, reverse.radius_to)
+	var windup_ceiling := maxf(2.0, overrun_m * 1.6 + absf(reverse.radius_to - reverse.radius_from) + 0.4)
 	_check(
-		windup < 2.5,
-		"返扫 repositioned the head %.2fm during its own startup — that is a re-planted \
-pose, not the 26° of overrun §7 authors" % windup
+		windup < windup_ceiling,
+		"快右左 repositioned the head %.2fm during its own startup, against the %.2fm its own %.0f° of overrun can account for — that is a re-planted pose, not a carry"
+			% [windup, windup_ceiling, reverse.carry_anticipation_degrees]
 	)
 	# And the boundary itself must not be an instant jump: a cut whose startup is 0
 	# would show up here even though the wind-up above is spread over frames.
@@ -390,9 +430,19 @@ pose, not the 26° of overrun §7 authors" % windup
 		"the head moved %.2fm at a cut boundary against %.2fm inside a cut — a cut snapped to a new pose (§10)"
 			% [at_cut, inside]
 	)
-	_check(inside < 3.0, "a cut moves the head %.2fm in one frame, beyond a 4.6m chain's budget" % inside)
-	# And 返扫 has to actually declare it carries on.
-	_check(reverse.continue_from_head, "返扫 re-authors its own start instead of carrying on")
+	# SPEED IS NOT THE SUBJECT HERE, SIZE IS. This ceiling used to be a flat 3.0m
+	# "beyond a 4.6m chain's budget", which was a statement about the old rope's
+	# length stated as an absolute. What it is actually guarding is a TELEPORT: a cut
+	# that snapped to a new pose would move the head a large fraction of the weapon in
+	# one frame, and any threshold worth having has to scale with the weapon, not with
+	# a number from a previous version of it.
+	_check(
+		inside < moveset.chain_length * 0.35,
+		"a cut moves the head %.2fm in a single frame, which is %.0f%% of the whole rope — a cut does not teleport (§10)"
+			% [inside, inside / maxf(0.001, moveset.chain_length) * 100.0]
+	)
+	# And 快右左 has to actually declare it carries on.
+	_check(reverse.continue_from_head, "快右左 re-authors its own start instead of carrying on")
 
 
 # §12: a whiff costs the spin. If missing were free the chain would just be a wide
@@ -427,7 +477,16 @@ func _measure_arc_progress(spin: float) -> float:
 		_fail("the light attack was refused while measuring spin %.1f" % spin)
 		return 0.0
 	var start_az := _facing_azimuth() + deg_to_rad(profile.start_azimuth_degrees)
-	await _tick(10)
+	# HOW LONG TO WAIT IS THE MOVE'S OWN WINDOW, NOT TEN FRAMES.
+	#
+	# "The same 10 frames" was a number that happened to sit inside the old cut's
+	# 0.14s startup AND its 0.20s arc. V3's opener winds up for 0.16s, so ten frames
+	# is entirely the WIND-UP — and a wind-up takes the same time with or without
+	# spin, which is why the reading collapsed to 0.04 / 0.05 rad and reported that
+	# momentum buys nothing. The sample has to be inside the arc for BOTH runs, so it
+	# is derived from the shortest active window either of them can have.
+	_arc_progress_frames = int(round((profile.startup + profile.active_seconds(1.0) * 0.55) / DT))
+	await _tick(_arc_progress_frames)
 	var offset := chain.head_position() - chain._origin()
 	var az := atan2(offset.x, offset.z)
 	return absf(wrapf(az - start_az, -PI, PI))

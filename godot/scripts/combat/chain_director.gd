@@ -150,6 +150,9 @@ var _head_velocity := Vector3.ZERO
 var _pose_from := Vector3.ZERO    # (azimuth, radius, height) at commit — the startup lerp starts here
 var _pose_start := Vector3.ZERO   # where ACTIVE begins
 var _pose_end := Vector3.ZERO     # where ACTIVE ends
+# §A2: the azimuth where a move's FIRST arc ends and its second begins. Equal to
+# `_pose_end.x` for every move with one arc, so nothing else has to know.
+var _arc_mid := 0.0
 var _radius_scale := 1.0
 var _duration := 0.0
 # Where the strike ends, frozen at commit. Recomputed from live momentum it could
@@ -241,8 +244,19 @@ func _ready() -> void:
 	_head_shape.radius = moveset.head_radius
 	chain_visual = ChainVisual.new()
 	chain_visual.name = "ChainVisual"
+	# §2/§26: the coil rig's own sizes are read at build time, so they have to be
+	# in place before `configure` reaches for them.
+	chain_visual.coil_radius = moveset.coil_radius
+	chain_visual.coil_pitch = moveset.coil_pitch
 	add_child(chain_visual)
-	chain_visual.configure(moveset.links, moveset.chain_length, moveset.head_radius)
+	chain_visual.configure(
+		moveset.links,
+		moveset.chain_length,
+		moveset.head_radius,
+		moveset.link_spacing,
+		moveset.coil_max,
+		moveset.coil_min
+	)
 	if hand != null:
 		chain_visual.build_handle(hand)
 	if weapon != null:
@@ -599,9 +613,30 @@ func _step_move(delta: float) -> void:
 		_apply_pose(travel)
 		return
 	if state_time < move.startup + _duration:
-		var t := move.eased((state_time - move.startup) / maxf(_duration, 0.0001))
+		var raw := (state_time - move.startup) / maxf(_duration, 0.0001)
+		var t := move.eased(raw)
+		var az := lerpf(_pose_start.x, _pose_end.x, t)
+		if not is_zero_approx(move.arc_degrees_2):
+			# §A2 — TWO SWEEPS OUT OF ONE INPUT.
+			#
+			# The second beat is not a second press: the head reaches the far
+			# extreme, REVERSES there, and comes back through the same side. A
+			# single 300° arc cannot express that (it goes through the front
+			# instead), so the azimuth is PIECEWISE — segment one ends where
+			# segment two begins, which makes the handover continuous by
+			# construction, and each segment gets its own ease so the reversal at
+			# the extreme still has the WHIP tail (§8) rather than stopping dead.
+			var split := clampf(move.arc_split, 0.05, 0.95)
+			var from := _pose_start.x
+			var to := _arc_mid
+			var seg := raw / split
+			if raw >= split:
+				from = _arc_mid
+				to = _pose_end.x
+				seg = (raw - split) / (1.0 - split)
+			az = lerpf(from, to, move.eased_turnaround(seg))
 		_apply_pose(Vector3(
-			lerpf(_pose_start.x, _pose_end.x, t) + steer + _deflect,
+			az + steer + _deflect,
 			lerpf(_pose_start.y, _pose_end.y, t),
 			lerpf(_pose_start.z, _pose_end.z, t)
 		))
@@ -852,7 +887,15 @@ func _start(id: StringName) -> bool:
 	if move.path == ChainMove.Path.SLAM and move.peak_height > 0.0:
 		start_h = move.peak_height
 	_pose_start = Vector3(start_az, move.radius_from, start_h)
-	_pose_end = Vector3(start_az + deg_to_rad(move.arc_degrees), move.radius_to, move.height_to)
+	# §A2 — WHERE A SECOND ARC IN THE SAME INPUT MEETS THE FIRST. Only the AZIMUTH
+	# is piecewise; radius and height stay single-segment, because a double sweep
+	# opens the chain for the whole move and the reversal is angular.
+	_arc_mid = start_az + deg_to_rad(move.arc_degrees)
+	_pose_end = Vector3(
+		_arc_mid + deg_to_rad(move.arc_degrees_2),
+		move.radius_to,
+		move.height_to
+	)
 	# Where the player was looking when the technique was committed to. Steer is
 	# measured from here, so the arc can follow your turn without the end of a
 	# 145° sweep sliding out from under it.

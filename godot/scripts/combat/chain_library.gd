@@ -3,15 +3,22 @@ class_name ChainLibrary
 # Builds 缚星链 / STAR-BIND CHAIN in code, the same way SwordMovesetLibrary builds
 # the sword styles, so the weapon is data and the director never branches on an id.
 #
-# PHASE 0–1 ONLY. The brief is explicit about what is not here yet: no second
-# chain, no wrapping around the body, no rope knots, no climbing, no traversal,
-# no ultimate, no signature ceremony. The whole point of this resource is to
-# answer one question — IS THE CHAIN FUN? — with a single chain.
+# PHASE 1-2 OF V3. The brief is explicit about what is not here yet: no second
+# chain, no wrapping around the body, no rope knots, no climbing, no traversal, no
+# ultimate, no signature ceremony, no Hold-E enhancement, no Q lock. The whole
+# point of this resource right now is to answer one question — IS THE NORMAL
+# ATTACK LOOP FUN ON ITS OWN? — with a single long chain.
 #
-# The prototype's structures, per brief §2:
-#   HANDLE  →  CHAIN  →  TERMINAL HEAD (刃锤 / Anchor Blade)
-# The head is between a weighted metal head and a short cutting edge, so the
-# weapon can slam, cut, hook and pull instead of only whipping.
+# The prototype's structures, per brief §0 / §2:
+#   HANDLE  →  COILED CHAIN (most of it, most of the time)  →  TRIDENT HEAD
+# The head is a three-pronged fork with backward-facing barbs, so the weapon can
+# 刺 / 钩 / 贯穿 / 拉扯 / 扫击 with its silhouette alone.
+#
+# WHAT THE THREE VARIABLES MEAN NOW THAT THE CHAIN IS 10m LONG: `chain_length` is
+# the ROPE and `max_radius` is how far the head may travel, and the 6-7m between
+# them is what stays coiled in the player's fist. `is_taut()` therefore means
+# "nearly all of it is out", which is a state you have to throw the whole weapon
+# to reach — not a mood a 4m chain falls into by accident.
 
 const CHAIN_STAR_BIND := &"star_bind"
 
@@ -44,20 +51,47 @@ static func star_bind() -> ChainMoveset:
 	chain.form_name = "实链"
 	chain.form_id = &"solid"
 
+	# §A / PART A — THE NORMAL ATTACK LOOP IS THE WEAPON'S SENTENCE.
+	#
+	# 左甩 (wide, heavy, opens) → 快右左 (two fast sweeps that spend what the first
+	# one left) → 直抛 (the arc becomes a line and the chain is thrown down the
+	# crosshair) → and back to 左甩, with however much 势 the three of them left.
+	#
+	# A4 (贯穿 + 猛拉) and A5 (悬停 + 三连) are the next two beats and are NOT here
+	# yet — PART O gates them: 左扫 / 右左 / 直抛 have to be worth playing on their
+	# own first. This list is the loop, so this is the one line that changes when
+	# they land.
+	chain.light_chain = [&"ch_sweep", &"ch_return", &"ch_throw"]
+
 	var moves: Dictionary = {}
 
-	# ---------------------------------------------------------------- Light 1
-	# 横缚 · fast, wide, medium damage, low precision. 145° authored from -72.5
-	# so the arc is centred on where the player is facing: you aim the middle of
-	# the sweep, not its start.
-	moves[&"ch_sweep"] = _move(&"ch_sweep", "横缚", {
+	# ---------------------------------------------------------------- A1 · 左甩
+	# THE OPENING SWEEP. Wide, heavy, unmistakable, and authored from -78° so the
+	# arc is centred on where the player is facing: you aim the middle of the
+	# sweep, not its start. It runs from the right-hand side of the body through
+	# the front and out to the LEFT, which is the direction A2 then pays back.
+	#
+	# §A1 says the difference from Sword Light has to be RANGE, and it is: 4.3m of
+	# reach against a sword's 2.4, on an arc the sword cannot draw at all. It is
+	# deliberately NOT a short whip crack — 150° of travel at that radius is a long
+	# arc, and the chain is still carrying most of itself in the fist while it
+	# happens, which the coil rig shows (§26).
+	#
+	# AND IT IS THE SLOWEST BEAT OF THE LOOP, MEASURED. The first version swept
+	# 156° in 0.22s and the rig caught the head covering 3.11m in a single frame —
+	# 187 m/s, which is a blur with a trail on it. §A1 asks for WIDE, HEAVY and a
+	# CLEAR ARC, and all three of those words want the head slower, not faster: a
+	# heavy thing takes its time. 150° over 0.26s puts the peak at ~1.5m/frame, and
+	# it is now the contrast with A2 that carries the speed — A2 does TWO sweeps in
+	# the same window, so the loop opens heavy and then doubles its tempo.
+	moves[&"ch_sweep"] = _move(&"ch_sweep", "左甩", {
 		"path": ChainMove.Path.ARC,
-		"note": "快速甩出，范围明显大于剑。密度低，准度低，可被移动取消。",
-		"startup": 0.14, "active": 0.20, "recovery": 0.20,
-		"damage": 16.0, "poise_damage": 16.0, "impulse": 2.0,
-		"start_azimuth_degrees": -72.5, "arc_degrees": 145.0,
-		"radius_from": 2.5, "radius_to": 3.4,
-		"height_from": 1.20, "height_to": 1.05,
+		"note": "起手：链从右手侧扫过身前，甩向左侧。范围明显大于剑。链仍大部分盘在手里。",
+		"startup": 0.16, "active": 0.26, "recovery": 0.22,
+		"damage": 15.0, "poise_damage": 15.0, "impulse": 2.1,
+		"start_azimuth_degrees": -78.0, "arc_degrees": 150.0,
+		"radius_from": 2.6, "radius_to": 4.30,
+		"height_from": 1.25, "height_to": 1.05,
 		# §8: WHIP, not OUT — the first cut has to hand the second one a chain that
 		# is still travelling. See ChainMove.Ease.WHIP.
 		"ease": ChainMove.Ease.WHIP, "ease_power": 2.2,
@@ -69,43 +103,85 @@ static func star_bind() -> ChainMoveset:
 		"camera_trauma": 0.04, "fov_kick": -1.0, "roll_kick": 0.9,
 	})
 
-	# ---------------------------------------------------------------- Light 2
-	# 返扫 · the second cut has to CARRY the first one's momentum. It starts where
-	# the head already is and unwinds the other way, so the chain is never still
-	# between the two — no reset, no teleport, no second wind-up.
-	moves[&"ch_return"] = _move(&"ch_return", "返扫", {
+	# -------------------------------------------------------------- A2 · 快右左
+	# TWO SWEEPS OUT OF ONE PRESS, and the second beat of the loop.
+	#
+	# The head is left on the LEFT by A1. A2 does not reset it and does not
+	# re-wind: it overruns a little further left (the follow-through of §7), then
+	# REVERSES at that extreme and comes back through the same side to the right —
+	# then, without stopping, returns left. That is `arc_degrees` -152 then
+	# `arc_degrees_2` +152 inside one 0.26s window, so each sweep is 0.13s and the
+	# whole thing reads as one motion with two cracks in it rather than as two
+	# switches.
+	#
+	# PER-HIT DAMAGE IS LOWER THAN A1'S on purpose (§A2): this move buys SPEED and
+	# flow, and a pair of sweeps that each hit as hard as the opener would make the
+	# opener pointless. The total is higher, which is what momentum is for.
+	moves[&"ch_return"] = _move(&"ch_return", "快右左", {
 		"path": ChainMove.Path.ARC,
-		"note": "第一击结束不回收链头，利用惯性反方向再扫一次。WHOOOSH → carry. 这一击的伤害来自上一击还没停下。",
-		"startup": 0.10, "active": 0.19, "recovery": 0.19,
-		"damage": 18.0, "poise_damage": 18.0, "impulse": 2.2,
-		"continue_from_head": true, "arc_degrees": -150.0,
-		# §7 CARRY. 26° of overrun BEFORE the reverse, and the radius opens while
-		# it happens: the head keeps going the way cut 1 threw it, the chain goes
+		"note": "第二段：借第一击的惯性先向右返扫，几乎不停再甩回左侧。一次输入两扫。每一下都比第一击轻，但合起来更重。",
+		"startup": 0.10, "active": 0.26, "recovery": 0.20,
+		"damage": 13.0, "poise_damage": 13.0, "impulse": 1.9,
+		"continue_from_head": true,
+		"arc_degrees": -152.0, "arc_degrees_2": 152.0, "arc_split": 0.46,
+		# §7 CARRY. 16° of overrun BEFORE the reversal, and the radius opens while
+		# it happens: the head keeps going the way A1 threw it, the chain goes
 		# slack, and only then does the return sweep reel it back. That is §3's
-		# loose → tighten → straight spent on a CUT instead of only on a throw —
-		# and it is the difference between 返扫 BEING the second beat and being a
-		# second swing that happens to start nearby.
-		"carry_anticipation_degrees": 26.0,
-		"radius_from": 3.72, "radius_to": 3.9,
+		# loose → tighten → straight spent on a CUT instead of only on a throw.
+		"carry_anticipation_degrees": 16.0,
+		"radius_from": 4.30, "radius_to": 4.70,
 		"height_from": 1.05, "height_to": 1.00,
-		# WHIP as well, and for the same reason: 返扫 carries the head through into
-		# the slam instead of stopping in front of it.
-		"ease": ChainMove.Ease.WHIP, "ease_power": 2.4,
-		"momentum_gain": 0.34, "momentum_whiff_cost": 0.12, "steer": 0.38,
+		"ease": ChainMove.Ease.WHIP, "ease_power": 2.3,
+		"momentum_gain": 0.26, "momentum_whiff_cost": 0.10, "steer": 0.36,
 		"impact_momentum_cost": 0.05, "impact_hitstop": 0.032, "impact_deflect_degrees": 5.0,
 		"camera_trauma": 0.05, "fov_kick": -1.1, "roll_kick": -1.1,
+	})
+
+	# -------------------------------------------------------------- A3 · 直抛
+	# THE LOOP'S PRECISION ATTACK, AND THE MOMENT THE WEAPON CHANGES SUBJECT.
+	#
+	# A1 and A2 are both lateral: a big arc, then a faster pair of arcs. A3 throws
+	# all of that away and puts the head on a LINE — out along the crosshair,
+	# 2.5m to 9.6m, which is where `is_taut()` finally fires (0.97 of a 9.7m
+	# limit). So the chain goes from an 8m bag of loose rope to a straight metal
+	# line inside one technique, and the beat where it comes up hard is §3.
+	#
+	# IT IS THE ONE MOVE THAT RE-AIMS (it does not `continue_from_head`), because
+	# a throw that went wherever the last sweep happened to end is not aimed at
+	# anything. The 0.15s startup is the gather: the head is drawn back onto the
+	# crosshair line and then released from it, which is the only place in the
+	# loop where a re-plant is honest rather than a reset.
+	moves[&"ch_throw"] = _move(&"ch_throw", "直抛", {
+		"path": ChainMove.Path.RADIAL,
+		"note": "第三段：突然从大弧变成一条前向长线，沿准星把三叉头直掷出去。射程远超前两击，飞到尽头链才绷紧。这是循环里第一个精准攻击。",
+		"startup": 0.15, "active": 0.34, "recovery": 0.34,
+		"damage": 20.0, "poise_damage": 22.0, "impulse": 2.8,
+		"arc_degrees": 0.0,
+		"radius_from": 2.5, "radius_to": 9.6,
+		"height_from": 1.15, "height_to": 1.15,
+		"ease": ChainMove.Ease.OUT, "ease_power": 1.6,
+		"aim_pitch_scale": 1.0,
+		"momentum_gain": 0.14, "momentum_whiff_cost": 0.16, "steer": 0.25,
+		"momentum_speed_scale": 0.20,
+		"impact_momentum_cost": 0.06, "impact_hitstop": 0.045, "impact_deflect_degrees": 5.5,
+		"camera_trauma": 0.06, "fov_kick": 1.8,
 	})
 
 	# ---------------------------------------------------------------- Light 3
 	# 下砸 · the chain shortens its radius and comes down overhead. The payoff of
 	# 横/横/纵 is that the third cut is a DIFFERENT AXIS, not a bigger number.
+	#
+	# NO LONGER IN THE LIGHT CHAIN. V3's loop ends on 直抛, so this is kept as a
+	# technique of the weapon rather than of the loop — it is still reachable from
+	# the lab and still retuned to the long chain's radii, and whether it returns
+	# to the loop is a question for after PART O's gate.
 	moves[&"ch_slam"] = _move(&"ch_slam", "下砸", {
 		"path": ChainMove.Path.SLAM,
 		"note": "收短半径后过顶下砸。是纵的答案，不是更大的伤害 —— 前两击都在一个平面上，这一击换了轴。",
 		"startup": 0.20, "active": 0.15, "recovery": 0.34,
 		"damage": 26.0, "poise_damage": 30.0, "impulse": 2.6,
 		"arc_degrees": 0.0,
-		"radius_from": 3.9, "radius_to": 2.1,
+		"radius_from": 4.4, "radius_to": 2.1,
 		"peak_height": 2.55, "height_from": 2.55, "height_to": 0.42,
 		"ease": ChainMove.Ease.IN, "ease_power": 2.0,
 		"momentum_gain": 0.22, "momentum_whiff_cost": 0.20, "steer": 0.18,
@@ -120,14 +196,15 @@ static func star_bind() -> ChainMoveset:
 	# ------------------------------------------------------- Heavy: orbit 甩星
 	# Release of the orbit. Radius always reaches the limit: a properly thrown
 	# chain ALWAYS ends up taut, and that is how the player meets TENSION without
-	# ever being told it exists.
+	# ever being told it exists. On a 10m weapon that means the release really does
+	# pay out the whole thing — which is what §A3's "line" and 甩星 have in common.
 	moves[&"ch_launch"] = _move(&"ch_launch", "甩星", {
 		"path": ChainMove.Path.RADIAL,
 		"note": "蓄势回旋的释放。蓄得越久，链头越快越重；提前释放更早到，但更轻。链头必然到达最大半径 —— 扔出去的链一定绷紧。",
 		"startup": 0.06, "active": 0.44, "recovery": 0.34,
 		"damage": 22.0, "poise_damage": 26.0, "impulse": 3.0,
 		"arc_degrees": 0.0,
-		"radius_from": 3.3, "radius_to": 4.6,
+		"radius_from": 3.4, "radius_to": 9.6,
 		"height_from": 1.10, "height_to": 1.05,
 		"ease": ChainMove.Ease.OUT, "ease_power": 1.8,
 		"momentum_gain": 0.10, "momentum_whiff_cost": 0.10, "steer": 0.50,
@@ -137,14 +214,16 @@ static func star_bind() -> ChainMoveset:
 
 	# ------------------------------------------------------------ Taut: Light
 	# 绷切 · the chain is stretched to its limit; this cuts back ALONG that line.
-	# It exists only while taut, which is what makes pressure a resource.
+	# It exists only while taut, which is what makes pressure a resource — and on a
+	# long chain "taut" now means something narrow: you have to have thrown nearly
+	# everything, which is what makes it a state and not a mood.
 	moves[&"ch_snap"] = _move(&"ch_snap", "绷切", {
 		"path": ChainMove.Path.RADIAL,
 		"note": "沿绷紧方向快速切回。只在链绷紧时可用 —— 压力本身是资源。",
 		"startup": 0.05, "active": 0.14, "recovery": 0.20,
 		"damage": 24.0, "poise_damage": 26.0, "impulse": 2.4,
 		"continue_from_head": true, "arc_degrees": 0.0,
-		"radius_from": 4.6, "radius_to": 1.30,
+		"radius_from": 9.55, "radius_to": 1.50,
 		"height_from": 1.05, "height_to": 1.10,
 		"ease": ChainMove.Ease.IN, "ease_power": 1.6,
 		"momentum_gain": 0.16, "momentum_whiff_cost": 0.0, "steer": 0.45,
@@ -162,7 +241,7 @@ static func star_bind() -> ChainMoveset:
 		"startup": 0.10, "active": 0.20, "recovery": 0.26,
 		"damage": 8.0, "poise_damage": 20.0, "impulse": 1.0,
 		"continue_from_head": true, "arc_degrees": 0.0,
-		"radius_from": 4.6, "radius_to": 3.6,
+		"radius_from": 9.55, "radius_to": 8.30,
 		"height_from": 1.05, "height_to": 1.05,
 		"ease": ChainMove.Ease.OUT, "ease_power": 2.0,
 		"momentum_gain": 0.0, "momentum_whiff_cost": 0.0, "steer": 0.60,
@@ -173,15 +252,20 @@ static func star_bind() -> ChainMoveset:
 
 	# ------------------------------------------------------------------- Hook
 	# 缠锁 · thrown forward. Hitting something that can be hooked ATTACHES the
-	# chain to it; hitting a wall costs the spin; hitting nothing leaves a taut
-	# line hanging in the air, which is still a place the player can act from.
+	# chain to it; hitting a wall costs the spin; hitting nothing leaves a line
+	# hanging in the air, which is still a place the player can act from.
+	#
+	# §13-§15 ON A LONG CHAIN: what is caught is attached WHERE IT WAS CAUGHT, not
+	# at the end of the rope. Throwing 9m of chain at something three metres away
+	# leaves six metres of it still loose, and that is exactly the picture the
+	# V3 brief wants — a hook is a hook, not a taut line.
 	moves[&"ch_hook"] = _move(&"ch_hook", "缠锁", {
 		"path": ChainMove.Path.RADIAL,
-		"note": "向前抛出链头。命中可钩目标即挂住；命中墙则掉速回收。",
+		"note": "向前抛出链头。命中可钩目标即挂住；命中墙则掉速回收。挂点就在命中的地方，不在链的尽头。",
 		"startup": 0.16, "active": 0.26, "recovery": 0.30,
 		"damage": 6.0, "poise_damage": 8.0, "impulse": 1.4,
 		"arc_degrees": 0.0,
-		"radius_from": 1.9, "radius_to": 4.6,
+		"radius_from": 1.9, "radius_to": 9.60,
 		"height_from": 1.15, "height_to": 1.15,
 		"ease": ChainMove.Ease.OUT, "ease_power": 1.4,
 		"momentum_gain": 0.0, "momentum_whiff_cost": 0.0, "steer": 0.80,
@@ -191,6 +275,11 @@ static func star_bind() -> ChainMoveset:
 		# released toward the aim, so looking up has to put the head up — otherwise
 		# nothing raised (a gantry, a ruin ring, a tree limb) is ever hookable, and
 		# FORM II's whole subject is anchoring onto exactly those.
+		#
+		# AND A MISS PAYS OUT THE WHOLE WEAPON. `radius_to` is the chain's limit, so
+		# throwing at nothing ends with ten metres of rope in the air and the chain
+		# TAUT — which is the "远：能抛" of the creative direction, and it is how the
+		# player meets tension for the first time without being told it exists.
 		"aim_pitch_scale": 1.0,
 		"camera_trauma": 0.03, "fov_kick": 0.8,
 	})
@@ -198,13 +287,19 @@ static func star_bind() -> ChainMoveset:
 	# ---------------------------------------------------- Bound: Light / Heavy
 	# 拉近斩 · the chain is already wound around the target, so this is the cut
 	# that is only available BECAUSE 缚 happened.
+	#
+	# `radius_from` is small ON PURPOSE and it is not "where the hook landed": that
+	# depends on what was hit and cannot be authored. It is the target the startup
+	# pulls the head toward, so authoring it near the lab's catch distance means the
+	# reel is one movement instead of an out-and-back, and a catch further out is
+	# yanked in — which is what a hard reel IS (§22).
 	moves[&"ch_pull_cut"] = _move(&"ch_pull_cut", "拉近斩", {
 		"path": ChainMove.Path.RADIAL,
 		"note": "快速收链，链头在返回途中攻击。只有缚住之后才存在。",
 		"startup": 0.07, "active": 0.16, "recovery": 0.22,
 		"damage": 22.0, "poise_damage": 22.0, "impulse": 2.0,
 		"continue_from_head": true, "arc_degrees": 0.0,
-		"radius_from": 4.6, "radius_to": 1.35,
+		"radius_from": 3.00, "radius_to": 1.60,
 		"height_from": 1.05, "height_to": 1.10,
 		"ease": ChainMove.Ease.IN, "ease_power": 1.5,
 		"momentum_gain": 0.18, "momentum_whiff_cost": 0.0, "steer": 0.35,
