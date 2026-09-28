@@ -29,8 +29,8 @@ render_mode diffuse_lambert, specular_schlick_ggx, cull_disabled;
 // These were the LINEAR values the water was designed in, sitting inside
 // source_color uniforms and therefore darkened a second time on the way in.
 // The trailing comment on each line is the linear albedo it produces.
-uniform vec3 shallow_colour : source_color = vec3(0.449, 0.542, 0.537); // 0.170 0.255 0.250
-uniform vec3 deep_colour    : source_color = vec3(0.260, 0.373, 0.417); // 0.055 0.115 0.145
+uniform vec3 shallow_colour : source_color = vec3(0.395, 0.480, 0.470); // 0.130 0.198 0.190
+uniform vec3 deep_colour    : source_color = vec3(0.223, 0.320, 0.365); // 0.040 0.085 0.112
 uniform vec3 foam_colour    : source_color = vec3(0.773, 0.809, 0.809); // 0.560 0.620 0.620
 
 // Metres per texture repeat. Larger = bigger, calmer ripples.
@@ -98,7 +98,13 @@ void fragment() {
 	// --- Colour ------------------------------------------------------------
 	// Shallow banks go green-brown; the channel goes cold and dark. This
 	// gradient is most of what tells the eye the water has a bed under it.
-	vec3 col = mix(shallow_colour, deep_colour, smoothstep(0.05, 0.85, depth));
+	//
+	// The ramp was 0.05..0.85 and the river came back PALE: most of its
+	// surface never got past the shallow end, so what the player saw was a
+	// uniform light plane whatever the depth. Compressed to 0.02..0.55 — the
+	// channel darkens while it is still well short of the deepest bed it has,
+	// which is what a river actually looks like from the bank.
+	vec3 col = mix(shallow_colour, deep_colour, smoothstep(0.02, 0.55, depth));
 
 	// --- Bank foam ---------------------------------------------------------
 	// Water arriving at a bank over gravel is not smooth. Foam where the water
@@ -108,22 +114,48 @@ void fragment() {
 	foam += crest * 0.22 * flow;
 	col = mix(col, foam_colour, clamp(foam, 0.0, 0.75));
 
+	col *= 1.0 - ripple_strength * 0.155 + r.x * ripple_strength * 0.36;
 	ALBEDO = col;
 
-	// --- Normal ------------------------------------------------------------
-	// Bend the surface normal by the ripple gradient. In view space, so the
-	// perturbation is rotated into the camera's frame first.
-	vec3 pert = vec3(r.y, 0.0, r.z) * ripple_strength;
-	vec3 w_n = normalize(w_nrm + (INV_VIEW_MATRIX * vec4(pert, 0.0)).xyz);
-	NORMAL = normalize((VIEW_MATRIX * vec4(w_n, 0.0)).xyz);
-	NORMAL_MAP_DEPTH = 1.0;
+	// --- Ripple, through ALBEDO and ROUGHNESS. THERE IS NO NORMAL WRITE. -----
+	//
+	// This file used to perturb NORMAL with the ripple gradient. It never did
+	// anything, and it did worse than nothing: assigning NORMAL in the fragment
+	// stage under gl_compatibility takes the surface OFF the directional light
+	// and leaves it on the sky ambient alone. So since the day this was
+	// written, the river has been lit by blue ambient and nothing else — which
+	// is exactly what it looked like: a flat pale plane with no sun on it at
+	// any angle, at any time of day. See mistvale_terrain.gdshader for the
+	// three-step measurement that established the constraint.
+	//
+	// The ripple therefore has to show through the two channels this renderer
+	// does honour. A crest is lighter and glossier, a trough darker and duller,
+	// and because the two ripple layers drift at different rates the pattern
+	// still MOVES — which is the whole job.
+	//
+	// The grazing term is now built from the camera's world position rather
+	// than from a slice of VIEW_MATRIX multiplied against a world-space normal.
+	// The old expression mixed spaces and only looked right because the water
+	// was unlit.
+	vec3 to_eye = normalize((INV_VIEW_MATRIX * vec4(0.0, 0.0, 0.0, 1.0)).xyz - w_pos);
+	float horizon = 1.0 - clamp(abs(to_eye.y), 0.0, 1.0);
 
-	// --- Light response ----------------------------------------------------
 	// Water is smooth where it is deep and still, dull where it is shallow and
 	// broken, and both are more mirror-like at a glancing angle.
-	float horizon = 1.0 - clamp(abs(dot(normalize(w_n), normalize(VIEW_MATRIX[2].xyz))), 0.0, 1.0);
-	ROUGHNESS = mix(0.34, 0.05, smoothstep(0.2, 0.8, depth)) + crest * 0.25;
-	ROUGHNESS = clamp(ROUGHNESS - horizon * 0.06, 0.02, 0.6);
-	SPECULAR = 0.65 + crest * 0.2;
+	ROUGHNESS = mix(0.34, 0.06, smoothstep(0.2, 0.8, depth)) + crest * 0.20;
+	ROUGHNESS += clamp((r.x - 0.5) * 0.6, -0.18, 0.18);
+	ROUGHNESS = clamp(ROUGHNESS - horizon * 0.05, 0.03, 0.65);
+
+	// SPECULAR WAS 0.65 AND THAT WAS A WHITE SHEET.
+	//
+	// `specular_schlick_ggx` with specular 0.65 on a surface at roughness 0.05
+	// is a mirror, and under gl_compatibility there is no environment to
+	// reflect — so what it reflects is the ambient term, amplified. Measured on
+	// the r2 walk at d=240 (on the bridge, looking down the river): the water
+	// at grazing angle came back as a near-white plane and the river vanished
+	// entirely, on the one frame in the whole walk where the river is the
+	// subject. A river should be dark and legible at every angle; a specular
+	// highlight is a garnish, not the dish.
+	SPECULAR = clamp(0.40 - horizon * 0.24 + crest * 0.10 + r.x * 0.06, 0.06, 0.5);
 	METALLIC = 0.0;
 }

@@ -23,6 +23,24 @@ class_name MistvaleGreybox
 ## How far a blockout box sinks into the terrain so it never floats.
 const SINK := 2.0
 
+## THE PLACEHOLDER LANDMARK COLOUR, and why it is not the obvious warning
+## colour any more.
+##
+## It used to be Color(0.95, 0.72, 0.28) — bright yellow. That is right for an
+## AUDIT pass, where the question is "is the mass where the masterplan says it
+## is" and you want each box unmistakable. It is actively wrong for a LOOK pass:
+## D_RidgeScar is 240 m wide and 36 m tall on the far ridge, so at every point
+## on the walked route the brightest, highest-chroma object in the frame was a
+## yellow rectangle floating in the sky. Measured on the p19 walk sheet: it is
+## the first thing the eye finds in frames 0, 5, 21, 36 and 47 — i.e. in the
+## hero test zone the placeholder was out-competing the hero landmarks it
+## exists to provide scale for.
+##
+## Distant pale stone instead. The masses stay (they are still the only thing
+## giving the mountain side of the map its scale) but they read as far rock
+## rather than as a billboard.
+const PLACEHOLDER_COLOR := Color(0.50, 0.515, 0.545)
+
 
 # =============================================================================
 # Data — masterplan coordinates
@@ -184,7 +202,7 @@ func _build() -> void:
 		for l in LANDMARKS:
 			if HERO_REPLACED.has(l[0]):
 				continue
-			_box(marks, l[1], l[2], l[3], l[4], l[5], Color(0.95, 0.72, 0.28), l[6], l[0])
+			_box(marks, l[1], l[2], l[3], l[4], l[5], PLACEHOLDER_COLOR, l[6], l[0])
 
 	if show_vistas:
 		var v := _layer("Vistas")

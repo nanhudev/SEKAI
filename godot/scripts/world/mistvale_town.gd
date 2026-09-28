@@ -69,14 +69,39 @@ const STOREY := [3.1, 3.9]
 const PITCH := [0.62, 0.98]
 const PLINTH := [0.45, 1.35]
 
-const TIMBER := Color(0.490, 0.424, 0.356)
-const TIMBER_LIGHT := Color(0.552, 0.480, 0.403)
-const PLASTER := Color(0.862, 0.835, 0.774)
-const PLASTER_COOL := Color(0.829, 0.821, 0.789)
-const STONE := Color(0.665, 0.658, 0.642)
-const ROOF := Color(0.532, 0.517, 0.512)
-const ROOF_WARM := Color(0.597, 0.542, 0.490)
-const GLASS := Color(0.373, 0.403, 0.424)
+## ============================================================================
+## MISTVALE PALETTE — the town's half of it.
+## ============================================================================
+##
+## These are sRGB DISPLAY values. They reach the screen through
+## `vertex_color_use_as_albedo`, which converts sRGB to linear on the way in,
+## so they read roughly as authored.
+##
+## The masterplan's §22 asks for ONE palette for the whole settlement —
+## warm aged timber, pale grey plaster, dark blue-green roof, rough stone,
+## natural green vegetation, wet dark river edge — and this file and
+## mistvale_landmarks.gd each had their own. The two did not agree on anything:
+## plaster was 0.862 here and 0.624 in the landmark kit, and the roofs were a
+## mid grey in one and a saturated orange in the other.
+##
+## MEASURED SYMPTOM, from the p19 and r1/r2 walk sheets: in every upper-town
+## frame the brightest thing on screen was a HOUSE WALL, brighter than the sky
+## lit ground around it and brighter than the guild hall standing next to it.
+## A near-white plaster at 0.862 is an albedo of 0.71 linear, which under a
+## 1.0-energy sun with any ambient at all clips — and a clipped white wall
+## flattens into a paper cut-out, which is most of why the settlement read as
+## an untextured blockout no matter how good the roof geometry was.
+##
+## 0.760 keeps plaster pale — it is still the light material — while leaving
+## the sun somewhere to go.
+const TIMBER := Color(0.430, 0.352, 0.268)
+const TIMBER_LIGHT := Color(0.492, 0.412, 0.318)
+const PLASTER := Color(0.760, 0.742, 0.700)
+const PLASTER_COOL := Color(0.724, 0.726, 0.706)
+const STONE := Color(0.596, 0.585, 0.556)
+const ROOF := Color(0.276, 0.318, 0.330)
+const ROOF_WARM := Color(0.336, 0.352, 0.334)
+const GLASS := Color(0.320, 0.356, 0.386)
 
 var _built := 0
 

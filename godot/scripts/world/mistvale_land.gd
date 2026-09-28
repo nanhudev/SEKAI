@@ -56,12 +56,24 @@ const SHADER_ROAD := "res://resources/shaders/mistvale_road.gdshader"
 ## The WIDTH lives in the field (one definition, shared with the paint and the
 ## corridor mask). Only the look is authored here. The size guard in _roads()
 ## makes an index mismatch loud instead of building a trail in plaza paving.
+##
+## `paved` WAS 0.85 ON THE MAIN STREET AND THAT WAS A PAVING-QUILT.
+##
+## The shader reads it as "how much of the sett behaviour applies", and at 0.85
+## the answer was nearly all of it: the whole 7.2 m carriageway was laid stone
+## with the grass creep suppressed to 28%. Combined with a per-stone shade
+## spread of +/-15% and length-of-day coverage, the market square at d=440 came
+## back as a patchwork quilt — light and dark flags with dark seams, reading as
+## loose badly-laid tiles. §6 asks for the opposite: a path people have walked
+## on for a hundred years, which is MOSTLY COMPACTED EARTH with stones surfacing
+## through it. 0.58 with the shader's contrast cuts brings it back to that.
+## The lanes drop proportionally; the trails were already bare earth.
 const ROAD_STYLE := [
-	{"tint": Color(0.455, 0.372, 0.282), "paved": 0.85, "crown": 0.09},  # 0 main street
-	{"tint": Color(0.412, 0.330, 0.248), "paved": 0.45, "crown": 0.07},  # 1 forge lane
-	{"tint": Color(0.428, 0.345, 0.258), "paved": 0.45, "crown": 0.07},  # 2 residential
-	{"tint": Color(0.392, 0.315, 0.236), "paved": 0.35, "crown": 0.06},  # 3 ferry road
-	{"tint": Color(0.402, 0.328, 0.252), "paved": 0.25, "crown": 0.06},  # 4 bank road
+	{"tint": Color(0.455, 0.372, 0.282), "paved": 0.58, "crown": 0.09},  # 0 main street
+	{"tint": Color(0.412, 0.330, 0.248), "paved": 0.34, "crown": 0.07},  # 1 forge lane
+	{"tint": Color(0.428, 0.345, 0.258), "paved": 0.34, "crown": 0.07},  # 2 residential
+	{"tint": Color(0.392, 0.315, 0.236), "paved": 0.24, "crown": 0.06},  # 3 ferry road
+	{"tint": Color(0.402, 0.328, 0.252), "paved": 0.18, "crown": 0.06},  # 4 bank road
 	{"tint": Color(0.430, 0.355, 0.272), "paved": 0.00, "crown": 0.05},  # 5 east ford
 	{"tint": Color(0.352, 0.278, 0.208), "paved": 0.00, "crown": 0.05},  # 6 forest trail
 	{"tint": Color(0.330, 0.272, 0.212), "paved": 0.00, "crown": 0.04},  # 7 cliff route

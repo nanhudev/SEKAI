@@ -56,14 +56,28 @@ extends Node3D
 
 const KitForms = preload("res://scripts/world/kit_forms.gd")
 
-const STONE := Color(0.624, 0.604, 0.565)
-const STONE_DARK := Color(0.462, 0.451, 0.431)
-const STONE_LIGHT := Color(0.706, 0.690, 0.647)
-const ROOF_SLATE := Color(0.325, 0.345, 0.376)
-const ROOF_TILE := Color(0.518, 0.365, 0.282)
-const TIMBER := Color(0.400, 0.318, 0.235)
+## ============================================================================
+## MISTVALE PALETTE — the hero landmarks' half of it.
+## ============================================================================
+##
+## Kept in step with mistvale_town.gd by hand, because a shared palette file
+## would need a `class_name` and the class registry is contended by the parallel
+## sessions (see the kit_forms note above). If you change a colour here, change
+## its twin there — the whole point of §22 is that the guild hall and the house
+## next to it are built from the same materials.
+##
+## The one deliberate difference is that the landmarks run a stop LIGHTER on
+## stone: they are civic, quarried and dressed, where the town is rubble and
+## daub. They are not a different palette; they are the same palette at the
+## public end of it.
+const STONE := Color(0.600, 0.588, 0.556)
+const STONE_DARK := Color(0.404, 0.398, 0.386)
+const STONE_LIGHT := Color(0.664, 0.650, 0.612)
+const ROOF_SLATE := Color(0.272, 0.314, 0.330)
+const ROOF_TILE := Color(0.428, 0.330, 0.268)
+const TIMBER := Color(0.430, 0.352, 0.268)
 const DARK := Color(0.125, 0.137, 0.157)
-const GLASS := Color(0.298, 0.349, 0.404)
+const GLASS := Color(0.298, 0.345, 0.382)
 
 var _built := 0
 

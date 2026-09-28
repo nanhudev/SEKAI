@@ -613,14 +613,37 @@ func _broadleaf(f: Dictionary) -> ArrayMesh:
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
 	var bark: Color = f["bark"]
 	var leaf: Color = f["leaf"]
-	_trunk(st, bark, 3.4, 0.30, 0.22, 6)
-	# Three canopy lobes at different heights and offsets, not one ball: one
-	# ball is the single most recognisable "procedural tree" silhouette there is.
-	# The primary lobe gets the full ring count — it is the silhouette. The
-	# two secondary lobes are the ones seen twenty-at-a-time.
-	_lobe(st, leaf, Vector3(0.10, 4.05, -0.05), 2.05, 1.55, 0.86, 3, 7)
-	_lobe(st, leaf, Vector3(-1.15, 3.25, 0.75), 1.45, 1.15, 0.80, 2, 6)
-	_lobe(st, leaf, Vector3(1.20, 3.55, -0.60), 1.30, 1.05, 0.82, 2, 6)
+	# A SHORT TRUNK, FOUR VISIBLE LIMBS, ROUNDED CROWNS.
+	#
+	# PASS 02 grew a 3.4 m bare pole with a 1.8 m tall canopy pancake balanced
+	# on top of it. From EYE HEIGHT — which is where a first-person game is
+	# always seen from, and therefore the only height that matters — the player
+	# looked straight at the flat underside of that pancake. A stand of them
+	# read as a field of dark mushrooms on sticks, which is exactly the
+	# complaint. Both halves were wrong:
+	#
+	#   * the crown started at 4 m, above the eyeline, so there was nothing to
+	#     see but pole and shadow;
+	#   * `_lobe(squash = 0.86)` made a 4.1 m wide, 1.8 m tall disc. `squash` is
+	#     the vertical half-axis — at 0.86 the "canopy" had a 2.3:1 flatness
+	#     ratio, i.e. it was literally a pancake.
+	#
+	# Now: trunk to 2.5 m, four limbs carrying the crown out and up, and crowns
+	# at squash 1.10-1.35 so they are roughly as deep as they are wide. The
+	# limbs also break the silhouette, which is most of what makes a tree read
+	# as a tree rather than as a lollipop.
+	_trunk(st, bark, 2.5, 0.34, 0.20, 6)
+	_limb(st, bark, Vector3(0.0, 1.95, 0.0), Vector3(1.15, 3.45, -0.40), 0.14)
+	_limb(st, bark, Vector3(0.0, 1.95, 0.0), Vector3(-1.30, 3.05, 0.80), 0.13)
+	_limb(st, bark, Vector3(0.0, 2.20, 0.0), Vector3(0.40, 3.90, 0.50), 0.11)
+	_limb(st, bark, Vector3(0.0, 2.20, 0.0), Vector3(-0.35, 3.60, -1.05), 0.10)
+	# Three lobes at different heights and offsets, not one ball: one ball is
+	# the single most recognisable "procedural tree" silhouette there is.
+	# The primary lobe gets the full ring count — it is the silhouette. The two
+	# secondary lobes are the ones seen twenty-at-a-time.
+	_lobe(st, leaf, Vector3(0.20, 3.15, -0.20), 1.85, 1.35, 0.78, 3, 7)
+	_lobe(st, leaf, Vector3(-1.20, 2.70, 0.75), 1.30, 1.12, 0.80, 2, 6)
+	_lobe(st, leaf, Vector3(1.25, 3.00, -0.60), 1.20, 1.08, 0.82, 2, 6)
 	st.generate_normals()
 	return st.commit()
 
@@ -630,12 +653,19 @@ func _willow(f: Dictionary) -> ArrayMesh:
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
 	var bark: Color = f["bark"]
 	var leaf: Color = f["leaf"]
-	_trunk(st, bark, 2.6, 0.32, 0.26, 6)
-	# Low, wide, drooping: the crown sits below eye level and spreads, which is
+	# Low, wide, drooping: the crown sits BELOW eye level and spreads, which is
 	# what makes a waterline read as a waterline from across the valley.
-	_lobe(st, leaf, Vector3(0.0, 3.10, 0.0), 2.45, 1.05, 1.00)
-	_lobe(st, leaf, Vector3(1.35, 2.55, 0.55), 1.35, 0.80, 0.92)
-	_lobe(st, leaf, Vector3(-1.25, 2.65, -0.70), 1.25, 0.78, 0.94)
+	#
+	# It is also the one tree whose flatness is correct — a willow really is a
+	# wide low dome — but at squash 1.05 over a 2.45 m radius the underside was
+	# a ceiling. Kept wide, given depth, and dropped so the eye passes over the
+	# top of it.
+	_trunk(st, bark, 2.0, 0.36, 0.24, 6)
+	_limb(st, bark, Vector3(0.0, 1.55, 0.0), Vector3(1.55, 2.35, 0.65), 0.15)
+	_limb(st, bark, Vector3(0.0, 1.55, 0.0), Vector3(-1.45, 2.45, -0.80), 0.15)
+	_lobe(st, leaf, Vector3(0.0, 2.55, 0.0), 2.35, 1.12, 1.00)
+	_lobe(st, leaf, Vector3(1.40, 2.15, 0.60), 1.30, 0.92, 0.90)
+	_lobe(st, leaf, Vector3(-1.30, 2.20, -0.75), 1.25, 0.90, 0.92)
 	st.generate_normals()
 	return st.commit()
 
@@ -729,6 +759,37 @@ func _trunk(st: SurfaceTool, c: Color, h: float, r0: float, r1: float, sides: in
 		st.set_color(c1); st.add_vertex(t0)
 
 
+## A tapered limb from `from` to `to`.
+##
+## This exists because the silhouette is the whole job at the distances a tree
+## is seen from, and a bare vertical pole has no silhouette: it is one line. Six
+## triangles per limb, four limbs per broadleaf, is a 24-triangle cost for the
+## difference between a lollipop and a tree.
+func _limb(st: SurfaceTool, c: Color, from: Vector3, to: Vector3, r: float) -> void:
+	var axis := (to - from).normalized()
+	var up := Vector3(0.0, 1.0, 0.0)
+	if absf(axis.dot(up)) > 0.98:
+		up = Vector3(1.0, 0.0, 0.0)
+	var sx := axis.cross(up).normalized()
+	var sy := axis.cross(sx).normalized()
+	var sides := 5
+	for i in sides:
+		var a0 := TAU * float(i) / float(sides)
+		var a1 := TAU * float(i + 1) / float(sides)
+		var d0 := sx * cos(a0) + sy * sin(a0)
+		var d1 := sx * cos(a1) + sy * sin(a1)
+		var b0 := from + d0 * r
+		var b1 := from + d1 * r
+		var t0 := to + d0 * r * 0.55
+		var t1 := to + d1 * r * 0.55
+		st.set_color(c * 0.80); st.add_vertex(b0)
+		st.set_color(c * 0.80); st.add_vertex(b1)
+		st.set_color(c * 1.02); st.add_vertex(t1)
+		st.set_color(c * 0.80); st.add_vertex(b0)
+		st.set_color(c * 1.02); st.add_vertex(t1)
+		st.set_color(c * 1.02); st.add_vertex(t0)
+
+
 func _cane(st: SurfaceTool, c: Color, ox: float, oz: float, h: float, r: float) -> void:
 	var sides := 5
 	for i in sides:
@@ -780,7 +841,13 @@ func _lobe(
 			var d := pts[ri + 1][si]
 			# Top of the lobe catches light, underside is in shadow. Baked, so
 			# it costs nothing at runtime.
-			var shade := 0.62 + 0.38 * (float(ri) / float(rings))
+			#
+			# 0.62 at the bottom was too dark for the only angle that matters:
+			# from eye height the player sees the UNDERSIDE of every nearby
+			# canopy, so the base shade is what a tree actually looks like when
+			# you walk under it. At 0.62 that was a black ceiling. 0.74 keeps
+			# the form readable without pretending the underside is lit.
+			var shade := 0.74 + 0.26 * (float(ri) / float(rings))
 			st.set_color(c * shade); st.add_vertex(a)
 			st.set_color(c * shade); st.add_vertex(b)
 			st.set_color(c * shade); st.add_vertex(cc)
