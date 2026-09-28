@@ -1,0 +1,205 @@
+# HERO ASSET / PROP 产线报告
+
+> 本轮起的 hero asset 一律 **不走 GPT / Chat2Blender**，直接在 Blender 里手搓。
+> 每件资产走：BLOCKOUT → SILHOUETTE REVIEW → SECONDARY FORM → MATERIAL PASS →
+> DETAIL PASS → BLENDER RENDER → CRITIQUE → FIX → GODOT → IN-GAME REVIEW →
+> FIX AGAIN，**至少 2 次视觉迭代**，不准一遍过。
+>
+> 判据词表沿用本项目既有纪律：只到 **TECHNICALLY VERIFIED**（数值/几何实测）
+> 与 **VISUALLY REVIEWED**（出片看过）。**USER GAMEPLAY VERIFIED 只属于用户。**
+>
+> 取证一律引用工具实时打印，不抄记忆里的旧数。剑/鞘的数字来自
+> `godot/tools/shot_weapon_rack.gd` 的探针；手里观感来自
+> `godot/tools/shot_fp_sword.gd`。
+>
+> `BUILD FEWER. BUILD BETTER. ITERATE HARD.`
+
+---
+
+## W01 · 第一人称剑（FP_Sword）
+
+### ASSET
+
+| 项 | 值 |
+|---|---|
+| 名称 | `FP_Sword` — 雾谷制式刀，第一人称英雄武器 |
+| 定位 | 中长、窄、干净利落的轮廓；深色缠柄；克制的护手；金属刃 |
+| 三角面 | **10,378**（预算 20k–80k，占 13–52%） |
+| AABB | **1.0570 × 0.0777 × 0.0697 m**（含柄尾到剑尖） |
+| 材质 | 4 个：`MAT_Sword_Steel` / `MAT_Sword_Inlay` / `MAT_Sword_Fittings` / `MAT_Sword_Grip` |
+| 刃材质 | albedo 0.708/0.717/0.733，**metallic 0.48 / roughness 0.20** |
+| 刃尺寸 | 735 × 47.3 × 8.0 mm（真剖面，非薄片） |
+| 导出 | `assets/models/weapons/fp_sword_v8.glb` → `godot/models/weapons/fp_sword.glb`（同一文件，md5 `4e9e694b…`） |
+| 场景 | `godot/scenes/weapons/Sword_FP.tscn`（出货本体，训练场架子也摆它） |
+
+### WORST PROBLEM
+
+**剑在玩家手里是纯黑一根。** 这不是材质错，是 **光照从来没到过那件武器**。
+
+`ForegroundWeaponLayer` 把 `WeaponRoot` 下的每个 `MeshInstance3D` 复制进一个
+**私有 `SubViewport`**（`own_world_3d = true`）再合成。守卫写成：
+
+```gdscript
+var world := get_viewport().world_3d     # own_world_3d 时永远是 null
+if world == null: return                  # ← 于是整段静默死掉
+```
+
+结果那个私有 `World3D` 里 **既没有 environment 也没有任何灯**。实测打印：
+`find_world_3d().environment == null`，`lights = []`，`meshes = 32`。
+刃的 metallic 0.48 在没有反射源时物理上就该是全黑 —— 撞的正是渲染硬规则里的
+**金属陷阱**，而 §5 明写 **金属绝不能变成黑剑**。
+
+改法一行：`viewport.find_world_3d()`，并把世界 environment 与一盏世界阳光
+镜像进去（**必须在 `_copy_meshes()` 之前**）。带一个**单光源消融**对照证明因果：
+
+| | 最暗像素 |
+|---|---|
+| 修前（同一机位） | **0.000**，每条扫描线都是 |
+| 修后 | 0.069 – 0.404（抛光钢的读数区间） |
+
+记录在 `docs/ART_INTEGRATION_REQUESTS.md` **REQ-8**，请 COMBAT 复核锁链观感
+（那条链此前也在这层里被同样地闷黑）。
+
+**次坏问题**：第一次材质扫描是**在坏光照下做的**，样本全部作废，且「修前」
+帧被重跑覆盖丢了。重做时写了一次性消融脚本，同一机位先灭灯再开灯，A/B 同帧。
+
+### PASS
+
+- **BLOCKOUT / SILHOUETTE** — 窄长轮廓，刃长 735 mm；缩略图下能一眼读出是刀不是棒。
+- **SECONDARY FORM** — 护手 6 × 77.7 × 69.7 mm，克制不喧宾夺主；柄 264 mm 带缠绳层（`Grip_Wrap` 242.7 mm，比 `Grip` 略短，两端露出芯）。
+- **MATERIAL PASS** — 做过 **6 变体扫描**（metallic × roughness）。结论：**0.48 / 0.20 最好**，介电质变体丢掉抛光刃口这一身份。**材质因此未再改动** —— 先修光照，再判材质，否则是在修错的东西。
+- **DETAIL PASS** — 全套件齐：`Habaki`（鎺）34.5 × 40 × 10.2、`Fuchi`（缘头）16 × 32.9 × 23.7、`Kashira`（柄头）22 × 35.5 × 26、`Menuki`（目贯）21.5 × 6.7 × 19.4、`Tang`（茎）323.5 × 15 × 7、`Guard_Motif_F1/B1` 两片纹样（1.2 mm 厚）。
+- **GODOT / IN-GAME** — 探针实测 4 个材质**全部落在正确部件上**，缠柄是 0.253 sRGB 的深色介电质（对）。玩家视角出片（`assets_source/review/fp_sword/`）实拍到亮边抛光钢，挥砍四帧全部是同一把剑在动。
+
+### RESULT
+
+**TECHNICALLY VERIFIED + VISUALLY REVIEWED。** 资产可用，已入仓。
+
+关键的一条是**换模型没有动任何位置或技能**，因为做法不是「换掉节点」而是
+**加子节点**。读代码发现原计划是错的：`iaido_director.gd` 与
+`moment_of_no_moon_director.gd` 会 **硬 `get_node()` `TempSwordVisual`**
+并在整段技能里写它的 `transform`；拖尾 / 辉光 / 虚空描边 / 接触弹簧 / 位移反馈
+也全挂在它上面。**`Player.tscn` 因此一行未改**，全部 transform 通路原样。
+
+- `WeaponRoot/SwordHitbox` **未动**：`(0, −0.2, −1.4)`，size `1.4 × 1.2 × 1.6`。
+- `blade_length` 0.95 → **0.7650**（`Registry.visual_length()`，注意与 `blade_reach` 0.7608 的区别：前者是原点→尖，后者是护手面→尖）。
+- hitbox 盒尺寸原本是**手打的** `Vector3(0.0565, 0.7608, 0.022)`，现已**改为运行时按几何派生**。
+- 该层复制 **32** 个节点（新 rig 在 `_ready()` 扫描之前就装好，所以进得去）。
+
+### SELF CRITIQUE — 还有哪 3 处最差
+
+1. **刃的厚度在贴身距离（0.3–1 m）偏薄。** 8.0 mm 对一把真正的打刀是对的，
+   但第一人称贴脸看时刃口那一片高光的**宽度**不够，读起来像薄片而不是有腹的刀。
+   真实问题在剖面曲线：目前 `THICKNESS` 是渐变而非**镐地/刃取**的折面。
+   下一轮应该把刃横截面从「楔形」改成 **shinogi-zukuri 三段折**，让刃取有一道
+   独立高光。这是我这轮**没做**的最大一件。
+2. **护手纹样几乎看不见。** `Guard_Motif_F1/B1` 只有 **1.2 mm** 厚、28.4 mm 高，
+   在现有光照与握持机位下融进护手本体，等于白做。要么把纹样做成**镂空**（几何
+   上真的漏光），要么删掉 —— 现在这样是「为细节而细节」。
+3. **柄的缠绳是均匀螺旋，没有起止与交叠。** 真缠柄在两端有**留白与收束**，
+   目贯处有交叠鼓包。现在是一段等距螺旋，凑近看会立刻露出「建模感」，
+   正是 brief 里禁的 generic 味。
+
+### NEXT
+
+**W02 · 真剑鞘的 ART PASS 2** —— 见下节。剑本体这轮**不再动**，
+把迭代预算留给鞘，因为鞘目前的配件还是 blockout。
+
+---
+
+## W02 · 真剑鞘（FP_Saya）
+
+### ASSET
+
+| 项 | 值 |
+|---|---|
+| 名称 | `FP_Saya` — 与 FP_Sword 完全配对的刀鞘 |
+| 三角面 | **3,130** |
+| 全长 | **803.0 mm**（膛内衬 790.0 mm） |
+| 外形截面 | **63.8 × 20.3 mm**（含栗形 / kurikata 的外扩） |
+| 材质/部件 | `Saya` 本体、`Saya_Bore_Liner`（膛内衬）、`Saya_Fittings`（金具）、`Saya_Cord`（下绪） |
+| 导出 | `assets/models/weapons/fp_saya.glb`（md5 `5e828a35…`），godot 侧同名 |
+| 装配 | `Sword_FP.tscn` 内 `SheathAnchor/CeremonyScabbard` 下，**identity 摆放** |
+
+### WORST PROBLEM
+
+**鞘口（koiguchi）是 §7 里最重要的部位，而它是唯一不能靠目测验收的地方。**
+「看起来对」和「刀插进去会不会穿模」是两个问题，第二个只能量。
+
+所以先钉死坐标系：剑的帧是**原点 = 柄/护手中心，+Y 指向剑尖，−X 是刃侧**；
+鞘的帧是**原点 = 鞘口平面中心，+Y 沿膛向下，−X 刃侧，+Z 栗形侧**。两帧的约定
+一致，于是「把鞘摆到剑上」在数学上就是一次平移：
+
+```
+seated = 沿 +Y 平移 −tsuba_mouth_y
+```
+
+实测对齐结果（探针在训练场架子上实时打印）：
+
+| 量 | 值 |
+|---|---|
+| 鞘口 x | **−3.405** |
+| 剑护手 x | **−3.400** |
+| 护手面 → 鞘口 间隙 | **5 mm**（`guard_setback`，即缠在拳里那段绳的余量） |
+| 刃截面 | 47.3 × 8.0 mm |
+| 膛内衬截面 | **58.5 × 13.6 mm** |
+| 单边余量 | 宽 ≈5.6 mm，厚 ≈2.8 mm |
+
+**结论：刃整根在膛内，不穿模，且鞘口与护手对齐。** §7 的硬要求是数值满足的。
+
+同一趟还定下并由实测派生出 **藏锋流** 的鞘姿 —— 原先是手写的
+`sheath_scabbard_pose/rot`，现在是 `sheath_pose * Registry.saya_in_sword_frame()`。
+这条**改了 COMBAT 的输入语义**，已写进 REQ-4 待确认。
+
+**次坏问题**：架子探针一开始把**隐藏的入鞘鞘**并进了剑的 AABB，报
+1.0992 × 0.0777 × 0.0697 / 13,508 tris —— 一个「1.1 m 的剑」和一套它其实
+没穿的鞘材质。改成只统计 `is_visible_in_tree()` 后得到正确的
+**1.0570 × 0.0777 × 0.0697 / 10,378 tris**。**探针量错比不量更坏**，
+因为它会让人以为已经验过了。
+
+### PASS
+
+- **BLOCKOUT** — 全长 803 mm，与剑 735 mm 刃长匹配（多余 68 mm 是护手余量与鞘尾）。
+- **SHEATH MOUTH** — 见上，数值级确认对齐 + 不穿模。
+- **装配 / 集成** — 出货场景里鞘是**隐藏的入鞘态**，这使「完全入鞘」成为**一次平移**；训练场另开一格 `SayaExhibit` 单独展示。
+
+### RESULT
+
+**TECHNICALLY VERIFIED。** 几何与装配成立，已入仓。
+**尚未 VISUALLY REVIEWED 到可交付** —— 配件仍是 blockout，见 NEXT。
+
+### SELF CRITIQUE — 还有哪 3 处最差
+
+1. **金具是纯色环，栗形是个球。** `Saya_Fittings` 目前只是几条等宽环带，
+   `kurikata` 是个没有转折的块。这两处是鞘上唯一有「手工感」的位置，
+   现在完全没有 —— 鞘读起来像一根上了漆的管子。
+2. **口沿没有功能性的打磨。** §K 要求磨损是**功能性且有位置的**。鞘口是
+   刀每天进出、最先被磨的地方，应该有**一圈磨白的口沿**与刃侧的一道拉痕。
+   现在口沿和鞘身同色同粗糙度，等于没有使用痕迹。
+3. **漆面没有高光断层。** 鞘身是一整片均匀漆，缺少**指痕/掌痕区的粗糙度变化**
+   与鞘尾的磕碰。均匀漆面在 Godot 里会读成塑料。
+
+### NEXT
+
+W02 **ART PASS 2**：重做金具（缘/栗形/下绪接口）→ 口沿功能性磨损 → 漆面
+粗糙度分区。做完跑 **§8 Iaido 复核**（拔刀/纳刀全程，鞘口不穿模、入鞘有 CLICK）。
+剑本体冻结，不再迭代。
+
+---
+
+## 产线排期（未开始）
+
+| 序号 | 资产 | 状态 |
+|---|---|---|
+| W01 | 第一人称剑 | **DONE**（入仓 `c56cc50`） |
+| W02 | 真剑鞘 | 几何 DONE，**PASS 2 待做** |
+| W03–W05 | 锁链英雄模型（柄 / 链节 / 手持束 / 三叉刀头） | 未开始 |
+| P01–P05 | 道具组 A | 未开始 |
+
+## 两个待办的回执
+
+- **REQ-4（COMBAT）** —— 还需 COMBAT 定：左腰鞘锚点（现在挂在右手武器根上）、
+  五种鞘状态白名单，以及确认「鞘姿改为派生」这件事可以取代手写
+  `sheath_scabbard_pose/rot`。
+- **REQ-8（COMBAT）** —— 武器层现在真的有光了，请顺手复核锁链观感是否也需要
+  跟着调色。
