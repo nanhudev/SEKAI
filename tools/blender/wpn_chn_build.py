@@ -37,71 +37,11 @@ TAU = math.tau
 #  1. PRIMITIVES THIS FAMILY NEEDS AND THE FRAMEWORK DOES NOT HAVE
 # ===========================================================================
 
-def oval_torus(name, a, b, r, mat, axis="Z", n_major=20, n_minor=8, centre=None):
-    """An ELLIPTICAL torus -- a ring whose centre path is an ellipse of
-    semi-axes (a, b) and whose tube is a CIRCLE of radius r.
-
-    `axis` is the hole axis.  "Z" puts the centre path in XY; "Y" puts it in XZ
-    (so the rope runs through the hole).
-
-    `centre` offsets the whole ring.  It is a parameter rather than a mesh
-    transform because the ring's position is part of the CONTRACT here: the
-    trident's origin is its connecting ring, and a ring authored at the origin
-    with its hole on Y has a Y extent of only twice its TUBE radius, which is
-    0.009 m -- less than the 0.04 m of mass the contract requires behind the
-    origin.  Putting the ring where a rope actually enters (behind the hub)
-    satisfies that honestly instead of by loosening the number.
-
-    THE TUBE IS OFFSET ALONG THE ELLIPSE'S NORMAL, NOT ALONG ITS RADIUS, AND
-    THAT IS A MEASURED FIX RATHER THAN A REFINEMENT.  Offsetting along the
-    radial direction (cos, sin) is only correct when a == b.  On an ellipse that
-    guess disagrees with the true outward normal, worst at the ends of the minor
-    axis, and the tube PINCHES there: the first build of this file rendered two
-    wedge-shaped bites out of the link's own silhouette, and the handle's butt
-    ring as a flat ribbon with sharp inner corners.  The AABB is unaffected --
-    at theta = 0 and 90 the two directions agree exactly, which is why every
-    extent assertion kept passing while the pictures were wrong.  For the
-    ellipse (a cos, b sin) the outward normal is proportional to (b cos, a sin).
-
-    This is the piece `_link_geometry()` cannot express either.  It builds a
-    ROUND TorusMesh and squashes it across the rope with `_link_basis`, and a
-    non-uniform basis scale does not just shorten the ring -- it also thins the
-    tube, to 0.66 of its radius on the squashed axis.  That is the "thin band
-    with a huge hole" read that LINK_TUBE_RATIO's own comment diagnoses.  An
-    elliptical centre path with a round tube has the same OUTER envelope and
-    more metal in it.
-    """
-    verts, faces = [], []
-    cx0, cy0, cz0 = centre or (0.0, 0.0, 0.0)
-    ring = []
-    for i in range(n_major):
-        th = TAU * i / n_major
-        ct, st = math.cos(th), math.sin(th)
-        nx, ny = b * ct, a * st
-        nl = math.hypot(nx, ny) or 1.0
-        nx, ny = nx / nl, ny / nl
-        idx = []
-        for j in range(n_minor):
-            ph = TAU * j / n_minor
-            cr, sr = math.cos(ph), math.sin(ph)
-            idx.append(len(verts))
-            if axis == "Y":
-                verts.append((cx0 + a * ct + r * cr * nx,
-                              cy0 + r * sr,
-                              cz0 + b * st + r * cr * ny))
-            else:
-                verts.append((cx0 + a * ct + r * cr * nx,
-                              cy0 + b * st + r * cr * ny,
-                              cz0 + r * sr))
-        ring.append(idx)
-    for i in range(n_major):
-        i2 = (i + 1) % n_major
-        for j in range(n_minor):
-            j2 = (j + 1) % n_minor
-            faces.append([ring[i][j], ring[i][j2], ring[i2][j2], ring[i2][j]])
-    ob = wc.new_mesh(name, verts, faces, mat)
-    wc.recalc_normals(ob)
-    return ob
+# `oval_torus` now lives in the framework.  A floating ring on a staff is
+# the same problem as a chain link -- an elliptical centre path with a round
+# tube -- and the ellipse-normal fix below is worth exactly one copy, not
+# two.  Kept as an alias so every call site in this file is unchanged.
+oval_torus = wc.oval_torus
 
 
 def blade_section(w, t, ridge=0.62):

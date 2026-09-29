@@ -148,6 +148,10 @@ CLASS_SOCKET_OPTIONAL = {
     # its own `sockets` list.  A class-level required list would force a SOC_HEAD
     # onto a chain link.
     "CHN": ["SOC_GRIP", "SOC_LINK_IN", "SOC_LINK_OUT", "SOC_HEAD", "FX_HEAD_CORE"],
+    # A staff is swung along its own length, so the trail anchors belong to the
+    # class -- but only the large archetypes carry a shaft long enough to sweep,
+    # so a small one must not be forced to declare a trail it has nowhere to put.
+    "STF": ["FX_TRAIL_A", "FX_TRAIL_B"],
 }
 
 # Godot renders this line on gl_compatibility with one directional light and a
@@ -491,6 +495,211 @@ def oval_pts(rx, rz, n, y=0.0, offset=0.0, wobble=0.0):
     return pts
 
 
+def oval_torus(name, a, b, r, mat, axis="Z", n_major=20, n_minor=8, centre=None,
+               tilt_deg=0.0, tilt_axis="X"):
+    """An ELLIPTICAL torus -- a ring whose centre path is an ellipse of
+    semi-axes (a, b) and whose tube is a CIRCLE of radius r.
+
+    `axis` is the hole axis.  "Z" puts the centre path in XY; "Y" puts it in XZ
+    (so a rope, or a staff, runs through the hole).
+
+    `centre` offsets the whole ring.  It is a parameter rather than a mesh
+    transform because the ring's position is part of the CONTRACT in this line:
+    a chain trident's origin IS its connecting ring, and a ring authored at the
+    origin with its hole on Y has a Y extent of only twice its TUBE radius --
+    0.009 m, less than the 0.04 m of mass the contract requires behind the
+    origin.  Putting the ring where a rope actually enters satisfies that
+    honestly instead of by loosening the number.
+
+    `tilt_deg` rotates the ring's PLANE about `tilt_axis` through its own
+    centre, which is a different thing from moving it.  Default 0.0 and the
+    rotation is skipped entirely, so every existing caller is bit-identical.
+    It exists because three coaxial rings on a shaft are three hoops: the staff
+    family's orrery archetype needs its rings in three DIFFERENT orbital planes
+    or the whole assembly reads as a hula hoop on a pole.  Authoring the tilt
+    here rather than as an object rotation keeps the part's transform identity,
+    which is what the exporter and every downstream AABB measurement rely on.
+
+    THE TUBE IS OFFSET ALONG THE ELLIPSE'S NORMAL, NOT ALONG ITS RADIUS, AND
+    THAT IS A MEASURED FIX RATHER THAN A REFINEMENT.  Offsetting along the
+    radial direction (cos, sin) is only correct when a == b.  On an ellipse that
+    guess disagrees with the true outward normal, worst at the ends of the minor
+    axis, and the tube PINCHES there: the first build of the chain rendered two
+    wedge-shaped bites out of the link's own silhouette, and the handle's butt
+    ring as a flat ribbon with sharp inner corners.  The AABB is unaffected --
+    at theta = 0 and 90 the two directions agree exactly, which is why every
+    extent assertion kept passing while the pictures were wrong.  For the
+    ellipse (a cos, b sin) the outward normal is proportional to (b cos, a sin).
+
+    It is also the piece the chain's `_link_geometry()` cannot express: that
+    builds a ROUND TorusMesh and squashes it across the rope with `_link_basis`,
+    and a non-uniform basis scale does not just shorten the ring -- it also
+    thins the tube, to 0.66 of its radius on the squashed axis.  An elliptical
+    centre path with a round tube has the same OUTER envelope and more metal.
+
+    SEGMENT COUNT IS NOT COSMETIC HERE EITHER.  A ring's extreme along an axis
+    only exists if a vertex LANDS on that axis, and the extents of a floating
+    ring are exactly what the staff family asserts.  n_major = 24 is a
+    15-degree step, so 90/15 is an integer and vertices land on 0/90/180/270;
+    with n_minor at phase 0 the tube's outermost vertex is exactly at the
+    extreme, so `2 * (a + r)` is the measured width rather than an
+    approximation of it.
+
+    A TILTED RING LOSES THAT GUARANTEE, and the assertion has to be written
+    accordingly: `2 * (a + r)` applies to the axis the ring was generated in.
+    Rotating about X leaves the X extent exactly `2 * (a + r)` -- X is the
+    rotation axis, so every vertex keeps its X -- and turns the Z extent into
+    `2 * (a + r) * cos(tilt)` plus whatever the tube adds back vertically.
+    """
+    verts, faces = [], []
+    cx0, cy0, cz0 = centre or (0.0, 0.0, 0.0)
+    ct_t, st_t = math.cos(math.radians(tilt_deg)), math.sin(math.radians(tilt_deg))
+    ring = []
+    for i in range(n_major):
+        th = TAU * i / n_major
+        ct, st = math.cos(th), math.sin(th)
+        nx, ny = b * ct, a * st
+        nl = math.hypot(nx, ny) or 1.0
+        nx, ny = nx / nl, ny / nl
+        idx = []
+        for j in range(n_minor):
+            ph = TAU * j / n_minor
+            cr, sr = math.cos(ph), math.sin(ph)
+            idx.append(len(verts))
+            if axis == "Y":
+                px, py, pz = a * ct + r * cr * nx, r * sr, b * st + r * cr * ny
+            else:
+                px, py, pz = a * ct + r * cr * nx, b * st + r * cr * ny, r * sr
+            if tilt_deg:
+                if tilt_axis == "X":
+                    py, pz = py * ct_t - pz * st_t, py * st_t + pz * ct_t
+                elif tilt_axis == "Z":
+                    px, py = px * ct_t - py * st_t, px * st_t + py * ct_t
+                else:
+                    raise SystemExit("TORUS bad tilt_axis %r" % (tilt_axis,))
+            verts.append((cx0 + px, cy0 + py, cz0 + pz))
+        ring.append(idx)
+    for i in range(n_major):
+        i2 = (i + 1) % n_major
+        for j in range(n_minor):
+            j2 = (j + 1) % n_minor
+            faces.append([ring[i][j], ring[i][j2], ring[i2][j2], ring[i2][j]])
+    ob = new_mesh(name, verts, faces, mat)
+    recalc_normals(ob)
+    return ob
+
+
+def ngon(n, r, phase_deg=0.0, ratio=1.0):
+    """A closed n-gon cross-section: n points at radius r, optionally squashed
+    and phase-rotated.  `phase_deg` is what makes a faceted crystal possible --
+    two rings at different phases give a twisted waist rather than a prism."""
+    out = []
+    for i in range(n):
+        t = TAU * i / n + math.radians(phase_deg)
+        out.append((r * math.cos(t), r * ratio * math.sin(t)))
+    return out
+
+
+def crystal(name, mat, base, length, levels, direction=None, n=6, cap_lo=0.16):
+    """A FACETED CRYSTAL: a pointed column, built along ANY direction.
+
+    `levels` is [(t_along, radius, phase_deg), ...], t ascending and inside
+    (0, 1).  THE PHASE IS WHAT MAKES IT A CRYSTAL AND NOT A PRISM: two adjacent
+    levels at different phases are joined by facets that TWIST, so the surfaces
+    converge instead of running parallel, and that twist is the single thing the
+    eye reads as "mineral".
+
+    Two apexes are added automatically -- one `cap_lo` of the length below the
+    first level and one at the far end -- because a crystal is defined by its
+    POINTS.  `loft` cannot express this at all: it caps its end rings with a fan,
+    which turns a gemstone into a barrel.
+
+    THE LEVEL COUNT IS THE SHAPE, AND A BARE BIPYRAMID IS THE WRONG SHAPE.
+    The first staff build used two levels and its head read as a LEAF: from the
+    side you see apex, the two waist vertices on the widest axis, apex -- a
+    rhombus, 2.6 : 1, which is a spearhead or a leaf and not a crystal.  Three
+    levels put a nearly-straight column between the belly and the point, which is
+    what a crystal actually looks like: pointed, fat, pointed.
+
+    A FOURTH LEVEL IS STILL NOT THE FIX, AND THE PASS THAT PROVED IT IS THE ONE
+    THAT WENT LOOKING FOR THE REAL CAUSE.  Pass 4 added a fourth level with
+    alternating phases and the plant appeared anyway: the picture was a TEARDROP
+    with a rounded shoulder and a long cone, and a lotus petal on the satellites.
+    Nothing was wrong with the count.  The RADII WERE: (0.020, 0.035, 0.031,
+    0.023) peaks at 28 percent of the length and then falls monotonically, which
+    IS a teardrop -- the profile was drawn as a teardrop and the render was a
+    teardrop, and no number of levels can rescue a profile whose width is a
+    single hump.
+
+    WHAT A CRYSTAL'S PROFILE ACTUALLY IS: a short root, a PRISM BODY that holds
+    nearly constant width over roughly half the length, and then a pyramid cap.
+    The profile below does that -- 0.20 / 0.45 / 0.68 with radii 0.0325 / 0.0335
+    / 0.0275 -- and the consequence is a silhouette with a straight edge along
+    the body, which is the one feature a hump-shaped profile can never have.
+    The lesson generalises past this asset: when a silhouette is wrong, read the
+    PROFILE, not the smoothness, the shading or the facet count.
+
+    ASPECT RATIO IS THE OTHER HALF, and it is what turned the satellites into
+    petals.  Length over width of about 2 : 1 reads as a crystal chip; the same
+    shape at 5.6 : 1 reads as a leaf at any level count or phase.  The satellites
+    were lengthened and widened TOGETHER for that reason -- the fix for a leaf is
+    not to shorten it but to stop it being long and thin.
+
+    WHY IT TAKES A DIRECTION.  A cluster's satellites splay at 30-40 degrees,
+    and a part carrying its own location and rotation looks identical in Blender
+    and is wrong in Godot (see `Rig.finish` -- every downstream anchor is
+    expressed against the model origin).  So the splay is a SWEEP: each level is
+    offset along the direction and laid out on that direction's own perpendicular
+    frame, and the mesh comes out with an identity transform like every other
+    part.  `direction=None` means +Y, which is the common case.
+
+    FLAT SHADING IS MANDATORY AND IS THE CALLER'S JOB.  Smooth these facets and
+    the object is a rounded lump whose emission reads as a solid glow -- and the
+    vertices, extents and triangle count are bit-identical between the gem and
+    the blob, so no assertion in this framework can tell them apart.
+    """
+    b = Vector(base)
+    d = Vector((0.0, 1.0, 0.0)) if direction is None else Vector(direction)
+    d = d.normalized()
+    up = Vector((0.0, 1.0, 0.0)) if abs(d.y) < 0.95 else Vector((0.0, 0.0, 1.0))
+    u = d.cross(up).normalized()
+    v = d.cross(u).normalized()
+
+    def frame(t_along, rr, phase_deg):
+        return [b + d * (length * t_along) + u * px + v * pz
+                for (px, pz) in ngon(n, rr, phase_deg=phase_deg)]
+
+    if not levels:
+        raise SystemExit("CRYSTAL %s needs at least one level" % name)
+    # Rings are appended directly rather than through `add_ring`, because that
+    # helper only understands a fixed Y and these levels can be offset along an
+    # arbitrary direction.
+    verts, rings = [], []
+    for (t_along, rr, phase_deg) in levels:
+        idx = []
+        for p in frame(t_along, rr, phase_deg):
+            idx.append(len(verts))
+            verts.append((p.x, p.y, p.z))
+        rings.append(idx)
+    faces = []
+    p = b - d * (length * cap_lo)
+    apex_lo = len(verts)
+    verts.append((p.x, p.y, p.z))
+    p = b + d * length
+    apex_hi = len(verts)
+    verts.append((p.x, p.y, p.z))
+    for i in range(n):
+        j = (i + 1) % n
+        faces.append([apex_lo, rings[0][j], rings[0][i]])
+        for k in range(len(rings) - 1):
+            faces.append([rings[k][i], rings[k][j],
+                          rings[k + 1][j], rings[k + 1][i]])
+        faces.append([apex_hi, rings[-1][i], rings[-1][j]])
+    ob = new_mesh(name, verts, faces, mat)
+    recalc_normals(ob)
+    return ob
+
+
 def catmull_closed(ctrl, n):
     """Resample a closed control polygon into n points with a Catmull-Rom
     spline.  Used for outlines that need to look drawn rather than built."""
@@ -541,18 +750,29 @@ def recalc_normals(ob):
     bm.free()
 
 
-def shade(ob, smooth_angle=None):
-    """Smooth shading, optionally angle-limited.
+def shade(ob, smooth_angle=None, flat=False):
+    """Smooth shading, optionally angle-limited, optionally FLAT.
 
     Hard-surface parts want a limit so the ridge and the guard rim stay crisp;
     soft parts (a grip, a wrap) want full smooth or they show a facet line down
     the length.  Blender has no stable public API for the auto-smooth node group
     across versions, so the limiter goes through whichever operator exists and
     is skipped if neither does -- shading is not worth a hard dependency.
+
+    `flat=True` is a THIRD mode, not the same as `smooth_angle=0`.  Until the
+    staff family arrived there was no way to ask for it at all: `smooth_angle`
+    of None means FULLY SMOOTH (every polygon gets `use_smooth = True` and the
+    function returns), and a small angle is an angle LIMIT on top of globally
+    smooth faces -- it still welds anything under the limit, including a crystal's
+    perfectly flat facets, into one curved surface.  A faceted gem rendered with
+    either one is a smooth blob whose emission is a solid glow, and NO assertion
+    can see it: the vertices, the AABB, the extents and the triangle count are
+    bit-identical between a faceted crystal and a blob.  Measured on the first
+    staff build, which is why this parameter exists.
     """
     for p in ob.data.polygons:
-        p.use_smooth = True
-    if smooth_angle is None:
+        p.use_smooth = not flat
+    if flat or smooth_angle is None:
         return
     try:
         activate(ob)
@@ -618,9 +838,36 @@ PALETTE = {
     "grip":       dict(base=(0.052, 0.055, 0.066), metallic=0.0, rough=0.735),
     "leather":    dict(base=(0.108, 0.070, 0.048), metallic=0.0, rough=0.660),
     "cloth":      dict(base=(0.300, 0.278, 0.240), metallic=0.0, rough=0.780),
+    # CORDS AND BINDINGS -- deliberately BELOW its neighbour in value.
+    #
+    # `cloth` is a light surface, and on the sword it is used where a light
+    # surface is wanted.  Wound cord is the opposite case and the staff family
+    # found it the hard way: `cloth` at 0.300 albedo on a 0.150 shaft made the
+    # wrap the BRIGHTEST thing on the weapon, so in the first-person view the
+    # grip read as five bands of pale tape and the eye went to the grip of a
+    # staff instead of to its head.  A binding is not a highlight; it is a
+    # shadow line that happens to be made of rope.  At 0.072 -- half the shaft --
+    # the ribs read as cord bedded into the leather under them, which is also
+    # what makes them readable without a texture.
+    "cord":       dict(base=(0.072, 0.058, 0.044), metallic=0.0, rough=0.860),
     # Restrained warm ancient metal, for the ritual archetypes only.
     "inlay":      dict(base=(0.610, 0.470, 0.235), metallic=0.60, rough=0.345, spec=0.60),
     "brass":      dict(base=(0.430, 0.330, 0.150), metallic=0.55, rough=0.400),
+    # The same fitting, aged.  `brass` under one sun and a grey sky renders as
+    # BUTTER -- 0.430 albedo is a bright surface with a saturated hue, and a
+    # 0.55 metallic with no reflection source puts nearly half of that into a
+    # diffuse term that has nothing to bounce off, so it desaturates toward a
+    # chalky yellow.  The staff collars came out the colour of plasticine.
+    #
+    # Two changes, and the second one is the one that matters: the albedo comes
+    # down to 55% so the fitting stops competing with the head, and the METALLIC
+    # comes DOWN to 0.35 rather than up.  This is the iron lesson read in
+    # reverse -- iron at 0.086 went black, brass at 0.55 went chalky, and both
+    # of those are the same mistake: a metallic with no reflection source trades
+    # its own colour for a specular that has nothing to reflect.  Keeping the
+    # metallic low keeps the hue, and 0.235 albedo is 2.7x iron so it cannot
+    # collapse into a silhouette.
+    "brass_dark": dict(base=(0.235, 0.178, 0.086), metallic=0.35, rough=0.450),
     # Dark, rough, nearly-dielectric iron.  Two corrections in one value: the
     # albedo, because 0.238 reads as pale stone rather than iron; and the
     # metallic, because 0.55 on a broad close source floods the plate with
@@ -632,10 +879,29 @@ PALETTE = {
     "stone":      dict(base=(0.190, 0.192, 0.196), metallic=0.0, rough=0.720),
     # Crystal cores.  Emission is what makes these readable in the two-darkness
     # setup; a clear crystal with no emission is an invisible crystal.
-    "crystal":    dict(base=(0.240, 0.470, 0.560), metallic=0.0, rough=0.120,
-                       emission=(0.180, 0.480, 0.620), emit_strength=2.4),
-    "crystal_warm": dict(base=(0.560, 0.400, 0.180), metallic=0.0, rough=0.140,
-                         emission=(0.900, 0.520, 0.180), emit_strength=2.0),
+    #
+    # THREE PASSES TO GET THESE NUMBERS, AND THE FIRST TWO FAILURES ARE THE
+    # USEFUL PART.  (1) At (0.240, 0.470, 0.560) with strength 2.4 the cold
+    # crystal rendered as PALE ICE and the warm one -- (0.560, 0.400, 0.180), a
+    # muted ochre -- rendered as BEIGE CARD.  A bright albedo under a broad
+    # source reads as a bright diffuse surface and the emission only lifts it
+    # further; nothing in the picture says "this is a light".  (2) Darkening the
+    # albedo was right, but raising the STRENGTH to 2.6 kept the same failure
+    # from the other side: emission colour x strength reached 1.8, so the whole
+    # surface sat above 1.0 and any tone mapping compresses it to pastel.  Bright
+    # albedo plus emission is two lights fighting; an overdriven emission is a
+    # light with its colour boiled out of it.
+    #
+    # WHAT THESE VALUES ARE.  Emission colour x strength stays at or below 1.0, so
+    # the colour survives the tone curve, and the albedo is dark enough that the
+    # sun cannot add a second, desaturating layer on top.  The result reads as a
+    # saturated self-lit gem rather than a lit surface.  It deliberately does NOT
+    # bloom: glow is the GAME's job (Godot's glow pass), and a preview that fakes
+    # it would make every bloom decision be made against a fake.
+    "crystal":    dict(base=(0.028, 0.105, 0.185), metallic=0.0, rough=0.115,
+                       emission=(0.045, 0.310, 0.560), emit_strength=1.0),
+    "crystal_warm": dict(base=(0.110, 0.036, 0.010), metallic=0.0, rough=0.135,
+                         emission=(0.560, 0.155, 0.028), emit_strength=1.0),
     # CHAIN -- three values that were already MEASURED, moved here so they are
     # finally guarded.  They lived in `godot/scripts/combat/chain_visual.gd` as
     # LINK_TINT / HEAD_TINT / HANDLE_TINT, set in code, and the metallic numbers
@@ -1441,12 +1707,36 @@ PREVIEW_FRAMES = [
 
 
 def _frame(rig, f):
-    """Camera position and aim, scaled off the measured AABB."""
+    """Camera position and aim, scaled off the measured AABB.
+
+    Two optional keys extend the standard three views, and one family needed
+    both.  A staff is 1.5 m long and its head is 0.15 m, so the standard views
+    frame the whole weapon and show the head as a tenth of the picture: the
+    crystal's facets, the openwork windows and the floating rings are all
+    present and all invisible, which is the "缩略图太小看不见" failure the
+    preview rig exists to avoid.
+
+      focus -- aim at this FRACTION along the contract's long axis instead of at
+               the AABB centre, so a head view is anchored to the head on any
+               archetype rather than to a magic offset that only suits one.
+      dist  -- camera distance in METRES rather than in spans.  A close-up is
+               not a scaled-down wide shot: sharing `span` would push the
+               camera 1.5 m back and defeat the point.
+
+    Both are inert unless a frame asks for them, so the standard three views are
+    unchanged for every family already in the line.
+    """
     mn, mx = aabb(rig.parts)
     c = (mn + mx) * 0.5
     span = max((mx - mn).x, (mx - mn).y, (mx - mn).z)
-    d = Vector(f["dir"]) * span
-    l = Vector(f["look"]) * span
+    if "focus" in f:
+        li, _ls = axis_in_blender(rig.contract["long"])
+        lo, hi = sorted((mn[li], mx[li]))
+        c[li] = lo + (hi - lo) * float(f["focus"])
+    d = Vector(f["dir"])
+    d = d.normalized() * float(f["dist"]) if "dist" in f else d * span
+    l = Vector(f["look"])
+    l = l * float(f["dist"]) if "dist" in f else l * span
     return c + d, c + l, span
 
 
@@ -1489,7 +1779,7 @@ def set_preview_lighting():
     return sun
 
 
-def render_previews(rig, out_dir, tag, flat_only=False):
+def render_previews(rig, out_dir, tag, flat_only=False, extra=None):
     """Write the standard view set.  One process, all views: launching Blender
     per view costs about as long as the build itself.
 
@@ -1509,6 +1799,37 @@ def render_previews(rig, out_dir, tag, flat_only=False):
     # success lines.
     out_dir = os.path.abspath(out_dir)
     scene = bpy.context.scene
+
+    # THE VIEW TRANSFORM IS PART OF MATCHING GODOT, AND IT WAS SIMPLY MISSING.
+    #
+    # Every material decision this line has made was read off these plates, and
+    # the plates were being rendered through whatever Blender's default view
+    # transform happens to be -- AgX, in 4.x and 5.x.  The game does not use AgX:
+    # it runs `gl_compatibility`, which does not implement it, so Godot falls
+    # back to FILMIC.  AgX desaturates and compresses highlights far harder than
+    # Filmic, which means a plate rendered with AgX shows an emissive crystal as
+    # a PASTEL and a warm one as BEIGE CARD -- and the staff family was tuned
+    # twice against that lie before the transform was suspected.
+    #
+    # This is the same class of error as the metal ceiling and as the camera
+    # clip plane: a setting nobody looked at, silently changing every judgement,
+    # where the tool looked like it was working.  Set explicitly, with a fallback
+    # for builds that do not ship Filmic.
+    vs = scene.view_settings
+    for cand in ("Filmic", "Standard", "Raw"):
+        try:
+            vs.view_transform = cand
+            break
+        except Exception:
+            continue
+    try:
+        vs.look = "None"
+        vs.exposure = 0.0
+    except Exception:
+        pass
+    print("VIEW  transform=%s look=%s  (Godot runs gl_compatibility -> FILMIC)"
+          % (vs.view_transform, vs.look))
+
     scene.render.resolution_percentage = 100
     scene.render.image_settings.file_format = "PNG"
     scene.render.film_transparent = False
@@ -1528,7 +1849,7 @@ def render_previews(rig, out_dir, tag, flat_only=False):
     scene.camera = cam
 
     written = []
-    for f in PREVIEW_FRAMES:
+    for f in list(PREVIEW_FRAMES) + list(extra or []):
         loc, look, span = _frame(rig, f)
         flat = f.get("flat", False)
         if flat:
@@ -1704,7 +2025,8 @@ def run(code, build_row, argv=None):
             out_dir = args["out_dir"] or os.path.join(REPO, "assets_source",
                                                       "review", "weapon")
             render_previews(rig, out_dir, "%s_%s" % (code.lower(), row.get("id")),
-                            flat_only=args["flat_only"])
+                            flat_only=args["flat_only"],
+                            extra=row.get("preview_extra"))
         built.append(row.get("id"))
         records.append(report_json(rig, row))
 

@@ -1,0 +1,140 @@
+{
+  "code": "STF",
+  "rows": [
+    {
+      "id": "lattice",
+      "archetype": null,
+      "world_name": "法杖·镂空杖（中杖）",
+      "tier": "hero",
+      "tris": 3288,
+      "parts": [
+        "StaffShaft",
+        "StaffFerrule",
+        "StaffGrip",
+        "StaffWrap",
+        "StaffCollarLow",
+        "StaffCollarHigh",
+        "StaffBand",
+        "HeadCollar",
+        "HeadCap",
+        "HeadCage",
+        "HeadCore",
+        "HeadFinial"
+      ],
+      "sockets": [
+        "SOC_GRIP",
+        "SOC_HEAD",
+        "FX_CORE",
+        "FX_RUNE"
+      ],
+      "aabb_mm": [
+        140.0,
+        121.2,
+        1391.0
+      ],
+      "length_mm": 1391.0,
+      "grip_behind_mm": 302.0,
+      "reach_mm": 1089.0,
+      "section": null,
+      "guard": null,
+      "grip_length_mm": 0.0,
+      "wrapped": false,
+      "seams": 0,
+      "channel": false
+    },
+    {
+      "id": "orrery",
+      "archetype": null,
+      "world_name": "法杖·环杖（长杖）",
+      "tier": "hero",
+      "tris": 3904,
+      "parts": [
+        "StaffShaft",
+        "StaffFerrule",
+        "StaffGrip",
+        "StaffWrap",
+        "StaffCollarLow",
+        "StaffCollarHigh",
+        "StaffBand",
+        "HeadCollar",
+        "FloatRing0",
+        "FloatRing1",
+        "FloatRing2",
+        "RuneNode0",
+        "RuneNode1",
+        "RuneNode2",
+        "RuneNode3",
+        "RuneNode4",
+        "RuneNode5",
+        "RuneNode6",
+        "RuneNode7",
+        "HeadCrystal",
+        "HeadShard0",
+        "HeadShard1",
+        "HeadShard2"
+      ],
+      "sockets": [
+        "SOC_GRIP",
+        "SOC_HEAD",
+        "FX_CORE",
+        "FX_RUNE",
+        "FX_TRAIL_A",
+        "FX_TRAIL_B"
+      ],
+      "aabb_mm": [
+        232.0,
+        232.0,
+        1552.0
+      ],
+      "length_mm": 1552.0,
+      "grip_behind_mm": 322.0,
+      "reach_mm": 1230.0,
+      "section": null,
+      "guard": null,
+      "grip_length_mm": 0.0,
+      "wrapped": false,
+      "seams": 0,
+      "channel": false
+    },
+    {
+      "id": "shard",
+      "archetype": null,
+      "world_name": "法杖·晶杖（短杖）",
+      "tier": "hero",
+      "tris": 2240,
+      "parts": [
+        "StaffShaft",
+        "StaffFerrule",
+        "StaffGrip",
+        "StaffWrap",
+        "StaffCollarLow",
+        "StaffCollarHigh",
+        "StaffBand",
+        "HeadCollar",
+        "HeadCrystal",
+        "HeadShard0",
+        "HeadShard1",
+        "HeadShard2"
+      ],
+      "sockets": [
+        "SOC_GRIP",
+        "SOC_HEAD",
+        "FX_CORE"
+      ],
+      "aabb_mm": [
+        112.7,
+        113.7,
+        1062.0
+      ],
+      "length_mm": 1062.0,
+      "grip_behind_mm": 282.0,
+      "reach_mm": 780.0,
+      "section": null,
+      "guard": null,
+      "grip_length_mm": 0.0,
+      "wrapped": false,
+      "seams": 0,
+      "channel": false
+    }
+  ]
+}

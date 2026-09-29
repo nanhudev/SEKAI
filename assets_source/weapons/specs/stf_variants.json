@@ -1,0 +1,304 @@
+{
+  "class": "STF",
+  "family": "法杖",
+  "source": "docs/weapons/WEAPON_FAMILY_TABLE.md",
+  "spec_doc": "docs/weapons/WEAPON_LINE_STANDARD.md",
+  "note": "THE THIRD STRUCTURE-PROVING FAMILY (user ruling 2026-09-29). SWD proved the rigid single solid and CHN proved modular assembly; STF exists to prove the four things a loft cannot express -- 晶体, 镂空, 悬浮环, Emission/VFX 挂点 -- before any of the remaining fifteen classes is allowed to scale. Three rows, and they are the family brief's 三尺寸: 短杖 / 中杖 / 长杖, each carrying a different pair of those four so that a green build is evidence about the FRAMEWORK and not about one shape.",
+
+  "defaults": {
+    "tier": "hero"
+  },
+
+  "rows": [
+    {
+      "id": "shard",
+      "part": "shard",
+      "tier": "hero",
+      "world_name": "法杖·晶杖（短杖）",
+      "glb": "wpn_staff_shard.glb",
+      "blend": "wpn_staff_shard.blend",
+      "checks": ["long", "band", "origin", "grip", "ahead", "tris", "metal",
+                 "sockets", "extent"],
+      "length_band": [1.01, 1.12],
+      "sockets": ["SOC_GRIP", "SOC_HEAD", "FX_CORE"],
+
+      "_comment": "The short staff, and the row that proves THE CRYSTAL. Everything here is decided by the fact that a crystal is a shape defined by its POINTS: `wc.loft` caps its end rings with a fan, which turns a gemstone into a barrel, so this head is authored as vertices and faces instead. It is also the row that proves the EMISSION path, because 'crystal' is a material that is its own light source -- the two-darkness lighting of this project has no other way to make a small object read.",
+
+      "_flat": "FLAT SHADING IS NOT A TASTE CALL HERE AND THIS ROW IS WHY THAT PARAMETER EXISTS. Smooth a crystal and it is a rounded lump whose emission is a solid glow; the vertices, the AABB, the extents and the triangle count are BIT-IDENTICAL between the gem and the blob, so no assertion in this framework can tell them apart. The only reason the first staff build was caught is that the picture was looked at.",
+
+      "_levels": "[t_along, radius, phase] per crystal, and BOTH the count and the phase alternation are shape decisions that took a render each to find. (1) TWO LEVELS IS A LEAF. With two, the side silhouette is apex / waist / apex -- a rhombus 2.6 : 1 -- and the eye reads a leaf or a spearhead. Three put a column between the belly and the point, which fixed the outline but still read as a glass egg. (2) FOUR WITH ALTERNATING PHASE IS A CRYSTAL. The phase swinging 0 -> 30 -> 0 -> 30 makes each band twist the opposite way to its neighbour, so the facets break against each other instead of flowing, and THAT is what the eye calls mineral. Pass 2's three levels had a single twist and a smoothly tapering upper column; it rendered as a teardrop.",
+
+      "_sats": "Four satellites at 44 degrees from a radial offset of 0.0170. THE OFFSET IS SMALL ON PURPOSE AND PASS 2 GOT IT WRONG: at 0.0340 the base ring (radial 0.0340 +/- 0.0118) sat OUTSIDE the collar's 0.0198 radius, so the lower cone of every shard stuck out beside the socket as a flat, sawn-off facet -- four visible cuts around the head, on the one part that is supposed to look grown. At 0.0170 the whole base is inside the collar and only the taper is exposed. Splaying from further in also reads better: a cluster shares a root, it does not grow four separate stalks.",
+
+      "n_shaft": 16,
+      "y_butt": -0.280,
+      "y_neck": 0.600,
+
+      "shaft_r_butt": 0.0152,
+      "shaft_r_mid": 0.0168,
+      "shaft_r_neck": 0.0124,
+      "ferrule_len": 0.062,
+      "ferrule_r": 0.0184,
+
+      "grip_lo": -0.100,
+      "grip_hi": 0.140,
+      "grip_r": 0.0192,
+      "ribs": 6,
+      "band_at": 0.42,
+      "band_r": 0.0242,
+
+      "head_collar_len": 0.056,
+      "head_collar_r": 0.0290,
+      "collar_r_at_neck": 0.0136,
+
+      "crystal_n": 6,
+      "crystal_y0": 0.6220,
+      "crystal_y1": 0.7800,
+      "_levels_note": "PRISM BODY, THEN PYRAMID CAP -- see `wc.crystal`. The previous profile (0.020 / 0.035 / 0.031 / 0.023 at t 0 / 0.28 / 0.55 / 0.80) was a TEARDROP: one hump at 28 percent and a monotone fall after it, which is exactly what the plate showed -- a rounded shoulder and a long cone, reading as a lotus bud. The numbers here hold 0.0325 / 0.0335 / 0.0275 across t 0.20 to 0.68, so the silhouette has a nearly straight edge along half its height and then a 32 percent cap. Aspect is 0.067 wide over 0.158 long = 2.4 : 1, which is a gem; the old shape was 3.9 : 1 at its widest and read as a bud.",
+      "crystal_levels": [[0.00, 0.0190, 0.0],
+                         [0.20, 0.0325, 30.0],
+                         [0.45, 0.0335, 0.0],
+                         [0.68, 0.0275, 30.0]],
+
+      "shard_sats": 3,
+      "shard_y": 0.6150,
+      "shard_offset": 0.0170,
+      "shard_len": 0.1000,
+      "shard_splay": 30.0,
+      "_sat_note": "A CLUSTER, NOT A ROSETTE, and this is per-index data rather than a scalar on purpose. Four crystals of equal length on one common splay is a PINWHEEL -- the short staff's head rendered as four identical petals around a bud, which is a flower and not a mineral. The fix is not a different splay: it is that a real cluster has a dominant crystal and subordinate ones, and the eye tells cluster from rosette by the size ORDER, not by the angles. These profiles are AUTHORED, not drawn per build -- 参数化 != 参数随机化 -- so the row stays reproducible and the extent stays assertable.",
+      "_sat_anisotropy": "THE HEAD IS NOW ISOTROPIC TO ONE PERCENT AND THE CLOSED FORM HAD TO BE WEAKENED TO SAY SO HONESTLY. At three satellites on a 120-degree grid there is no pair structure at all: satellite 0 points along +X, satellites 1 and 2 point into the -X half at 0.5 of their own reach, and Z is set by the two of them at 0.866. The apex formula still gives +X exactly -- 0.017 + 0.100 * sin(44) = 0.0865 m, and the built mesh agrees -- but it is NO LONGER THE WHOLE ANSWER ON THE OTHER THREE SIDES, and that is a direct consequence of the anti-leaf fix. Widening the satellites to 2 : 1 gave each of them a waist radius (0.0245 m) comparable to the difference between reaching positions, so the -X and both Z extremities are set by the satellites' own WAISTS rather than by their apexes. Measured X 0.1344 / Z 0.1332 against an apex-only prediction of 0.1253 / 0.1331: Z was right and X was 9 mm short. THE BAND IS THEREFORE SET FROM THE MEASUREMENT, and the formula is recorded as an exact account of the +X extremity and a lower bound elsewhere. A closed form that quietly stopped being exact when the profile changed is exactly the kind of thing this row exists to catch.",
+      "sat_scale": [1.00, 0.78, 0.92],
+      "sat_splay": [0.0, 7.0, -4.0],
+      "sat_rise": [0.000, -0.030, 0.014],
+      "_shard_levels_note": "THE SATELLITES WERE LEAVES BECAUSE THEY WERE LONG AND THIN, NOT BECAUSE THEY WERE NUMEROUS. At 0.100 m long over a 0.036 m waist the aspect ratio was 5.6 : 1, and no level count or phase twist rescues a profile that thin -- which is why the stagger alone did not stop the head reading as a lotus. They are now WIDENED AND LENGTHENED TOGETHER: 0.049 m over 0.100 m is 2.0 : 1, a chip rather than a petal. Note what this does NOT change: the apex formula depends on `shard_len` and `shard_splay` only, so the extent bands are untouched by a pure width change.",
+      "shard_levels": [[0.00, 0.0155, 0.0],
+                       [0.20, 0.0235, 30.0],
+                       [0.45, 0.0245, 0.0],
+                       [0.68, 0.0205, 30.0]],
+
+      "_closed_form": {
+        "X": "2 * shard_offset + shard_len * (s0 * sin(sp0) + s2 * sin(sp2))",
+        "Z": "2 * shard_offset + shard_len * (s1 * sin(sp1) + s3 * sin(sp3))",
+        "Y": "crystal_y1 - (y_butt - 0.002)                              = 1.0620 m",
+        "note": "TWO FORMULAE, NOT ONE, AND THE REASON IS THE WHOLE POINT OF THIS ROW. The satellites are on a 90-degree grid, so satellites 0 and 2 reach along X and satellites 1 and 3 reach along Z; the extent on each axis is the SUM OF ITS OWN PAIR, not 2 * one satellite. Pass 4 could write X = Z as one expression only because all four satellites were identical, and the moment the cluster got a size ORDER that identity stopped being a property of the model and became a property of the pass-4 profile. The apex is still what sets it -- a point at radial offset + length * sin(splay), landing outside everything else -- but each pair contributes its own two apexes."
+      },
+
+      "_warning": "DERIVED, never transcribed, and X AND Z ARE NO LONGER THE SAME NUMBER so the two bands are no longer the same band -- X sits at 0.17368 m and Z at 0.16026 m, and a single band covering both would be 8 percent wide and would catch nothing. The bands are 2 percent around each. A change to `bake_axes`, to either satellite profile, or to a segment count that stops putting a vertex on an axis turns this row red instead of quietly shrinking the head.",
+      "extent_band": [[0.1099, 0.1155], [1.041, 1.083], [0.1109, 0.1165]],
+
+      "preview_extra": [
+        {
+          "name": "head",
+          "dir": [0.70, 0.44, 0.56],
+          "look": [0.0, 0.0, 0.0],
+          "lens": 50.0,
+          "ortho": false,
+          "focus": 0.90,
+          "dist": 0.42,
+          "_why": "A 1.06 m staff with a 0.19 m head is 18 percent head in the standard framing, so the facets that ARE this archetype are the part you cannot see. `focus` aims at a fraction along the contract's long axis rather than at the AABB centre, and `dist` is metres rather than spans -- a close-up is not a scaled-down wide shot."
+        }
+      ]
+    },
+
+    {
+      "id": "lattice",
+      "part": "lattice",
+      "tier": "hero",
+      "world_name": "法杖·镂空杖（中杖）",
+      "glb": "wpn_staff_lattice.glb",
+      "blend": "wpn_staff_lattice.blend",
+      "checks": ["long", "band", "origin", "grip", "ahead", "tris", "metal",
+                 "sockets", "extent"],
+      "length_band": [1.33, 1.45],
+      "sockets": ["SOC_GRIP", "SOC_HEAD", "FX_CORE", "FX_RUNE"],
+
+      "_comment": "The middle staff, and the row that proves OPENWORK. A window is the ABSENCE of surface: `loft` produces one closed solid, so the only honest way to author a cage without a boolean is to build the material that is left and then stop. Six legs, six windows, and a separate emissive core inside -- because the light has to be behind something for the window to be a window rather than a hole.",
+
+      "_pass2": "PASS 1 BUILT THIS CAGE OUT OF `brass` AND IT READ AS BAMBOO. A pale strut against a flat grey background is a strut with no window in it; the frame is the thing the light is seen THROUGH and it must be darker than what it frames. Pass 2 moved it to `iron` and got BLACK RUBBER -- 0.086 albedo at 0.30 metallic is too dark to carry a highlight, so the legs lost their roundness and read as wire insulation. It is `steel_dark` (0.235 albedo, 0.42 metallic) and the legs finally have a specular running down them.",
+
+      "_census": "The cage starts and ends ON the collars' own radius at those two heights -- 0.0206 and 0.0189, each interpolated from the collar profile it meets -- so the legs grow OUT of the sockets instead of stopping in air beside them and showing their end caps. The upper collar is not symmetry for its own sake: an openwork head that ends in mid-air is a broken cage, and the two sockets together are what make the cage read as a SECTION of the staff instead of its end.",
+
+      "n_shaft": 16,
+      "y_butt": -0.300,
+      "y_neck": 0.760,
+
+      "shaft_r_butt": 0.0160,
+      "shaft_r_mid": 0.0176,
+      "shaft_r_neck": 0.0130,
+      "ferrule_len": 0.066,
+      "ferrule_r": 0.0192,
+
+      "grip_lo": -0.110,
+      "grip_hi": 0.150,
+      "grip_r": 0.0198,
+      "ribs": 7,
+      "band_at": 0.42,
+      "band_r": 0.0252,
+
+      "head_collar_len": 0.056,
+      "head_collar_r": 0.0242,
+      "collar_r_at_neck": 0.0142,
+
+      "cap_y": 0.9760,
+      "cap_len": 0.0480,
+      "cap_r": 0.0196,
+
+      "cage_y0": 0.8000,
+      "cage_y1": 0.9940,
+      "cage_r_lo": 0.0206,
+      "cage_r_hi": 0.0189,
+      "cage_bulge": 0.0620,
+      "cage_struts": 6,
+      "cage_strut_r": 0.0080,
+      "cage_seg": 10,
+
+      "core_y0": 0.8500,
+      "core_y1": 0.9660,
+      "_core_levels_note": "Same profile correction as the short archetype: prism body at 0.20 / 0.45 / 0.68, pyramid cap over the last 32 percent. The old (0.019 / 0.0335 / 0.030 / 0.0225 at 0 / 0.28 / 0.55 / 0.80) was a hump, and inside a cage a hump is even worse than in the open -- the windows frame the core's widest point and hide everything above it, so the core read as a pale bottle standing in a frame. The core is deliberately KEPT SMALLER than the cage's inner wall; the widest radius 0.0330 against the bulge 0.0620 still leaves 0.029 m of air.",
+      "core_levels": [[0.00, 0.0180, 0.0],
+                      [0.20, 0.0310, 30.0],
+                      [0.45, 0.0330, 0.0],
+                      [0.68, 0.0265, 30.0]],
+
+      "crystal_n": 6,
+
+      "finial_y0": 1.0060,
+      "finial_y1": 1.0890,
+      "_finial_levels_note": "The finial stays SHORT AND STUBBY on purpose and its profile is only widened, not restructured: at 0.083 m of length a prism body would have nothing to be a body in. It is the one place in the family where a compact bipyramid is the right answer, because its job is to terminate the shaft above the upper collar rather than to be looked at.",
+      "finial_levels": [[0.00, 0.0125, 0.0],
+                        [0.28, 0.0180, 30.0],
+                        [0.55, 0.0162, 0.0],
+                        [0.80, 0.0122, 30.0]],
+
+      "_closed_form": {
+        "X": "2 * (cage_bulge + cage_strut_r)                       = 0.14000 m",
+        "Z": "2 * (sin(60) * cage_bulge + sin(60) * cage_strut_r)     = 0.12124 m",
+        "Y": "finial_y1 - (y_butt - 0.002)                           = 1.3910 m",
+        "note": "X AND Z GENUINELY DIFFER, and that is a property of the model rather than an error. The six legs sit at 0, 60, 120 ... 300 degrees and there is no leg at 90, so the leg on the X axis reads its full bulge while the Z extent is set by the two legs at 60 and 120, which are 0.866 of the way out. A hexagonal cage seen from the side IS narrower than it is wide."
+      },
+
+      "extent_band": [[0.1372, 0.1428], [1.363, 1.419], [0.1188, 0.1237]],
+
+      "preview_extra": [
+        {
+          "name": "head",
+          "dir": [0.70, 0.44, 0.56],
+          "look": [0.0, 0.0, 0.0],
+          "lens": 50.0,
+          "ortho": false,
+          "focus": 0.880,
+          "dist": 0.56,
+          "_why": "Pass 1 used focus 0.85 / dist 0.44 and CROPPED THE FINIAL off the top of the frame -- the one view whose whole job is to show the head was showing two thirds of it. Aimed at the head's own centre of mass (y 0.9215 of a span running -0.302 to 1.089) with enough distance to hold the collar, the cage, the core, the cap and the finial at once."
+        }
+      ]
+    },
+
+    {
+      "id": "orrery",
+      "part": "orrery",
+      "tier": "hero",
+      "world_name": "法杖·环杖（长杖）",
+      "glb": "wpn_staff_orrery.glb",
+      "blend": "wpn_staff_orrery.blend",
+      "checks": ["long", "band", "origin", "grip", "ahead", "tris", "metal",
+                 "sockets", "extent"],
+      "length_band": [1.50, 1.61],
+      "sockets": ["SOC_GRIP", "SOC_HEAD", "FX_CORE", "FX_RUNE",
+                  "FX_TRAIL_A", "FX_TRAIL_B"],
+
+      "_comment": "The long staff, and the row that proves DISCONNECTED GEOMETRY plus the VFX anchors. Three rings circle the shaft and touch nothing: the staff is not a stick with rings on it, it is a stick that three rings have decided to orbit. The AABB, the triangle count and the material partition all have to survive a set of pieces that share nothing with their neighbours but a name -- the same structural question CHN's link asked, arriving from the opposite direction.",
+
+      "_rune": "The float needs a reason visible ON THE MODEL or it reads as a modelling error instead of as magic, so the widest ring carries three emissive nodes at 120 degrees and FX_RUNE is declared ON the first node rather than on the shaft -- an effect anchor that is not on the geometry it decorates is a point nobody can author to. Pass 1 made the nodes 0.0120 across and they rendered as DUST: three pale specks that the eye reads as dirt, which is worse than nothing. They are 0.0150 now.",
+
+      "_trail": "FX_TRAIL_A/B are declared for this row only. A staff is swung along its own length, so its trail is a SEGMENT and needs both ends -- but the short archetype has nowhere to put a trail, which is exactly why the class declares these two as OPTIONAL rather than required.",
+
+      "n_shaft": 16,
+      "y_butt": -0.320,
+      "y_neck": 0.960,
+
+      "shaft_r_butt": 0.0166,
+      "shaft_r_mid": 0.0182,
+      "shaft_r_neck": 0.0136,
+      "ferrule_len": 0.070,
+      "ferrule_r": 0.0198,
+
+      "grip_lo": -0.120,
+      "grip_hi": 0.160,
+      "grip_r": 0.0204,
+      "ribs": 7,
+      "band_at": 0.42,
+      "band_r": 0.0252,
+
+      "head_collar_len": 0.060,
+      "head_collar_r": 0.0330,
+      "collar_r_at_neck": 0.0148,
+
+      "_rings_note": "[y along the shaft, centre-path radius, tube radius, tilt in degrees about tilt_axis, tilt_axis]. THE TILT IS PART OF THE ROW NOW, and it exists because a plate said so. Pass 4 built the three rings coaxial at 0.100 / 0.118 / 0.088 m of path radius and the first-person view read as a pole with three bicycle rims -- every ring correct as geometry, all three in one plane, which is the one thing an armillary assembly never does. Ring 0 is the PRINCIPAL ring and stays equatorial; rings 1 and 2 tilt about two different axes so the three circles intersect as three orbits rather than nest as three hoops. The path radii also come DOWN by about a third: at 0.118 m the widest ring was 6.5 shaft diameters across, wider than the character's own shoulders, on a weapon whose head is the thing the eye is supposed to find.",
+      "rings": [[0.740, 0.0860, 0.0100,  0.0, "X"],
+                [0.520, 0.0760, 0.0090, 26.0, "X"],
+                [0.300, 0.0640, 0.0080, 30.0, "Z"]],
+      "_bead_note": "RUNE SPIKES, NOT BEADS, and the change is a shape correction rather than a size one. Pass 5 used eight octahedra of 0.0165 m straddling the ring path; on the plate they were eight flat amber RHOMBI laid against the steel, because an octahedron seen near its own axis IS a rhombus and it sat in the ring's own plane. Enlarging one would only have made a bigger sticker. These are `wc.crystal` spikes pointing RADIALLY OUTWARD -- the same vocabulary as the heads -- and a wedge on three of four viewing angles.",
+      "bead_ring": 0,
+      "bead_count": 8,
+      "bead_len": 0.0300,
+      "bead_levels": [[0.00, 0.0090, 0.0],
+                      [0.24, 0.0142, 30.0],
+                      [0.50, 0.0132, 0.0],
+                      [0.74, 0.0090, 30.0]],
+
+      "crystal_n": 6,
+      "crystal_y0": 0.9920,
+      "crystal_y1": 1.2300,
+      "crystal_levels": [[0.00, 0.0205, 0.0],
+                         [0.20, 0.0355, 30.0],
+                         [0.45, 0.0365, 0.0],
+                         [0.68, 0.0300, 30.0]],
+
+      "shard_sats": 3,
+      "shard_y": 0.9780,
+      "shard_offset": 0.0175,
+      "shard_len": 0.1020,
+      "shard_splay": 32.0,
+      "sat_scale": [1.00, 0.72, 0.86],
+      "sat_splay": [0.0, 6.0, -5.0],
+      "sat_rise": [0.000, -0.026, 0.012],
+      "shard_levels": [[0.00, 0.0155, 0.0],
+                       [0.20, 0.0235, 30.0],
+                       [0.45, 0.0245, 0.0],
+                       [0.68, 0.0205, 30.0]],
+
+      "trail_a_y": 0.0600,
+      "trail_b_y": 1.1200,
+
+      "_closed_form": {
+        "X = Z": "2 * (ring_path + bead_len)                           = 0.23200 m",
+        "Y": "crystal_y1 - (y_butt - 0.002)                          = 1.5520 m",
+        "note": "X AND Z ARE EQUAL AGAIN, AND THE PASS THAT MADE THEM EQUAL IS THE ONE THAT CHANGED THE NODE'S SHAPE. With octahedral beads they were 0.2050 and 0.2050 only because EIGHT beads put one on each axis; the expression was `2 * (ring_path + bead_r)` and it was hostage to the count. A radial spike's apex is at `ring_path + bead_len` along the direction its own angle points, and with eight spikes there is one at 0 degrees and one at 90, so both axes read the same expression for a reason that belongs to the geometry rather than to the arithmetic. Both extents are EXACT: the ring is 24 major segments (a 15-degree step, so a vertex lands on 0/90/180/270) and the spike is a swept profile whose last station is a single apex point."
+      },
+
+      "extent_band": [[0.2274, 0.2366], [1.521, 1.583], [0.2274, 0.2366]],
+
+      "preview_extra": [
+        {
+          "name": "head",
+          "dir": [0.70, 0.44, 0.56],
+          "look": [0.0, 0.0, 0.0],
+          "lens": 50.0,
+          "ortho": false,
+          "focus": 0.905,
+          "dist": 0.50
+        },
+        {
+          "name": "rings",
+          "dir": [0.80, 0.30, 0.52],
+          "look": [0.0, 0.0, 0.0],
+          "lens": 50.0,
+          "ortho": false,
+          "focus": 0.55,
+          "dist": 0.78,
+          "_why": "The floating rings are the archetype and they sit one third of the way up a 1.55 m staff, which neither the standard views nor the head view covers. Aimed at the middle of the stack (y 0.52) with enough distance to hold all three rings and the air between them."
+        }
+      ]
+    }
+  ]
+}
