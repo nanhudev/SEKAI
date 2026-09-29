@@ -104,10 +104,16 @@ Suno / SFX / 裁切 / 分层 / FFmpeg / Godot 总线 / 战斗时序
 
 ChatGPT Web → Blender Python → Blender MCP → GLB → Godot
 
+> **英雄武器线的例外（用户 2026-09-29 指令）**：`# 这一批资产不要走 GPT / Chat2Blender` / `# DIRECTLY MODEL IN BLENDER`。
+> 武器家族由 `tools/blender/wpn_<fam>_build.py` 在 headless Blender 里**直接建模**，`weapon_common.py` 出契约/断言/导出。流程仍是
+> `BLOCKOUT → SILHOUETTE REVIEW → SECONDARY FORM → MATERIAL PASS → DETAIL PASS → BLENDER RENDER → CRITIQUE → FIX → GODOT → IN-GAME REVIEW → FIX AGAIN`，
+> **≥2 次视觉迭代**；`BUILD FEWER. BUILD BETTER. ITERATE HARD.`
+
 | 资产 | ID | 优先级 | 状态 | 备注 |
 | --- | --- | --- | --- | --- |
 | First Person Sword | C2B-01 | P0 | **DONE · 待用户手感验收** | 真剑已入 `godot/models/weapons/fp_sword.glb`（**10,378 tris**，AABB 1.0570 × 0.0777 × 0.0697，4 材质）。**换模型未动位置与技能**：作为子节点挂进 `TempSwordVisual`，`Player.tscn` 一行未改，`SwordHitbox` 仍是 `(0, −0.2, −1.4)` / `1.4×1.2×1.6`。训练场武器架摆出货本体。见 `HERO_ASSET_REPORTS.md` W01 |
 | First Person Saya（剑鞘） | C2B-01b | P0 | **几何 DONE · PASS 2 待做** | 803 mm，膛内衬 790 mm；鞘口 x −3.405 对齐剑护手 x −3.400，刃 47.3 × 8.0 整根在膛内**不穿模**。金具/栗形/口沿磨损仍是 blockout。见 `HERO_ASSET_REPORTS.md` W02 |
+| Star-Bind Chain · 柄 / 链节 / 三叉刀头 | C2B-01c | P0 | **英雄模型 DONE（3 件）· 未入 Godot** | 柄 0.2805 m / 1624 tris；链节 0.09110 × 0.06013 × 0.01367 m / 320 tris（与 `stow_diag.gd` 闭式逐位一致）；三叉头 0.7800 m / 1096 tris。三件均通过 `ASSERT` + `verify_glb`。**手持束 `HELD_ARC_A..D` 未开始**，被 REQ-9 挡住（要 COMBAT 先发 `visible` + `release 0..1`）。三件均**未做 IN-GAME REVIEW**。见 `HERO_ASSET_REPORTS.md` W03 · `docs/weapons/CHAIN_ASSET_DECOMPOSITION.md` |
 | FP Hand / Forearm | C2B-02 | P0 | SPEC READY | brief 本次补写 |
 | Lesser Ruin Sentinel | C2B-03 | P0 | SPEC READY | brief 本次补写 |
 | Magic Catalyst | C2B-04 | P1 | SPEC READY | brief 本次补写 |

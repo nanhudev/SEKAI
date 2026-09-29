@@ -191,13 +191,101 @@ W02 **ART PASS 2**：重做金具（缘/栗形/下绪接口）→ 口沿功能�
 
 ---
 
+## W03 · 锁链英雄模型 · 柄 / 链节 / 三叉刀头（缚星链）
+
+**ASSET**
+三件可复用命名件，不是三个变体皮肤。用户 2026-09-29 裁定：
+`WPN_CHAIN_HANDLE / WPN_CHAIN_LINK / WPN_CHAIN_TRIDENT / WPN_CHAIN_HELD_ARC_A..D`，
+"而不是再生成那坨程序圆盘"。
+
+| 件 | GLB | 包围盒 | tris | 材质 |
+|---|---|---|---|---|
+| 柄 | `wpn_chain_handle.glb` | 0.2805 m（柄尾环 Ø0.083） | 1624 | `chain_grip` / `chain_head` / leather |
+| 链节 | `wpn_chain_link.glb` | 0.09110 × 0.06013 × 0.01367 m | 320 | `chain_link` |
+| 三叉刀头 | `wpn_chain_trident.glb` | 0.7800 m，叉展 0.26 m | 1096 | `chain_head` / iron |
+
+Master（LFS）：`assets_source/weapons/masters/chn/wpn_chain_*.blend`。
+出片：`assets_source/review/weapon/wpn_chn/`（9 张）＋ `wpn_chn_sheet/SHEET.png`。
+
+**WORST PROBLEM**
+**链头的第一版**。剪影和 3/4 都是**星芒** —— 而这正是
+`chain_visual.gd` 自己点名的失败（"five pale prisms radiating from one point is a
+STARFISH … the two shapes are not distinguished by width, they are distinguished by
+whether the points SHARE A DIRECTION"）。原因不是宽度，是**后钩和前叉一样长、一样张**
+（0.195 m / 148°），于是头变成围绕轮毂的四个等长尖，而不是三个。同时轮毂只有
+0.032 m 半径，撑一根 0.735 m 中刺 —— 3/4 里三根棱是"在一个点上会合"，不是
+"长在一个身体上"。
+
+**PASS**
+- PASS A（几何 + 断言 + GLB）：`ASSERT` + `verify_glb` 三件全绿。
+- PASS B（视觉迭代 1）：星芒 → 三叉。后钩收成 0.150 m / 160° 的**贴毂短倒钩**
+  （这才是 钩/拉扯 要的），起点上移到 0.138 让它们夹**轮毂**而不是夹环；
+  轮毂 → 0.0355 m，中刺根部加宽到 0.018；叉 19°→18° 并缩短。
+- PASS C（视觉迭代 2）：侧叉**铁丝问题**。0.345 m 长 / 0.0132 m 厚 = **26:1**，
+  正是代码说的"23 倍长宽比就不是三叉是碎片"。加厚到 **19:1**。
+  中刺**故意保持细**：贯穿要细尖，叉是横扫的，叉必须有肉。
+- PASS D（框架）：三处 ASSERT 通过**突变测试**证明会咬（见 RESULT）。
+
+**RESULT**
+判据到 **TECHNICALLY VERIFIED + VISUALLY REVIEWED**，不是 USER VERIFIED。
+
+实测（工具实时打印，非抄录）：
+- 链节 0.09110 × 0.06013 × 0.01367 m —— 与 `stow_diag.gd` 的闭式**逐位一致**。
+- 链头 0.7800 m，程序头按其自身 `head_size` 倍数是 **0.796 m**（尖 −1.84h，毂后 +0.50h）。
+- SWD 回归 10/10 场景 + 10/10 GLB 不变（`reforged` edge residue 仍 −0.00246）。
+
+**四个"量出来的"缺陷（不是想出来的）**：
+1. **文档里链节半尺寸是抄错的**。我上一轮在 `CHAIN_ASSET_DECOMPOSITION.md` 写的
+   0.0312 / 0.0114 / 0.0473 m 是 `LINK_FILL = 1.82` 的值，而常数是 1.752；
+   第三个在两种取值下都对不上闭式。**权威算法只在 `stow_diag.gd`**，现已写进
+   `link_metrics()` 一处，并新增 `extent_band` 断言实测 AABB。
+2. **圆周分段不是外观选择**。18 段（20° 一步）长轴落在两顶点之间 ⇒ 实测 0.0897 m
+   而不是 0.09110 m，**静默小 1.6% 而所有断言都过**（尺寸带容得下）。
+   20 段是 18° 一步，顶点正好落在 0°/90°/180°/270°。
+3. **预览相机默认近裁剪面把链节整件吞了**。`clip_start` 默认 0.1 m，而机位在
+   `span` 距离上；链节 span 0.091 ⇒ 物体在近裁剪面里面。渲染成功、写出文件、
+   文件是白纸 —— 实测 `chn_link_silhouette.png` 墨水 **0.000%**、`alpha_bbox=None`，
+   同一次运行的其他视图全部正常。裁剪面改由 `span` 派生。
+   ⇒ **判"出片了没有"必须量图片像素，不能信日志行。**
+4. （几何）`oval_torus` 原沿**径向**偏移管，而径向只在 `a == b` 时才等于法线；
+   椭圆上最多差 28°，管在短轴两端被捏扁。改沿椭圆法线。**AABB 完全不变**，
+   所以除了看图没有任何断言会发现它。
+
+**突变测试（"突变不红 = 断言是装饰"）**：
+
+| 突变 | 结果 |
+|---|---|
+| `link_spacing` 0.052→0.058 | `extent_band` 三轴全红 |
+| 去掉链节逐行 `checks` | 红在 `attack end +: forward 0.0456 vs backward 0.0456` |
+| `export_yup` True→False | 场景 **PASS**，`verify_glb` **FAIL** 并指名轴向错 |
+
+**SELF CRITIQUE 还有哪3处最差**
+1. **柄的护环与握把交接过硬**。`ChainCollar` 是 12 边八段折线，与握把的圆截面
+   硬接，0.3 m 下读作"机加工方块"。需要一段过渡段（2 个额外 station）和倒角。
+2. **缠绕层靠明暗而不是靠材质区分**。`leather` 的线性色和 `chain_grip` 太近，
+   缠绕基本只靠肋条的高光读出来；要么把 leather 拉开，要么给肋条做真实断面。
+3. **链头没有二次形**。轮毂是一个回转体 + 六根棱，没有锻造面、没有偏心、
+   没有一根真链头该有的重量分布。三件里它最先被看到，也最平。
+   （另：`blend1` 备份文件已按 `*.blend[0-9]` 忽略，没有入库。）
+
+**NEXT**
+1. **REQ-9 等 COMBAT**：手持束 `HELD_ARC_A..D` 要 COMBAT 先发 `visible` +
+   `release 0..1` 接口，并保留 `_place_coils` 的"最内最先留、最外最先走"语义。
+2. 链节入 Godot 时 **`_link_basis` 的 `LINK_WIDTH_SCALE` 必须改成 1.0**
+   （0.66 已烘进 mesh，再乘一次就是压两遍）。
+3. 柄的护环过渡 + 缠绕材质分离（SELF CRITIQUE 1、2）。
+4. 三件都还没进 Godot、没做 IN-GAME REVIEW —— 按 PART P，那才是最终验收场。
+
+---
+
 ## 产线排期（未开始）
 
 | 序号 | 资产 | 状态 |
 |---|---|---|
 | W01 | 第一人称剑 | **DONE**（入仓 `c56cc50`） |
 | W02 | 真剑鞘 | 几何 DONE，**PASS 2 待做** |
-| W03–W05 | 锁链英雄模型（柄 / 链节 / 手持束 / 三叉刀头） | 未开始 |
+| W03 | 锁链英雄模型 · 柄 / 链节 / 三叉刀头 | **3/4 DONE**（本提交） |
+| W05 | 锁链英雄模型 · 手持束 `HELD_ARC_A..D` | **未开始**，被 **REQ-9** 挡住（要 COMBAT 先发 `visible` + `release` 接口） |
 | P01–P05 | 道具组 A | 未开始 |
 
 ## 两个待办的回执
