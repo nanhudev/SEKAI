@@ -1,0 +1,133 @@
+{
+  "class": "CHN",
+  "family": "缚星链",
+  "source": "godot/scripts/combat/chain_visual.gd",
+  "spec_doc": "docs/weapons/CHAIN_ASSET_DECOMPOSITION.md",
+  "note": "This family is not variants of a weapon. It is the FOUR REUSABLE PIECES the chain is built from -- the user's 2026-09-29 ruling: 'WPN_CHAIN_HANDLE / WPN_CHAIN_LINK / WPN_CHAIN_TRIDENT / WPN_CHAIN_HELD_ARC_A..D, 而不是再生成那坨程序圆盘'. Handle, link and trident are here. The four held arcs are NOT: they replace a per-frame parameter solve with an authored performance, so they need COMBAT's show/hide + release-ratio interface first -- see REQ-9 in docs/ART_INTEGRATION_REQUESTS.md.",
+
+  "defaults": {
+    "tier": "hero"
+  },
+
+  "rows": [
+    {
+      "id": "handle",
+      "part": "handle",
+      "tier": "hero",
+      "world_name": "缚星链·柄",
+      "glb": "wpn_chain_handle.glb",
+      "blend": "wpn_chain_handle.blend",
+      "checks": ["long", "band", "origin", "grip", "ahead", "tris", "metal", "sockets"],
+      "length_band": [0.24, 0.36],
+      "sockets": ["SOC_GRIP", "SOC_LINK_OUT", "SOC_HEAD"],
+
+      "_comment": "The origin is the BUTT LINK RING (the family contract), so the ring sits AT y=0 and the grip runs forward. Everything about this piece is decided by the fact that it is the one part the HAND drives: pose keys are in camera space and the weapon driver is an exponential lag spring, so the grip has to be dense enough to read at 0.3-1 m of first person and no heavier than it has to be.",
+
+      "ring_r": 0.0340,
+      "ring_tube": 0.0075,
+      "grip_front": 0.2050,
+      "grip_waist": 0.0130,
+      "grip_swell": 0.0172,
+      "collar_front": 0.2390,
+      "collar_r": 0.0215,
+      "eye_y": 0.2560,
+      "eye_r": 0.0132,
+      "eye_tube": 0.0052,
+      "ribs": 7
+    },
+
+    {
+      "id": "link",
+      "part": "link",
+      "tier": "hero",
+      "world_name": "缚星链·链节",
+      "glb": "wpn_chain_link.glb",
+      "blend": "wpn_chain_link.blend",
+
+      "_checks": "No 'long'/'ahead' is not needed here after all -- see _shape. But the DIMENSIONS are the whole asset, because two of the three set the interlock and the third is the material the ring test subtracts, so this row is judged by extent_band instead of by any weapon-shaped question.",
+
+      "checks": ["long", "origin", "extent", "tris", "metal", "sockets"],
+      "sockets": ["SOC_LINK_IN", "SOC_LINK_OUT"],
+
+      "_shape": "THE OVAL IS BAKED INTO THE MESH. chain_visual.gd builds a ROUND TorusMesh and squashes it across the rope with `_link_basis` (LINK_WIDTH_SCALE 0.66). Doing that with a non-uniform basis scale also thins the TUBE across the rope (0.00683 -> 0.00451), which is the 'thin band, huge hole, pile of wire loops' failure LINK_TUBE_RATIO's own comment describes. Baking the oval in instead keeps the ring centre path at (a, b) with a CONSTANT round tube, so the OUTER envelope -- every number the interlock reads -- is where the procedural link had it, while the metal across the rope comes out at the thickness the design asked for.",
+
+      "_segments": "20 AROUND THE RING, AND THE NUMBER IS NOT COSMETIC. A ring's extreme along an axis only exists if a vertex LANDS on that axis. The first build used 18 segments, i.e. 20-degree steps, so the long axis fell halfway between two vertices and the link measured 0.0897 m instead of 0.09110 m -- 1.6% undersized, silently, with every assertion passing because the extent band was wide enough to swallow it. 20 segments is an 18-degree step, which puts vertices exactly on 0, 90, 180 and 270. (Godot's own TorusMesh runs rings = 12, a 30-degree step: 90/30 is an integer, so the procedural link does hit its extremes -- the authored one has to as well or the swap quietly shrinks the rope.) 8 around the tube is deliberately faceted, which is §5's call.",
+
+      "_closed_form": {
+        "L": "link_spacing * link_fill                                     = 0.091104 m (along the rope)",
+        "r": "L * (1 - link_tube_ratio) * 0.25                            = 0.006833 m (tube radius)",
+        "b": "L * 0.5 - r                                                = 0.038719 m (ring centre, along rope)",
+        "a": "L * 0.5 * link_width_scale - r                            = 0.023232 m (ring centre, across rope)",
+        "note": "The SAME r the ring test subtracts: stow_ring_readings uses link_spacing * LINK_FILL * (1 - LINK_TUBE_RATIO) * 0.25."
+      },
+
+      "_warning": "These four are DERIVED, never transcribed. An earlier note in docs/weapons/CHAIN_ASSET_DECOMPOSITION.md quoted half-extents 0.0312 / 0.0114 / 0.0473 m as 'measured by stow_diag.gd'; the first two are 0.0473xLINK_FILL, i.e. they are the numbers for LINK_FILL 1.82, and the constant is 1.752 -- and the third does not match its own closed form under either value. Both are now recomputed from the live constants.",
+
+      "link_spacing": 0.052,
+      "link_fill": 1.752,
+      "link_width_scale": 0.66,
+      "link_tube_ratio": 0.7,
+      "link_major_segments": 20,
+      "link_minor_segments": 8,
+
+      "extent_band": [[0.0577, 0.0626], [0.0875, 0.0948], [0.0130, 0.0143]]
+    },
+
+    {
+      "id": "trident",
+      "part": "trident",
+      "tier": "hero",
+      "world_name": "缚星链·三叉链头",
+      "glb": "wpn_chain_trident.glb",
+      "blend": "wpn_chain_trident.blend",
+      "checks": ["long", "band", "origin", "grip", "ahead", "tris", "metal", "sockets"],
+      "length_band": [0.72, 0.86],
+      "sockets": ["SOC_LINK_IN", "SOC_HEAD", "FX_HEAD_CORE"],
+
+      "_comment": "The family's memory point and the one piece of this weapon a player tracks at 40 m/s, so it has to work on SILHOUETTE ALONE. chain_visual.gd's own notes say what the earlier attempts got wrong and they are the design brief: five prisms radiating from one point is a STARFISH, and the two shapes are not distinguished by width but by whether the points SHARE A DIRECTION. So the fork stays near-parallel (19 degs), the rear flukes stay short and swept BACK so the head still holds something when the rope is hauled, and the central tine stays straight and dominant because 贯穿 is its whole job.",
+
+      "_size": "MATCHED TO THE HEAD THIS REPLACES, AND THAT IS NOT OPTIONAL. The procedural head is built entirely in multiples of `head_size` (0.34 m): the collar sits at +0.38h with a 0.24h height, and the central blade is 1.40h long mounted at -0.44h, so its tip lands at -1.84h. The head is therefore 1.84h + 0.50h = 2.34h = 0.796 m long, and its fork span is about 0.30 m. An authored head that came out SMALLER than that would be worse than no swap at all: `_contact_point - _contact_normal * head_size * BITE_DRIVE_SHARE` places the bite from head_size and NOT from the mesh, so a short mesh bites from visibly inside a wall. Hence 0.79 m and 0.30 m of span, arrived at by measurement of the code above rather than by taste.",
+
+      "_metals": "0.95 metallic rendered the head as a pure black speck at range; 0.84 albedo rendered it as five white paper shards with no shading across the faces. Both were measured on V4 review frames; hence 'chain_head'.",
+
+      "_iteration_3": "THE THIRD LOOK IS ABOUT THE TINES THEMSELVES. With the starfish gone, the 3/4 showed the two side tines as WIRES: 0.345 m long on a 0.0132 m thickness is 26:1, which is the splinter ratio chain_visual.gd names explicitly ('a blade 23 times longer than it is thick is not a trident, it is a shard'). They are 0.0184 thick now -- 19:1 -- and 0.0276 across, so they read as blades with a visible ridge from the side rather than as outlines. The CENTRAL tine keeps its slimmer profile on purpose: it is the piercing one and 貫穿 wants a fine point, whereas the fork is the sweeping one and a fork has to have meat on it.",
+
+      "_iteration_2": "THE FIRST RENDER FIXED TWO THINGS, both from looking at the pictures rather than at the numbers. (1) The silhouette and the 3/4 BOTH read as a RADIATING STAR, which is the exact failure chain_visual.gd names: the rear flukes were 0.195 m at 148 degs, i.e. as long and as splayed as the front prongs, so the head was four equal points around a hub instead of three. They are now 0.150 m at 160 degs -- short backward barbs that hug the hub, which is what 鉤/拉扯 actually needs -- and they start higher (0.138) so they flank the hub rather than the ring. (2) THE HUB WAS TOO SMALL TO BE THE THING THREE POINTS ARE MOUNTED ON: 0.032 m of radius against a 0.735 m spike, which is why the 3/4 read as prongs meeting at a point. It is 0.0355 now and the spike's base is wider (0.018), so the tine grows OUT of a body instead of being skewered by one. The prongs came in from 19 to 18 degs and shortened, to stay clearly subordinate to the central tine.",
+
+      "scale": 1.0,
+
+      "_ring": "The connecting ring sits BEHIND the hub, at y = -0.036, so the rope enters it the way it would on a real chain. It cannot sit at the origin: the contract's origin IS this ring, and a ring whose hole faces Y has a Y extent of only twice its tube radius (0.009 m), which is far short of the 0.04 m of mass the 'grip' check requires behind the origin -- the check caught exactly that when the flukes were shortened.",
+
+      "ring_r": 0.0330,
+      "ring_tube": 0.0090,
+      "ring_y": -0.0360,
+
+      "hub_back": -0.0260,
+      "hub_mouth": 0.0700,
+      "hub_front": 0.1580,
+      "hub_r_back": 0.0195,
+      "hub_r_swell": 0.0355,
+      "hub_r_front": 0.0250,
+
+      "spike_base": 0.1250,
+      "spike_tip": 0.7350,
+      "spike_w0": 0.0180,
+      "spike_w1": 0.0295,
+      "spike_th": 0.0098,
+
+      "prong_base": 0.1520,
+      "prong_offset": 0.0220,
+      "prong_length": 0.3450,
+      "prong_splay_deg": 18.0,
+      "prong_w": 0.0138,
+      "prong_th": 0.0092,
+
+      "fluke_base": 0.1380,
+      "fluke_offset": 0.0165,
+      "fluke_length": 0.1500,
+      "fluke_angle_deg": 160.0,
+      "fluke_w": 0.0080,
+      "fluke_th": 0.0050
+    }
+  ]
+}

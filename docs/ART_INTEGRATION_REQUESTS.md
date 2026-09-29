@@ -448,6 +448,138 @@ every enemy — but a production enemy is not DONE until this block exists.
 
 ---
 
+## REQ-9 · The chain can stop being drawn in code — **OPEN, ART side delivered**
+
+**From:** ART (weapon line) · **To:** COMBAT · **Blocking:** nothing yet — this is
+the interface request that has to exist *before* the held arcs can be authored.
+
+The user's ruling of 2026-09-29: the chain's visual is split into named pieces,
+`而不是再生成那坨程序圆盘`, and the four-layer idle stow becomes an **authored mesh /
+curve asset, 由 Combat 只控制显隐和释放比例**. Three of those pieces are now built
+and asserted. The fourth cannot be built until COMBAT answers one question.
+
+### What ART has delivered
+
+`assets/models/weapons/`:
+
+| File | Envelope | Tris | Materials |
+|---|---|---|---|
+| `wpn_chain_handle.glb` | 0.2805 m, butt ring outer 0.0415 m | 1624 | `chain_grip`, `chain_head`, leather |
+| `wpn_chain_link.glb` | 0.0911 × 0.0601 × 0.0137 m | 320 | `chain_link` |
+| `wpn_chain_trident.glb` | 0.7800 m long, 0.26 m fork span | 1096 | `chain_head`, iron |
+
+Masters (Git LFS, editable source): `assets_source/weapons/masters/chn/wpn_chain_*.blend`.
+Spec: `assets_source/weapons/specs/chn_variants.json`. Builder:
+`tools/blender/wpn_chn_build.py`. Full asset rationale:
+`docs/weapons/CHAIN_ASSET_DECOMPOSITION.md`.
+
+### The three swap points, and what each has to keep
+
+**1 · `_link_geometry()` → `wpn_chain_link.glb`.**
+
+The link's three dimensions are **not free**: two of them set the interlock and
+the third is the material `stow_ring_readings()` subtracts. Its outer envelope
+is *where the procedural link's was*, so swapping the mesh must not move it.
+Authored values, all derived in one place from the live constants
+(`link_spacing` 0.052, `LINK_FILL` 1.752, `LINK_WIDTH_SCALE` 0.66,
+`LINK_TUBE_RATIO` 0.7):
+
+```
+length along the rope  0.09110 m
+across the rope        0.06013 m
+along the hole axis    0.01367 m      <- the same r the ring test subtracts
+```
+
+⚠️ **The previous numbers in `CHAIN_ASSET_DECOMPOSITION.md` §4 were stale**
+(0.0473 / 0.0312 are `LINK_FILL` 1.82 values) and have been corrected there.
+If COMBAT changes `link_spacing` or `LINK_FILL`, **the GLB must be rebuilt** —
+the build asserts the extents and will fail rather than drift.
+
+⚠️ **One deliberate difference.** The authored link bakes the 0.66 oval into the
+mesh instead of applying it through `_link_basis`. The outer envelope is
+unchanged, but the **tube is round** rather than squashed to 0.66 across the
+rope. Net effect: more metal across the rope, a slightly smaller hole. That is
+the direction `LINK_TUBE_RATIO`'s own comment asks for, and it removes the
+non-uniform basis scale — but it does mean `_link_basis` becomes a pure rotation
+and its `LINK_WIDTH_SCALE` row should become **1.0**, not stay 0.66, or the
+authored oval gets squashed twice.
+
+**2 · `_build_head()` → `wpn_chain_trident.glb`.**
+
+Sized to the head it replaces, **by measurement, not by taste**: the procedural
+head is built in multiples of `head_size` (0.34 m) with the tip at −1.84h and
+the collar back at +0.50h, i.e. **0.796 m**. The authored head is **0.7800 m**.
+That matters because `_contact_point - _contact_normal * head_size *
+BITE_DRIVE_SHARE` places the bite from `head_size` and **not from the mesh** — an
+authored head that came out shorter would visibly bite from inside a wall.
+
+The head's origin is its **connecting ring, which sits behind the hub** at
+y = −0.036 m, and the rope passes through it along +Y. Local forward is +Y (the
+procedural one used −Z).
+
+**3 · The three materials, which COMBAT currently sets in code.**
+
+`LINK_TINT` / `HEAD_TINT` / `HANDLE_TINT` and `LINK_METALLIC` have been moved
+into the shared palette as `chain_link` / `chain_head` / `chain_grip`, at the
+exact linear conversions of those sRGB values. Nothing about the look changes.
+What changes is that **`metallic > 0.75` is now a build-time assertion** in
+`weapon_common.METALLIC_CEILING` — the metal trap that already cost this weapon
+two review passes is finally guarded, and it could not be while the values lived
+in code.
+
+### What COMBAT has to answer before the held arcs can exist
+
+The four arcs (`WPN_CHAIN_HELD_ARC_A..D`) are the part that is **not** a model
+swap. They replace a per-frame parameter solve with an authored performance, so
+ART needs one interface, and only one:
+
+> **Publish `visible: bool` and `release: float 0..1` per layer, at a single
+> node, and let ART own everything inside it.**
+
+Specifically:
+
+1. **`visible`** must keep the semantics `_place_coils` already has:
+   *第 D 层最先放出去，第 A 层最后*, i.e. the existing
+   **「INNERMOST FIRST, OUTERMOST LAST」** rule. The comment above `_place_coils`
+   is the contract — hiding from the top is what makes a shed layer behave like
+   rope leaving a stow.
+2. **`release` (0..1)** interpolates the whole group from the stowed pose to
+   "all let go". **Per-layer stagger stays COMBAT's decision**, not the asset's —
+   if each arc carried its own offset, the layout mathematics would have moved
+   back into the art asset, which is the thing this split exists to avoid.
+3. **The four arcs must share one origin convention** (the arc's entry, nearest
+   the fist, tangent along the arc). Different origins per layer would make (1)
+   and (2) impossible to express.
+4. **The acceptance criteria stay where they are and must keep running.**
+   `stow_frame_reach() < 1.0` (framing is a *second, independent* failure —
+   `stow_breach()` only looks at the centre, so an over-wide fan walks off the
+   edge while breach stays 0.0000), `stow_interpenetration() == 0`, and
+   `stow_ring_readings()` for anything that is still links.
+
+### The tradeoff, stated plainly, because it is not a free upgrade
+
+> An authored arc **can** draw the small·flat·on-the-hip four-layer fan that this
+> chain physically cannot bend into — `CHAIN_STOW_TUNING.md` has already proved
+> the flattened-ellipse constraint is 5–8× tighter than the minimum bend radius,
+> and no amount of link fidelity changes that. That is the whole reason to do it.
+>
+> But it also means **the release has to be authored too** — it can no longer be
+> derived from the rope's real pitch. **画面可以说谎，姿态必须自洽。**
+
+### What ART is not asking for
+
+- Not a rewrite of `chain_visual.gd`. The free rope, the hit choreography, the
+  sag, the trail, `BUNDLE_SHED_SHARE`, the bite drive and the whole `_stow_path`
+  solve stay COMBAT's. Only the three geometry/material sources above change.
+- Not a change to `chain_length`, `max_radius` or `head_size`.
+- Not a new system. `LINK_FILL` and friends stay the single source of truth for
+  the link size; the builder reads them and asserts against them.
+
+**Status: OPEN.** The geometry side is done and asserted; the swap is COMBAT's to
+schedule, and the held arcs are blocked on items 1–3 above.
+
+---
+
 ## Cross-references
 
 - `docs/ASSET_MANIFEST.md` — measured status of every asset

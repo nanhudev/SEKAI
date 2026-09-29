@@ -1,0 +1,1 @@
+assets_source/weapons/masters/**/*.blend filter=lfs diff=lfs merge=lfs -text
