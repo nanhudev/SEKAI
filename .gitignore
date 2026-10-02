@@ -1,3 +1,11 @@
 node_modules/
 dist/
 .npm-cache/
+
+# Godot engine binaries — too large for git, download separately
+tools/godot/
+*.exe
+*.zip
+
+# Local working scratch
+work/.cache/
