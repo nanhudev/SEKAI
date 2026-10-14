@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SEKAI · 世界之外</title>
+<link rel="icon" href="data:,">
+
+<link rel="stylesheet" href="../../tokens/tokens.css">
+<link rel="stylesheet" href="../../motion/motion.css">
+<link rel="stylesheet" href="../../components/components.css">
+<link rel="stylesheet" href="../../components/loading_glyph.css">
+<link rel="stylesheet" href="../ui_v2.css">
+<link rel="stylesheet" href="./launcher_v2.css">
+</head>
+<body class="v2-door-body">
+
+<!-- PASS 04 · PART C：Launcher 的 Key Art 背景（?bg=a|b|c 时才出现）。
+     处理成 darker / more cropped / less information —— 它不是世界层，
+     是"门外的天光"：点击进入后淡到黑，交接帧合同（void + 标记）不被破坏。 -->
+<div class="v2-keyart" id="keyart" aria-hidden="true"></div>
+
+<!-- 门。
+     这里**没有世界层** —— 世界属于游戏，不属于门。
+     第一屏只允许三件主要信息（§A1）：SEKAI / Beyond the Written Fate / 进入世界。
+     版本与开发模式降到极角落；dev 列表默认收起。 -->
+<div class="v2-door" id="door">
+  <div class="v2-door__title" id="doorTitle"></div>
+  <span class="v2-door__mark" id="doorMark"></span>
+  <div class="v2-door__col" id="doorCol"></div>
+</div>
+
+<!-- §A1：这一行是**次级信息**，放极角落，不进视觉层级。 -->
+<div class="v2-door__meta" id="doorMeta"></div>
+<div class="v2-door__dev" id="doorDev"></div>
+
+<!-- §44：启动失败不无限等待，说清楚原因 -->
+<div class="v2-failure" id="failure" role="alert" hidden></div>
+<div id="doorNote" class="v2-enter-note" hidden></div>
+<div class="sk-cursor" id="cursor" hidden></div>
+
+<script type="module" src="./launcher_v2.js"></script>
+</body>
+</html>

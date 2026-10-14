@@ -1,0 +1,74 @@
+[
+  {
+    "name": "SM_Route_GoldenRoute_South",
+    "file": "F:\\SEKAI\\ue5_lab\\Mistvale_Rebuild\\Source\\SM_Route_GoldenRoute_South.obj",
+    "vertices": 2224,
+    "triangles": 3878
+  },
+  {
+    "name": "SM_Route_GoldenRoute_Town",
+    "file": "F:\\SEKAI\\ue5_lab\\Mistvale_Rebuild\\Source\\SM_Route_GoldenRoute_Town.obj",
+    "vertices": 4280,
+    "triangles": 7476
+  },
+  {
+    "name": "SM_Route_LowerMarketLoop",
+    "file": "F:\\SEKAI\\ue5_lab\\Mistvale_Rebuild\\Source\\SM_Route_LowerMarketLoop.obj",
+    "vertices": 2118,
+    "triangles": 3520
+  },
+  {
+    "name": "SM_Route_MarketEastLoop",
+    "file": "F:\\SEKAI\\ue5_lab\\Mistvale_Rebuild\\Source\\SM_Route_MarketEastLoop.obj",
+    "vertices": 1488,
+    "triangles": 2470
+  },
+  {
+    "name": "SM_Route_RiversideStreet",
+    "file": "F:\\SEKAI\\ue5_lab\\Mistvale_Rebuild\\Source\\SM_Route_RiversideStreet.obj",
+    "vertices": 2670,
+    "triangles": 4440
+  },
+  {
+    "name": "SM_Route_UpperResidential",
+    "file": "F:\\SEKAI\\ue5_lab\\Mistvale_Rebuild\\Source\\SM_Route_UpperResidential.obj",
+    "vertices": 1950,
+    "triangles": 3240
+  },
+  {
+    "name": "SM_Route_ChurchLane",
+    "file": "F:\\SEKAI\\ue5_lab\\Mistvale_Rebuild\\Source\\SM_Route_ChurchLane.obj",
+    "vertices": 780,
+    "triangles": 1240
+  },
+  {
+    "name": "SM_Route_DockTrack",
+    "file": "F:\\SEKAI\\ue5_lab\\Mistvale_Rebuild\\Source\\SM_Route_DockTrack.obj",
+    "vertices": 680,
+    "triangles": 1080
+  },
+  {
+    "name": "SM_Plaza_MarketSquare",
+    "file": "F:\\SEKAI\\ue5_lab\\Mistvale_Rebuild\\Source\\SM_Plaza_MarketSquare.obj",
+    "vertices": 1804,
+    "triangles": 2696
+  },
+  {
+    "name": "SM_Plaza_GuildForecourt",
+    "file": "F:\\SEKAI\\ue5_lab\\Mistvale_Rebuild\\Source\\SM_Plaza_GuildForecourt.obj",
+    "vertices": 1316,
+    "triangles": 2484
+  },
+  {
+    "name": "SM_Plaza_ChurchForecourt",
+    "file": "F:\\SEKAI\\ue5_lab\\Mistvale_Rebuild\\Source\\SM_Plaza_ChurchForecourt.obj",
+    "vertices": 585,
+    "triangles": 1064
+  },
+  {
+    "name": "SM_River_Continuous",
+    "file": "F:\\SEKAI\\ue5_lab\\Mistvale_Rebuild\\Source\\SM_River_Continuous.obj",
+    "vertices": 1002,
+    "triangles": 1000
+  }
+]

@@ -1,0 +1,2266 @@
+{
+ "systems": [
+  {
+   "name": "NS_SW_Core_EdgeTrail",
+   "path": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_EdgeTrail.NS_SW_Core_EdgeTrail",
+   "note": "A1 / A4 blade edge trail. A ribbon that follows the blade, driven entirely from User.* so Normal and Magic are the same graph.",
+   "emitters": [
+    {
+     "name": "E_Trail"
+    }
+   ],
+   "user_params_added": 24,
+   "final_emitters": [
+    "E_Trail"
+   ],
+   "user_variables": 24
+  },
+  {
+   "name": "NS_SW_Core_Glint",
+   "path": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_Glint.NS_SW_Core_Glint",
+   "note": "Equip / inspect cold glint. One particle, very short life, plus an optional point light. Not a firework, and no lens flare anywhere near it.",
+   "emitters": [
+    {
+     "name": "E_Glint"
+    }
+   ],
+   "user_params_added": 24,
+   "final_emitters": [
+    "E_Glint"
+   ],
+   "user_variables": 24
+  },
+  {
+   "name": "NS_SW_Core_AirSlice",
+   "path": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_AirSlice.NS_SW_Core_AirSlice",
+   "note": "A1 thin air slice: a 1.5-2.5 m sliver drawn on from one end, not a projectile. Same graph for both swords.",
+   "emitters": [
+    {
+     "name": "E_Slice"
+    }
+   ],
+   "user_params_added": 24,
+   "final_emitters": [
+    "E_Slice"
+   ],
+   "user_variables": 24
+  },
+  {
+   "name": "NS_SW_Core_Wave",
+   "path": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_Wave.NS_SW_Core_Wave",
+   "note": "A2 mid-range blade wave: a thin curved pressure sheet, 6-10 m, bright leading edge and faint interior. Not a thick blue crescent.",
+   "emitters": [
+    {
+     "name": "E_Wave"
+    },
+    {
+     "name": "E_MistWake"
+    }
+   ],
+   "user_params_added": 24,
+   "final_emitters": [
+    "E_Wave",
+    "E_MistWake"
+   ],
+   "user_variables": 24
+  },
+  {
+   "name": "NS_SW_Core_SpatialScar",
+   "path": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_SpatialScar.NS_SW_Core_SpatialScar",
+   "note": "A3 world-space spatial scar. Three instances are spawned by the contract, each reading 1/2/3 by draw order and position, held long enough that all three coexist without merging.",
+   "emitters": [
+    {
+     "name": "E_Scar"
+    },
+    {
+     "name": "E_ScarMist"
+    }
+   ],
+   "user_params_added": 24,
+   "final_emitters": [
+    "E_Scar",
+    "E_ScarMist"
+   ],
+   "user_variables": 24
+  },
+  {
+   "name": "NS_SW_Core_MajorArc",
+   "path": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_MajorArc.NS_SW_Core_MajorArc",
+   "note": "A4 major arc, 240-300 deg. SM_SW_ArcSheet has the sweep on U, so the arc can be drawn on along its own length and keeps a readable start and an end. Not a 360 ring.",
+   "emitters": [
+    {
+     "name": "E_Arc"
+    },
+    {
+     "name": "E_ArcMist"
+    }
+   ],
+   "user_params_added": 24,
+   "final_emitters": [
+    "E_Arc",
+    "E_ArcMist"
+   ],
+   "user_variables": 24
+  },
+  {
+   "name": "NS_SW_Core_MistWake",
+   "path": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_MistWake.NS_SW_Core_MistWake",
+   "note": "Black mist / void leakage. Low-count cards plus a mesh wake, never a single standard smoke sprite, and never dense enough to close into a ring or to smother the scar it leaks from.",
+   "emitters": [
+    {
+     "name": "E_Wisp"
+    }
+   ],
+   "user_params_added": 24,
+   "final_emitters": [
+    "E_Wisp"
+   ],
+   "user_variables": 24
+  },
+  {
+   "name": "NS_SW_Core_PurpleMotes",
+   "path": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_PurpleMotes.NS_SW_Core_PurpleMotes",
+   "note": "Magic idle motes, plus the single point glint at the saya mouth on the final click. Very few, very slow, additive.",
+   "emitters": [
+    {
+     "name": "E_Motes"
+    }
+   ],
+   "user_params_added": 24,
+   "final_emitters": [
+    "E_Motes"
+   ],
+   "user_variables": 24
+  },
+  {
+   "name": "NS_SW_Core_Hit",
+   "path": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_Hit.NS_SW_Core_Hit",
+   "note": "Contact burst for the surface families. One system, several material instances - the caller picks the instance and the graph never branches on surface type.",
+   "emitters": [
+    {
+     "name": "E_Hit"
+    }
+   ],
+   "user_params_added": 24,
+   "final_emitters": [
+    "E_Hit"
+   ],
+   "user_variables": 24
+  }
+ ],
+ "unmatched": [],
+ "not_editable": [],
+ "dynamic": [],
+ "ambiguous": [],
+ "errors": [],
+ "linked": [
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_EdgeTrail.NS_SW_Core_EdgeTrail",
+   "emitter": "E_Trail",
+   "module": "SpawnRate",
+   "input": "SpawnRate",
+   "user": "User.SpawnRate"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_EdgeTrail.NS_SW_Core_EdgeTrail",
+   "emitter": "E_Trail",
+   "module": "InitializeParticle001",
+   "input": "Lifetime",
+   "user": "User.Lifetime"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_EdgeTrail.NS_SW_Core_EdgeTrail",
+   "emitter": "E_Trail",
+   "module": "Color",
+   "input": "Color",
+   "user": "User.PrimaryColor"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_EdgeTrail.NS_SW_Core_EdgeTrail",
+   "emitter": "E_Trail",
+   "module": "Color",
+   "input": "Scale Alpha",
+   "user": "User.Intensity"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_EdgeTrail.NS_SW_Core_EdgeTrail",
+   "emitter": "E_Trail",
+   "module": "FN_InitializeRibbonAttributes",
+   "input": "Ribbon Width",
+   "user": "User.Width"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_Glint.NS_SW_Core_Glint",
+   "emitter": "E_Glint",
+   "module": "InitializeParticle001",
+   "input": "Lifetime",
+   "user": "User.Lifetime"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_Glint.NS_SW_Core_Glint",
+   "emitter": "E_Glint",
+   "module": "Color",
+   "input": "Color",
+   "user": "User.CoreColor"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_Glint.NS_SW_Core_Glint",
+   "emitter": "E_Glint",
+   "module": "Color",
+   "input": "Scale Alpha",
+   "user": "User.Intensity"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_AirSlice.NS_SW_Core_AirSlice",
+   "emitter": "E_Slice",
+   "module": "InitializeParticle001",
+   "input": "Lifetime",
+   "user": "User.Lifetime"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_AirSlice.NS_SW_Core_AirSlice",
+   "emitter": "E_Slice",
+   "module": "ScaleMeshSize",
+   "input": "Scale Factor",
+   "user": "User.ScaleVector"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_AirSlice.NS_SW_Core_AirSlice",
+   "emitter": "E_Slice",
+   "module": "Color",
+   "input": "Color",
+   "user": "User.PrimaryColor"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_AirSlice.NS_SW_Core_AirSlice",
+   "emitter": "E_Slice",
+   "module": "Color",
+   "input": "Scale Alpha",
+   "user": "User.Intensity"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_Wave.NS_SW_Core_Wave",
+   "emitter": "E_Wave",
+   "module": "InitializeParticle001",
+   "input": "Lifetime",
+   "user": "User.Lifetime"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_Wave.NS_SW_Core_Wave",
+   "emitter": "E_Wave",
+   "module": "ScaleMeshSize",
+   "input": "Scale Factor",
+   "user": "User.ScaleVector"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_Wave.NS_SW_Core_Wave",
+   "emitter": "E_Wave",
+   "module": "SolveForcesAndVelocity",
+   "input": "Velocity",
+   "user": "User.Velocity"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_Wave.NS_SW_Core_Wave",
+   "emitter": "E_Wave",
+   "module": "Color",
+   "input": "Color",
+   "user": "User.PrimaryColor"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_Wave.NS_SW_Core_Wave",
+   "emitter": "E_Wave",
+   "module": "Color",
+   "input": "Scale Alpha",
+   "user": "User.Intensity"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_Wave.NS_SW_Core_Wave",
+   "emitter": "E_MistWake",
+   "module": "SpawnBurst_Instantaneous",
+   "input": "Spawn Count",
+   "user": "User.MistCount"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_Wave.NS_SW_Core_Wave",
+   "emitter": "E_MistWake",
+   "module": "InitializeParticle001",
+   "input": "Lifetime",
+   "user": "User.Lifetime"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_Wave.NS_SW_Core_Wave",
+   "emitter": "E_MistWake",
+   "module": "Color",
+   "input": "Color",
+   "user": "User.MistColor"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_Wave.NS_SW_Core_Wave",
+   "emitter": "E_MistWake",
+   "module": "Color",
+   "input": "Scale Alpha",
+   "user": "User.Intensity"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_SpatialScar.NS_SW_Core_SpatialScar",
+   "emitter": "E_Scar",
+   "module": "InitializeParticle001",
+   "input": "Lifetime",
+   "user": "User.Lifetime"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_SpatialScar.NS_SW_Core_SpatialScar",
+   "emitter": "E_Scar",
+   "module": "ScaleMeshSize",
+   "input": "Scale Factor",
+   "user": "User.ScaleVector"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_SpatialScar.NS_SW_Core_SpatialScar",
+   "emitter": "E_Scar",
+   "module": "Color",
+   "input": "Color",
+   "user": "User.PrimaryColor"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_SpatialScar.NS_SW_Core_SpatialScar",
+   "emitter": "E_Scar",
+   "module": "Color",
+   "input": "Scale Alpha",
+   "user": "User.Intensity"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_SpatialScar.NS_SW_Core_SpatialScar",
+   "emitter": "E_ScarMist",
+   "module": "SpawnBurst_Instantaneous",
+   "input": "Spawn Count",
+   "user": "User.MistCount"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_SpatialScar.NS_SW_Core_SpatialScar",
+   "emitter": "E_ScarMist",
+   "module": "InitializeParticle001",
+   "input": "Lifetime",
+   "user": "User.Lifetime"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_SpatialScar.NS_SW_Core_SpatialScar",
+   "emitter": "E_ScarMist",
+   "module": "Color",
+   "input": "Color",
+   "user": "User.MistColor"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_SpatialScar.NS_SW_Core_SpatialScar",
+   "emitter": "E_ScarMist",
+   "module": "Color",
+   "input": "Scale Alpha",
+   "user": "User.Intensity"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_MajorArc.NS_SW_Core_MajorArc",
+   "emitter": "E_Arc",
+   "module": "InitializeParticle001",
+   "input": "Lifetime",
+   "user": "User.Lifetime"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_MajorArc.NS_SW_Core_MajorArc",
+   "emitter": "E_Arc",
+   "module": "ScaleMeshSize",
+   "input": "Scale Factor",
+   "user": "User.ScaleVector"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_MajorArc.NS_SW_Core_MajorArc",
+   "emitter": "E_Arc",
+   "module": "Color",
+   "input": "Color",
+   "user": "User.PrimaryColor"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_MajorArc.NS_SW_Core_MajorArc",
+   "emitter": "E_Arc",
+   "module": "Color",
+   "input": "Scale Alpha",
+   "user": "User.Intensity"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_MajorArc.NS_SW_Core_MajorArc",
+   "emitter": "E_ArcMist",
+   "module": "SpawnBurst_Instantaneous",
+   "input": "Spawn Count",
+   "user": "User.MistCount"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_MajorArc.NS_SW_Core_MajorArc",
+   "emitter": "E_ArcMist",
+   "module": "InitializeParticle001",
+   "input": "Lifetime",
+   "user": "User.Lifetime"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_MajorArc.NS_SW_Core_MajorArc",
+   "emitter": "E_ArcMist",
+   "module": "Color",
+   "input": "Color",
+   "user": "User.MistColor"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_MajorArc.NS_SW_Core_MajorArc",
+   "emitter": "E_ArcMist",
+   "module": "Color",
+   "input": "Scale Alpha",
+   "user": "User.Intensity"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_MistWake.NS_SW_Core_MistWake",
+   "emitter": "E_Wisp",
+   "module": "SpawnRate",
+   "input": "SpawnRate",
+   "user": "User.MistRate"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_MistWake.NS_SW_Core_MistWake",
+   "emitter": "E_Wisp",
+   "module": "InitializeParticle001",
+   "input": "Lifetime",
+   "user": "User.Lifetime"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_MistWake.NS_SW_Core_MistWake",
+   "emitter": "E_Wisp",
+   "module": "ScaleMeshSize",
+   "input": "Scale Factor",
+   "user": "User.ScaleVector"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_MistWake.NS_SW_Core_MistWake",
+   "emitter": "E_Wisp",
+   "module": "Color",
+   "input": "Color",
+   "user": "User.MistColor"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_MistWake.NS_SW_Core_MistWake",
+   "emitter": "E_Wisp",
+   "module": "Color",
+   "input": "Scale Alpha",
+   "user": "User.Intensity"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_PurpleMotes.NS_SW_Core_PurpleMotes",
+   "emitter": "E_Motes",
+   "module": "SpawnRate",
+   "input": "SpawnRate",
+   "user": "User.SpawnRate"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_PurpleMotes.NS_SW_Core_PurpleMotes",
+   "emitter": "E_Motes",
+   "module": "InitializeParticle001",
+   "input": "Lifetime",
+   "user": "User.Lifetime"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_PurpleMotes.NS_SW_Core_PurpleMotes",
+   "emitter": "E_Motes",
+   "module": "Color",
+   "input": "Color",
+   "user": "User.PrimaryColor"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_PurpleMotes.NS_SW_Core_PurpleMotes",
+   "emitter": "E_Motes",
+   "module": "Color",
+   "input": "Scale Alpha",
+   "user": "User.Intensity"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_Hit.NS_SW_Core_Hit",
+   "emitter": "E_Hit",
+   "module": "InitializeParticle001",
+   "input": "Lifetime",
+   "user": "User.Lifetime"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_Hit.NS_SW_Core_Hit",
+   "emitter": "E_Hit",
+   "module": "Color",
+   "input": "Color",
+   "user": "User.PrimaryColor"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_Hit.NS_SW_Core_Hit",
+   "emitter": "E_Hit",
+   "module": "Color",
+   "input": "Scale Alpha",
+   "user": "User.Intensity"
+  }
+ ],
+ "verified": [
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_EdgeTrail.NS_SW_Core_EdgeTrail",
+   "module": "SpawnRate",
+   "count": 1
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_EdgeTrail.NS_SW_Core_EdgeTrail",
+   "module": "InitializeParticle001",
+   "count": 1
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_EdgeTrail.NS_SW_Core_EdgeTrail",
+   "module": "Color",
+   "count": 2
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_EdgeTrail.NS_SW_Core_EdgeTrail",
+   "module": "FN_InitializeRibbonAttributes",
+   "count": 1
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_Glint.NS_SW_Core_Glint",
+   "module": "InitializeParticle001",
+   "count": 1
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_Glint.NS_SW_Core_Glint",
+   "module": "Color",
+   "count": 2
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_AirSlice.NS_SW_Core_AirSlice",
+   "module": "InitializeParticle001",
+   "count": 1
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_AirSlice.NS_SW_Core_AirSlice",
+   "module": "ScaleMeshSize",
+   "count": 1
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_AirSlice.NS_SW_Core_AirSlice",
+   "module": "Color",
+   "count": 2
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_Wave.NS_SW_Core_Wave",
+   "module": "InitializeParticle001",
+   "count": 1
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_Wave.NS_SW_Core_Wave",
+   "module": "ScaleMeshSize",
+   "count": 1
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_Wave.NS_SW_Core_Wave",
+   "module": "SolveForcesAndVelocity",
+   "count": 1
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_Wave.NS_SW_Core_Wave",
+   "module": "Color",
+   "count": 2
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_Wave.NS_SW_Core_Wave",
+   "module": "SpawnBurst_Instantaneous",
+   "count": 1
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_Wave.NS_SW_Core_Wave",
+   "module": "InitializeParticle001",
+   "count": 1
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_Wave.NS_SW_Core_Wave",
+   "module": "Color",
+   "count": 2
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_SpatialScar.NS_SW_Core_SpatialScar",
+   "module": "InitializeParticle001",
+   "count": 1
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_SpatialScar.NS_SW_Core_SpatialScar",
+   "module": "ScaleMeshSize",
+   "count": 1
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_SpatialScar.NS_SW_Core_SpatialScar",
+   "module": "Color",
+   "count": 2
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_SpatialScar.NS_SW_Core_SpatialScar",
+   "module": "SpawnBurst_Instantaneous",
+   "count": 1
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_SpatialScar.NS_SW_Core_SpatialScar",
+   "module": "InitializeParticle001",
+   "count": 1
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_SpatialScar.NS_SW_Core_SpatialScar",
+   "module": "Color",
+   "count": 2
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_MajorArc.NS_SW_Core_MajorArc",
+   "module": "InitializeParticle001",
+   "count": 1
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_MajorArc.NS_SW_Core_MajorArc",
+   "module": "ScaleMeshSize",
+   "count": 1
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_MajorArc.NS_SW_Core_MajorArc",
+   "module": "Color",
+   "count": 2
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_MajorArc.NS_SW_Core_MajorArc",
+   "module": "SpawnBurst_Instantaneous",
+   "count": 1
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_MajorArc.NS_SW_Core_MajorArc",
+   "module": "InitializeParticle001",
+   "count": 1
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_MajorArc.NS_SW_Core_MajorArc",
+   "module": "Color",
+   "count": 2
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_MistWake.NS_SW_Core_MistWake",
+   "module": "SpawnRate",
+   "count": 1
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_MistWake.NS_SW_Core_MistWake",
+   "module": "InitializeParticle001",
+   "count": 1
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_MistWake.NS_SW_Core_MistWake",
+   "module": "ScaleMeshSize",
+   "count": 1
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_MistWake.NS_SW_Core_MistWake",
+   "module": "Color",
+   "count": 2
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_PurpleMotes.NS_SW_Core_PurpleMotes",
+   "module": "SpawnRate",
+   "count": 1
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_PurpleMotes.NS_SW_Core_PurpleMotes",
+   "module": "InitializeParticle001",
+   "count": 1
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_PurpleMotes.NS_SW_Core_PurpleMotes",
+   "module": "Color",
+   "count": 2
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_Hit.NS_SW_Core_Hit",
+   "module": "InitializeParticle001",
+   "count": 1
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_Hit.NS_SW_Core_Hit",
+   "module": "Color",
+   "count": 2
+  }
+ ],
+ "unverified": [],
+ "manual_steps": [
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_EdgeTrail.NS_SW_Core_EdgeTrail",
+   "emitter": "E_Trail",
+   "step": "Ribbon width over life: 1.0 -> 0.55 ease-out. A trail must thin as the swing decelerates"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_EdgeTrail.NS_SW_Core_EdgeTrail",
+   "emitter": "E_Trail",
+   "step": "Colour alpha over life: hold, then fade over the last 40% so the tail dies first"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_EdgeTrail.NS_SW_Core_EdgeTrail",
+   "emitter": "E_Trail",
+   "step": "Ribbon renderer: tessellation Custom, 8 segments, UV0 tiled 4x along the ribbon"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_Glint.NS_SW_Core_Glint",
+   "emitter": "E_Glint",
+   "step": "The scan along the blade is the Streak map scrolling on U, so the draw-on is a material UV wipe, not a sprite size curve"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_Glint.NS_SW_Core_Glint",
+   "emitter": "E_Glint",
+   "step": "Sprite size over life: 0.35 -> 1.0 in the first 25%, then 1.0 -> 0.15. 80-160 ms total"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_Glint.NS_SW_Core_Glint",
+   "emitter": "E_Glint",
+   "step": "Light renderer: one particle, low radius. Colour over life: CoreColor, alpha down to 0"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_AirSlice.NS_SW_Core_AirSlice",
+   "emitter": "E_Slice",
+   "step": "Draw-on is a material U wipe on the Scar mask: 0 -> 1 across the first 35% of life, 50-100 ms total"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_AirSlice.NS_SW_Core_AirSlice",
+   "emitter": "E_Slice",
+   "step": "Set User.ScaleVector so the strip reaches 1.5-2.5 m along X; Y stays thin"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_AirSlice.NS_SW_Core_AirSlice",
+   "emitter": "E_Slice",
+   "step": "The strip is authored 6 cm wide. Only widen it if the blade is unusually heavy"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_Wave.NS_SW_Core_Wave",
+   "emitter": "E_Wave",
+   "step": "User.ScaleVector: 8.0 uniform for a 6-10 m wave; the sheet is 1.0 m x 0.68 m before scaling"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_Wave.NS_SW_Core_Wave",
+   "emitter": "E_Wave",
+   "step": "Travel 0.18-0.35 s across the range: set User.Velocity.X so length/speed lands in that window"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_Wave.NS_SW_Core_Wave",
+   "emitter": "E_Wave",
+   "step": "Colour alpha over life: leading edge holds, whole sheet to 0 over the last 30%"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_Wave.NS_SW_Core_Wave",
+   "emitter": "E_MistWake",
+   "step": "Costs nothing in the Normal profile: User.MistCount is 0 there"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_Wave.NS_SW_Core_Wave",
+   "emitter": "E_MistWake",
+   "step": "Keep the count low - the wave must still read as a thin sheet, not a purple fog bank"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_SpatialScar.NS_SW_Core_SpatialScar",
+   "emitter": "E_Scar",
+   "step": "Draw-on 20-60 ms, hold 120-250 ms, fade ~100 ms. Three copies must read 1 / 2 / 3 - stagger the draw-on, never the hold"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_SpatialScar.NS_SW_Core_SpatialScar",
+   "emitter": "E_Scar",
+   "step": "The three scars are slash / backslash / shallow horizontal. Geometry is one system; orientation is the caller's job"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_SpatialScar.NS_SW_Core_SpatialScar",
+   "emitter": "E_ScarMist",
+   "step": "Mist leaks along the scar normal, slowly. It must not close into a ring and must not smother the three scar lines"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_SpatialScar.NS_SW_Core_SpatialScar",
+   "emitter": "E_ScarMist",
+   "step": "If the hero frame shows one purple-black cloud, User.MistCount is too high"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_MajorArc.NS_SW_Core_MajorArc",
+   "emitter": "E_Arc",
+   "step": "The arc is formed live by the blade: the draw-on is the Edge mask wiping along U, driven by the A4 arc timing, not by a scale curve"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_MajorArc.NS_SW_Core_MajorArc",
+   "emitter": "E_Arc",
+   "step": "Arc mesh is 2 m outer diameter at scale 1.0, swept about its own origin, so User.ScaleVector stays uniform here"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_MajorArc.NS_SW_Core_MajorArc",
+   "emitter": "E_Arc",
+   "step": "Colour alpha over life: fade over the last 35%. Start and end must stay distinguishable in a still frame"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_MajorArc.NS_SW_Core_MajorArc",
+   "emitter": "E_ArcMist",
+   "step": "Incomplete wake behind the arc only. It must never close into a 360 ring, even at maximum MistCount"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_MistWake.NS_SW_Core_MistWake",
+   "emitter": "E_Wisp",
+   "step": "Mesh scale 0.5 -> 1.0 over life, slowly. Mist that grows fast reads as an explosion"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_MistWake.NS_SW_Core_MistWake",
+   "emitter": "E_Wisp",
+   "step": "Alpha over life: 0 -> peak at 25% -> 0"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_MistWake.NS_SW_Core_MistWake",
+   "emitter": "E_Wisp",
+   "step": "Zero cost in the Normal profile: User.MistRate is 0 there"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_PurpleMotes.NS_SW_Core_PurpleMotes",
+   "emitter": "E_Motes",
+   "step": "Spawn rate in single digits per second, and 0 while stowed. This is a few motes, not a candle"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_PurpleMotes.NS_SW_Core_PurpleMotes",
+   "emitter": "E_Motes",
+   "step": "Sprite size over life: 0.5 -> 1.0 -> 0.2"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_PurpleMotes.NS_SW_Core_PurpleMotes",
+   "emitter": "E_Motes",
+   "step": "Additive, so Scale Alpha does not attenuate it: brightness is set on MI_SW_Mote_* instead"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_Hit.NS_SW_Core_Hit",
+   "emitter": "E_Hit",
+   "step": "Sprite size over life: 0.4 -> 1.0 quickly, then 1.0 -> 0.6"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_Hit.NS_SW_Core_Hit",
+   "emitter": "E_Hit",
+   "step": "Hit timing is owned by the animation event, never by the system"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_Hit.NS_SW_Core_Hit",
+   "emitter": "E_Hit",
+   "step": "Rename MI_SW_Glint_* to per-surface instances for body / stone / metal / wood"
+  }
+ ],
+ "saved": [
+  {
+   "system": "NS_SW_Core_EdgeTrail",
+   "via": "save_dirty_packages",
+   "ok": true
+  },
+  {
+   "system": "NS_SW_Core_Glint",
+   "via": "save_dirty_packages",
+   "ok": true
+  },
+  {
+   "system": "NS_SW_Core_AirSlice",
+   "via": "save_dirty_packages",
+   "ok": true
+  },
+  {
+   "system": "NS_SW_Core_Wave",
+   "via": "save_dirty_packages",
+   "ok": true
+  },
+  {
+   "system": "NS_SW_Core_SpatialScar",
+   "via": "save_dirty_packages",
+   "ok": true
+  },
+  {
+   "system": "NS_SW_Core_MajorArc",
+   "via": "save_dirty_packages",
+   "ok": true
+  },
+  {
+   "system": "NS_SW_Core_MistWake",
+   "via": "save_dirty_packages",
+   "ok": true
+  },
+  {
+   "system": "NS_SW_Core_PurpleMotes",
+   "via": "save_dirty_packages",
+   "ok": true
+  },
+  {
+   "system": "NS_SW_Core_Hit",
+   "via": "save_dirty_packages",
+   "ok": true
+  }
+ ],
+ "renderers": [
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_EdgeTrail.NS_SW_Core_EdgeTrail",
+   "emitter": "E_Trail",
+   "index": 0,
+   "kind": "ribbon",
+   "material": "MI_SW_Trail_Normal",
+   "mesh": null
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_Glint.NS_SW_Core_Glint",
+   "emitter": "E_Glint",
+   "index": 0,
+   "kind": "sprite",
+   "material": "MI_SW_Glint_Normal",
+   "mesh": null
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_Glint.NS_SW_Core_Glint",
+   "emitter": "E_Glint",
+   "index": 1,
+   "kind": "light",
+   "material": null,
+   "mesh": null
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_AirSlice.NS_SW_Core_AirSlice",
+   "emitter": "E_Slice",
+   "index": 0,
+   "kind": "mesh",
+   "material": "MI_SW_SpatialScar_Normal",
+   "mesh": "SM_SW_ScarStrip"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_Wave.NS_SW_Core_Wave",
+   "emitter": "E_Wave",
+   "index": 0,
+   "kind": "mesh",
+   "material": "MI_SW_Wave_Normal",
+   "mesh": "SM_SW_WaveSheet"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_Wave.NS_SW_Core_Wave",
+   "emitter": "E_MistWake",
+   "index": 0,
+   "kind": "mesh",
+   "material": "MI_SW_Mist_Normal",
+   "mesh": "SM_SW_GlintQuad"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_SpatialScar.NS_SW_Core_SpatialScar",
+   "emitter": "E_Scar",
+   "index": 0,
+   "kind": "mesh",
+   "material": "MI_SW_SpatialScar_Normal",
+   "mesh": "SM_SW_ScarStrip"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_SpatialScar.NS_SW_Core_SpatialScar",
+   "emitter": "E_ScarMist",
+   "index": 0,
+   "kind": "mesh",
+   "material": "MI_SW_Mist_Normal",
+   "mesh": "SM_SW_GlintQuad"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_MajorArc.NS_SW_Core_MajorArc",
+   "emitter": "E_Arc",
+   "index": 0,
+   "kind": "mesh",
+   "material": "MI_SW_Trail_Normal",
+   "mesh": "SM_SW_ArcSheet"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_MajorArc.NS_SW_Core_MajorArc",
+   "emitter": "E_ArcMist",
+   "index": 0,
+   "kind": "mesh",
+   "material": "MI_SW_Mist_Normal",
+   "mesh": "SM_SW_GlintQuad"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_MistWake.NS_SW_Core_MistWake",
+   "emitter": "E_Wisp",
+   "index": 0,
+   "kind": "mesh",
+   "material": "MI_SW_Mist_Normal",
+   "mesh": "SM_SW_GlintQuad"
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_PurpleMotes.NS_SW_Core_PurpleMotes",
+   "emitter": "E_Motes",
+   "index": 0,
+   "kind": "sprite",
+   "material": "MI_SW_Mote_Normal",
+   "mesh": null
+  },
+  {
+   "system": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_Hit.NS_SW_Core_Hit",
+   "emitter": "E_Hit",
+   "index": 0,
+   "kind": "sprite",
+   "material": "MI_SW_Glint_Normal",
+   "mesh": null
+  }
+ ],
+ "gates_opened": [],
+ "plan": [
+  {
+   "name": "NS_SW_Core_EdgeTrail",
+   "note": "A1 / A4 blade edge trail. A ribbon that follows the blade, driven entirely from User.* so Normal and Magic are the same graph.",
+   "emitters": [
+    {
+     "name": "E_Trail",
+     "renderers": [
+      {
+       "kind": "ribbon",
+       "material": "MI_SW_Trail_Normal",
+       "mesh": null
+      }
+     ],
+     "mods": [
+      {
+       "script": "EmitterUpdateScript",
+       "module_key": "SpawnRate",
+       "asset": "/Niagara/Modules/Emitter/SpawnRate",
+       "inputs": [
+        {
+         "input": "Spawn Rate",
+         "link": "User.SpawnRate",
+         "type": "/Script/Niagara.NiagaraFloat"
+        }
+       ]
+      },
+      {
+       "script": "ParticleSpawnScript",
+       "module_key": "Init",
+       "asset": "/Niagara/Modules/Spawn/Initialization/V2/InitializeParticle",
+       "inputs": [
+        {
+         "input": "Lifetime",
+         "link": "User.Lifetime",
+         "type": "/Script/Niagara.NiagaraFloat"
+        }
+       ]
+      },
+      {
+       "script": "ParticleUpdateScript",
+       "module_key": "Color",
+       "asset": "/Niagara/Modules/Update/Color/Color",
+       "inputs": [
+        {
+         "input": "Color",
+         "link": "User.PrimaryColor",
+         "type": "/Script/CoreUObject.LinearColor"
+        },
+        {
+         "input": "Scale Alpha",
+         "link": "User.Intensity",
+         "type": "/Script/Niagara.NiagaraFloat"
+        }
+       ]
+      },
+      {
+       "script": "ParticleUpdateScript",
+       "module_key": "RibbonWidth",
+       "asset": "/Niagara/Modules/Ribbons/RibbonWidth",
+       "inputs": [
+        {
+         "input": "Ribbon Width",
+         "link": "User.Width",
+         "type": "/Script/Niagara.NiagaraFloat"
+        }
+       ]
+      }
+     ],
+     "manual": [
+      "Ribbon width over life: 1.0 -> 0.55 ease-out. A trail must thin as the swing decelerates",
+      "Colour alpha over life: hold, then fade over the last 40% so the tail dies first",
+      "Ribbon renderer: tessellation Custom, 8 segments, UV0 tiled 4x along the ribbon"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "NS_SW_Core_Glint",
+   "note": "Equip / inspect cold glint. One particle, very short life, plus an optional point light. Not a firework, and no lens flare anywhere near it.",
+   "emitters": [
+    {
+     "name": "E_Glint",
+     "renderers": [
+      {
+       "kind": "sprite",
+       "material": "MI_SW_Glint_Normal",
+       "mesh": null
+      },
+      {
+       "kind": "light",
+       "material": null,
+       "mesh": null
+      }
+     ],
+     "mods": [
+      {
+       "script": "EmitterUpdateScript",
+       "module_key": "SpawnBurst",
+       "asset": "/Niagara/Modules/Emitter/SpawnBurst_Instantaneous",
+       "inputs": [
+        {
+         "input": "Spawn Count",
+         "literal": {
+          "struct": {
+           "refPath": "/Script/Niagara.NiagaraInt32"
+          },
+          "value": {
+           "value": 1
+          }
+         }
+        }
+       ]
+      },
+      {
+       "script": "ParticleSpawnScript",
+       "module_key": "Init",
+       "asset": "/Niagara/Modules/Spawn/Initialization/V2/InitializeParticle",
+       "inputs": [
+        {
+         "input": "Lifetime",
+         "link": "User.Lifetime",
+         "type": "/Script/Niagara.NiagaraFloat"
+        }
+       ]
+      },
+      {
+       "script": "ParticleUpdateScript",
+       "module_key": "ScaleSpriteSize",
+       "asset": "/Niagara/Modules/Update/Size/ScaleSpriteSize",
+       "inputs": [
+        {
+         "input": "Uniform Scale Factor",
+         "link": "User.Radius",
+         "type": "/Script/Niagara.NiagaraFloat"
+        }
+       ]
+      },
+      {
+       "script": "ParticleUpdateScript",
+       "module_key": "Color",
+       "asset": "/Niagara/Modules/Update/Color/Color",
+       "inputs": [
+        {
+         "input": "Color",
+         "link": "User.CoreColor",
+         "type": "/Script/CoreUObject.LinearColor"
+        },
+        {
+         "input": "Scale Alpha",
+         "link": "User.Intensity",
+         "type": "/Script/Niagara.NiagaraFloat"
+        }
+       ]
+      }
+     ],
+     "manual": [
+      "The scan along the blade is the Streak map scrolling on U, so the draw-on is a material UV wipe, not a sprite size curve",
+      "Sprite size over life: 0.35 -> 1.0 in the first 25%, then 1.0 -> 0.15. 80-160 ms total",
+      "Light renderer: one particle, low radius. Colour over life: CoreColor, alpha down to 0"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "NS_SW_Core_AirSlice",
+   "note": "A1 thin air slice: a 1.5-2.5 m sliver drawn on from one end, not a projectile. Same graph for both swords.",
+   "emitters": [
+    {
+     "name": "E_Slice",
+     "renderers": [
+      {
+       "kind": "mesh",
+       "material": "MI_SW_SpatialScar_Normal",
+       "mesh": "SM_SW_ScarStrip"
+      }
+     ],
+     "mods": [
+      {
+       "script": "EmitterUpdateScript",
+       "module_key": "SpawnBurst",
+       "asset": "/Niagara/Modules/Emitter/SpawnBurst_Instantaneous",
+       "inputs": [
+        {
+         "input": "Spawn Count",
+         "literal": {
+          "struct": {
+           "refPath": "/Script/Niagara.NiagaraInt32"
+          },
+          "value": {
+           "value": 1
+          }
+         }
+        }
+       ]
+      },
+      {
+       "script": "ParticleSpawnScript",
+       "module_key": "Init",
+       "asset": "/Niagara/Modules/Spawn/Initialization/V2/InitializeParticle",
+       "inputs": [
+        {
+         "input": "Lifetime",
+         "link": "User.Lifetime",
+         "type": "/Script/Niagara.NiagaraFloat"
+        }
+       ]
+      },
+      {
+       "script": "ParticleUpdateScript",
+       "module_key": "ScaleMeshSize",
+       "asset": "/Niagara/Modules/Update/Size/ScaleMeshSize",
+       "inputs": [
+        {
+         "input": "Scale Factor",
+         "link": "User.ScaleVector",
+         "type": "/Script/CoreUObject.Vector3f"
+        }
+       ]
+      },
+      {
+       "script": "ParticleUpdateScript",
+       "module_key": "Color",
+       "asset": "/Niagara/Modules/Update/Color/Color",
+       "inputs": [
+        {
+         "input": "Color",
+         "link": "User.PrimaryColor",
+         "type": "/Script/CoreUObject.LinearColor"
+        },
+        {
+         "input": "Scale Alpha",
+         "link": "User.Intensity",
+         "type": "/Script/Niagara.NiagaraFloat"
+        }
+       ]
+      }
+     ],
+     "manual": [
+      "Draw-on is a material U wipe on the Scar mask: 0 -> 1 across the first 35% of life, 50-100 ms total",
+      "Set User.ScaleVector so the strip reaches 1.5-2.5 m along X; Y stays thin",
+      "The strip is authored 6 cm wide. Only widen it if the blade is unusually heavy"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "NS_SW_Core_Wave",
+   "note": "A2 mid-range blade wave: a thin curved pressure sheet, 6-10 m, bright leading edge and faint interior. Not a thick blue crescent.",
+   "emitters": [
+    {
+     "name": "E_Wave",
+     "renderers": [
+      {
+       "kind": "mesh",
+       "material": "MI_SW_Wave_Normal",
+       "mesh": "SM_SW_WaveSheet"
+      }
+     ],
+     "mods": [
+      {
+       "script": "EmitterUpdateScript",
+       "module_key": "SpawnBurst",
+       "asset": "/Niagara/Modules/Emitter/SpawnBurst_Instantaneous",
+       "inputs": [
+        {
+         "input": "Spawn Count",
+         "literal": {
+          "struct": {
+           "refPath": "/Script/Niagara.NiagaraInt32"
+          },
+          "value": {
+           "value": 1
+          }
+         }
+        }
+       ]
+      },
+      {
+       "script": "ParticleSpawnScript",
+       "module_key": "Init",
+       "asset": "/Niagara/Modules/Spawn/Initialization/V2/InitializeParticle",
+       "inputs": [
+        {
+         "input": "Lifetime",
+         "link": "User.Lifetime",
+         "type": "/Script/Niagara.NiagaraFloat"
+        }
+       ]
+      },
+      {
+       "script": "ParticleUpdateScript",
+       "module_key": "ScaleMeshSize",
+       "asset": "/Niagara/Modules/Update/Size/ScaleMeshSize",
+       "inputs": [
+        {
+         "input": "Scale Factor",
+         "link": "User.ScaleVector",
+         "type": "/Script/CoreUObject.Vector3f"
+        }
+       ]
+      },
+      {
+       "script": "ParticleUpdateScript",
+       "module_key": "Solve",
+       "asset": "/Niagara/Modules/Solvers/SolveForcesAndVelocity",
+       "inputs": [
+        {
+         "input": "Velocity",
+         "link": "User.Velocity",
+         "type": "/Script/CoreUObject.Vector3f"
+        }
+       ]
+      },
+      {
+       "script": "ParticleUpdateScript",
+       "module_key": "Color",
+       "asset": "/Niagara/Modules/Update/Color/Color",
+       "inputs": [
+        {
+         "input": "Color",
+         "link": "User.PrimaryColor",
+         "type": "/Script/CoreUObject.LinearColor"
+        },
+        {
+         "input": "Scale Alpha",
+         "link": "User.Intensity",
+         "type": "/Script/Niagara.NiagaraFloat"
+        }
+       ]
+      }
+     ],
+     "manual": [
+      "User.ScaleVector: 8.0 uniform for a 6-10 m wave; the sheet is 1.0 m x 0.68 m before scaling",
+      "Travel 0.18-0.35 s across the range: set User.Velocity.X so length/speed lands in that window",
+      "Colour alpha over life: leading edge holds, whole sheet to 0 over the last 30%"
+     ]
+    },
+    {
+     "name": "E_MistWake",
+     "renderers": [
+      {
+       "kind": "mesh",
+       "material": "MI_SW_Mist_Normal",
+       "mesh": "SM_SW_GlintQuad"
+      }
+     ],
+     "mods": [
+      {
+       "script": "EmitterUpdateScript",
+       "module_key": "SpawnBurst",
+       "asset": "/Niagara/Modules/Emitter/SpawnBurst_Instantaneous",
+       "inputs": [
+        {
+         "input": "Spawn Count",
+         "link": "User.MistCount",
+         "type": "/Script/Niagara.NiagaraInt32"
+        }
+       ]
+      },
+      {
+       "script": "ParticleSpawnScript",
+       "module_key": "Init",
+       "asset": "/Niagara/Modules/Spawn/Initialization/V2/InitializeParticle",
+       "inputs": [
+        {
+         "input": "Lifetime",
+         "link": "User.Lifetime",
+         "type": "/Script/Niagara.NiagaraFloat"
+        }
+       ]
+      },
+      {
+       "script": "ParticleUpdateScript",
+       "module_key": "Color",
+       "asset": "/Niagara/Modules/Update/Color/Color",
+       "inputs": [
+        {
+         "input": "Color",
+         "link": "User.MistColor",
+         "type": "/Script/CoreUObject.LinearColor"
+        },
+        {
+         "input": "Scale Alpha",
+         "link": "User.Intensity",
+         "type": "/Script/Niagara.NiagaraFloat"
+        }
+       ]
+      }
+     ],
+     "manual": [
+      "Costs nothing in the Normal profile: User.MistCount is 0 there",
+      "Keep the count low - the wave must still read as a thin sheet, not a purple fog bank"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "NS_SW_Core_SpatialScar",
+   "note": "A3 world-space spatial scar. Three instances are spawned by the contract, each reading 1/2/3 by draw order and position, held long enough that all three coexist without merging.",
+   "emitters": [
+    {
+     "name": "E_Scar",
+     "renderers": [
+      {
+       "kind": "mesh",
+       "material": "MI_SW_SpatialScar_Normal",
+       "mesh": "SM_SW_ScarStrip"
+      }
+     ],
+     "mods": [
+      {
+       "script": "EmitterUpdateScript",
+       "module_key": "SpawnBurst",
+       "asset": "/Niagara/Modules/Emitter/SpawnBurst_Instantaneous",
+       "inputs": [
+        {
+         "input": "Spawn Count",
+         "literal": {
+          "struct": {
+           "refPath": "/Script/Niagara.NiagaraInt32"
+          },
+          "value": {
+           "value": 1
+          }
+         }
+        }
+       ]
+      },
+      {
+       "script": "ParticleSpawnScript",
+       "module_key": "Init",
+       "asset": "/Niagara/Modules/Spawn/Initialization/V2/InitializeParticle",
+       "inputs": [
+        {
+         "input": "Lifetime",
+         "link": "User.Lifetime",
+         "type": "/Script/Niagara.NiagaraFloat"
+        }
+       ]
+      },
+      {
+       "script": "ParticleUpdateScript",
+       "module_key": "ScaleMeshSize",
+       "asset": "/Niagara/Modules/Update/Size/ScaleMeshSize",
+       "inputs": [
+        {
+         "input": "Scale Factor",
+         "link": "User.ScaleVector",
+         "type": "/Script/CoreUObject.Vector3f"
+        }
+       ]
+      },
+      {
+       "script": "ParticleUpdateScript",
+       "module_key": "Color",
+       "asset": "/Niagara/Modules/Update/Color/Color",
+       "inputs": [
+        {
+         "input": "Color",
+         "link": "User.PrimaryColor",
+         "type": "/Script/CoreUObject.LinearColor"
+        },
+        {
+         "input": "Scale Alpha",
+         "link": "User.Intensity",
+         "type": "/Script/Niagara.NiagaraFloat"
+        }
+       ]
+      }
+     ],
+     "manual": [
+      "Draw-on 20-60 ms, hold 120-250 ms, fade ~100 ms. Three copies must read 1 / 2 / 3 - stagger the draw-on, never the hold",
+      "The three scars are slash / backslash / shallow horizontal. Geometry is one system; orientation is the caller's job"
+     ]
+    },
+    {
+     "name": "E_ScarMist",
+     "renderers": [
+      {
+       "kind": "mesh",
+       "material": "MI_SW_Mist_Normal",
+       "mesh": "SM_SW_GlintQuad"
+      }
+     ],
+     "mods": [
+      {
+       "script": "EmitterUpdateScript",
+       "module_key": "SpawnBurst",
+       "asset": "/Niagara/Modules/Emitter/SpawnBurst_Instantaneous",
+       "inputs": [
+        {
+         "input": "Spawn Count",
+         "link": "User.MistCount",
+         "type": "/Script/Niagara.NiagaraInt32"
+        }
+       ]
+      },
+      {
+       "script": "ParticleSpawnScript",
+       "module_key": "Init",
+       "asset": "/Niagara/Modules/Spawn/Initialization/V2/InitializeParticle",
+       "inputs": [
+        {
+         "input": "Lifetime",
+         "link": "User.Lifetime",
+         "type": "/Script/Niagara.NiagaraFloat"
+        }
+       ]
+      },
+      {
+       "script": "ParticleUpdateScript",
+       "module_key": "Color",
+       "asset": "/Niagara/Modules/Update/Color/Color",
+       "inputs": [
+        {
+         "input": "Color",
+         "link": "User.MistColor",
+         "type": "/Script/CoreUObject.LinearColor"
+        },
+        {
+         "input": "Scale Alpha",
+         "link": "User.Intensity",
+         "type": "/Script/Niagara.NiagaraFloat"
+        }
+       ]
+      }
+     ],
+     "manual": [
+      "Mist leaks along the scar normal, slowly. It must not close into a ring and must not smother the three scar lines",
+      "If the hero frame shows one purple-black cloud, User.MistCount is too high"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "NS_SW_Core_MajorArc",
+   "note": "A4 major arc, 240-300 deg. SM_SW_ArcSheet has the sweep on U, so the arc can be drawn on along its own length and keeps a readable start and an end. Not a 360 ring.",
+   "emitters": [
+    {
+     "name": "E_Arc",
+     "renderers": [
+      {
+       "kind": "mesh",
+       "material": "MI_SW_Trail_Normal",
+       "mesh": "SM_SW_ArcSheet"
+      }
+     ],
+     "mods": [
+      {
+       "script": "EmitterUpdateScript",
+       "module_key": "SpawnBurst",
+       "asset": "/Niagara/Modules/Emitter/SpawnBurst_Instantaneous",
+       "inputs": [
+        {
+         "input": "Spawn Count",
+         "literal": {
+          "struct": {
+           "refPath": "/Script/Niagara.NiagaraInt32"
+          },
+          "value": {
+           "value": 1
+          }
+         }
+        }
+       ]
+      },
+      {
+       "script": "ParticleSpawnScript",
+       "module_key": "Init",
+       "asset": "/Niagara/Modules/Spawn/Initialization/V2/InitializeParticle",
+       "inputs": [
+        {
+         "input": "Lifetime",
+         "link": "User.Lifetime",
+         "type": "/Script/Niagara.NiagaraFloat"
+        }
+       ]
+      },
+      {
+       "script": "ParticleUpdateScript",
+       "module_key": "ScaleMeshSize",
+       "asset": "/Niagara/Modules/Update/Size/ScaleMeshSize",
+       "inputs": [
+        {
+         "input": "Scale Factor",
+         "link": "User.ScaleVector",
+         "type": "/Script/CoreUObject.Vector3f"
+        }
+       ]
+      },
+      {
+       "script": "ParticleUpdateScript",
+       "module_key": "Color",
+       "asset": "/Niagara/Modules/Update/Color/Color",
+       "inputs": [
+        {
+         "input": "Color",
+         "link": "User.PrimaryColor",
+         "type": "/Script/CoreUObject.LinearColor"
+        },
+        {
+         "input": "Scale Alpha",
+         "link": "User.Intensity",
+         "type": "/Script/Niagara.NiagaraFloat"
+        }
+       ]
+      }
+     ],
+     "manual": [
+      "The arc is formed live by the blade: the draw-on is the Edge mask wiping along U, driven by the A4 arc timing, not by a scale curve",
+      "Arc mesh is 2 m outer diameter at scale 1.0, swept about its own origin, so User.ScaleVector stays uniform here",
+      "Colour alpha over life: fade over the last 35%. Start and end must stay distinguishable in a still frame"
+     ]
+    },
+    {
+     "name": "E_ArcMist",
+     "renderers": [
+      {
+       "kind": "mesh",
+       "material": "MI_SW_Mist_Normal",
+       "mesh": "SM_SW_GlintQuad"
+      }
+     ],
+     "mods": [
+      {
+       "script": "EmitterUpdateScript",
+       "module_key": "SpawnBurst",
+       "asset": "/Niagara/Modules/Emitter/SpawnBurst_Instantaneous",
+       "inputs": [
+        {
+         "input": "Spawn Count",
+         "link": "User.MistCount",
+         "type": "/Script/Niagara.NiagaraInt32"
+        }
+       ]
+      },
+      {
+       "script": "ParticleSpawnScript",
+       "module_key": "Init",
+       "asset": "/Niagara/Modules/Spawn/Initialization/V2/InitializeParticle",
+       "inputs": [
+        {
+         "input": "Lifetime",
+         "link": "User.Lifetime",
+         "type": "/Script/Niagara.NiagaraFloat"
+        }
+       ]
+      },
+      {
+       "script": "ParticleUpdateScript",
+       "module_key": "Color",
+       "asset": "/Niagara/Modules/Update/Color/Color",
+       "inputs": [
+        {
+         "input": "Color",
+         "link": "User.MistColor",
+         "type": "/Script/CoreUObject.LinearColor"
+        },
+        {
+         "input": "Scale Alpha",
+         "link": "User.Intensity",
+         "type": "/Script/Niagara.NiagaraFloat"
+        }
+       ]
+      }
+     ],
+     "manual": [
+      "Incomplete wake behind the arc only. It must never close into a 360 ring, even at maximum MistCount"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "NS_SW_Core_MistWake",
+   "note": "Black mist / void leakage. Low-count cards plus a mesh wake, never a single standard smoke sprite, and never dense enough to close into a ring or to smother the scar it leaks from.",
+   "emitters": [
+    {
+     "name": "E_Wisp",
+     "renderers": [
+      {
+       "kind": "mesh",
+       "material": "MI_SW_Mist_Normal",
+       "mesh": "SM_SW_GlintQuad"
+      }
+     ],
+     "mods": [
+      {
+       "script": "EmitterUpdateScript",
+       "module_key": "SpawnRate",
+       "asset": "/Niagara/Modules/Emitter/SpawnRate",
+       "inputs": [
+        {
+         "input": "Spawn Rate",
+         "link": "User.MistRate",
+         "type": "/Script/Niagara.NiagaraFloat"
+        }
+       ]
+      },
+      {
+       "script": "ParticleSpawnScript",
+       "module_key": "Init",
+       "asset": "/Niagara/Modules/Spawn/Initialization/V2/InitializeParticle",
+       "inputs": [
+        {
+         "input": "Lifetime",
+         "link": "User.Lifetime",
+         "type": "/Script/Niagara.NiagaraFloat"
+        }
+       ]
+      },
+      {
+       "script": "ParticleUpdateScript",
+       "module_key": "ScaleMeshSize",
+       "asset": "/Niagara/Modules/Update/Size/ScaleMeshSize",
+       "inputs": [
+        {
+         "input": "Scale Factor",
+         "link": "User.ScaleVector",
+         "type": "/Script/CoreUObject.Vector3f"
+        }
+       ]
+      },
+      {
+       "script": "ParticleUpdateScript",
+       "module_key": "Color",
+       "asset": "/Niagara/Modules/Update/Color/Color",
+       "inputs": [
+        {
+         "input": "Color",
+         "link": "User.MistColor",
+         "type": "/Script/CoreUObject.LinearColor"
+        },
+        {
+         "input": "Scale Alpha",
+         "link": "User.Intensity",
+         "type": "/Script/Niagara.NiagaraFloat"
+        }
+       ]
+      }
+     ],
+     "manual": [
+      "Mesh scale 0.5 -> 1.0 over life, slowly. Mist that grows fast reads as an explosion",
+      "Alpha over life: 0 -> peak at 25% -> 0",
+      "Zero cost in the Normal profile: User.MistRate is 0 there"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "NS_SW_Core_PurpleMotes",
+   "note": "Magic idle motes, plus the single point glint at the saya mouth on the final click. Very few, very slow, additive.",
+   "emitters": [
+    {
+     "name": "E_Motes",
+     "renderers": [
+      {
+       "kind": "sprite",
+       "material": "MI_SW_Mote_Normal",
+       "mesh": null
+      }
+     ],
+     "mods": [
+      {
+       "script": "EmitterUpdateScript",
+       "module_key": "SpawnRate",
+       "asset": "/Niagara/Modules/Emitter/SpawnRate",
+       "inputs": [
+        {
+         "input": "Spawn Rate",
+         "link": "User.SpawnRate",
+         "type": "/Script/Niagara.NiagaraFloat"
+        }
+       ]
+      },
+      {
+       "script": "ParticleSpawnScript",
+       "module_key": "Init",
+       "asset": "/Niagara/Modules/Spawn/Initialization/V2/InitializeParticle",
+       "inputs": [
+        {
+         "input": "Lifetime",
+         "link": "User.Lifetime",
+         "type": "/Script/Niagara.NiagaraFloat"
+        }
+       ]
+      },
+      {
+       "script": "ParticleUpdateScript",
+       "module_key": "ScaleSpriteSize",
+       "asset": "/Niagara/Modules/Update/Size/ScaleSpriteSize",
+       "inputs": [
+        {
+         "input": "Uniform Scale Factor",
+         "link": "User.Radius",
+         "type": "/Script/Niagara.NiagaraFloat"
+        }
+       ]
+      },
+      {
+       "script": "ParticleUpdateScript",
+       "module_key": "Color",
+       "asset": "/Niagara/Modules/Update/Color/Color",
+       "inputs": [
+        {
+         "input": "Color",
+         "link": "User.PrimaryColor",
+         "type": "/Script/CoreUObject.LinearColor"
+        },
+        {
+         "input": "Scale Alpha",
+         "link": "User.Intensity",
+         "type": "/Script/Niagara.NiagaraFloat"
+        }
+       ]
+      }
+     ],
+     "manual": [
+      "Spawn rate in single digits per second, and 0 while stowed. This is a few motes, not a candle",
+      "Sprite size over life: 0.5 -> 1.0 -> 0.2",
+      "Additive, so Scale Alpha does not attenuate it: brightness is set on MI_SW_Mote_* instead"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "NS_SW_Core_Hit",
+   "note": "Contact burst for the surface families. One system, several material instances - the caller picks the instance and the graph never branches on surface type.",
+   "emitters": [
+    {
+     "name": "E_Hit",
+     "renderers": [
+      {
+       "kind": "sprite",
+       "material": "MI_SW_Glint_Normal",
+       "mesh": null
+      }
+     ],
+     "mods": [
+      {
+       "script": "EmitterUpdateScript",
+       "module_key": "SpawnBurst",
+       "asset": "/Niagara/Modules/Emitter/SpawnBurst_Instantaneous",
+       "inputs": [
+        {
+         "input": "Spawn Count",
+         "literal": {
+          "struct": {
+           "refPath": "/Script/Niagara.NiagaraInt32"
+          },
+          "value": {
+           "value": 14
+          }
+         }
+        }
+       ]
+      },
+      {
+       "script": "ParticleSpawnScript",
+       "module_key": "Init",
+       "asset": "/Niagara/Modules/Spawn/Initialization/V2/InitializeParticle",
+       "inputs": [
+        {
+         "input": "Lifetime",
+         "link": "User.Lifetime",
+         "type": "/Script/Niagara.NiagaraFloat"
+        }
+       ]
+      },
+      {
+       "script": "ParticleUpdateScript",
+       "module_key": "ScaleSpriteSize",
+       "asset": "/Niagara/Modules/Update/Size/ScaleSpriteSize",
+       "inputs": [
+        {
+         "input": "Uniform Scale Factor",
+         "link": "User.Radius",
+         "type": "/Script/Niagara.NiagaraFloat"
+        }
+       ]
+      },
+      {
+       "script": "ParticleUpdateScript",
+       "module_key": "Color",
+       "asset": "/Niagara/Modules/Update/Color/Color",
+       "inputs": [
+        {
+         "input": "Color",
+         "link": "User.PrimaryColor",
+         "type": "/Script/CoreUObject.LinearColor"
+        },
+        {
+         "input": "Scale Alpha",
+         "link": "User.Intensity",
+         "type": "/Script/Niagara.NiagaraFloat"
+        }
+       ]
+      }
+     ],
+     "manual": [
+      "Sprite size over life: 0.4 -> 1.0 quickly, then 1.0 -> 0.6",
+      "Hit timing is owned by the animation event, never by the system",
+      "Rename MI_SW_Glint_* to per-surface instances for body / stone / metal / wood"
+     ]
+    }
+   ]
+  }
+ ],
+ "user_params": [
+  {
+   "name": "User.PrimaryColor",
+   "type": "/Script/CoreUObject.LinearColor",
+   "description": "stroke body colour"
+  },
+  {
+   "name": "User.CoreColor",
+   "type": "/Script/CoreUObject.LinearColor",
+   "description": "hot core colour"
+  },
+  {
+   "name": "User.MistColor",
+   "type": "/Script/CoreUObject.LinearColor",
+   "description": "void / mist colour"
+  },
+  {
+   "name": "User.DarkColor",
+   "type": "/Script/CoreUObject.LinearColor",
+   "description": "void core colour"
+  },
+  {
+   "name": "User.Intensity",
+   "type": "/Script/Niagara.NiagaraFloat",
+   "description": "global multiplier, drives Color.Scale Alpha"
+  },
+  {
+   "name": "User.Width",
+   "type": "/Script/Niagara.NiagaraFloat",
+   "description": "stroke width, metres"
+  },
+  {
+   "name": "User.Length",
+   "type": "/Script/Niagara.NiagaraFloat",
+   "description": "stroke length, authored value, metres"
+  },
+  {
+   "name": "User.Radius",
+   "type": "/Script/Niagara.NiagaraFloat",
+   "description": "arc / burst / sprite radius, metres"
+  },
+  {
+   "name": "User.ArcAngle",
+   "type": "/Script/Niagara.NiagaraFloat",
+   "description": "major arc sweep, degrees"
+  },
+  {
+   "name": "User.Lifetime",
+   "type": "/Script/Niagara.NiagaraFloat",
+   "description": "particle lifetime, seconds"
+  },
+  {
+   "name": "User.Speed",
+   "type": "/Script/Niagara.NiagaraFloat",
+   "description": "travel speed, authored value, m/s"
+  },
+  {
+   "name": "User.Distortion",
+   "type": "/Script/Niagara.NiagaraFloat",
+   "description": "refraction offset strength"
+  },
+  {
+   "name": "User.MistAmount",
+   "type": "/Script/Niagara.NiagaraFloat",
+   "description": "0 = normal sword, 1 = magic sword"
+  },
+  {
+   "name": "User.SpawnRate",
+   "type": "/Script/Niagara.NiagaraFloat",
+   "description": "particles per second, primary emitters"
+  },
+  {
+   "name": "User.StartPosition",
+   "type": "/Script/Niagara.NiagaraPosition",
+   "description": "world start"
+  },
+  {
+   "name": "User.EndPosition",
+   "type": "/Script/Niagara.NiagaraPosition",
+   "description": "world end"
+  },
+  {
+   "name": "User.BladeBase",
+   "type": "/Script/Niagara.NiagaraPosition",
+   "description": "blade base, world"
+  },
+  {
+   "name": "User.BladeTip",
+   "type": "/Script/Niagara.NiagaraPosition",
+   "description": "blade tip, world"
+  },
+  {
+   "name": "User.ArcStart",
+   "type": "/Script/Niagara.NiagaraFloat",
+   "description": "arc begin angle, degrees"
+  },
+  {
+   "name": "User.ArcEnd",
+   "type": "/Script/Niagara.NiagaraFloat",
+   "description": "arc end angle, degrees"
+  },
+  {
+   "name": "User.ScaleVector",
+   "type": "/Script/CoreUObject.Vector3f",
+   "description": "ScaleMeshSize takes Vector3f, so Length/Radius have this vector twin"
+  },
+  {
+   "name": "User.Velocity",
+   "type": "/Script/CoreUObject.Vector3f",
+   "description": "SolveForcesAndVelocity takes Vector3f, so Speed has this vector twin"
+  },
+  {
+   "name": "User.MistCount",
+   "type": "/Script/Niagara.NiagaraInt32",
+   "description": "burst count for mist emitters; 0 in the Normal profile keeps them free"
+  },
+  {
+   "name": "User.MistRate",
+   "type": "/Script/Niagara.NiagaraFloat",
+   "description": "spawn rate for mist emitters; 0 in the Normal profile keeps them free"
+  }
+ ],
+ "compile": {
+  "NS_SW_Core_EdgeTrail": {
+   "system": "NS_SW_Core_EdgeTrail",
+   "aggregate_status": "UpToDate",
+   "is_compiling": true,
+   "is_stale": true,
+   "has_errors": false,
+   "has_warnings": false,
+   "bad_scripts": [
+    {
+     "script": "ENiagaraScriptUsage::ParticleSpawnScriptInterpolated",
+     "emitter": "E_Trail",
+     "status": "Unknown",
+     "error": ""
+    },
+    {
+     "script": "ENiagaraScriptUsage::ParticleUpdateScript",
+     "emitter": "E_Trail",
+     "status": "Unknown",
+     "error": ""
+    }
+   ],
+   "issues_unavailable": "无法在编译过程中收集堆栈问题。等待编译完成（UNiagaraSystem::OnSystemCompiled）再调用。"
+  },
+  "NS_SW_Core_Glint": {
+   "system": "NS_SW_Core_Glint",
+   "aggregate_status": "UpToDate",
+   "is_compiling": true,
+   "is_stale": true,
+   "has_errors": false,
+   "has_warnings": false,
+   "bad_scripts": [
+    {
+     "script": "ENiagaraScriptUsage::ParticleSpawnScriptInterpolated",
+     "emitter": "E_Glint",
+     "status": "Unknown",
+     "error": ""
+    },
+    {
+     "script": "ENiagaraScriptUsage::ParticleUpdateScript",
+     "emitter": "E_Glint",
+     "status": "Unknown",
+     "error": ""
+    }
+   ],
+   "issues_unavailable": "无法在编译过程中收集堆栈问题。等待编译完成（UNiagaraSystem::OnSystemCompiled）再调用。"
+  },
+  "NS_SW_Core_AirSlice": {
+   "system": "NS_SW_Core_AirSlice",
+   "aggregate_status": "UpToDate",
+   "is_compiling": true,
+   "is_stale": true,
+   "has_errors": false,
+   "has_warnings": false,
+   "bad_scripts": [
+    {
+     "script": "ENiagaraScriptUsage::ParticleSpawnScriptInterpolated",
+     "emitter": "E_Slice",
+     "status": "Unknown",
+     "error": ""
+    },
+    {
+     "script": "ENiagaraScriptUsage::ParticleUpdateScript",
+     "emitter": "E_Slice",
+     "status": "Unknown",
+     "error": ""
+    }
+   ],
+   "issues_unavailable": "无法在编译过程中收集堆栈问题。等待编译完成（UNiagaraSystem::OnSystemCompiled）再调用。"
+  },
+  "NS_SW_Core_Wave": {
+   "system": "NS_SW_Core_Wave",
+   "aggregate_status": "UpToDate",
+   "is_compiling": true,
+   "is_stale": true,
+   "has_errors": false,
+   "has_warnings": false,
+   "bad_scripts": [
+    {
+     "script": "ENiagaraScriptUsage::ParticleSpawnScriptInterpolated",
+     "emitter": "E_Wave",
+     "status": "Unknown",
+     "error": ""
+    },
+    {
+     "script": "ENiagaraScriptUsage::ParticleUpdateScript",
+     "emitter": "E_Wave",
+     "status": "Unknown",
+     "error": ""
+    },
+    {
+     "script": "ENiagaraScriptUsage::ParticleSpawnScriptInterpolated",
+     "emitter": "E_MistWake",
+     "status": "Unknown",
+     "error": ""
+    },
+    {
+     "script": "ENiagaraScriptUsage::ParticleUpdateScript",
+     "emitter": "E_MistWake",
+     "status": "Unknown",
+     "error": ""
+    }
+   ],
+   "issues_unavailable": "无法在编译过程中收集堆栈问题。等待编译完成（UNiagaraSystem::OnSystemCompiled）再调用。"
+  },
+  "NS_SW_Core_SpatialScar": {
+   "system": "NS_SW_Core_SpatialScar",
+   "aggregate_status": "UpToDate",
+   "is_compiling": true,
+   "is_stale": true,
+   "has_errors": false,
+   "has_warnings": false,
+   "bad_scripts": [
+    {
+     "script": "ENiagaraScriptUsage::ParticleSpawnScriptInterpolated",
+     "emitter": "E_Scar",
+     "status": "Unknown",
+     "error": ""
+    },
+    {
+     "script": "ENiagaraScriptUsage::ParticleUpdateScript",
+     "emitter": "E_Scar",
+     "status": "Unknown",
+     "error": ""
+    },
+    {
+     "script": "ENiagaraScriptUsage::ParticleSpawnScriptInterpolated",
+     "emitter": "E_ScarMist",
+     "status": "Unknown",
+     "error": ""
+    },
+    {
+     "script": "ENiagaraScriptUsage::ParticleUpdateScript",
+     "emitter": "E_ScarMist",
+     "status": "Unknown",
+     "error": ""
+    }
+   ],
+   "issues_unavailable": "无法在编译过程中收集堆栈问题。等待编译完成（UNiagaraSystem::OnSystemCompiled）再调用。"
+  },
+  "NS_SW_Core_MajorArc": {
+   "system": "NS_SW_Core_MajorArc",
+   "aggregate_status": "UpToDate",
+   "is_compiling": true,
+   "is_stale": true,
+   "has_errors": false,
+   "has_warnings": false,
+   "bad_scripts": [
+    {
+     "script": "ENiagaraScriptUsage::ParticleSpawnScriptInterpolated",
+     "emitter": "E_Arc",
+     "status": "Unknown",
+     "error": ""
+    },
+    {
+     "script": "ENiagaraScriptUsage::ParticleUpdateScript",
+     "emitter": "E_Arc",
+     "status": "Unknown",
+     "error": ""
+    },
+    {
+     "script": "ENiagaraScriptUsage::ParticleSpawnScriptInterpolated",
+     "emitter": "E_ArcMist",
+     "status": "Unknown",
+     "error": ""
+    },
+    {
+     "script": "ENiagaraScriptUsage::ParticleUpdateScript",
+     "emitter": "E_ArcMist",
+     "status": "Unknown",
+     "error": ""
+    }
+   ],
+   "issues_unavailable": "无法在编译过程中收集堆栈问题。等待编译完成（UNiagaraSystem::OnSystemCompiled）再调用。"
+  },
+  "NS_SW_Core_MistWake": {
+   "system": "NS_SW_Core_MistWake",
+   "aggregate_status": "UpToDate",
+   "is_compiling": true,
+   "is_stale": true,
+   "has_errors": false,
+   "has_warnings": false,
+   "bad_scripts": [
+    {
+     "script": "ENiagaraScriptUsage::ParticleSpawnScriptInterpolated",
+     "emitter": "E_Wisp",
+     "status": "Unknown",
+     "error": ""
+    },
+    {
+     "script": "ENiagaraScriptUsage::ParticleUpdateScript",
+     "emitter": "E_Wisp",
+     "status": "Unknown",
+     "error": ""
+    }
+   ],
+   "issues_unavailable": "无法在编译过程中收集堆栈问题。等待编译完成（UNiagaraSystem::OnSystemCompiled）再调用。"
+  },
+  "NS_SW_Core_PurpleMotes": {
+   "system": "NS_SW_Core_PurpleMotes",
+   "aggregate_status": "UpToDate",
+   "is_compiling": true,
+   "is_stale": true,
+   "has_errors": false,
+   "has_warnings": false,
+   "bad_scripts": [
+    {
+     "script": "ENiagaraScriptUsage::ParticleSpawnScriptInterpolated",
+     "emitter": "E_Motes",
+     "status": "Unknown",
+     "error": ""
+    },
+    {
+     "script": "ENiagaraScriptUsage::ParticleUpdateScript",
+     "emitter": "E_Motes",
+     "status": "Unknown",
+     "error": ""
+    }
+   ],
+   "issues_unavailable": "无法在编译过程中收集堆栈问题。等待编译完成（UNiagaraSystem::OnSystemCompiled）再调用。"
+  },
+  "NS_SW_Core_Hit": {
+   "system": "NS_SW_Core_Hit",
+   "aggregate_status": "UpToDate",
+   "is_compiling": false,
+   "is_stale": false,
+   "has_errors": false,
+   "has_warnings": false,
+   "bad_scripts": [],
+   "num_errors": 0,
+   "num_warnings": 0,
+   "num_infos": 1,
+   "issues": []
+  }
+ },
+ "save_ok": 9
+}

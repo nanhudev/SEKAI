@@ -1,0 +1,41 @@
+[gd_scene load_steps=7 format=3]
+
+[sub_resource type="StandardMaterial3D" id="Magenta"]
+shading_mode = 0
+albedo_color = Color(1, 0, 1, 1)
+
+[sub_resource type="StandardMaterial3D" id="Cyan"]
+shading_mode = 0
+albedo_color = Color(0, 1, 1, 1)
+
+[sub_resource type="BoxMesh" id="Cube"]
+size = Vector3(1.5, 1.5, 1.5)
+material = SubResource("Magenta")
+
+[sub_resource type="BoxMesh" id="Ground"]
+size = Vector3(12, 0.2, 12)
+material = SubResource("Cyan")
+
+[sub_resource type="Environment" id="Environment"]
+background_mode = 1
+background_color = Color(0.55, 0.68, 0.78, 1)
+
+[node name="RenderProbe" type="Node3D"]
+
+[node name="Camera3D" type="Camera3D" parent="."]
+position = Vector3(0, 2, 5)
+rotation = Vector3(-0.38, 0, 0)
+current = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+rotation = Vector3(-0.7, -0.5, 0)
+
+[node name="Cube" type="MeshInstance3D" parent="."]
+position = Vector3(0, 1, 0)
+mesh = SubResource("Cube")
+
+[node name="Ground" type="MeshInstance3D" parent="."]
+mesh = SubResource("Ground")

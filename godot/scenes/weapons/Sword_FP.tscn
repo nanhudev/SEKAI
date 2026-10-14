@@ -1,0 +1,156 @@
+[gd_scene load_steps=4 format=3]
+
+; C2B-01 First Person Sword - the drop-in scene.
+;
+; ==========================================================================
+; HOW IT IS INTEGRATED  (this plan was corrected; the old one was wrong)
+; ==========================================================================
+; This scene is a CHILD OF `TempSwordVisual`, not a replacement for it:
+;
+;   WeaponRoot/TempSwordVisual/Sword_FP            <- this scene, at identity
+;
+; The old plan (REQ-2 as first written) was to instance this scene under
+; `WeaponRoot` and set `TempSwordVisual.visible = false`. That would have left
+; both ceremonies animating a hidden node -- `iaido_director.gd:46` and
+; `moment_of_no_moon_director.gd:55` hard-`get_node()` TempSwordVisual and then
+; WRITE ITS TRANSFORM for the whole skill, and `temp_sword_visual.gd` is also
+; where the trail, glint, void rim, contact springs and five locomotion channels
+; live. Hiding it hides the sword that is being animated and leaves the real one
+; standing still, i.e. the skill looks broken while every line of its code runs.
+;
+; Parenting this scene UNDER the carrier instead means every pose, judgement and
+; animation path keeps working untouched, and only what is drawn changes. No
+; node path moves; `Player.tscn` is not edited at all.
+;
+; ==========================================================================
+; CONTRACT  (the numbers live in scripts/weapons/sword_classes.gd)
+; ==========================================================================
+;   - origin = the grip centre, which is where the hand is
+;   - +Y is toward the TIP
+;   - -X is the side the cutting edge faces
+;   - +/-Z is the flat of the blade
+;   - rotation 0, scale 1: the mesh is authored in metres and must not be scaled
+;   - material assignment comes from the GLB itself (4 slots: steel / fittings /
+;     grip / inlay); do not override it here, or the sword stops being the sword
+;     that was reviewed in Blender
+;   - the whole thing lives under WeaponRoot, so `ForegroundWeaponLayer` picks
+;     the meshes up and moves them to the unlit foreground layer itself. Do NOT
+;     set `layers` on the child meshes - that layer is owned by that script.
+;
+; ==========================================================================
+; THE AXIS HISTORY, KEPT BECAUSE IT COST THREE REVIEW ROUNDS
+; ==========================================================================
+; This header used to say "blade runs along +Y" while BOTH shipping GLBs were
+; authored with the blade on -Z (the 832-tri placeholder: AABB
+; 0.1308 x 0.0440 x 1.0473, blade_tip at z = -0.910; and its replacement).
+; Three separate things were written against +Y and quietly disagreed with the
+; file:
+;   * `iaido_director.gd:_bore_pose()` seats the sword by handing it the
+;     SCABBARD's basis, whose +Y is the bore - so a -Z blade went into its own
+;     saya at ninety degrees;
+;   * `iaido_tuning.gd`'s guard_setback (0.045) and blade_reach (0.95) are sized
+;     for a sword whose tsuba is 45 mm up its own origin and whose blade is
+;     950 mm long. Neither is true of this one (4.2 mm and 765 mm);
+;   * the training ground's weapon rack rotated the blade about Z to lay it on
+;     the bar, which cannot move an axis that already lies along Z.
+; The asset was re-authored to +Y (`tools/blender/sword_build.py`,
+; `bake_to_godot_axes`) so that the FILE matches the header, the ceremony and
+; the saya, instead of the other way round. The importer confirms it: the GLBs
+; carry no root rotation, so the frame in this file is the frame in the mesh.
+;
+; ==========================================================================
+; MEASURED (run tools/audit_art_import.gd to refresh)
+; ==========================================================================
+; see docs/ASSET_MANIFEST.md - the audit reports live AABB, tri count and
+; material names for every GLB in the project, so nothing here is quoted from
+; memory. `godot/tools/shot_weapon_rack.gd` prints the same thing live, and
+; `scripts/weapons/sword_fp_rig.gd:describe()` prints what the swap did.
+
+[ext_resource type="PackedScene" uid="uid://ba7y5w35rsc2a" path="res://models/weapons/fp_sword.glb" id="1_sword"]
+[ext_resource type="PackedScene" uid="uid://dvult1b073w6j" path="res://models/weapons/fp_saya.glb" id="2_saya"]
+[ext_resource type="Script" path="res://scripts/weapons/sword_fp_rig.gd" id="3_rig"]
+
+[node name="Sword_FP" type="Node3D"]
+script = ExtResource("3_rig")
+
+[node name="Model" parent="." instance=ExtResource("1_sword")]
+
+; ------------------------------------------------------------------ the saya
+; A CHILD OF THE SWORD, AT THE SEATED POSE, AND HIDDEN BY DEFAULT.
+;
+; The saya's own origin is the centre of its koiguchi mouth plane and its +Y is
+; the bore, and so is the sword's - so whether the blade is home is ONE
+; TRANSLATION along +Y and nothing else:
+;
+;     seated  =  translate the sword  -tsuba_mouth_y  along +Y
+;     identity = translate the sword  +tsuba_mouth_y  along +Y (i.e. this child)
+;
+; Which means a consumer that wants "sheathed" sets the sword's position and
+; leaves this node alone, and a consumer that wants to animate the saya gets a
+; basis it can trust instead of a rotation hunt. `Registry.saya_in_sword_frame()`
+; in scripts/weapons/sword_classes.gd returns this same transform.
+;
+; It ships HIDDEN because a sword that is being held is not also in its sheath.
+; The two are separate objects that happen to share a frame, and a rack should
+; display them as two things (`training_weapon_rack.gd` does). Turn it on with
+; `SwordFPRig.set_seated_saya_visible(true)`.
+[node name="Sheath" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0042, 0)
+visible = false
+
+[node name="Saya" parent="Sheath" instance=ExtResource("2_saya")]
+
+; ------------------------------------------------------------------ anchors
+[node name="Anchors" type="Node3D" parent="."]
+
+; GripPoint is the origin itself: the GLBs were built with their origin at the
+; tsuba/grip centre, so an identity transform here is the correct answer, not a
+; placeholder.
+[node name="GripPoint" type="Marker3D" parent="Anchors"]
+
+; BladeForward sits AT THE TIP and its basis is the blade's direction, which is
+; +Y. It used to sit at y = 0.5, which was a length nothing measured. Anything
+; that needs the blade's direction (a trail emitter, a scabbard mouth, a
+; point-light on the edge) should read this marker's basis rather than
+; re-deriving the axis, because re-deriving it is how the sword ends up pointing
+; backwards after someone rotates the weapon for a stance.
+[node name="BladeForward" type="Marker3D" parent="Anchors"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.765, 0)
+
+; BladeMid sits on the blade's mid-length, which is where a trail segment or a
+; judgement volume wants to live.
+[node name="BladeMid" type="Marker3D" parent="Anchors"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3846, 0)
+
+; TsubaFace is the tsuba face that meets the koiguchi when the blade is home.
+; `Registry.guard_setback()` returns this same number.
+[node name="TsubaFace" type="Marker3D" parent="Anchors"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0042, 0)
+
+; ------------------------------------------------------------------ judgement
+; THE BLADE'S OWN VOLUME, not a swing volume.
+;
+; `WeaponRoot/SwordHitbox` is a 1.4 x 1.2 x 1.6 m BoxShape3D 1.4 m in front of
+; the player, parented to the camera rig. That is a SWING area-of-effect and it
+; is COMBAT's, deliberately generous so a cut registers. It belongs where it is,
+; and swapping the model does not - and must not - move it.
+;
+; This is a different object: a box the size of the blade, parented to the rig so
+; it follows every swing of every style for free. It ships DISABLED
+; (`monitoring = false`, layer 0) because whether a judgement reads the swing
+; volume or the blade is a COMBAT decision, not an ART one.
+;
+; BOTH ITS SIZE AND ITS POSITION ARE BUILT BY THE SCRIPT, not typed here. This
+; node used to carry `BoxShape3D size = Vector3(0.0565, 0.7608, 0.022)` - a
+; second, hand-copied set of four numbers that already live in
+; `sword_classes.gd`. `SwordFPRig.build_blade_volume()` derives them, so the box
+; cannot drift away from the mesh it is supposed to match, and this file has no
+; shape in it to go stale. The volume therefore reads at the origin in the
+; editor; that is not its runtime position.
+[node name="BladeVolume" type="Area3D" parent="."]
+monitoring = false
+monitorable = false
+collision_layer = 0
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="BladeVolume"]

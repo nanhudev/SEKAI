@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SEKAI · sekai_mark
+     品牌标记：开口的环 + 正中一点（信标 / 观察者）。16px 到 150px 都成立。同时是存档图标 / 加载字形。
+     裁決：identity
+     归属：ART（可重绘，但缺口角度与点的比例必须保持）
+     本文件由 ui_web/tools/emit_svg.mjs 从 ui_web/svg/library.js 生成。
+     不要直接改这里 —— 改库，然后重新运行 emitter。
+-->
+<svg width="128" height="128" viewBox="0 0 128 128"
+     xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="none" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke" stroke-width="1.6">
+  <!-- 环：从 91° 逆时针 294° 到 25°。缺口在右上，58° 正中。 -->
+  <path pathLength="1"
+        d="M 63.30 24.01 A 40 40 0 1 0 100.25 47.09"
+        stroke="#EDE4D3" stroke-width="1.6"/>
+  <!-- 点：信标 / 观察者 -->
+  <circle cx="64" cy="64" r="5" fill="#C9A65C" stroke="none"/>
+</svg>

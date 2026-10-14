@@ -1,0 +1,45 @@
+{
+  "map": "/Game/Maps/L_Mistvale_Rebuild.L_Mistvale_Rebuild",
+  "player_start": "PlayerStart_MistvaleSouth",
+  "location_cm": [
+    600,
+    -31000,
+    157.6226806640625
+  ],
+  "rotation_degrees": {
+    "pitch": 0,
+    "yaw": 90,
+    "roll": 0
+  },
+  "collision_checked": [
+    "ART_Graded_Terrain_Proxy",
+    "MainStoneBridge_DECK",
+    "SmallServiceBridge_DECK",
+    "SmallServiceBridge_PARAPET",
+    "SmallServiceBridge_PARAPET",
+    "SmallServiceBridge_SouthRamp",
+    "SmallServiceBridge_NorthRamp",
+    "HERO_Guild_TrainingYard",
+    "HERO_NorthGate_Left",
+    "HERO_NorthGate_Right",
+    "HERO_NorthGate_Lintel",
+    "ART_Foundation_HERO_NorthGate_Left",
+    "ART_Foundation_HERO_NorthGate_Right",
+    "ART_Surface_SM_Route_GoldenRoute_South",
+    "ART_Surface_SM_Route_GoldenRoute_Town",
+    "ART_Surface_SM_Route_LowerMarketLoop",
+    "ART_Surface_SM_Route_MarketEastLoop",
+    "ART_Surface_SM_Route_RiversideStreet",
+    "ART_Surface_SM_Route_UpperResidential",
+    "ART_Surface_SM_Route_ChurchLane",
+    "ART_Surface_SM_Route_DockTrack",
+    "ART_Surface_SM_Plaza_MarketSquare",
+    "ART_Surface_SM_Plaza_GuildForecourt",
+    "ART_Surface_SM_Plaza_ChurchForecourt",
+    "SM_Handoff_BridgeSouth",
+    "SM_Handoff_BridgeNorth",
+    "SM_Handoff_GuildChurch"
+  ],
+  "missing_static_meshes": [],
+  "saved": true
+}

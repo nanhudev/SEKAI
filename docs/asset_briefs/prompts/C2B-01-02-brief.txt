@@ -1,0 +1,77 @@
+ASSET REQUEST
+ID: C2B-01
+Name: First Person Sword
+Priority: P0
+Purpose: Combat MVP - replaces the temporary three-box primitive currently in Godot
+Status: SPEC READY
+
+GAME PURPOSE
+First-person sword for SEKAI Combat MVP. Must read clearly during: fast diagonal cut, reverse cut, forward finishing thrust, block, and a 7.2-second iaido draw ceremony. The blade is the player's constant companion in first-person view, so it carries the entire weapon fantasy.
+
+VISUAL STYLE
+Stylized next-generation fantasy. Anime-stylized proportion with PBR materials. Clean and sharp, original silhouette, restrained ornament.
+NOT generic low-poly. NOT mobile-game toy style. NOT a random asset pack.
+No oversized fantasy proportions, no large jewels, no broad glowing strips, no decorative shapes that obscure the blade direction.
+Small ancient-civilization motifs may sit at the guard and fuller only.
+
+DIMENSIONS (metric, real world scale)
+- Total length: 1.05 m
+- Blade: 0.78 m
+- Grip: 0.22 m
+- Compact guard, no basket, no oversized crossguard
+
+VIEWING DISTANCE
+0.3 m to 1.2 m from camera. The blade must survive extreme close-up during the iaido hold, where it sits nearly still for 0.65 s at screen center-right.
+
+FIRST-PERSON / THIRD-PERSON
+First-person only. The sword lives in its own foreground viewport in Godot. Never needs to look good from behind or from a distance.
+
+POLY BUDGET
+Under 12,000 triangles for the sword alone. Bevel and edge definition should be readable at 0.3 m; do not spend triangles on hidden faces.
+
+MATERIALS
+Maximum 4 material slots:
+1. Steel blade - readable cutting edge and spine in close view
+2. Dark wrapped grip
+3. Muted warm-metal fittings
+4. Optional subtle emissive inlay (guard motif only, must not glow like a torch)
+PBR, no external plugin dependencies, no image textures - procedural only.
+
+ANIMATION NEEDS
+No rig, no armature. The sword is a rigid Node3D in Godot; all motion is code-driven transform. Separate named objects so Godot can address parts individually.
+
+MODULARITY - REQUIRED OBJECTS
+- Blade
+- Guard
+- Grip
+- Pommel
+- Sheath is NOT part of this asset (separate later request)
+
+COLLISION NEEDS
+None in Blender. Godot uses Area3D active frames. Do not author gameplay collision.
+Do provide named empties for: blade_tip, blade_mid, hilt, cutting_edge_center.
+
+TRANSFORMS AND ORIGIN - CRITICAL
+- Origin at grip center
+- Blade extends along local +Y
+- Cutting edge faces local -X
+- Apply all transforms before export
+- Consistent normals, no inverted faces, UV present
+
+GODOT USAGE
+Godot 4.4.1, imported as GLB scene, parented under WeaponRoot beneath the camera rig.
+Existing reference pose offsets (Godot metres):
+- idle position  (0.55, -0.52, -0.95)
+- sheath position (-0.52, -0.43, -0.80)
+- drawn position (0.36, -0.24, -0.82)
+The sword pivot must sit where the hand grips it, because a hand asset will be aligned to this same origin later.
+
+OUTPUT
+Three standalone chunks, each independently runnable, in this order:
+# C2B:CHUNK blockout
+# C2B:CHUNK details
+# C2B:CHUNK export
+
+The export chunk must save the .blend to F:\SEKAI\assets_source\weapons\fp_sword.blend and export GLB to F:\SEKAI\assets\models\weapons\fp_sword.glb.
+
+Start with the blockout chunk only. I will run it in a visible Blender instance and report back before you continue.

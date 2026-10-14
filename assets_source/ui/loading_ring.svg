@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SEKAI · loading_ring
+     环境加载环。不是进度条。注意 V2 主菜单改用 line state（§15），环留给游戏内加载。
+     裁決：state
+     归属：UI 自用 / Godot BootScene
+     本文件由 ui_web/tools/emit_svg.mjs 从 ui_web/svg/library.js 生成。
+     不要直接改这里 —— 改库，然后重新运行 emitter。
+-->
+<svg width="96" height="96" viewBox="0 0 96 96"
+    xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="none" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke" stroke-width="1.5">
+  <circle cx="48" cy="48" r="44" stroke="#2C3A44" stroke-width="1" opacity="0.55"/>
+  <!-- 进度弧：pathLength=1，所以 stroke-dasharray 直接就是进度比例 -->
+  <path pathLength="1"
+        d="M 48 4 A 44 44 0 1 1 47.99 4"
+        stroke="#C9A65C" stroke-width="1.5"
+        stroke-dasharray="0.02 1" stroke-dashoffset="0"/>
+  <path pathLength="1" d="M 95 48 h 6" stroke="#2C3A44" stroke-width="1"/>
+  <path pathLength="1" d="M -5 48 h 6" stroke="#2C3A44" stroke-width="1"/>
+  <path pathLength="1" d="M 48 95 v 6" stroke="#2C3A44" stroke-width="1"/>
+  <path pathLength="1" d="M 48 -5 v 6" stroke="#2C3A44" stroke-width="1"/>
+</svg>

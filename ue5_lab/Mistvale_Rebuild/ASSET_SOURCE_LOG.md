@@ -1,0 +1,13 @@
+# Asset source log
+
+| Asset | Source / license | Usage | Modifications | Level locations |
+| --- | --- | --- | --- | --- |
+| Engine BasicShapes cube/cylinder | Built into UE 5.8 | Temporary street, service bridge and river massing | Scale, placement and interim solid-color materials | Both maps; still needs art replacement |
+| `Mistvale_Valley_505.r16` and terrain proxy | Authored in this workspace | New river-valley terrain source and review collision | Generated from `Source/generate_heightmap.py` | Both maps use the proxy; native Landscape import pending |
+| `SM_Mistvale_Guild.fbx` / `SM_Mistvale_Guild.uasset` | Authored in this workspace with Blender 5.1.2 | Guild hall hero mass: stone foundation, asymmetric wings, tower, timber frame and teal slate roof | Procedural source `Source/model_guild.py`; seven material slots; complex-as-simple collision | Guild site at (-55 m, 165 m) in both maps |
+| `SM_Mistvale_StoneBridge.fbx` / `SM_Mistvale_StoneBridge.uasset` | Authored in this workspace with Blender 5.1.2 | Main crossing: three arch openings, cutwater piers, wet stone band, paving and open parapets | Procedural source `Source/model_stone_bridge.py`; complex-as-simple collision | Main river bridge at (0 m, about -85 m) in both maps |
+| Slavic Medieval Town Kit Lite, Fab listing b99a0776-f733-4cc0-b771-aa326b616a88 | User-owned local Fab download; see `FAB_ASSET_INDEX.md` for exact package and listing | 95 initial building replacements, north gate arch, church bell tower and guild yard fence | Twenty FBX families imported to `/Game/Fab/SlavicLite`; four local procedural palette materials compensate for the absent atlas image in the downloaded FBX package | `/Game/Maps/L_Mistvale_Rebuild` only |
+| `Mistvale_Valley_Art_505.r16` / `SM_Mistvale_Terrain_Art` | Authored in this workspace | Building-pad grading and separate art-map collision surface | `Source/grade_town_ground.py`; 91 building/public pads, 2 m review mesh | `/Game/Maps/L_Mistvale_Rebuild` only |
+| 87 stone building foundations | UE BasicShapes cube with original `M_Weathered_Stone_01` material | Close the visible gap between sloped ground and house bases | Each instance sized from its building bounds and placed under the final floor height | `/Game/Maps/L_Mistvale_Rebuild` only |
+
+The downloaded FBX refers to the vendor's `EA03_FREE_Slavica.png` on an unavailable `H:` path. That image is absent from this local FBX package. The four substitute UE materials are authored for this level and do not reproduce the original atlas. The Fab listing's current license details have not been rechecked here; retain the user's Fab entitlement and original package metadata with any distributed build.

@@ -1,0 +1,12 @@
+{
+  "FileVersion": 3,
+  "EngineAssociation": "5.8",
+  "Category": "Game",
+  "Description": "Original SEKAI starter village environment production, built from zero.",
+  "Plugins": [
+    {"Name": "PythonScriptPlugin", "Enabled": true},
+    {"Name": "EditorScriptingUtilities", "Enabled": true},
+    {"Name": "PythonAutomationTest", "Enabled": true},
+    {"Name": "ModelingToolsEditorMode", "Enabled": true}
+  ]
+}

@@ -1,0 +1,237 @@
+{
+  "schema": "SwordVisualProfile/v2",
+  "note": "One sword move, one animation, two profiles. A profile is ONLY a set of slot bindings: which Niagara core system realises the slot, which material instance it wears, and the User.* values that drive it. Animation timing is never owned here - it belongs to the Sword line and reaches VFX as events (see docs/sword_vfx_event_contract.json).",
+  "profile_rule": "Magic must call the SAME Sword Move as Normal. There is no MagicSwordAttackA1/A2. The only difference between the two swords is which profile is applied.",
+  "common_user_params": [
+    "User.PrimaryColor",
+    "User.CoreColor",
+    "User.MistColor",
+    "User.DarkColor",
+    "User.Intensity",
+    "User.Width",
+    "User.Length",
+    "User.Radius",
+    "User.ArcAngle",
+    "User.Lifetime",
+    "User.Speed",
+    "User.Distortion",
+    "User.MistAmount",
+    "User.SpawnRate",
+    "User.StartPosition",
+    "User.EndPosition",
+    "User.BladeBase",
+    "User.BladeTip",
+    "User.ArcStart",
+    "User.ArcEnd",
+    "User.ScaleVector",
+    "User.Velocity",
+    "User.MistCount",
+    "User.MistRate"
+  ],
+
+  "slot_map": {
+    "_note": "Shared by both profiles. A slot is a moment in the sword presentation; the map says which core systems are composited to realise it. Changing this map changes BOTH swords, which is the point of keeping it out of the profiles.",
+    "IdleVFX": ["NS_SW_Core_PurpleMotes", "NS_SW_Core_MistWake"],
+    "EquipGlint": ["NS_SW_Core_Glint"],
+    "InspectGlint": ["NS_SW_Core_Glint"],
+    "BladeTrail": ["NS_SW_Core_EdgeTrail"],
+    "A1Slice": ["NS_SW_Core_AirSlice", "NS_SW_Core_EdgeTrail"],
+    "A2Wave": ["NS_SW_Core_Wave"],
+    "A3Scar": ["NS_SW_Core_SpatialScar"],
+    "A4Arc": ["NS_SW_Core_MajorArc", "NS_SW_Core_EdgeTrail"],
+    "IaidoDraw": ["NS_SW_Core_Glint"],
+    "IaidoScar": ["NS_SW_Core_SpatialScar"],
+    "SheatheVFX": ["NS_SW_Core_MistWake", "NS_SW_Core_Glint"],
+    "HitBody": ["NS_SW_Core_Hit"],
+    "HitStone": ["NS_SW_Core_Hit"],
+    "HitMetal": ["NS_SW_Core_Hit"],
+    "HitWood": ["NS_SW_Core_Hit"]
+  },
+
+  "slot_notes": {
+    "IdleVFX": "section 14 / 6. Normal is deliberately near-zero here: a cold blade does not smoke. Magic is a few motes and a thin wisp, never a continuous smoke machine.",
+    "EquipGlint": "section 7. Blade is only 12-20 cm out; ONE narrow highlight scans the exposed steel, 80-160 ms. Normal: silver-white. Magic: purple, and still reads as LIGHT running along the steel - never the whole sword becoming a purple tube.",
+    "InspectGlint": "section 8. The SAME glint core as EquipGlint, retuned: slower, and travelling base -> tip instead of a partial scan. This is why the glint is a parameterised component rather than two effects.",
+    "BladeTrail": "section 9. Thickness is the whole identity: extremely thin. A thick trail would read as a separate effect rather than as the edge of this blade.",
+    "A1Slice": "section 9 / 17. Peak only. Normal is a pressure cut in AIR, ~1.5-2.5 m, NOT a projectile. Magic keeps the identical geometry and adds a thread of black vapour along the original path.",
+    "A2Wave": "section 10 / 18. A thin curved PRESSURE SHEET, 6-10 m, NOT a thick blue crescent. Bright edge, faint interior, distortion in the tail only.",
+    "A3Scar": "section 11 / 19. WORLD-space, three separate cuts, never screen space, never HUD. Magic is the hero of this batch and the one place that can FAIL: three scars must still read as three.",
+    "A4Arc": "section 12 / 21. 240-300 degrees, NOT a 360 ring. The arc forms live with the blade so START, SWEEP and END are all visible.",
+    "IaidoDraw": "section 22. The new Iaido motion. Normal: cold draw glint. Magic: purple draw glint.",
+    "IaidoScar": "section 22 / 19. The cut of the new Iaido line, i.e. the void scar rather than the A3 triple.",
+    "SheatheVFX": "section 22. As the blade approaches the saya the mist steadily reduces; once the blade is truly IN, the mist is pulled back in. On the final click one point appears at the saya mouth for 20-50 ms, then ALL vfx return to zero. This beat must be very clean and is the last thing the player sees.",
+    "HitBody": "contact family. Colour is the blade's own, so a Normal hit never flashes purple.",
+    "HitStone": "contact family. Substrate test: a sword that cuts space should still sound and look different on stone.",
+    "HitMetal": "contact family. Metal is the one that must not be handed to a bright additive - brief section 32 is about overdraw and metal hits are the usual offender.",
+    "HitWood": "contact family. The softest read of the four; the only one where a small amount of material breakup is allowed."
+  },
+
+  "profiles": {
+    "VP_Sword_Normal": {
+      "identity": ["white", "silver", "pale cyan"],
+      "keywords": ["thin", "sharp", "fast", "clean", "air pressure", "space cut"],
+      "implies": "few particles, more Ribbon / Mesh / Material / world-space geometry / distortion. Section 6 forbids solving this with particle count.",
+      "slots": {
+        "IdleVFX": {
+          "system": "NS_SW_Core_PurpleMotes",
+          "mi": "MI_SW_Mote_Normal",
+          "params": {"SpawnRate": 0.0, "MistAmount": 0.0, "Intensity": 0.0},
+          "why": "deliberately silent: a cold blade does not idle. Zero, not small."
+        },
+        "EquipGlint": {
+          "system": "NS_SW_Core_Glint",
+          "mi": "MI_SW_Glint_Normal",
+          "params": {"Intensity": 1.0, "Lifetime": 0.14, "Speed": 1.4, "Length": 0.16},
+          "why": "12-20 cm of exposed blade, 140 ms scan, silver-white."
+        },
+        "InspectGlint": {
+          "system": "NS_SW_Core_Glint",
+          "mi": "MI_SW_Glint_Normal",
+          "params": {"Intensity": 0.85, "Lifetime": 0.40, "Speed": 0.55, "Length": 1.0},
+          "why": "same core, slower, full base->tip travel."
+        },
+        "BladeTrail": {
+          "system": "NS_SW_Core_EdgeTrail",
+          "mi": "MI_SW_Trail_Normal",
+          "params": {"Width": 0.045, "Lifetime": 0.18, "Intensity": 1.0},
+          "why": "thin is the identity. Width above 0.06 stops reading as an edge."
+        },
+        "A1Slice": {
+          "system": "NS_SW_Core_AirSlice",
+          "mi": "MI_SW_SpatialScar_Normal",
+          "params": {"Length": 2.0, "Lifetime": 0.09, "Width": 0.030, "MistAmount": 0.0},
+          "why": "50-100 ms at the peak only. Air pressure, not a projectile. NOTE: the slice is a 6 cm scar-strip MESH drawn on start->end by the scar mask's U wipe, so it wears the flat scar material rather than the ribbon's trail material - an earlier revision of this spec said MI_SW_Trail_Normal and the slot-binding check below caught it."
+        },
+        "A2Wave": {
+          "system": "NS_SW_Core_Wave",
+          "mi": "MI_SW_Wave_Normal",
+          "params": {"Length": 8.0, "Speed": 34.0, "Lifetime": 0.30, "Width": 0.60, "Distortion": 0.35},
+          "why": "8.0 m at 34 m/s = 0.235 s, inside the 0.18-0.35 s band. Distortion is tail-only."
+        },
+        "A3Scar": {
+          "system": "NS_SW_Core_SpatialScar",
+          "mi": "MI_SW_SpatialScar_Normal",
+          "params": {"Lifetime": 0.42, "Width": 0.055, "MistAmount": 0.05, "Distortion": 0.0},
+          "why": "space remembers three cuts. Mist is 0.05 - present only so the core system stays identical."
+        },
+        "A4Arc": {
+          "system": "NS_SW_Core_MajorArc",
+          "mi": "MI_SW_Trail_Normal",
+          "params": {"ArcAngle": 300.0, "ArcStart": -150.0, "ArcEnd": 150.0,
+                     "Lifetime": 0.30, "Width": 0.34},
+          "why": "300 degrees, not 360. ArcStart/ArcEnd exist so the ring can never silently close."
+        },
+        "IaidoDraw": {
+          "system": "NS_SW_Core_Glint",
+          "mi": "MI_SW_Glint_Normal",
+          "params": {"Intensity": 1.1, "Lifetime": 0.10, "Speed": 2.2},
+          "why": "the 100 ms draw (tuning 4.68 -> 4.78) is short and axial."
+        },
+        "IaidoScar": {
+          "system": "NS_SW_Core_SpatialScar",
+          "mi": "MI_SW_SpatialScar_Normal",
+          "params": {"Lifetime": 0.60, "Width": 0.060, "MistAmount": 0.0},
+          "why": "void_life is 1.0 s in the tuning; the scar is the readable part of it."
+        },
+        "SheatheVFX": {
+          "system": "NS_SW_Core_MistWake",
+          "mi": "MI_SW_Mist_Normal",
+          "params": {"MistAmount": 0.0, "SpawnRate": 0.0, "Intensity": 0.0},
+          "why": "Normal has nothing to suck back in. Kept as a slot so the click cue has one home."
+        },
+        "HitBody": {"system": "NS_SW_Core_Hit", "mi": "MI_SW_Glint_Normal",
+                    "params": {"Intensity": 0.85, "Lifetime": 0.14}},
+        "HitStone": {"system": "NS_SW_Core_Hit", "mi": "MI_SW_Trail_Normal",
+                     "params": {"Intensity": 0.70, "Lifetime": 0.16}},
+        "HitMetal": {"system": "NS_SW_Core_Hit", "mi": "MI_SW_Glint_Normal",
+                     "params": {"Intensity": 0.95, "Lifetime": 0.12}},
+        "HitWood": {"system": "NS_SW_Core_Hit", "mi": "MI_SW_Trail_Normal",
+                    "params": {"Intensity": 0.60, "Lifetime": 0.18}}
+      }
+    },
+
+    "VP_Sword_Magic": {
+      "identity": ["deep violet", "cold purple", "pale purple-white core", "black / blue-black mist"],
+      "keywords": ["the sword cuts space and darkness leaks through the cut"],
+      "implies": "section 13: this is NOT a purple reskin of Normal. Every slot must read as the same swordsmanship with something leaking through it. No neon purple, ever.",
+      "slots": {
+        "IdleVFX": {
+          "system": "NS_SW_Core_PurpleMotes",
+          "mi": "MI_SW_Mote_Magic",
+          "params": {"SpawnRate": 6.0, "MistAmount": 0.18, "Intensity": 0.55},
+          "why": "a few motes and a thin wisp - section 14 explicitly forbids a continuous smoke machine."
+        },
+        "EquipGlint": {
+          "system": "NS_SW_Core_Glint",
+          "mi": "MI_SW_Glint_Magic",
+          "params": {"Intensity": 1.05, "Lifetime": 0.16, "Speed": 1.4, "Length": 0.16},
+          "why": "same scan as Normal, purple. Section 15: still light running along the steel."
+        },
+        "InspectGlint": {
+          "system": "NS_SW_Core_Glint",
+          "mi": "MI_SW_Glint_Magic",
+          "params": {"Intensity": 0.90, "Lifetime": 0.42, "Speed": 0.55, "Length": 1.0},
+          "why": "motion unchanged from Normal; only the values differ."
+        },
+        "BladeTrail": {
+          "system": "NS_SW_Core_EdgeTrail",
+          "mi": "MI_SW_Trail_Magic",
+          "params": {"Width": 0.050, "Lifetime": 0.20, "Intensity": 1.05},
+          "why": "marginally thicker than Normal so the violet body reads, still an edge."
+        },
+        "A1Slice": {
+          "system": "NS_SW_Core_AirSlice",
+          "mi": "MI_SW_SpatialScar_Magic",
+          "params": {"Length": 2.0, "Lifetime": 0.24, "Width": 0.032, "MistAmount": 0.30},
+          "why": "section 17: identical geometry, purple-white core, black vapour along the ORIGINAL path only. 0.15-0.30 s. Wears the scar material for the same reason as Normal."
+        },
+        "A2Wave": {
+          "system": "NS_SW_Core_Wave",
+          "mi": "MI_SW_Wave_Magic",
+          "params": {"Length": 8.0, "Speed": 32.0, "Lifetime": 0.34, "Width": 0.62,
+                     "Distortion": 0.40, "MistAmount": 0.35},
+          "why": "same shape and gameplay. Black mist is a short WAKE, not a fireball and not lightning."
+        },
+        "A3Scar": {
+          "system": "NS_SW_Core_SpatialScar",
+          "mi": "MI_SW_SpatialScar_Magic",
+          "params": {"Lifetime": 0.55, "Width": 0.062, "MistAmount": 0.55, "Distortion": 0.15},
+          "why": "HERO BEAT, section 19. Core purple-white, inner deep purple, an extremely narrow black void outside it. Mist leaks gently and expands slowly along the scar normal - never a burst. Section 20: if the hero frame shows one mass of purple-black smoke it is a FAIL, so MistAmount is capped here on purpose."
+        },
+        "A4Arc": {
+          "system": "NS_SW_Core_MajorArc",
+          "mi": "MI_SW_Trail_Magic",
+          "params": {"ArcAngle": 300.0, "ArcStart": -150.0, "ArcEnd": 150.0,
+                     "Lifetime": 0.34, "Width": 0.36, "MistAmount": 0.30},
+          "why": "section 21: same geometry, leading edge purple-white, and the black wake behind must NOT close into a ring. ArcStart/ArcEnd enforce the gap."
+        },
+        "IaidoDraw": {
+          "system": "NS_SW_Core_Glint",
+          "mi": "MI_SW_Glint_Magic",
+          "params": {"Intensity": 1.15, "Lifetime": 0.10, "Speed": 2.2},
+          "why": "purple draw glint on the identical new Iaido motion."
+        },
+        "IaidoScar": {
+          "system": "NS_SW_Core_SpatialScar",
+          "mi": "MI_SW_SpatialScar_Magic",
+          "params": {"Lifetime": 0.60, "Width": 0.064, "MistAmount": 0.45},
+          "why": "purple void scar cut, same construction as A3."
+        },
+        "SheatheVFX": {
+          "system": "NS_SW_Core_MistWake",
+          "mi": "MI_SW_Mist_Magic",
+          "params": {"MistAmount": 1.0, "SpawnRate": 12.0, "Intensity": 1.0},
+          "why": "section 22. This is the ONLY slot that starts at full mist, because it is the one that has to visibly empty: mist reduces as the blade nears the saya, is suctioned in once the blade is truly inside, then one purple point on the click for 20-50 ms and everything returns to zero. The final beat must be clean."
+        },
+        "HitBody": {"system": "NS_SW_Core_Hit", "mi": "MI_SW_Glint_Magic",
+                    "params": {"Intensity": 0.90, "Lifetime": 0.15, "MistAmount": 0.12}},
+        "HitStone": {"system": "NS_SW_Core_Hit", "mi": "MI_SW_Trail_Magic",
+                     "params": {"Intensity": 0.75, "Lifetime": 0.17, "MistAmount": 0.10}},
+        "HitMetal": {"system": "NS_SW_Core_Hit", "mi": "MI_SW_Glint_Magic",
+                     "params": {"Intensity": 1.00, "Lifetime": 0.12, "MistAmount": 0.08}},
+        "HitWood": {"system": "NS_SW_Core_Hit", "mi": "MI_SW_Trail_Magic",
+                    "params": {"Intensity": 0.65, "Lifetime": 0.19, "MistAmount": 0.14}}
+      }
+    }
+  }
+}

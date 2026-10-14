@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="150" viewBox="0 0 400 150">
+  <defs>
+    <linearGradient id="hpFill" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#D9694F"/>
+      <stop offset="100%" stop-color="#C0563F"/>
+    </linearGradient>
+    <linearGradient id="mpFill" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#84C2B1"/>
+      <stop offset="100%" stop-color="#6FAE9C"/>
+    </linearGradient>
+    <linearGradient id="spFill" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#E4C577"/>
+      <stop offset="100%" stop-color="#D8B45A"/>
+    </linearGradient>
+    <pattern id="barScan" width="4" height="4" patternUnits="userSpaceOnUse">
+      <rect width="4" height="1" fill="#EDE4D3" fill-opacity="0.06"/>
+    </pattern>
+  </defs>
+
+  <!-- ============ HP ============ -->
+  <!-- track -->
+  <rect x="40" y="18" width="320" height="14" rx="3" fill="#0E1418"/>
+  <rect x="40" y="18" width="320" height="14" rx="3" fill="none" stroke="#2C3A44" stroke-width="1"/>
+  <!-- delayed ghost (0.25s lag) -->
+  <rect x="40" y="18" width="278" height="14" rx="3" fill="#E8CE8C" fill-opacity="0.35"/>
+  <!-- real value -->
+  <path d="M 44,18 H 332 L 340,25 L 332,32 H 44 A 4,4 0 0 1 40,28 V 22 A 4,4 0 0 1 44,18 Z"
+        fill="url(#hpFill)"/>
+  <path d="M 44,18 H 332 L 340,25 L 332,32 H 44 A 4,4 0 0 1 40,28 V 22 A 4,4 0 0 1 44,18 Z"
+        fill="url(#barScan)"/>
+  <text x="0" y="27" font-family="Noto Sans SC, Source Han Sans SC, sans-serif"
+        font-size="14" fill="#B8AE9C" dominant-baseline="middle">生命</text>
+  <text x="372" y="27" font-family="Inter, Roboto, sans-serif"
+        font-size="14" fill="#EDE4D3" dominant-baseline="middle" font-variant-numeric="tabular-nums">248 / 300</text>
+
+  <!-- ============ Mana ============ -->
+  <rect x="40" y="60" width="320" height="14" rx="3" fill="#0E1418"/>
+  <rect x="40" y="60" width="320" height="14" rx="3" fill="none" stroke="#2C3A44" stroke-width="1"/>
+  <path d="M 44,60 H 243 L 251,67 L 243,74 H 44 A 4,4 0 0 1 40,70 V 64 A 4,4 0 0 1 44,60 Z"
+        fill="url(#mpFill)"/>
+  <path d="M 44,60 H 243 L 251,67 L 243,74 H 44 A 4,4 0 0 1 40,70 V 64 A 4,4 0 0 1 44,60 Z"
+        fill="url(#barScan)"/>
+  <text x="0" y="69" font-family="Noto Sans SC, Source Han Sans SC, sans-serif"
+        font-size="14" fill="#B8AE9C" dominant-baseline="middle">法力</text>
+  <text x="372" y="69" font-family="Inter, Roboto, sans-serif"
+        font-size="14" fill="#EDE4D3" dominant-baseline="middle" font-variant-numeric="tabular-nums">142 / 200</text>
+
+  <!-- ============ Stamina ============ -->
+  <rect x="40" y="102" width="320" height="14" rx="3" fill="#0E1418"/>
+  <rect x="40" y="102" width="320" height="14" rx="3" fill="none" stroke="#2C3A44" stroke-width="1"/>
+  <path d="M 44,102 H 195 L 203,109 L 195,116 H 44 A 4,4 0 0 1 40,112 V 106 A 4,4 0 0 1 44,102 Z"
+        fill="url(#spFill)"/>
+  <path d="M 44,102 H 195 L 203,109 L 195,116 H 44 A 4,4 0 0 1 40,112 V 106 A 4,4 0 0 1 44,102 Z"
+        fill="url(#barScan)"/>
+  <text x="0" y="111" font-family="Noto Sans SC, Source Han Sans SC, sans-serif"
+        font-size="14" fill="#B8AE9C" dominant-baseline="middle">体力</text>
+  <text x="372" y="111" font-family="Inter, Roboto, sans-serif"
+        font-size="14" fill="#EDE4D3" dominant-baseline="middle" font-variant-numeric="tabular-nums">108 / 180</text>
+
+  <!-- ============ critical state sample ============ -->
+  <rect x="40" y="134" width="80" height="14" rx="3" fill="#0E1418"/>
+  <path d="M 44,134 H 78 L 86,141 L 78,148 H 44 A 4,4 0 0 1 40,144 V 138 A 4,4 0 0 1 44,134 Z"
+        fill="#C0563F"/>
+  <rect x="39" y="133" width="82" height="16" rx="3" fill="none" stroke="#B3402F" stroke-width="2"/>
+  <text x="132" y="141" font-family="Noto Sans SC, Source Han Sans SC, sans-serif"
+        font-size="12" fill="#B3402F" dominant-baseline="middle">危急态（HP &lt; 25%）· 描边转 Alert，0.8s 脉冲</text>
+</svg>

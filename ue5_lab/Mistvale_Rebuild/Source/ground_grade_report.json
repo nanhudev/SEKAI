@@ -1,0 +1,181 @@
+{
+  "pads": 91,
+  "r16": "F:\\SEKAI\\ue5_lab\\Mistvale_Rebuild\\Source\\Mistvale_Valley_Art_505.r16",
+  "proxy": "F:\\SEKAI\\ue5_lab\\Mistvale_Rebuild\\Source\\Mistvale_Terrain_Art_Proxy.obj",
+  "riverside_relocations": {
+    "Riverside_House_01": [
+      -175,
+      -152.65
+    ],
+    "Riverside_House_02": [
+      -160,
+      -150.43
+    ],
+    "Riverside_House_03": [
+      -145,
+      -148.2
+    ],
+    "Riverside_House_04": [
+      -130,
+      -145.98
+    ],
+    "Riverside_House_05": [
+      -115,
+      -143.8
+    ],
+    "Riverside_House_06": [
+      -85,
+      -139.6
+    ],
+    "Riverside_House_07": [
+      -70,
+      -137.5
+    ],
+    "Riverside_House_08": [
+      -55,
+      -135.57
+    ],
+    "Riverside_House_09": [
+      -40,
+      -133.64
+    ],
+    "HERO_Church_Nave": [
+      115.43,
+      207.74
+    ],
+    "HERO_MainInn": [
+      38.99,
+      82.64
+    ],
+    "HERO_DockWarehouse": [
+      -106.62,
+      -118.54
+    ],
+    "LowerWestA_House_06": [
+      -55.89,
+      73.48
+    ],
+    "LowerWestB_House_01": [
+      -14.89,
+      0.42
+    ],
+    "LowerEastB_House_07": [
+      58.24,
+      72.11
+    ],
+    "MarketWest_House_01": [
+      -32.23,
+      81.51
+    ],
+    "MarketWest_House_02": [
+      -29.17,
+      89.61
+    ],
+    "MarketWest_House_03": [
+      -31.46,
+      104.62
+    ],
+    "MarketWest_House_04": [
+      -36.16,
+      115.64
+    ],
+    "MarketEast_House_01": [
+      45.0,
+      62.0
+    ],
+    "MarketEast_House_02": [
+      68.0,
+      62.0
+    ],
+    "MarketEast_House_03": [
+      32.09,
+      102.59
+    ],
+    "MarketEast_House_04": [
+      31.89,
+      114.34
+    ],
+    "MarketEast_House_05": [
+      32.99,
+      124.41
+    ],
+    "UpperWest_House_01": [
+      -31.14,
+      191.97
+    ],
+    "UpperWest_House_02": [
+      -30.67,
+      200.63
+    ],
+    "UpperWest_House_07": [
+      -17.62,
+      258.5
+    ],
+    "CornerBuilding_04": [
+      74.74,
+      227.82
+    ],
+    "InfillBuilding_11": [
+      52.38,
+      185.37
+    ],
+    "HERO_Church_BellTower": [
+      115.43,
+      224.74
+    ]
+  },
+  "max_corner_gap_before_m": 2.266,
+  "max_corner_gap_after_m": 0.679,
+  "largest_before": [
+    [
+      2.265732714962568,
+      0.0,
+      "HERO_DockWarehouse"
+    ],
+    [
+      1.2286796325969362,
+      0.0,
+      "HERO_Church_Nave"
+    ],
+    [
+      1.0332022112762083,
+      0.04938245471198499,
+      "Guild"
+    ],
+    [
+      0.8656892176214619,
+      0.0,
+      "HERO_MainInn"
+    ],
+    [
+      0.6819937936443381,
+      0.4165921952999998,
+      "HERO_Blacksmith"
+    ],
+    [
+      0.6678078471321593,
+      0.2820911202889973,
+      "CornerBuilding_05"
+    ],
+    [
+      0.667277279923912,
+      0.0,
+      "InfillBuilding_01"
+    ],
+    [
+      0.6664636096154641,
+      0.0,
+      "CornerBuilding_08"
+    ],
+    [
+      0.66645950311674,
+      0.0,
+      "InfillBuilding_02"
+    ],
+    [
+      0.649459131194984,
+      0.35429214669960984,
+      "CornerBuilding_02"
+    ]
+  ]
+}

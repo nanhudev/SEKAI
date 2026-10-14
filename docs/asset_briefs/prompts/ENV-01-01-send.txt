@@ -1,0 +1,109 @@
+=== ROLE ===
+You are the Blender modeling code author for SEKAI, a first-person stylized next-gen fantasy RPG.
+
+I will provide one asset brief at a time. Generate executable Blender 4.x / 5.x Python using bpy.
+
+For complex assets, output incremental standalone chunks labelled:
+
+# C2B:CHUNK <name>
+...
+# C2B:END
+
+Each chunk must be independently runnable, in a scene that may already contain the chunks that came before it.
+
+HARD RULES — these were learned from real failures in this project. Violating any of them causes silent, hard-to-trace breakage:
+
+1. NEVER look up shader nodes or sockets by English name. This Blender instance has a localised (Chinese) UI, so the Principled BSDF node is actually named "原理化 BSDF". Always resolve by type:
+
+       bsdf = next((n for n in mat.node_tree.nodes if n.type == 'BSDF_PRINCIPLED'), None)
+
+   and resolve inputs by scanning node.inputs for a matching identifier, with a name-based fallback. Never do `nodes.get("Principled BSDF")`.
+
+2. Never swallow a failure with a bare `if x:` guard. If something is required, raise an explicit exception or print a loud warning. Silent no-ops have already cost this project a full re-iteration.
+
+3. Metric scale only. 1 Blender unit = 1 metre.
+
+4. Set each object's origin deliberately and state where it is. Modular kit pieces must have their origin on the grid footprint so that placing them at integer coordinates snaps cleanly.
+
+5. Use clean ASCII object and material names, prefixed with the asset id.
+
+6. Real-time geometry only: low to mid poly. Write PBR values straight into Principled BSDF inputs (Base Color, Metallic, Roughness). No external textures, no addons, no node trees that GLB cannot export. Multiple materials per object are fine via material slots.
+
+7. Leave object transforms clean: rotation 0, scale 1. Apply transforms before the chunk finishes.
+
+8. Do not explain the code unless I ask. Output executable Blender Python only.
+
+=== ASSET BRIEF: ENV-01 Mistvale Ground / Stair / Terrace Kit V1 ===
+
+PURPOSE
+Modular buildable ground system for the Mistvale starting region, and the wholesale
+replacement of a placeholder combat arena that is currently made of untextured boxes.
+
+STYLE
+Stylized next-gen fantasy. Anime-readable, clean, consciously designed masonry.
+NOT generic low-poly, NOT mobile-toy, NOT photoreal noise. Blocky stone courses with
+subtle chamfered edges so the silhouettes read without relying on texture detail.
+
+MODULAR GRID
+Base grid = 2.00 metres. Every piece's footprint is an exact multiple of 2 m.
+Origin sits on the ground plane at the centre of the footprint, except stairs and
+ramps where the origin is at the bottom of the run, centred across the width.
+All pieces must be placeable at integer grid coordinates and snap cleanly against
+each other, and must still work when rotated in 90 degree steps.
+
+DELIVER 12 PIECES (object name | dimensions X x Y x Z in metres | notes)
+
+ 1. ENV01_Terrace_4x4          | 4.0 x 4.0 x 0.30 | raised stone slab; visible stone courses on the side; 0.10 pale edge trim on the top rim
+ 2. ENV01_Terrace_8x8          | 8.0 x 8.0 x 0.30 | plaza slab; inset pale paving lines dividing the top into 4x4 metre cells
+ 3. ENV01_Terrace_StepEdge_4   | 4.0 x 0.60 x 0.30 | low lip / bench edge, intended to sit on top of a terrace slab
+ 4. ENV01_Stair_Straight_4     | 4.0 run x 2.0 wide x 1.44 tall | 8 risers, 0.18 rise, 0.50 tread; solid stone, no floating steps
+ 5. ENV01_Stair_Landing_2x2    | 2.0 x 2.0 x 0.30 | flat landing; its top face height must match the top of a terrace slab
+ 6. ENV01_Ramp_4x2             | 4.0 x 2.0, rises 0.90 | about 12.7 degrees; solid cheeks either side; paved walking surface
+ 7. ENV01_RetainingWall_4x1p5  | 4.0 x 0.45 x 1.50 | stone courses; cap stone overhanging by 0.04
+ 8. ENV01_RetainingWall_Corner | 4.0 x 4.0 L-plan x 1.50 | inner corner variant of piece 7, must join it seamlessly
+ 9. ENV01_Curb_4               | 4.0 x 0.30 x 0.16 | kerb strip with a chamfered top edge
+10. ENV01_CliffEdge_4          | 4.0 x 1.0 x 1.20 | broken rock edge, irregular top profile built from 5 to 7 distinct chunks so it does not read as a box
+11. ENV01_BridgeDeck_4         | 4.0 x 2.0 x 0.35 | timber plank deck over stone stringers
+12. ENV01_BridgeRail_4         | 4.0 x 0.15 x 1.05 | posts every 1.0 m plus two horizontal rails
+
+MATERIALS — exactly 4, no more. Write the PBR values directly into the Principled BSDF inputs.
+
+  MV_Stone_Base  : Base Color 0.42, 0.44, 0.47 | Metallic 0.0 | Roughness 0.85
+  MV_Stone_Pale  : Base Color 0.68, 0.64, 0.55 | Metallic 0.0 | Roughness 0.80
+  MV_Timber_Dark : Base Color 0.20, 0.15, 0.12 | Metallic 0.0 | Roughness 0.70
+  MV_Moss_Accent : Base Color 0.32, 0.38, 0.30 | Metallic 0.0 | Roughness 0.90
+
+Use MV_Moss_Accent sparingly, only on a few individual stone blocks and on the cliff edge,
+so the kit does not look uniformly grey.
+
+TECHNICAL
+Poly budget: under 30,000 triangles for the entire kit, target 20,000 to 25,000.
+Terraces must stay under 1,200 triangles each. Stairs and cliff edge may be heavier.
+Sharp edges should be flat shaded, which is the correct look for this style.
+Put every piece in a collection named SEKAI_ENV01_KIT.
+No collision shapes needed, Godot generates those.
+
+CHUNKS — produce them in this order, each one independently runnable:
+
+  # C2B:CHUNK kit_common
+  helpers: localisation-safe material factory, box/mesh builder, origin helper,
+  transform apply helper, collection setup, and the 4 material definitions
+
+  # C2B:CHUNK terraces
+  pieces 1, 2, 3, 5, 9
+
+  # C2B:CHUNK stairs_ramps
+  pieces 4, 6
+
+  # C2B:CHUNK walls_edges
+  pieces 7, 8, 10
+
+  # C2B:CHUNK bridge
+  pieces 11, 12
+
+EXPORT TARGETS
+Blender source: assets_source/environment/mistvale/env01_ground_kit.blend
+GLB: one GLB per piece into assets/models/environment/mistvale/
+Godot: godot/models/environment/mistvale/
+
+Do not write an export chunk. I export with my own tooling.

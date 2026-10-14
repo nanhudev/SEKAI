@@ -1,0 +1,342 @@
+[
+  {
+    "asset": "/Game/Fab/SlavicLite/EA03_Fence_Cobble_01a_LOD0.EA03_Fence_Cobble_01a_LOD0",
+    "name": "EA03_Fence_Cobble_01a_LOD0",
+    "size_m": [
+      3.793,
+      0.779,
+      1.644
+    ],
+    "centre_m": [
+      -0.172,
+      -0.078,
+      0.822
+    ],
+    "materials": [
+      "<Object '/Game/Fab/SlavicLite/EA02_LPNP-Slavika_Colorsheet_v1.EA02_LPNP-Slavika_Colorsheet_v1' (0x000002253FDC9800) Class 'MaterialInstanceConstant'>"
+    ]
+  },
+  {
+    "asset": "/Game/Fab/SlavicLite/EA03_Fence_Plank_02a_LOD0.EA03_Fence_Plank_02a_LOD0",
+    "name": "EA03_Fence_Plank_02a_LOD0",
+    "size_m": [
+      4.0,
+      0.284,
+      3.042
+    ],
+    "centre_m": [
+      -1.83,
+      -0.016,
+      1.521
+    ],
+    "materials": [
+      "<Object '/Game/Fab/SlavicLite/EA02_LPNP-Slavika_Colorsheet_v1_png_079.EA02_LPNP-Slavika_Colorsheet_v1_png_079' (0x000002253FDCB000) Class 'MaterialInstanceConstant'>"
+    ]
+  },
+  {
+    "asset": "/Game/Fab/SlavicLite/EA03_Fence_RockGate_01a_LOD0.EA03_Fence_RockGate_01a_LOD0",
+    "name": "EA03_Fence_RockGate_01a_LOD0",
+    "size_m": [
+      4.336,
+      1.54,
+      3.653
+    ],
+    "centre_m": [
+      -0.314,
+      0.106,
+      1.822
+    ],
+    "materials": [
+      "<Object '/Game/Fab/SlavicLite/EA02_LPNP-Slavika_Colorsheet_v1_png_083.EA02_LPNP-Slavika_Colorsheet_v1_png_083' (0x000002253FDCC000) Class 'MaterialInstanceConstant'>"
+    ]
+  },
+  {
+    "asset": "/Game/Fab/SlavicLite/EA03_Prop_House_Door_01b_LOD0.EA03_Prop_House_Door_01b_LOD0",
+    "name": "EA03_Prop_House_Door_01b_LOD0",
+    "size_m": [
+      0.178,
+      1.387,
+      2.531
+    ],
+    "centre_m": [
+      0.007,
+      0.613,
+      1.265
+    ],
+    "materials": [
+      "<Object '/Game/Fab/SlavicLite/EA02_LPNP-Slavika_Colorsheet_v1_png_149.EA02_LPNP-Slavika_Colorsheet_v1_png_149' (0x000002253FDCD000) Class 'MaterialInstanceConstant'>"
+    ]
+  },
+  {
+    "asset": "/Game/Fab/SlavicLite/EA03_Town_Building_Administrative__01a_LOD0.EA03_Town_Building_Administrative__01a_LOD0",
+    "name": "EA03_Town_Building_Administrative__01a_LOD0",
+    "size_m": [
+      20.641,
+      11.911,
+      11.284
+    ],
+    "centre_m": [
+      0.293,
+      -0.041,
+      5.286
+    ],
+    "materials": [
+      "<Object '/Game/Fab/SlavicLite/EA02_LPNP-Slavika_Colorsheet_v1.EA02_LPNP-Slavika_Colorsheet_v1' (0x000002253FDC9800) Class 'MaterialInstanceConstant'>"
+    ]
+  },
+  {
+    "asset": "/Game/Fab/SlavicLite/EA03_Village_AnimalBreeding_Hovel_01a_LOD0.EA03_Village_AnimalBreeding_Hovel_01a_LOD0",
+    "name": "EA03_Village_AnimalBreeding_Hovel_01a_LOD0",
+    "size_m": [
+      2.22,
+      2.351,
+      2.207
+    ],
+    "centre_m": [
+      0.004,
+      -0.156,
+      1.104
+    ],
+    "materials": [
+      "<Object '/Game/Fab/SlavicLite/LPNP_Field_Colorsheet.LPNP_Field_Colorsheet' (0x000002253FDCE800) Class 'MaterialInstanceConstant'>"
+    ]
+  },
+  {
+    "asset": "/Game/Fab/SlavicLite/EA03_Village_HouseModule_Porch_01d_LOD0.EA03_Village_HouseModule_Porch_01d_LOD0",
+    "name": "EA03_Village_HouseModule_Porch_01d_LOD0",
+    "size_m": [
+      6.632,
+      2.894,
+      1.454
+    ],
+    "centre_m": [
+      0.005,
+      0.018,
+      0.198
+    ],
+    "materials": [
+      "<Object '/Game/Fab/SlavicLite/EA02_LPNP-Slavika_Colorsheet_v1_png_012.EA02_LPNP-Slavika_Colorsheet_v1_png_012' (0x0000022543270000) Class 'MaterialInstanceConstant'>"
+    ]
+  },
+  {
+    "asset": "/Game/Fab/SlavicLite/EA03_Village_HouseModule_Porch_R_03b_LOD0.EA03_Village_HouseModule_Porch_R_03b_LOD0",
+    "name": "EA03_Village_HouseModule_Porch_R_03b_LOD0",
+    "size_m": [
+      6.338,
+      1.798,
+      1.011
+    ],
+    "centre_m": [
+      0.524,
+      0.881,
+      0.506
+    ],
+    "materials": [
+      "<Object '/Game/Fab/SlavicLite/EA02_LPNP-Slavika_Colorsheet_v1_png_013.EA02_LPNP-Slavika_Colorsheet_v1_png_013' (0x0000022543271000) Class 'MaterialInstanceConstant'>"
+    ]
+  },
+  {
+    "asset": "/Game/Fab/SlavicLite/EA03_Village_Hut_Roof_01c_LOD0.EA03_Village_Hut_Roof_01c_LOD0",
+    "name": "EA03_Village_Hut_Roof_01c_LOD0",
+    "size_m": [
+      20.015,
+      11.297,
+      5.053
+    ],
+    "centre_m": [
+      -0.985,
+      -0.033,
+      2.527
+    ],
+    "materials": [
+      "<Object '/Game/Fab/SlavicLite/EA02_LPNP-Slavika_Colorsheet_v1.EA02_LPNP-Slavika_Colorsheet_v1' (0x000002253FDC9800) Class 'MaterialInstanceConstant'>"
+    ]
+  },
+  {
+    "asset": "/Game/Fab/SlavicLite/EA03_Village_Hut_Wall_Front_02d_LOD0.EA03_Village_Hut_Wall_Front_02d_LOD0",
+    "name": "EA03_Village_Hut_Wall_Front_02d_LOD0",
+    "size_m": [
+      0.734,
+      8.653,
+      3.13
+    ],
+    "centre_m": [
+      -0.097,
+      0.0,
+      1.565
+    ],
+    "materials": [
+      "<Object '/Game/Fab/SlavicLite/EA02_LPNP-Slavika_Colorsheet_v1_png_025.EA02_LPNP-Slavika_Colorsheet_v1_png_025' (0x0000022543272800) Class 'MaterialInstanceConstant'>"
+    ]
+  },
+  {
+    "asset": "/Game/Fab/SlavicLite/EA03_Village_Hut_Wall_Painted_Front_02a_LOD0.EA03_Village_Hut_Wall_Painted_Front_02a_LOD0",
+    "name": "EA03_Village_Hut_Wall_Painted_Front_02a_LOD0",
+    "size_m": [
+      0.591,
+      8.557,
+      3.089
+    ],
+    "centre_m": [
+      0.0,
+      0.0,
+      1.544
+    ],
+    "materials": [
+      "<Object '/Game/Fab/SlavicLite/EA02_LPNP-Slavika_Colorsheet_v1_png_031.EA02_LPNP-Slavika_Colorsheet_v1_png_031' (0x0000022543273800) Class 'MaterialInstanceConstant'>"
+    ]
+  },
+  {
+    "asset": "/Game/Fab/SlavicLite/EA03_Village_Hut_Wall_Painted_Side_02c_LOD0.EA03_Village_Hut_Wall_Painted_Side_02c_LOD0",
+    "name": "EA03_Village_Hut_Wall_Painted_Side_02c_LOD0",
+    "size_m": [
+      20.025,
+      0.547,
+      3.089
+    ],
+    "centre_m": [
+      -0.0,
+      0.0,
+      1.544
+    ],
+    "materials": [
+      "<Object '/Game/Fab/SlavicLite/EA02_LPNP-Slavika_Colorsheet_v1_png_032.EA02_LPNP-Slavika_Colorsheet_v1_png_032' (0x0000022543275000) Class 'MaterialInstanceConstant'>"
+    ]
+  },
+  {
+    "asset": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_Convenience_01a_LOD0.EA03_Village_OutBuilding_Convenience_01a_LOD0",
+    "name": "EA03_Village_OutBuilding_Convenience_01a_LOD0",
+    "size_m": [
+      2.639,
+      2.914,
+      4.762
+    ],
+    "centre_m": [
+      -0.003,
+      0.0,
+      2.362
+    ],
+    "materials": [
+      "<Object '/Game/Fab/SlavicLite/EA02_LPNP-Slavika_Colorsheet_v1_png_034.EA02_LPNP-Slavika_Colorsheet_v1_png_034' (0x0000022543276000) Class 'MaterialInstanceConstant'>"
+    ]
+  },
+  {
+    "asset": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_Cubby_01d_LOD0.EA03_Village_OutBuilding_Cubby_01d_LOD0",
+    "name": "EA03_Village_OutBuilding_Cubby_01d_LOD0",
+    "size_m": [
+      8.982,
+      7.348,
+      8.089
+    ],
+    "centre_m": [
+      -0.108,
+      0.016,
+      4.011
+    ],
+    "materials": [
+      "<Object '/Game/Fab/SlavicLite/EA02_LPNP-Slavika_Colorsheet_v1.EA02_LPNP-Slavika_Colorsheet_v1' (0x000002253FDC9800) Class 'MaterialInstanceConstant'>"
+    ]
+  },
+  {
+    "asset": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_PentHouse_01a_LOD0.EA03_Village_OutBuilding_PentHouse_01a_LOD0",
+    "name": "EA03_Village_OutBuilding_PentHouse_01a_LOD0",
+    "size_m": [
+      9.267,
+      10.376,
+      8.815
+    ],
+    "centre_m": [
+      1.065,
+      0.248,
+      4.407
+    ],
+    "materials": [
+      "<Object '/Game/Fab/SlavicLite/LPNP_Field_Colorsheet_003.LPNP_Field_Colorsheet_003' (0x0000022543277800) Class 'MaterialInstanceConstant'>"
+    ]
+  },
+  {
+    "asset": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_Shed_01a_LOD0.EA03_Village_OutBuilding_Shed_01a_LOD0",
+    "name": "EA03_Village_OutBuilding_Shed_01a_LOD0",
+    "size_m": [
+      11.136,
+      8.061,
+      7.381
+    ],
+    "centre_m": [
+      -0.574,
+      -0.166,
+      3.691
+    ],
+    "materials": [
+      "<Object '/Game/Fab/SlavicLite/LPNP_Field_Colorsheet_004.LPNP_Field_Colorsheet_004' (0x0000022543279000) Class 'MaterialInstanceConstant'>"
+    ]
+  },
+  {
+    "asset": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_Shed_03b_LOD0.EA03_Village_OutBuilding_Shed_03b_LOD0",
+    "name": "EA03_Village_OutBuilding_Shed_03b_LOD0",
+    "size_m": [
+      15.446,
+      24.475,
+      9.508
+    ],
+    "centre_m": [
+      0.0,
+      0.0,
+      4.754
+    ],
+    "materials": [
+      "<Object '/Game/Fab/SlavicLite/EA02_LPNP-Slavika_Colorsheet_v1_png_036.EA02_LPNP-Slavika_Colorsheet_v1_png_036' (0x000002254327A800) Class 'MaterialInstanceConstant'>"
+    ]
+  },
+  {
+    "asset": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_WoodRoof_01b_LOD0.EA03_Village_OutBuilding_WoodRoof_01b_LOD0",
+    "name": "EA03_Village_OutBuilding_WoodRoof_01b_LOD0",
+    "size_m": [
+      5.174,
+      3.214,
+      4.157
+    ],
+    "centre_m": [
+      0.138,
+      -0.098,
+      2.079
+    ],
+    "materials": [
+      "<Object '/Game/Fab/SlavicLite/EA02_LPNP-Slavika_Colorsheet_v1_png_037.EA02_LPNP-Slavika_Colorsheet_v1_png_037' (0x000002254327C800) Class 'MaterialInstanceConstant'>"
+    ]
+  },
+  {
+    "asset": "/Game/Fab/SlavicLite/EA03_Village_platform_01a_LOD0.EA03_Village_platform_01a_LOD0",
+    "name": "EA03_Village_platform_01a_LOD0",
+    "size_m": [
+      2.912,
+      5.425,
+      0.357
+    ],
+    "centre_m": [
+      0.0,
+      0.043,
+      0.179
+    ],
+    "materials": [
+      "<Object '/Game/Fab/SlavicLite/EA02_LPNP-Slavika_Colorsheet_v1_png_039.EA02_LPNP-Slavika_Colorsheet_v1_png_039' (0x000002254327E000) Class 'MaterialInstanceConstant'>"
+    ]
+  },
+  {
+    "asset": "/Game/Fab/SlavicLite/EA03_Village_Tover_01a_LOD0.EA03_Village_Tover_01a_LOD0",
+    "name": "EA03_Village_Tover_01a_LOD0",
+    "size_m": [
+      8.124,
+      8.796,
+      10.856
+    ],
+    "centre_m": [
+      -0.0,
+      -0.137,
+      4.925
+    ],
+    "materials": [
+      "<Object '/Game/Fab/SlavicLite/EA02_LPNP-Slavika_Colorsheet_v1_png_038.EA02_LPNP-Slavika_Colorsheet_v1_png_038' (0x000002254327F000) Class 'MaterialInstanceConstant'>"
+    ]
+  }
+]

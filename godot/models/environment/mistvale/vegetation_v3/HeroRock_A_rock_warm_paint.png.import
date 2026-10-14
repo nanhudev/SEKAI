@@ -1,0 +1,37 @@
+[remap]
+
+importer="texture"
+type="CompressedTexture2D"
+uid="uid://825uhrd0ffh8"
+path="res://.godot/imported/HeroRock_A_rock_warm_paint.png-157d8cb9d167a31e5643dc60c2e51ec0.ctex"
+metadata={
+"vram_texture": false
+}
+generator_parameters={
+"md5": "93e55df70d2c9cd66634f55edd7516d5"
+}
+
+[deps]
+
+source_file="res://models/environment/mistvale/vegetation_v3/HeroRock_A_rock_warm_paint.png"
+dest_files=["res://.godot/imported/HeroRock_A_rock_warm_paint.png-157d8cb9d167a31e5643dc60c2e51ec0.ctex"]
+
+[params]
+
+compress/mode=0
+compress/high_quality=false
+compress/lossy_quality=0.7
+compress/hdr_compression=1
+compress/normal_map=0
+compress/channel_pack=0
+mipmaps/generate=true
+mipmaps/limit=-1
+roughness/mode=0
+roughness/src_normal=""
+process/fix_alpha_border=true
+process/premult_alpha=false
+process/normal_map_invert_y=false
+process/hdr_as_srgb=false
+process/hdr_clamp_exposure=false
+process/size_limit=0
+detect_3d/compress_to=1

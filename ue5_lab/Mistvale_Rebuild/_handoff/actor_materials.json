@@ -1,0 +1,1820 @@
+[
+ {
+  "label": "ART_Graded_Terrain_Proxy",
+  "folder": "ART/Terrain_Graded",
+  "mesh": "SM_Mistvale_Terrain_Corrected",
+  "materials": [
+   "M_Valley_Grass_01"
+  ]
+ },
+ {
+  "label": "MainStoneBridge_DECK",
+  "folder": "02_Bridges",
+  "mesh": "SM_Mistvale_StoneBridge",
+  "materials": [
+   "MV_Bridge_CreamLimestone",
+   "MV_Bridge_Paving",
+   "MV_Bridge_WetStone",
+   "MV_Bridge_ArchVoussoir",
+   "MV_Bridge_Coping"
+  ]
+ },
+ {
+  "label": "SmallServiceBridge_DECK",
+  "folder": "02_Bridges",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "SmallServiceBridge_PARAPET",
+  "folder": "02_Bridges",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "SmallServiceBridge_PARAPET",
+  "folder": "02_Bridges",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "SmallServiceBridge_SouthRamp",
+  "folder": "02_Bridges",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "SmallServiceBridge_NorthRamp",
+  "folder": "02_Bridges",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "HERO_Guild_HorizontalHall",
+  "folder": "03_Hero",
+  "mesh": "SM_Mistvale_Guild",
+  "materials": [
+   "MV_Guild_WarmStone",
+   "MV_Guild_IvoryPlaster",
+   "MV_Guild_DarkOak",
+   "MV_Guild_SlateTeal",
+   "MV_Guild_RoofEdge",
+   "MV_Guild_AmberTrim",
+   "MV_Guild_Glass"
+  ]
+ },
+ {
+  "label": "HERO_Guild_TrainingYard",
+  "folder": "03_Hero",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "HERO_Church_Nave",
+  "folder": "ART/Fab_SlavicLite/admin",
+  "mesh": "EA03_Town_Building_Administrative__01a_LOD0",
+  "materials": [
+   "M_House_Clay"
+  ]
+ },
+ {
+  "label": "HERO_Church_BellTower",
+  "folder": "ART/Landmarks",
+  "mesh": "EA03_Village_Tover_01a_LOD0",
+  "materials": [
+   "M_House_Slate"
+  ]
+ },
+ {
+  "label": "HERO_MainInn",
+  "folder": "ART/Fab_SlavicLite/admin",
+  "mesh": "EA03_Town_Building_Administrative__01a_LOD0",
+  "materials": [
+   "M_House_Clay"
+  ]
+ },
+ {
+  "label": "HERO_Blacksmith",
+  "folder": "ART/Fab_SlavicLite/shed",
+  "mesh": "EA03_Village_OutBuilding_Shed_01a_LOD0",
+  "materials": [
+   "M_House_Clay"
+  ]
+ },
+ {
+  "label": "HERO_DockWarehouse",
+  "folder": "ART/Fab_SlavicLite/wide_shed",
+  "mesh": "EA03_Village_OutBuilding_Shed_03b_LOD0",
+  "materials": [
+   "M_House_Slate"
+  ]
+ },
+ {
+  "label": "HERO_NorthGate_Left",
+  "folder": "ART/Fab_SlavicLite/tower",
+  "mesh": "EA03_Village_Tover_01a_LOD0",
+  "materials": [
+   "M_House_Clay"
+  ]
+ },
+ {
+  "label": "HERO_NorthGate_Right",
+  "folder": "ART/Fab_SlavicLite/tower",
+  "mesh": "EA03_Village_Tover_01a_LOD0",
+  "materials": [
+   "M_House_Moss"
+  ]
+ },
+ {
+  "label": "HERO_NorthGate_Lintel",
+  "folder": "ART/Landmarks",
+  "mesh": "EA03_Fence_RockGate_01a_LOD0",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "MarketSquare_Well",
+  "folder": "04_Market",
+  "mesh": "Cube",
+  "materials": [
+   "WorldGridMaterial"
+  ]
+ },
+ {
+  "label": "MarketStall_01",
+  "folder": "ART/Fab_SlavicLite/woodroof",
+  "mesh": "EA03_Village_OutBuilding_WoodRoof_01b_LOD0",
+  "materials": [
+   "M_House_Russet"
+  ]
+ },
+ {
+  "label": "MarketStall_02",
+  "folder": "ART/Fab_SlavicLite/woodroof",
+  "mesh": "EA03_Village_OutBuilding_WoodRoof_01b_LOD0",
+  "materials": [
+   "M_House_Slate"
+  ]
+ },
+ {
+  "label": "MarketStall_03",
+  "folder": "ART/Fab_SlavicLite/woodroof",
+  "mesh": "EA03_Village_OutBuilding_WoodRoof_01b_LOD0",
+  "materials": [
+   "M_House_Moss"
+  ]
+ },
+ {
+  "label": "MarketStall_04",
+  "folder": "ART/Fab_SlavicLite/woodroof",
+  "mesh": "EA03_Village_OutBuilding_WoodRoof_01b_LOD0",
+  "materials": [
+   "M_House_Clay"
+  ]
+ },
+ {
+  "label": "MarketStall_05",
+  "folder": "ART/Fab_SlavicLite/woodroof",
+  "mesh": "EA03_Village_OutBuilding_WoodRoof_01b_LOD0",
+  "materials": [
+   "M_House_Russet"
+  ]
+ },
+ {
+  "label": "MarketStall_06",
+  "folder": "ART/Fab_SlavicLite/woodroof",
+  "mesh": "EA03_Village_OutBuilding_WoodRoof_01b_LOD0",
+  "materials": [
+   "M_House_Slate"
+  ]
+ },
+ {
+  "label": "MarketStall_07",
+  "folder": "ART/Fab_SlavicLite/woodroof",
+  "mesh": "EA03_Village_OutBuilding_WoodRoof_01b_LOD0",
+  "materials": [
+   "M_House_Moss"
+  ]
+ },
+ {
+  "label": "MarketStall_08",
+  "folder": "ART/Fab_SlavicLite/woodroof",
+  "mesh": "EA03_Village_OutBuilding_WoodRoof_01b_LOD0",
+  "materials": [
+   "M_House_Clay"
+  ]
+ },
+ {
+  "label": "LowerWestA_House_01",
+  "folder": "ART/Fab_SlavicLite/shed",
+  "mesh": "EA03_Village_OutBuilding_Shed_01a_LOD0",
+  "materials": [
+   "M_House_Russet"
+  ]
+ },
+ {
+  "label": "LowerWestA_House_02",
+  "folder": "ART/Fab_SlavicLite/cubby",
+  "mesh": "EA03_Village_OutBuilding_Cubby_01d_LOD0",
+  "materials": [
+   "M_House_Slate"
+  ]
+ },
+ {
+  "label": "LowerWestA_House_03",
+  "folder": "ART/Fab_SlavicLite/pent",
+  "mesh": "EA03_Village_OutBuilding_PentHouse_01a_LOD0",
+  "materials": [
+   "M_House_Moss"
+  ]
+ },
+ {
+  "label": "LowerWestA_House_04",
+  "folder": "ART/Fab_SlavicLite/shed",
+  "mesh": "EA03_Village_OutBuilding_Shed_01a_LOD0",
+  "materials": [
+   "M_House_Clay"
+  ]
+ },
+ {
+  "label": "LowerWestA_House_05",
+  "folder": "ART/Fab_SlavicLite/cubby",
+  "mesh": "EA03_Village_OutBuilding_Cubby_01d_LOD0",
+  "materials": [
+   "M_House_Russet"
+  ]
+ },
+ {
+  "label": "LowerWestA_House_06",
+  "folder": "ART/Fab_SlavicLite/shed",
+  "mesh": "EA03_Village_OutBuilding_Shed_01a_LOD0",
+  "materials": [
+   "M_House_Slate"
+  ]
+ },
+ {
+  "label": "LowerWestA_House_07",
+  "folder": "ART/Fab_SlavicLite/cubby",
+  "mesh": "EA03_Village_OutBuilding_Cubby_01d_LOD0",
+  "materials": [
+   "M_House_Moss"
+  ]
+ },
+ {
+  "label": "LowerWestA_House_08",
+  "folder": "ART/Fab_SlavicLite/pent",
+  "mesh": "EA03_Village_OutBuilding_PentHouse_01a_LOD0",
+  "materials": [
+   "M_House_Clay"
+  ]
+ },
+ {
+  "label": "LowerWestB_House_01",
+  "folder": "ART/Fab_SlavicLite/cubby",
+  "mesh": "EA03_Village_OutBuilding_Cubby_01d_LOD0",
+  "materials": [
+   "M_House_Slate"
+  ]
+ },
+ {
+  "label": "LowerWestB_House_02",
+  "folder": "ART/Fab_SlavicLite/pent",
+  "mesh": "EA03_Village_OutBuilding_PentHouse_01a_LOD0",
+  "materials": [
+   "M_House_Moss"
+  ]
+ },
+ {
+  "label": "LowerWestB_House_03",
+  "folder": "ART/Fab_SlavicLite/shed",
+  "mesh": "EA03_Village_OutBuilding_Shed_01a_LOD0",
+  "materials": [
+   "M_House_Clay"
+  ]
+ },
+ {
+  "label": "LowerWestB_House_04",
+  "folder": "ART/Fab_SlavicLite/cubby",
+  "mesh": "EA03_Village_OutBuilding_Cubby_01d_LOD0",
+  "materials": [
+   "M_House_Russet"
+  ]
+ },
+ {
+  "label": "LowerWestB_House_05",
+  "folder": "ART/Fab_SlavicLite/shed",
+  "mesh": "EA03_Village_OutBuilding_Shed_01a_LOD0",
+  "materials": [
+   "M_House_Slate"
+  ]
+ },
+ {
+  "label": "LowerWestB_House_06",
+  "folder": "ART/Fab_SlavicLite/cubby",
+  "mesh": "EA03_Village_OutBuilding_Cubby_01d_LOD0",
+  "materials": [
+   "M_House_Moss"
+  ]
+ },
+ {
+  "label": "LowerWestB_House_07",
+  "folder": "ART/Fab_SlavicLite/pent",
+  "mesh": "EA03_Village_OutBuilding_PentHouse_01a_LOD0",
+  "materials": [
+   "M_House_Clay"
+  ]
+ },
+ {
+  "label": "LowerEastA_House_01",
+  "folder": "ART/Fab_SlavicLite/pent",
+  "mesh": "EA03_Village_OutBuilding_PentHouse_01a_LOD0",
+  "materials": [
+   "M_House_Moss"
+  ]
+ },
+ {
+  "label": "LowerEastA_House_02",
+  "folder": "ART/Fab_SlavicLite/shed",
+  "mesh": "EA03_Village_OutBuilding_Shed_01a_LOD0",
+  "materials": [
+   "M_House_Clay"
+  ]
+ },
+ {
+  "label": "LowerEastA_House_03",
+  "folder": "ART/Fab_SlavicLite/cubby",
+  "mesh": "EA03_Village_OutBuilding_Cubby_01d_LOD0",
+  "materials": [
+   "M_House_Russet"
+  ]
+ },
+ {
+  "label": "LowerEastA_House_04",
+  "folder": "ART/Fab_SlavicLite/pent",
+  "mesh": "EA03_Village_OutBuilding_PentHouse_01a_LOD0",
+  "materials": [
+   "M_House_Slate"
+  ]
+ },
+ {
+  "label": "LowerEastA_House_05",
+  "folder": "ART/Fab_SlavicLite/shed",
+  "mesh": "EA03_Village_OutBuilding_Shed_01a_LOD0",
+  "materials": [
+   "M_House_Moss"
+  ]
+ },
+ {
+  "label": "LowerEastA_House_06",
+  "folder": "ART/Fab_SlavicLite/cubby",
+  "mesh": "EA03_Village_OutBuilding_Cubby_01d_LOD0",
+  "materials": [
+   "M_House_Clay"
+  ]
+ },
+ {
+  "label": "LowerEastA_House_07",
+  "folder": "ART/Fab_SlavicLite/shed",
+  "mesh": "EA03_Village_OutBuilding_Shed_01a_LOD0",
+  "materials": [
+   "M_House_Russet"
+  ]
+ },
+ {
+  "label": "LowerEastB_House_01",
+  "folder": "ART/Fab_SlavicLite/shed",
+  "mesh": "EA03_Village_OutBuilding_Shed_01a_LOD0",
+  "materials": [
+   "M_House_Clay"
+  ]
+ },
+ {
+  "label": "LowerEastB_House_02",
+  "folder": "ART/Fab_SlavicLite/cubby",
+  "mesh": "EA03_Village_OutBuilding_Cubby_01d_LOD0",
+  "materials": [
+   "M_House_Russet"
+  ]
+ },
+ {
+  "label": "LowerEastB_House_03",
+  "folder": "ART/Fab_SlavicLite/pent",
+  "mesh": "EA03_Village_OutBuilding_PentHouse_01a_LOD0",
+  "materials": [
+   "M_House_Slate"
+  ]
+ },
+ {
+  "label": "LowerEastB_House_04",
+  "folder": "ART/Fab_SlavicLite/shed",
+  "mesh": "EA03_Village_OutBuilding_Shed_01a_LOD0",
+  "materials": [
+   "M_House_Moss"
+  ]
+ },
+ {
+  "label": "LowerEastB_House_05",
+  "folder": "ART/Fab_SlavicLite/cubby",
+  "mesh": "EA03_Village_OutBuilding_Cubby_01d_LOD0",
+  "materials": [
+   "M_House_Clay"
+  ]
+ },
+ {
+  "label": "LowerEastB_House_06",
+  "folder": "ART/Fab_SlavicLite/shed",
+  "mesh": "EA03_Village_OutBuilding_Shed_01a_LOD0",
+  "materials": [
+   "M_House_Russet"
+  ]
+ },
+ {
+  "label": "LowerEastB_House_07",
+  "folder": "ART/Fab_SlavicLite/cubby",
+  "mesh": "EA03_Village_OutBuilding_Cubby_01d_LOD0",
+  "materials": [
+   "M_House_Slate"
+  ]
+ },
+ {
+  "label": "MarketWest_House_01",
+  "folder": "ART/Fab_SlavicLite/shed",
+  "mesh": "EA03_Village_OutBuilding_Shed_01a_LOD0",
+  "materials": [
+   "M_House_Moss"
+  ]
+ },
+ {
+  "label": "MarketWest_House_02",
+  "folder": "ART/Fab_SlavicLite/cubby",
+  "mesh": "EA03_Village_OutBuilding_Cubby_01d_LOD0",
+  "materials": [
+   "M_House_Clay"
+  ]
+ },
+ {
+  "label": "MarketWest_House_03",
+  "folder": "ART/Fab_SlavicLite/pent",
+  "mesh": "EA03_Village_OutBuilding_PentHouse_01a_LOD0",
+  "materials": [
+   "M_House_Russet"
+  ]
+ },
+ {
+  "label": "MarketWest_House_04",
+  "folder": "ART/Fab_SlavicLite/shed",
+  "mesh": "EA03_Village_OutBuilding_Shed_01a_LOD0",
+  "materials": [
+   "M_House_Slate"
+  ]
+ },
+ {
+  "label": "MarketWest_House_05",
+  "folder": "ART/Fab_SlavicLite/cubby",
+  "mesh": "EA03_Village_OutBuilding_Cubby_01d_LOD0",
+  "materials": [
+   "M_House_Moss"
+  ]
+ },
+ {
+  "label": "MarketEast_House_01",
+  "folder": "ART/Fab_SlavicLite/cubby",
+  "mesh": "EA03_Village_OutBuilding_Cubby_01d_LOD0",
+  "materials": [
+   "M_House_Russet"
+  ]
+ },
+ {
+  "label": "MarketEast_House_02",
+  "folder": "ART/Fab_SlavicLite/shed",
+  "mesh": "EA03_Village_OutBuilding_Shed_01a_LOD0",
+  "materials": [
+   "M_House_Slate"
+  ]
+ },
+ {
+  "label": "MarketEast_House_03",
+  "folder": "ART/Fab_SlavicLite/cubby",
+  "mesh": "EA03_Village_OutBuilding_Cubby_01d_LOD0",
+  "materials": [
+   "M_House_Moss"
+  ]
+ },
+ {
+  "label": "MarketEast_House_04",
+  "folder": "ART/Fab_SlavicLite/pent",
+  "mesh": "EA03_Village_OutBuilding_PentHouse_01a_LOD0",
+  "materials": [
+   "M_House_Clay"
+  ]
+ },
+ {
+  "label": "MarketEast_House_05",
+  "folder": "ART/Fab_SlavicLite/shed",
+  "mesh": "EA03_Village_OutBuilding_Shed_01a_LOD0",
+  "materials": [
+   "M_House_Russet"
+  ]
+ },
+ {
+  "label": "UpperWest_House_01",
+  "folder": "ART/Fab_SlavicLite/cubby",
+  "mesh": "EA03_Village_OutBuilding_Cubby_01d_LOD0",
+  "materials": [
+   "M_House_Moss"
+  ]
+ },
+ {
+  "label": "UpperWest_House_02",
+  "folder": "ART/Fab_SlavicLite/pent",
+  "mesh": "EA03_Village_OutBuilding_PentHouse_01a_LOD0",
+  "materials": [
+   "M_House_Clay"
+  ]
+ },
+ {
+  "label": "UpperWest_House_03",
+  "folder": "ART/Fab_SlavicLite/shed",
+  "mesh": "EA03_Village_OutBuilding_Shed_01a_LOD0",
+  "materials": [
+   "M_House_Russet"
+  ]
+ },
+ {
+  "label": "UpperWest_House_04",
+  "folder": "ART/Fab_SlavicLite/cubby",
+  "mesh": "EA03_Village_OutBuilding_Cubby_01d_LOD0",
+  "materials": [
+   "M_House_Slate"
+  ]
+ },
+ {
+  "label": "UpperWest_House_05",
+  "folder": "ART/Fab_SlavicLite/shed",
+  "mesh": "EA03_Village_OutBuilding_Shed_01a_LOD0",
+  "materials": [
+   "M_House_Moss"
+  ]
+ },
+ {
+  "label": "UpperWest_House_06",
+  "folder": "ART/Fab_SlavicLite/cubby",
+  "mesh": "EA03_Village_OutBuilding_Cubby_01d_LOD0",
+  "materials": [
+   "M_House_Clay"
+  ]
+ },
+ {
+  "label": "UpperWest_House_07",
+  "folder": "ART/Fab_SlavicLite/pent",
+  "mesh": "EA03_Village_OutBuilding_PentHouse_01a_LOD0",
+  "materials": [
+   "M_House_Russet"
+  ]
+ },
+ {
+  "label": "UpperEast_House_01",
+  "folder": "ART/Fab_SlavicLite/shed",
+  "mesh": "EA03_Village_OutBuilding_Shed_01a_LOD0",
+  "materials": [
+   "M_House_Russet"
+  ]
+ },
+ {
+  "label": "UpperEast_House_02",
+  "folder": "ART/Fab_SlavicLite/cubby",
+  "mesh": "EA03_Village_OutBuilding_Cubby_01d_LOD0",
+  "materials": [
+   "M_House_Slate"
+  ]
+ },
+ {
+  "label": "UpperEast_House_03",
+  "folder": "ART/Fab_SlavicLite/pent",
+  "mesh": "EA03_Village_OutBuilding_PentHouse_01a_LOD0",
+  "materials": [
+   "M_House_Moss"
+  ]
+ },
+ {
+  "label": "UpperEast_House_04",
+  "folder": "ART/Fab_SlavicLite/shed",
+  "mesh": "EA03_Village_OutBuilding_Shed_01a_LOD0",
+  "materials": [
+   "M_House_Clay"
+  ]
+ },
+ {
+  "label": "UpperEast_House_05",
+  "folder": "ART/Fab_SlavicLite/cubby",
+  "mesh": "EA03_Village_OutBuilding_Cubby_01d_LOD0",
+  "materials": [
+   "M_House_Russet"
+  ]
+ },
+ {
+  "label": "UpperEast_House_06",
+  "folder": "ART/Fab_SlavicLite/shed",
+  "mesh": "EA03_Village_OutBuilding_Shed_01a_LOD0",
+  "materials": [
+   "M_House_Slate"
+  ]
+ },
+ {
+  "label": "Riverside_House_01",
+  "folder": "ART/Fab_SlavicLite/pent",
+  "mesh": "EA03_Village_OutBuilding_PentHouse_01a_LOD0",
+  "materials": [
+   "M_House_Russet"
+  ]
+ },
+ {
+  "label": "Riverside_House_02",
+  "folder": "ART/Fab_SlavicLite/shed",
+  "mesh": "EA03_Village_OutBuilding_Shed_01a_LOD0",
+  "materials": [
+   "M_House_Slate"
+  ]
+ },
+ {
+  "label": "Riverside_House_03",
+  "folder": "ART/Fab_SlavicLite/cubby",
+  "mesh": "EA03_Village_OutBuilding_Cubby_01d_LOD0",
+  "materials": [
+   "M_House_Moss"
+  ]
+ },
+ {
+  "label": "Riverside_House_04",
+  "folder": "ART/Fab_SlavicLite/pent",
+  "mesh": "EA03_Village_OutBuilding_PentHouse_01a_LOD0",
+  "materials": [
+   "M_House_Clay"
+  ]
+ },
+ {
+  "label": "Riverside_House_05",
+  "folder": "ART/Fab_SlavicLite/shed",
+  "mesh": "EA03_Village_OutBuilding_Shed_01a_LOD0",
+  "materials": [
+   "M_House_Russet"
+  ]
+ },
+ {
+  "label": "Riverside_House_06",
+  "folder": "ART/Fab_SlavicLite/cubby",
+  "mesh": "EA03_Village_OutBuilding_Cubby_01d_LOD0",
+  "materials": [
+   "M_House_Slate"
+  ]
+ },
+ {
+  "label": "Riverside_House_07",
+  "folder": "ART/Fab_SlavicLite/shed",
+  "mesh": "EA03_Village_OutBuilding_Shed_01a_LOD0",
+  "materials": [
+   "M_House_Moss"
+  ]
+ },
+ {
+  "label": "Riverside_House_08",
+  "folder": "ART/Fab_SlavicLite/cubby",
+  "mesh": "EA03_Village_OutBuilding_Cubby_01d_LOD0",
+  "materials": [
+   "M_House_Clay"
+  ]
+ },
+ {
+  "label": "Riverside_House_09",
+  "folder": "ART/Fab_SlavicLite/pent",
+  "mesh": "EA03_Village_OutBuilding_PentHouse_01a_LOD0",
+  "materials": [
+   "M_House_Russet"
+  ]
+ },
+ {
+  "label": "CornerBuilding_01",
+  "folder": "ART/Fab_SlavicLite/admin",
+  "mesh": "EA03_Town_Building_Administrative__01a_LOD0",
+  "materials": [
+   "M_House_Clay"
+  ]
+ },
+ {
+  "label": "CornerBuilding_02",
+  "folder": "ART/Fab_SlavicLite/admin",
+  "mesh": "EA03_Town_Building_Administrative__01a_LOD0",
+  "materials": [
+   "M_House_Russet"
+  ]
+ },
+ {
+  "label": "CornerBuilding_03",
+  "folder": "ART/Fab_SlavicLite/admin",
+  "mesh": "EA03_Town_Building_Administrative__01a_LOD0",
+  "materials": [
+   "M_House_Slate"
+  ]
+ },
+ {
+  "label": "CornerBuilding_04",
+  "folder": "ART/Fab_SlavicLite/admin",
+  "mesh": "EA03_Town_Building_Administrative__01a_LOD0",
+  "materials": [
+   "M_House_Moss"
+  ]
+ },
+ {
+  "label": "CornerBuilding_05",
+  "folder": "ART/Fab_SlavicLite/admin",
+  "mesh": "EA03_Town_Building_Administrative__01a_LOD0",
+  "materials": [
+   "M_House_Clay"
+  ]
+ },
+ {
+  "label": "CornerBuilding_06",
+  "folder": "ART/Fab_SlavicLite/admin",
+  "mesh": "EA03_Town_Building_Administrative__01a_LOD0",
+  "materials": [
+   "M_House_Russet"
+  ]
+ },
+ {
+  "label": "CornerBuilding_07",
+  "folder": "ART/Fab_SlavicLite/admin",
+  "mesh": "EA03_Town_Building_Administrative__01a_LOD0",
+  "materials": [
+   "M_House_Slate"
+  ]
+ },
+ {
+  "label": "CornerBuilding_08",
+  "folder": "ART/Fab_SlavicLite/admin",
+  "mesh": "EA03_Town_Building_Administrative__01a_LOD0",
+  "materials": [
+   "M_House_Moss"
+  ]
+ },
+ {
+  "label": "InfillBuilding_01",
+  "folder": "ART/Fab_SlavicLite/cubby",
+  "mesh": "EA03_Village_OutBuilding_Cubby_01d_LOD0",
+  "materials": [
+   "M_House_Russet"
+  ]
+ },
+ {
+  "label": "InfillBuilding_02",
+  "folder": "ART/Fab_SlavicLite/pent",
+  "mesh": "EA03_Village_OutBuilding_PentHouse_01a_LOD0",
+  "materials": [
+   "M_House_Slate"
+  ]
+ },
+ {
+  "label": "InfillBuilding_03",
+  "folder": "ART/Fab_SlavicLite/shed",
+  "mesh": "EA03_Village_OutBuilding_Shed_01a_LOD0",
+  "materials": [
+   "M_House_Moss"
+  ]
+ },
+ {
+  "label": "InfillBuilding_04",
+  "folder": "ART/Fab_SlavicLite/cubby",
+  "mesh": "EA03_Village_OutBuilding_Cubby_01d_LOD0",
+  "materials": [
+   "M_House_Clay"
+  ]
+ },
+ {
+  "label": "InfillBuilding_05",
+  "folder": "ART/Fab_SlavicLite/pent",
+  "mesh": "EA03_Village_OutBuilding_PentHouse_01a_LOD0",
+  "materials": [
+   "M_House_Russet"
+  ]
+ },
+ {
+  "label": "InfillBuilding_06",
+  "folder": "ART/Fab_SlavicLite/cubby",
+  "mesh": "EA03_Village_OutBuilding_Cubby_01d_LOD0",
+  "materials": [
+   "M_House_Slate"
+  ]
+ },
+ {
+  "label": "InfillBuilding_07",
+  "folder": "ART/Fab_SlavicLite/pent",
+  "mesh": "EA03_Village_OutBuilding_PentHouse_01a_LOD0",
+  "materials": [
+   "M_House_Moss"
+  ]
+ },
+ {
+  "label": "InfillBuilding_08",
+  "folder": "ART/Fab_SlavicLite/shed",
+  "mesh": "EA03_Village_OutBuilding_Shed_01a_LOD0",
+  "materials": [
+   "M_House_Clay"
+  ]
+ },
+ {
+  "label": "InfillBuilding_09",
+  "folder": "ART/Fab_SlavicLite/cubby",
+  "mesh": "EA03_Village_OutBuilding_Cubby_01d_LOD0",
+  "materials": [
+   "M_House_Russet"
+  ]
+ },
+ {
+  "label": "InfillBuilding_10",
+  "folder": "ART/Fab_SlavicLite/cubby",
+  "mesh": "EA03_Village_OutBuilding_Cubby_01d_LOD0",
+  "materials": [
+   "M_House_Russet"
+  ]
+ },
+ {
+  "label": "InfillBuilding_11",
+  "folder": "ART/Fab_SlavicLite/pent",
+  "mesh": "EA03_Village_OutBuilding_PentHouse_01a_LOD0",
+  "materials": [
+   "M_House_Slate"
+  ]
+ },
+ {
+  "label": "InfillBuilding_12",
+  "folder": "ART/Fab_SlavicLite/shed",
+  "mesh": "EA03_Village_OutBuilding_Shed_01a_LOD0",
+  "materials": [
+   "M_House_Moss"
+  ]
+ },
+ {
+  "label": "ART_GuildFence_W_00",
+  "folder": "ART/Guild_Yard_Fence",
+  "mesh": "EA03_Fence_Cobble_01a_LOD0",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_GuildFence_W_01",
+  "folder": "ART/Guild_Yard_Fence",
+  "mesh": "EA03_Fence_Cobble_01a_LOD0",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_GuildFence_W_02",
+  "folder": "ART/Guild_Yard_Fence",
+  "mesh": "EA03_Fence_Cobble_01a_LOD0",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_GuildFence_W_03",
+  "folder": "ART/Guild_Yard_Fence",
+  "mesh": "EA03_Fence_Cobble_01a_LOD0",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_GuildFence_W_04",
+  "folder": "ART/Guild_Yard_Fence",
+  "mesh": "EA03_Fence_Cobble_01a_LOD0",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_GuildFence_S_00",
+  "folder": "ART/Guild_Yard_Fence",
+  "mesh": "EA03_Fence_Cobble_01a_LOD0",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_GuildFence_S_01",
+  "folder": "ART/Guild_Yard_Fence",
+  "mesh": "EA03_Fence_Cobble_01a_LOD0",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_GuildFence_S_02",
+  "folder": "ART/Guild_Yard_Fence",
+  "mesh": "EA03_Fence_Cobble_01a_LOD0",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_GuildFence_S_03",
+  "folder": "ART/Guild_Yard_Fence",
+  "mesh": "EA03_Fence_Cobble_01a_LOD0",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_GuildFence_S_04",
+  "folder": "ART/Guild_Yard_Fence",
+  "mesh": "EA03_Fence_Cobble_01a_LOD0",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_GuildFence_S_05",
+  "folder": "ART/Guild_Yard_Fence",
+  "mesh": "EA03_Fence_Cobble_01a_LOD0",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_GuildFence_N_00",
+  "folder": "ART/Guild_Yard_Fence",
+  "mesh": "EA03_Fence_Cobble_01a_LOD0",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_GuildFence_N_01",
+  "folder": "ART/Guild_Yard_Fence",
+  "mesh": "EA03_Fence_Cobble_01a_LOD0",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_GuildFence_N_02",
+  "folder": "ART/Guild_Yard_Fence",
+  "mesh": "EA03_Fence_Cobble_01a_LOD0",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_GuildFence_N_03",
+  "folder": "ART/Guild_Yard_Fence",
+  "mesh": "EA03_Fence_Cobble_01a_LOD0",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_GuildFence_N_04",
+  "folder": "ART/Guild_Yard_Fence",
+  "mesh": "EA03_Fence_Cobble_01a_LOD0",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_GuildFence_N_05",
+  "folder": "ART/Guild_Yard_Fence",
+  "mesh": "EA03_Fence_Cobble_01a_LOD0",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_HERO_Church_Nave",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_HERO_MainInn",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_HERO_Blacksmith",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_HERO_DockWarehouse",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_HERO_NorthGate_Left",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_HERO_NorthGate_Right",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_LowerWestA_House_01",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_LowerWestA_House_02",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_LowerWestA_House_03",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_LowerWestA_House_04",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_LowerWestA_House_05",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_LowerWestA_House_06",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_LowerWestA_House_07",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_LowerWestA_House_08",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_LowerWestB_House_01",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_LowerWestB_House_02",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_LowerWestB_House_03",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_LowerWestB_House_04",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_LowerWestB_House_05",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_LowerWestB_House_06",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_LowerWestB_House_07",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_LowerEastA_House_01",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_LowerEastA_House_02",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_LowerEastA_House_03",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_LowerEastA_House_04",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_LowerEastA_House_05",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_LowerEastA_House_06",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_LowerEastA_House_07",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_LowerEastB_House_01",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_LowerEastB_House_02",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_LowerEastB_House_03",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_LowerEastB_House_04",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_LowerEastB_House_05",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_LowerEastB_House_06",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_LowerEastB_House_07",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_MarketWest_House_01",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_MarketWest_House_02",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_MarketWest_House_03",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_MarketWest_House_04",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_MarketWest_House_05",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_MarketEast_House_01",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_MarketEast_House_02",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_MarketEast_House_03",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_MarketEast_House_04",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_MarketEast_House_05",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_UpperWest_House_01",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_UpperWest_House_02",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_UpperWest_House_03",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_UpperWest_House_04",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_UpperWest_House_05",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_UpperWest_House_06",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_UpperWest_House_07",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_UpperEast_House_01",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_UpperEast_House_02",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_UpperEast_House_03",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_UpperEast_House_04",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_UpperEast_House_05",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_UpperEast_House_06",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_Riverside_House_01",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_Riverside_House_02",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_Riverside_House_03",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_Riverside_House_04",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_Riverside_House_05",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_Riverside_House_06",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_Riverside_House_07",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_Riverside_House_08",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_Riverside_House_09",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_CornerBuilding_01",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_CornerBuilding_02",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_CornerBuilding_03",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_CornerBuilding_04",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_CornerBuilding_05",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_CornerBuilding_06",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_CornerBuilding_07",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_CornerBuilding_08",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_InfillBuilding_01",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_InfillBuilding_02",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_InfillBuilding_03",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_InfillBuilding_04",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_InfillBuilding_05",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_InfillBuilding_06",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_InfillBuilding_07",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_InfillBuilding_08",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_InfillBuilding_09",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_InfillBuilding_10",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_InfillBuilding_11",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Foundation_InfillBuilding_12",
+  "folder": "ART/Building_Foundations",
+  "mesh": "Cube",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Surface_SM_Route_GoldenRoute_South",
+  "folder": "ART/GroundSurfaces",
+  "mesh": "SM_Route_GoldenRoute_South",
+  "materials": [
+   "M_Town_Road_01"
+  ]
+ },
+ {
+  "label": "ART_Surface_SM_Route_GoldenRoute_Town",
+  "folder": "ART/GroundSurfaces",
+  "mesh": "SM_Route_GoldenRoute_Town",
+  "materials": [
+   "M_Town_Road_01"
+  ]
+ },
+ {
+  "label": "ART_Surface_SM_Route_LowerMarketLoop",
+  "folder": "ART/GroundSurfaces",
+  "mesh": "SM_Route_LowerMarketLoop",
+  "materials": [
+   "M_Town_Road_01"
+  ]
+ },
+ {
+  "label": "ART_Surface_SM_Route_MarketEastLoop",
+  "folder": "ART/GroundSurfaces",
+  "mesh": "SM_Route_MarketEastLoop",
+  "materials": [
+   "M_Town_Road_01"
+  ]
+ },
+ {
+  "label": "ART_Surface_SM_Route_RiversideStreet",
+  "folder": "ART/GroundSurfaces",
+  "mesh": "SM_Route_RiversideStreet",
+  "materials": [
+   "M_River_Track_01"
+  ]
+ },
+ {
+  "label": "ART_Surface_SM_Route_UpperResidential",
+  "folder": "ART/GroundSurfaces",
+  "mesh": "SM_Route_UpperResidential",
+  "materials": [
+   "M_Town_Road_01"
+  ]
+ },
+ {
+  "label": "ART_Surface_SM_Route_ChurchLane",
+  "folder": "ART/GroundSurfaces",
+  "mesh": "SM_Route_ChurchLane",
+  "materials": [
+   "M_Town_Road_01"
+  ]
+ },
+ {
+  "label": "ART_Surface_SM_Route_DockTrack",
+  "folder": "ART/GroundSurfaces",
+  "mesh": "SM_Route_DockTrack",
+  "materials": [
+   "M_River_Track_01"
+  ]
+ },
+ {
+  "label": "ART_Surface_SM_Plaza_MarketSquare",
+  "folder": "ART/GroundSurfaces",
+  "mesh": "SM_Plaza_MarketSquare",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Surface_SM_Plaza_GuildForecourt",
+  "folder": "ART/GroundSurfaces",
+  "mesh": "SM_Plaza_GuildForecourt",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Surface_SM_Plaza_ChurchForecourt",
+  "folder": "ART/GroundSurfaces",
+  "mesh": "SM_Plaza_ChurchForecourt",
+  "materials": [
+   "M_Weathered_Stone_01"
+  ]
+ },
+ {
+  "label": "ART_Surface_SM_River_Continuous",
+  "folder": "ART/GroundSurfaces",
+  "mesh": "SM_River_Continuous",
+  "materials": [
+   "M_River_Surface_Proxy_01"
+  ]
+ },
+ {
+  "label": "SM_Handoff_BridgeSouth",
+  "folder": "ART/Handoff",
+  "mesh": "SM_Handoff_BridgeSouth",
+  "materials": [
+   "M_Town_Road_01"
+  ]
+ },
+ {
+  "label": "SM_Handoff_BridgeNorth",
+  "folder": "ART/Handoff",
+  "mesh": "SM_Handoff_BridgeNorth",
+  "materials": [
+   "M_Town_Road_01"
+  ]
+ },
+ {
+  "label": "SM_Handoff_GuildChurch",
+  "folder": "ART/Handoff",
+  "mesh": "SM_Handoff_GuildChurch",
+  "materials": [
+   "M_Town_Road_01"
+  ]
+ }
+]

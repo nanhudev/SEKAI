@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>SEKAI mark study</title>
+    <link rel="stylesheet" href="../tokens/tokens.css" />
+    <style>
+      body {
+        margin: 0;
+        background: var(--sk-void);
+        color: var(--sk-text-2);
+        font-family: var(--sk-font-sans);
+        padding: 32px;
+      }
+      h2 {
+        font-family: var(--sk-font-num);
+        font-size: 12px;
+        letter-spacing: 0.26em;
+        text-transform: uppercase;
+        color: var(--sk-text-3);
+        margin: 0 0 8px;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 24px;
+      }
+      .cell {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .plate {
+        border: 1px solid var(--sk-line-faint);
+        background: linear-gradient(180deg, rgba(22, 32, 42, 0.55), rgba(14, 20, 24, 0.2));
+        display: grid;
+        place-items: center;
+        padding: 22px 0;
+      }
+      .row {
+        display: flex;
+        gap: 22px;
+        align-items: center;
+        justify-content: center;
+      }
+      svg {
+        display: block;
+      }
+      .note {
+        font-size: 11px;
+        color: var(--sk-text-4);
+        line-height: 1.5;
+      }
+      .big {
+        padding: 40px 0 44px;
+        margin-bottom: 22px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="grid" id="grid"></div>
+    <script type="module">
+      const A = 'fill="none" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"';
+      const T = 'var(--sk-text)';
+      const G = 'var(--sk-gold)';
+
+      // 极坐标 -> 屏幕坐标。center 64,64（viewBox 128）
+      const P = (r, deg) => {
+        const a = (deg * Math.PI) / 180;
+        return [64 + r * Math.cos(a), 64 - r * Math.sin(a)];
+      };
+      const f = (n) => n.toFixed(2);
+      // 从 from 逆时针（屏幕上逆时针 = 角度增大）扫 sweep 度
+      const arc = (r, from, sweep) => {
+        const [x0, y0] = P(r, from);
+        const [x1, y1] = P(r, from + sweep);
+        const large = sweep > 180 ? 1 : 0;
+        const sweepFlag = sweep >= 0 ? 0 : 1;
+        return `M ${f(x0)} ${f(y0)} A ${r} ${r} 0 ${large} ${sweepFlag} ${f(x1)} ${f(y1)}`;
+      };
+      const line = (r0, d0, r1, d1) => {
+        const [x0, y0] = P(r0, d0);
+        const [x1, y1] = P(r1, d1);
+        return `M ${f(x0)} ${f(y0)} L ${f(x1)} ${f(y1)}`;
+      };
+      const quad = (a, b, c) => `M ${a.join(' ')} Q ${b.join(' ')} ${c.join(' ')}`;
+
+      const variants = [
+        {
+          id: 'A',
+          label: '开口环 + 缺口处径向短笔',
+          note: '笔停在缺口里。像圆规停住、也像最后一笔还没合上。不穿过圆心。',
+          svg: `<path d="${arc(40, 87, 302)}" stroke="${T}" stroke-width="1.6"/>
+                <path d="${line(52, 58, 30, 58)}" stroke="${G}" stroke-width="2"/>`,
+        },
+        {
+          id: 'B',
+          label: '开口环 + 缺口处外向短线',
+          note: '与 A 相反：笔从环内向外挑出。读作"还没写完，笔已经抬起来了"。',
+          svg: `<path d="${arc(40, 87, 302)}" stroke="${T}" stroke-width="1.6"/>
+                <path d="${line(30, 58, 50, 58)}" stroke="${G}" stroke-width="2"/>`,
+        },
+        {
+          id: 'C',
+          label: '一笔画的圆（过笔）',
+          note: '手画的圈：起笔在左下，绕过一圈后在起点外侧收笔，略过一点点。',
+          svg: `<path d="${arc(40, 205, 348)}" stroke="${T}" stroke-width="1.8"/>`,
+        },
+        {
+          id: 'D',
+          label: '开口环 + 环内一条落款笔触',
+          note: '环内偏下一条短横笔。像纸上的落款，安静。',
+          svg: `<path d="${arc(40, 87, 302)}" stroke="${T}" stroke-width="1.6"/>
+                <path d="${quad([46, 78], [64, 84], [84, 74])}" stroke="${G}" stroke-width="2"/>`,
+        },
+        {
+          id: 'E',
+          label: '双弧：主弧 + 内侧短弧',
+          note: '外侧长弧 + 内侧一小段同向弧。两笔之间留出呼吸。',
+          svg: `<path d="${arc(44, 87, 302)}" stroke="${T}" stroke-width="1.6"/>
+                <path d="${arc(26, 70, 96)}" stroke="${G}" stroke-width="1.8"/>`,
+        },
+        {
+          id: 'F',
+          label: '开口环 + 缺口正对的刻度',
+          note: '缺口右上，刻度在左下。形成一个对角张力，像坐标或罗盘。',
+          svg: `<path d="${arc(40, 87, 302)}" stroke="${T}" stroke-width="1.6"/>
+                <path d="${line(34, 238, 50, 238)}" stroke="${G}" stroke-width="2"/>`,
+        },
+        {
+          id: 'G',
+          label: '环 + 圆点（未落款）',
+          note: '开口环 + 缺口处一颗小点。最小、最克制。',
+          svg: `<path d="${arc(40, 87, 302)}" stroke="${T}" stroke-width="1.6"/>
+                <circle cx="${f(P(58, 58)[0])}" cy="${f(P(58, 58)[1])}" r="2.4" fill="${G}"/>`,
+        },
+        {
+          id: 'H',
+          label: '两段弧 + 一个缺口错位',
+          note: '两段弧不等长，缺口不在正上方。像被写坏又补上的圆。',
+          svg: `<path d="${arc(40, 100, 150)}" stroke="${T}" stroke-width="1.6"/>
+                <path d="${arc(40, 285, 130)}" stroke="${G}" stroke-width="1.8"/>`,
+        },
+        {
+          id: 'I',
+          label: '环 + 穿过缺口的一小段切线',
+          note: '短切线从缺口外擦过，不经过圆心。方向沿圆周，不读作斜杠。',
+          svg: `<path d="${arc(40, 87, 302)}" stroke="${T}" stroke-width="1.6"/>
+                <path d="${line(50, 40, 50, 74)}" stroke="${G}" stroke-width="2"/>`,
+        },
+        {
+          id: 'J',
+          label: '开口环 + 内部竖笔（起笔）',
+          note: '环内一道短竖，像写字的起笔。竖笔偏左，不碰环。',
+          svg: `<path d="${arc(40, 87, 302)}" stroke="${T}" stroke-width="1.6"/>
+                <path d="${quad([46, 58], [48, 76], [44, 90])}" stroke="${G}" stroke-width="2"/>`,
+        },
+        {
+          id: 'K',
+          label: '环 + 双刻度（对角）',
+          note: '缺口右上有一道短笔，左下另有一道更短的。不对称但稳。',
+          svg: `<path d="${arc(40, 87, 302)}" stroke="${T}" stroke-width="1.6"/>
+                <path d="${line(50, 58, 32, 58)}" stroke="${G}" stroke-width="2"/>
+                <path d="${line(40, 238, 47, 238)}" stroke="${G}" stroke-width="1.6"/>`,
+        },
+        {
+          id: 'L',
+          label: '极简：一段弧 + 一点',
+          note: '只有 200° 的弧和一颗点。最不像任何现成符号。',
+          svg: `<path d="${arc(42, 60, 200)}" stroke="${T}" stroke-width="1.6"/>
+                <circle cx="${f(P(58, 300)[0])}" cy="${f(P(58, 300)[1])}" r="2.2" fill="${G}"/>`,
+        },
+      ];
+
+      const grid = document.getElementById('grid');
+      grid.innerHTML = variants
+        .map(
+          (v) => `
+        <div class="cell">
+          <div class="plate">
+            <div class="row">
+              <svg width="72" height="72" viewBox="0 0 128 128" ${A}>${v.svg}</svg>
+              <svg width="34" height="34" viewBox="0 0 128 128" ${A}>${v.svg}</svg>
+            </div>
+          </div>
+          <h2>${v.id}</h2>
+          <div style="font-size:13px;color:var(--sk-text-2)">${v.label}</div>
+          <div class="note">${v.note}</div>
+        </div>`
+        )
+        .join('');
+
+      document.documentElement.dataset.ready = '1';
+    </script>
+  </body>
+</html>

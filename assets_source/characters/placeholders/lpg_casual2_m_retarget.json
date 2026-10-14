@@ -1,0 +1,358 @@
+{
+  "name": "lpg_casual2_m",
+  "target_fbx": "F:/SEKAI/third_party/quaternius/ultimate_modular_characters/Humanoid Rig/Individual Characters/FBX/Casual2.fbx",
+  "lib": "F:/SEKAI/third_party/quaternius/universal_animation_library/Animation Library[Standard]/Godot/AnimationLibrary_Godot_Standard.glb",
+  "target_armature": "CharacterArmature",
+  "target_bones": 62,
+  "mapped_bones": 21,
+  "unmapped_target_bones": [
+    "Foot.L_end",
+    "Foot.R_end",
+    "Index2.L",
+    "Index2.R",
+    "Index3.L",
+    "Index3.R",
+    "Index4.L",
+    "Index4.L_end",
+    "Index4.R",
+    "Index4.R_end",
+    "Middle2.L",
+    "Middle2.R",
+    "Middle3.L",
+    "Middle3.R",
+    "Middle4.L",
+    "Middle4.L_end",
+    "Middle4.R",
+    "Middle4.R_end",
+    "Pinky2.L",
+    "Pinky2.R",
+    "Pinky3.L",
+    "Pinky3.R",
+    "Pinky4.L",
+    "Pinky4.L_end",
+    "Pinky4.R",
+    "Pinky4.R_end",
+    "Ring2.L",
+    "Ring2.R",
+    "Ring3.L",
+    "Ring3.R",
+    "Ring4.L",
+    "Ring4.L_end",
+    "Ring4.R",
+    "Ring4.R_end",
+    "Root",
+    "Thumb2.L",
+    "Thumb2.R",
+    "Thumb3.L",
+    "Thumb3.L_end",
+    "Thumb3.R",
+    "Thumb3.R_end"
+  ],
+  "hip_ratio": 0.89241,
+  "target_height_m": 1.7,
+  "target_height_requested": 1.7,
+  "rescale_k": 0.914974,
+  "rig_repairs": [],
+  "leg_head_drift_m": 0.0,
+  "fps": 30,
+  "clips": [
+    {
+      "name": "Crouch_Fwd_Loop",
+      "frames": [
+        0,
+        48
+      ],
+      "seconds": 1.6
+    },
+    {
+      "name": "Crouch_Idle_Loop",
+      "frames": [
+        0,
+        71
+      ],
+      "seconds": 2.367
+    },
+    {
+      "name": "Dance_Loop",
+      "frames": [
+        0,
+        24
+      ],
+      "seconds": 0.8
+    },
+    {
+      "name": "Death01",
+      "frames": [
+        0,
+        58
+      ],
+      "seconds": 1.933
+    },
+    {
+      "name": "Driving_Loop",
+      "frames": [
+        0,
+        40
+      ],
+      "seconds": 1.333
+    },
+    {
+      "name": "Fixing_Kneeling",
+      "frames": [
+        0,
+        125
+      ],
+      "seconds": 4.167
+    },
+    {
+      "name": "Hit_Chest",
+      "frames": [
+        0,
+        8
+      ],
+      "seconds": 0.267
+    },
+    {
+      "name": "Hit_Head",
+      "frames": [
+        0,
+        11
+      ],
+      "seconds": 0.367
+    },
+    {
+      "name": "Idle_Loop",
+      "frames": [
+        0,
+        60
+      ],
+      "seconds": 2.0
+    },
+    {
+      "name": "Idle_Talking_Loop",
+      "frames": [
+        0,
+        71
+      ],
+      "seconds": 2.367
+    },
+    {
+      "name": "Idle_Torch_Loop",
+      "frames": [
+        0,
+        31
+      ],
+      "seconds": 1.033
+    },
+    {
+      "name": "Interact",
+      "frames": [
+        0,
+        48
+      ],
+      "seconds": 1.6
+    },
+    {
+      "name": "Jog_Fwd_Loop",
+      "frames": [
+        0,
+        23
+      ],
+      "seconds": 0.767
+    },
+    {
+      "name": "Jump_Land",
+      "frames": [
+        0,
+        31
+      ],
+      "seconds": 1.033
+    },
+    {
+      "name": "Jump_Loop",
+      "frames": [
+        0,
+        60
+      ],
+      "seconds": 2.0
+    },
+    {
+      "name": "Jump_Start",
+      "frames": [
+        0,
+        32
+      ],
+      "seconds": 1.067
+    },
+    {
+      "name": "PickUp_Table",
+      "frames": [
+        0,
+        20
+      ],
+      "seconds": 0.667
+    },
+    {
+      "name": "Punch_Cross",
+      "frames": [
+        0,
+        24
+      ],
+      "seconds": 0.8
+    },
+    {
+      "name": "Punch_Enter",
+      "frames": [
+        0,
+        21
+      ],
+      "seconds": 0.7
+    },
+    {
+      "name": "Punch_Jab",
+      "frames": [
+        0,
+        21
+      ],
+      "seconds": 0.7
+    },
+    {
+      "name": "Push_Loop",
+      "frames": [
+        0,
+        64
+      ],
+      "seconds": 2.133
+    },
+    {
+      "name": "Roll",
+      "frames": [
+        0,
+        36
+      ],
+      "seconds": 1.2
+    },
+    {
+      "name": "Sitting_Enter",
+      "frames": [
+        0,
+        32
+      ],
+      "seconds": 1.067
+    },
+    {
+      "name": "Sitting_Exit",
+      "frames": [
+        0,
+        25
+      ],
+      "seconds": 0.833
+    },
+    {
+      "name": "Sitting_Idle_Loop",
+      "frames": [
+        0,
+        40
+      ],
+      "seconds": 1.333
+    },
+    {
+      "name": "Sitting_Talking_Loop",
+      "frames": [
+        0,
+        71
+      ],
+      "seconds": 2.367
+    },
+    {
+      "name": "Spell_Simple_Enter",
+      "frames": [
+        0,
+        13
+      ],
+      "seconds": 0.433
+    },
+    {
+      "name": "Spell_Simple_Exit",
+      "frames": [
+        0,
+        11
+      ],
+      "seconds": 0.367
+    },
+    {
+      "name": "Spell_Simple_Idle_Loop",
+      "frames": [
+        0,
+        51
+      ],
+      "seconds": 1.7
+    },
+    {
+      "name": "Spell_Simple_Shoot",
+      "frames": [
+        0,
+        12
+      ],
+      "seconds": 0.4
+    },
+    {
+      "name": "Sprint_Loop",
+      "frames": [
+        0,
+        16
+      ],
+      "seconds": 0.533
+    },
+    {
+      "name": "Swim_Fwd_Loop",
+      "frames": [
+        0,
+        32
+      ],
+      "seconds": 1.067
+    },
+    {
+      "name": "Swim_Idle_Loop",
+      "frames": [
+        0,
+        80
+      ],
+      "seconds": 2.667
+    },
+    {
+      "name": "Sword_Attack",
+      "frames": [
+        0,
+        37
+      ],
+      "seconds": 1.233
+    },
+    {
+      "name": "Sword_Idle",
+      "frames": [
+        0,
+        40
+      ],
+      "seconds": 1.333
+    },
+    {
+      "name": "Walk_Formal_Loop",
+      "frames": [
+        0,
+        32
+      ],
+      "seconds": 1.067
+    },
+    {
+      "name": "Walk_Loop",
+      "frames": [
+        0,
+        32
+      ],
+      "seconds": 1.067
+    }
+  ],
+  "glb": "F:/SEKAI/assets_source/characters/placeholders/lpg_casual2_m.glb",
+  "glb_bytes": 2528132
+}

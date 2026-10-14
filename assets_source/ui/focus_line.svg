@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SEKAI · focus_line
+     菜单焦点线：右端固定、左端推进，读作"这条被划上了"。stroke 用非缩放描边，所以任何宽度都是 1px。
+     裁決：state
+     归属：UI 自用 / Godot 菜单
+     本文件由 ui_web/tools/emit_svg.mjs 从 ui_web/svg/library.js 生成。
+     不要直接改这里 —— 改库，然后重新运行 emitter。
+-->
+<svg width="400" height="6" viewBox="0 0 400 6"
+    xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" aria-hidden="true" fill="none" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke">
+  <defs>
+    <!-- gradientUnits="userSpaceOnUse" 是必需的，不是风格选择：
+         这条线的 bbox 高度为 0，默认的 objectBoundingBox 会让渐变退化，
+         而规格规定退化渐变 = **整条不画**（不报错、不警告，就是看不见）。 -->
+    <linearGradient id="skf-400" gradientUnits="userSpaceOnUse"
+                    x1="0" y1="0" x2="400" y2="0">
+      <stop offset="0%" stop-color="#C9A65C" stop-opacity="0"/>
+      <stop offset="8%" stop-color="#C9A65C" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#C9A65C" stop-opacity="0.35"/>
+    </linearGradient>
+  </defs>
+  <path pathLength="1" d="M 0 3 H 400" stroke="url(#skf-400)" stroke-width="1"/>
+</svg>

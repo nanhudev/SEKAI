@@ -1,0 +1,101 @@
+{
+  "code": "CHN",
+  "rows": [
+    {
+      "id": "handle",
+      "archetype": null,
+      "world_name": "缚星链·柄",
+      "tier": "hero",
+      "tris": 1624,
+      "parts": [
+        "ChainEye",
+        "ChainGrip",
+        "ChainWrap",
+        "ChainCollar",
+        "ChainMouth"
+      ],
+      "sockets": [
+        "SOC_GRIP",
+        "SOC_LINK_OUT",
+        "SOC_HEAD"
+      ],
+      "aabb_mm": [
+        83.0,
+        38.0,
+        280.5
+      ],
+      "length_mm": 280.5,
+      "grip_behind_mm": 41.5,
+      "reach_mm": 239.0,
+      "section": null,
+      "guard": null,
+      "grip_length_mm": 0.0,
+      "wrapped": false,
+      "seams": 0,
+      "channel": false
+    },
+    {
+      "id": "link",
+      "archetype": null,
+      "world_name": "缚星链·链节",
+      "tier": "hero",
+      "tris": 320,
+      "parts": [
+        "LinkBody"
+      ],
+      "sockets": [
+        "SOC_LINK_IN",
+        "SOC_LINK_OUT"
+      ],
+      "aabb_mm": [
+        60.1,
+        13.7,
+        91.1
+      ],
+      "length_mm": 91.1,
+      "grip_behind_mm": 45.6,
+      "reach_mm": 45.6,
+      "section": null,
+      "guard": null,
+      "grip_length_mm": 0.0,
+      "wrapped": false,
+      "seams": 0,
+      "channel": false
+    },
+    {
+      "id": "trident",
+      "archetype": null,
+      "world_name": "缚星链·三叉链头",
+      "tier": "hero",
+      "tris": 1096,
+      "parts": [
+        "HeadEye",
+        "HeadHub",
+        "HeadSpike",
+        "HeadProngR",
+        "HeadProngL",
+        "HeadFlukeR",
+        "HeadFlukeL"
+      ],
+      "sockets": [
+        "SOC_LINK_IN",
+        "SOC_HEAD",
+        "FX_HEAD_CORE"
+      ],
+      "aabb_mm": [
+        258.6,
+        84.0,
+        780.0
+      ],
+      "length_mm": 780.0,
+      "grip_behind_mm": 45.0,
+      "reach_mm": 735.0,
+      "section": null,
+      "guard": null,
+      "grip_length_mm": 0.0,
+      "wrapped": false,
+      "seams": 0,
+      "channel": false
+    }
+  ]
+}

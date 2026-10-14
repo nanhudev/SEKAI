@@ -1,0 +1,3405 @@
+{
+ "source_fbx": "F:/SEKAI/ue5_lab/Mistvale_Rebuild/_handoff/mistvale_current.fbx",
+ "glb": "F:/SEKAI/godot/models/mistvale_ue/mistvale_rebuild.glb",
+ "mesh_objects": 226,
+ "tris": 281342,
+ "godot_bbox_min": [
+  -252.0066,
+  -3.2223,
+  -353.007
+ ],
+ "godot_bbox_max": [
+  252.003,
+  43.9434,
+  353.0187
+ ],
+ "godot_size": [
+  504.0096,
+  47.1657,
+  706.0258
+ ],
+ "axes_convention": "godot = (ue.x, ue.z, -ue.y)",
+ "palette_hits": {
+  "M_House_Clay": "M_House_Clay",
+  "M_House_Moss": "M_House_Moss",
+  "M_House_Russet": "M_House_Russet",
+  "M_House_Slate": "M_House_Slate",
+  "M_River_Surface_Proxy_01": "M_River_Surface_Proxy_01",
+  "M_River_Track_01": "M_River_Track_01",
+  "M_Town_Road_01": "M_Town_Road_01",
+  "M_Valley_Grass_01": "M_Valley_Grass_01",
+  "M_Weathered_Stone_01": "M_Weathered_Stone_01",
+  "MV_Bridge_ArchVoussoir": "MV_Bridge_ArchVoussoir",
+  "MV_Bridge_Coping": "MV_Bridge_Coping",
+  "MV_Bridge_CreamLimestone": "MV_Bridge_CreamLimestone",
+  "MV_Bridge_Paving": "MV_Bridge_Paving",
+  "MV_Bridge_WetStone": "MV_Bridge_WetStone",
+  "MV_Guild_AmberTrim": "MV_Guild_AmberTrim",
+  "MV_Guild_DarkOak": "MV_Guild_DarkOak",
+  "MV_Guild_Glass": "MV_Guild_Glass",
+  "MV_Guild_IvoryPlaster": "MV_Guild_IvoryPlaster",
+  "MV_Guild_RoofEdge": "MV_Guild_RoofEdge",
+  "MV_Guild_SlateTeal": "MV_Guild_SlateTeal",
+  "MV_Guild_WarmStone": "MV_Guild_WarmStone"
+ },
+ "materials": {
+  "Dots Stroke": {
+   "base_color": [
+    0.8,
+    0.8,
+    0.8,
+    1.0
+   ]
+  },
+  "M_House_Clay": {
+   "base_color": [
+    0.54,
+    0.36,
+    0.2,
+    1.0
+   ]
+  },
+  "M_House_Moss": {
+   "base_color": [
+    0.3,
+    0.37,
+    0.21,
+    1.0
+   ]
+  },
+  "M_House_Russet": {
+   "base_color": [
+    0.55,
+    0.29,
+    0.17,
+    1.0
+   ]
+  },
+  "M_House_Slate": {
+   "base_color": [
+    0.18,
+    0.29,
+    0.34,
+    1.0
+   ]
+  },
+  "M_River_Surface_Proxy_01": {
+   "base_color": [
+    0.035,
+    0.25,
+    0.31,
+    1.0
+   ]
+  },
+  "M_River_Track_01": {
+   "base_color": [
+    0.38,
+    0.3,
+    0.21,
+    1.0
+   ]
+  },
+  "M_Town_Road_01": {
+   "base_color": [
+    0.44,
+    0.35,
+    0.25,
+    1.0
+   ]
+  },
+  "M_Valley_Grass_01": {
+   "base_color": [
+    0.24,
+    0.32,
+    0.15,
+    1.0
+   ]
+  },
+  "M_Weathered_Stone_01": {
+   "base_color": [
+    0.4,
+    0.37,
+    0.3,
+    1.0
+   ]
+  },
+  "Material": {
+   "base_color": [
+    0.8,
+    0.8,
+    0.8,
+    1.0
+   ]
+  },
+  "MV_Bridge_ArchVoussoir": {
+   "base_color": [
+    0.68,
+    0.62,
+    0.51,
+    1.0
+   ]
+  },
+  "MV_Bridge_Coping": {
+   "base_color": [
+    0.71,
+    0.66,
+    0.53,
+    1.0
+   ]
+  },
+  "MV_Bridge_CreamLimestone": {
+   "base_color": [
+    0.57,
+    0.53,
+    0.44,
+    1.0
+   ]
+  },
+  "MV_Bridge_Paving": {
+   "base_color": [
+    0.44,
+    0.44,
+    0.4,
+    1.0
+   ]
+  },
+  "MV_Bridge_WetStone": {
+   "base_color": [
+    0.24,
+    0.27,
+    0.25,
+    1.0
+   ]
+  },
+  "MV_Guild_AmberTrim": {
+   "base_color": [
+    0.47,
+    0.28,
+    0.12,
+    1.0
+   ]
+  },
+  "MV_Guild_DarkOak": {
+   "base_color": [
+    0.15,
+    0.095,
+    0.058,
+    1.0
+   ]
+  },
+  "MV_Guild_Glass": {
+   "base_color": [
+    0.13,
+    0.25,
+    0.3,
+    1.0
+   ]
+  },
+  "MV_Guild_IvoryPlaster": {
+   "base_color": [
+    0.74,
+    0.7,
+    0.58,
+    1.0
+   ]
+  },
+  "MV_Guild_RoofEdge": {
+   "base_color": [
+    0.08,
+    0.16,
+    0.17,
+    1.0
+   ]
+  },
+  "MV_Guild_SlateTeal": {
+   "base_color": [
+    0.12,
+    0.25,
+    0.26,
+    1.0
+   ]
+  },
+  "MV_Guild_WarmStone": {
+   "base_color": [
+    0.39,
+    0.38,
+    0.34,
+    1.0
+   ]
+  },
+  "WorldGridMaterial": {
+   "base_color": [
+    0.8,
+    0.8,
+    0.8,
+    1.0
+   ]
+  }
+ },
+ "nodes": [
+  {
+   "name": "ART_Foundation_CornerBuilding_01",
+   "tris": 48,
+   "godot_min": [
+    -78.3479,
+    14.0085,
+    92.1907
+   ],
+   "godot_max": [
+    -65.2438,
+    14.9085,
+    99.7526
+   ]
+  },
+  {
+   "name": "ART_Foundation_CornerBuilding_02",
+   "tris": 48,
+   "godot_min": [
+    61.0753,
+    12.9987,
+    76.4446
+   ],
+   "godot_max": [
+    73.3058,
+    13.8987,
+    83.5025
+   ]
+  },
+  {
+   "name": "ART_Foundation_CornerBuilding_03",
+   "tris": 48,
+   "godot_min": [
+    -75.9247,
+    20.0605,
+    211.4446
+   ],
+   "godot_max": [
+    -63.6942,
+    20.9605,
+    218.5024
+   ]
+  },
+  {
+   "name": "ART_Foundation_CornerBuilding_04",
+   "tris": 48,
+   "godot_min": [
+    68.3921,
+    21.1865,
+    224.0107
+   ],
+   "godot_max": [
+    81.4962,
+    22.0865,
+    231.5726
+   ]
+  },
+  {
+   "name": "ART_Foundation_CornerBuilding_05",
+   "tris": 48,
+   "godot_min": [
+    -140.6174,
+    2.1253,
+    -159.5712
+   ],
+   "godot_max": [
+    -124.8926,
+    3.0253,
+    -150.4968
+   ]
+  },
+  {
+   "name": "ART_Foundation_CornerBuilding_06",
+   "tris": 48,
+   "godot_min": [
+    108.2289,
+    5.4717,
+    -136.0633
+   ],
+   "godot_max": [
+    122.2066,
+    6.3717,
+    -127.9972
+   ]
+  },
+  {
+   "name": "ART_Foundation_CornerBuilding_07",
+   "tris": 48,
+   "godot_min": [
+    -99.9247,
+    8.0707,
+    18.4446
+   ],
+   "godot_max": [
+    -87.6942,
+    8.9707,
+    25.5025
+   ]
+  },
+  {
+   "name": "ART_Foundation_CornerBuilding_08",
+   "tris": 48,
+   "godot_min": [
+    75.6521,
+    8.9922,
+    34.1907
+   ],
+   "godot_max": [
+    88.7562,
+    9.8922,
+    41.7526
+   ]
+  },
+  {
+   "name": "ART_Foundation_HERO_Blacksmith",
+   "tris": 48,
+   "godot_min": [
+    -66.8422,
+    12.0033,
+    58.8103
+   ],
+   "godot_max": [
+    -58.7931,
+    12.9033,
+    69.9309
+   ]
+  },
+  {
+   "name": "ART_Foundation_HERO_Church_Nave",
+   "tris": 48,
+   "godot_min": [
+    108.8676,
+    19.9088,
+    196.6391
+   ],
+   "godot_max": [
+    122.0916,
+    20.8088,
+    219.5549
+   ]
+  },
+  {
+   "name": "ART_Foundation_HERO_DockWarehouse",
+   "tris": 48,
+   "godot_min": [
+    -116.1079,
+    4.1706,
+    -124.5278
+   ],
+   "godot_max": [
+    -97.1321,
+    5.0706,
+    -112.5522
+   ]
+  },
+  {
+   "name": "ART_Foundation_HERO_MainInn",
+   "tris": 48,
+   "godot_min": [
+    30.7025,
+    13.2109,
+    77.6667
+   ],
+   "godot_max": [
+    47.8106,
+    14.1109,
+    87.5393
+   ]
+  },
+  {
+   "name": "ART_Foundation_HERO_NorthGate_Left",
+   "tris": 48,
+   "godot_min": [
+    -11.994,
+    23.4621,
+    279.6474
+   ],
+   "godot_max": [
+    -6.006,
+    24.3621,
+    286.1303
+   ]
+  },
+  {
+   "name": "ART_Foundation_HERO_NorthGate_Right",
+   "tris": 48,
+   "godot_min": [
+    6.006,
+    23.7844,
+    279.6474
+   ],
+   "godot_max": [
+    11.994,
+    24.6844,
+    286.1303
+   ]
+  },
+  {
+   "name": "ART_Foundation_InfillBuilding_01",
+   "tris": 48,
+   "godot_min": [
+    -21.4828,
+    7.8398,
+    -49.5566
+   ],
+   "godot_max": [
+    -12.7472,
+    8.7398,
+    -42.4098
+   ]
+  },
+  {
+   "name": "ART_Foundation_InfillBuilding_02",
+   "tris": 48,
+   "godot_min": [
+    14.3755,
+    7.2064,
+    -49.7245
+   ],
+   "godot_max": [
+    21.3976,
+    8.1064,
+    -41.8619
+   ]
+  },
+  {
+   "name": "ART_Foundation_InfillBuilding_03",
+   "tris": 48,
+   "godot_min": [
+    -23.8626,
+    8.459,
+    -27.3049
+   ],
+   "godot_max": [
+    -15.1263,
+    9.359,
+    -20.9815
+   ]
+  },
+  {
+   "name": "ART_Foundation_InfillBuilding_04",
+   "tris": 48,
+   "godot_min": [
+    14.5172,
+    8.459,
+    -27.5566
+   ],
+   "godot_max": [
+    23.2528,
+    9.359,
+    -20.4098
+   ]
+  },
+  {
+   "name": "ART_Foundation_InfillBuilding_05",
+   "tris": 48,
+   "godot_min": [
+    -34.3329,
+    8.2263,
+    22.6893
+   ],
+   "godot_max": [
+    -28.091,
+    9.1263,
+    29.6783
+   ]
+  },
+  {
+   "name": "ART_Foundation_InfillBuilding_06",
+   "tris": 48,
+   "godot_min": [
+    26.6163,
+    8.5811,
+    28.522
+   ],
+   "godot_max": [
+    35.1589,
+    9.4811,
+    35.5108
+   ]
+  },
+  {
+   "name": "ART_Foundation_InfillBuilding_07",
+   "tris": 48,
+   "godot_min": [
+    -31.3329,
+    3.4532,
+    -145.3107
+   ],
+   "godot_max": [
+    -25.091,
+    4.3532,
+    -138.3217
+   ]
+  },
+  {
+   "name": "ART_Foundation_InfillBuilding_08",
+   "tris": 48,
+   "godot_min": [
+    24.1374,
+    4.8008,
+    -145.3049
+   ],
+   "godot_max": [
+    32.8737,
+    5.7008,
+    -138.9815
+   ]
+  },
+  {
+   "name": "ART_Foundation_InfillBuilding_09",
+   "tris": 48,
+   "godot_min": [
+    -20.4828,
+    22.4308,
+    263.4435
+   ],
+   "godot_max": [
+    -11.7472,
+    23.3308,
+    270.5902
+   ]
+  },
+  {
+   "name": "ART_Foundation_InfillBuilding_10",
+   "tris": 48,
+   "godot_min": [
+    11.5172,
+    22.6484,
+    263.4435
+   ],
+   "godot_max": [
+    20.2528,
+    23.5484,
+    270.5902
+   ]
+  },
+  {
+   "name": "ART_Foundation_InfillBuilding_11",
+   "tris": 48,
+   "godot_min": [
+    49.7555,
+    17.3509,
+    181.6455
+   ],
+   "godot_max": [
+    56.7776,
+    18.2509,
+    189.5081
+   ]
+  },
+  {
+   "name": "ART_Foundation_InfillBuilding_12",
+   "tris": 48,
+   "godot_min": [
+    70.1374,
+    21.4084,
+    233.6951
+   ],
+   "godot_max": [
+    78.8737,
+    22.3084,
+    240.0184
+   ]
+  },
+  {
+   "name": "ART_Foundation_LowerEastA_House_01",
+   "tris": 48,
+   "godot_min": [
+    10.0616,
+    9.0204,
+    -5.6644
+   ],
+   "godot_max": [
+    15.541,
+    9.9204,
+    0.4668
+   ]
+  },
+  {
+   "name": "ART_Foundation_LowerEastA_House_02",
+   "tris": 48,
+   "godot_min": [
+    5.8631,
+    9.2366,
+    4.7799
+   ],
+   "godot_max": [
+    15.3316,
+    10.1366,
+    11.8338
+   ]
+  },
+  {
+   "name": "ART_Foundation_LowerEastA_House_03",
+   "tris": 48,
+   "godot_min": [
+    6.8644,
+    8.5459,
+    18.5775
+   ],
+   "godot_max": [
+    15.1543,
+    9.4459,
+    25.5401
+   ]
+  },
+  {
+   "name": "ART_Foundation_LowerEastA_House_04",
+   "tris": 48,
+   "godot_min": [
+    7.6827,
+    8.9284,
+    30.2197
+   ],
+   "godot_max": [
+    13.4713,
+    9.8284,
+    36.6253
+   ]
+  },
+  {
+   "name": "ART_Foundation_LowerEastA_House_05",
+   "tris": 48,
+   "godot_min": [
+    8.1089,
+    9.3912,
+    39.7484
+   ],
+   "godot_max": [
+    16.0279,
+    10.2912,
+    45.5175
+   ]
+  },
+  {
+   "name": "ART_Foundation_LowerEastA_House_06",
+   "tris": 48,
+   "godot_min": [
+    10.5065,
+    10.5633,
+    51.0992
+   ],
+   "godot_max": [
+    19.9744,
+    11.4633,
+    58.9674
+   ]
+  },
+  {
+   "name": "ART_Foundation_LowerEastA_House_07",
+   "tris": 48,
+   "godot_min": [
+    10.0973,
+    11.9284,
+    65.0991
+   ],
+   "godot_max": [
+    18.3311,
+    12.8284,
+    71.315
+   ]
+  },
+  {
+   "name": "ART_Foundation_LowerEastB_House_01",
+   "tris": 48,
+   "godot_min": [
+    48.728,
+    9.0398,
+    -2.7487
+   ],
+   "godot_max": [
+    56.6072,
+    9.9398,
+    2.9651
+   ]
+  },
+  {
+   "name": "ART_Foundation_LowerEastB_House_02",
+   "tris": 48,
+   "godot_min": [
+    47.584,
+    9.3206,
+    8.2679
+   ],
+   "godot_max": [
+    56.4386,
+    10.2206,
+    15.6417
+   ]
+  },
+  {
+   "name": "ART_Foundation_LowerEastB_House_03",
+   "tris": 48,
+   "godot_min": [
+    49.2346,
+    9.0439,
+    22.0155
+   ],
+   "godot_max": [
+    56.7859,
+    9.9439,
+    30.347
+   ]
+  },
+  {
+   "name": "ART_Foundation_LowerEastB_House_04",
+   "tris": 48,
+   "godot_min": [
+    46.0093,
+    9.2097,
+    34.4033
+   ],
+   "godot_max": [
+    54.78,
+    10.1097,
+    40.9719
+   ]
+  },
+  {
+   "name": "ART_Foundation_LowerEastB_House_05",
+   "tris": 48,
+   "godot_min": [
+    49.4485,
+    9.8512,
+    44.5185
+   ],
+   "godot_max": [
+    57.3743,
+    10.7512,
+    51.0286
+   ]
+  },
+  {
+   "name": "ART_Foundation_LowerEastB_House_06",
+   "tris": 48,
+   "godot_min": [
+    51.1322,
+    11.1818,
+    56.8471
+   ],
+   "godot_max": [
+    60.566,
+    12.0818,
+    63.8515
+   ]
+  },
+  {
+   "name": "ART_Foundation_LowerEastB_House_07",
+   "tris": 48,
+   "godot_min": [
+    54.2029,
+    12.6445,
+    68.8114
+   ],
+   "godot_max": [
+    62.0788,
+    13.5445,
+    75.4239
+   ]
+  },
+  {
+   "name": "ART_Foundation_LowerWestA_House_01",
+   "tris": 48,
+   "godot_min": [
+    -53.272,
+    8.9764,
+    -3.7487
+   ],
+   "godot_max": [
+    -45.3928,
+    9.8764,
+    1.9651
+   ]
+  },
+  {
+   "name": "ART_Foundation_LowerWestA_House_02",
+   "tris": 48,
+   "godot_min": [
+    -56.216,
+    8.1348,
+    7.2679
+   ],
+   "godot_max": [
+    -47.3614,
+    9.0348,
+    14.6417
+   ]
+  },
+  {
+   "name": "ART_Foundation_LowerWestA_House_03",
+   "tris": 48,
+   "godot_min": [
+    -56.3654,
+    8.3146,
+    21.0155
+   ],
+   "godot_max": [
+    -48.8141,
+    9.2146,
+    29.347
+   ]
+  },
+  {
+   "name": "ART_Foundation_LowerWestA_House_04",
+   "tris": 48,
+   "godot_min": [
+    -55.9907,
+    9.1277,
+    33.4033
+   ],
+   "godot_max": [
+    -47.22,
+    10.0277,
+    39.9719
+   ]
+  },
+  {
+   "name": "ART_Foundation_LowerWestA_House_05",
+   "tris": 48,
+   "godot_min": [
+    -54.3515,
+    9.7564,
+    43.5185
+   ],
+   "godot_max": [
+    -46.4257,
+    10.6564,
+    50.0286
+   ]
+  },
+  {
+   "name": "ART_Foundation_LowerWestA_House_06",
+   "tris": 48,
+   "godot_min": [
+    -61.1196,
+    12.4526,
+    69.8065
+   ],
+   "godot_max": [
+    -51.6858,
+    13.3526,
+    76.811
+   ]
+  },
+  {
+   "name": "ART_Foundation_LowerWestA_House_07",
+   "tris": 48,
+   "godot_min": [
+    -50.3877,
+    12.4587,
+    70.0675
+   ],
+   "godot_max": [
+    -42.5119,
+    13.3587,
+    76.68
+   ]
+  },
+  {
+   "name": "ART_Foundation_LowerWestA_House_08",
+   "tris": 48,
+   "godot_min": [
+    -50.1666,
+    13.3216,
+    80.6851
+   ],
+   "godot_max": [
+    -43.5239,
+    14.2216,
+    88.0296
+   ]
+  },
+  {
+   "name": "ART_Foundation_LowerWestB_House_01",
+   "tris": 48,
+   "godot_min": [
+    -18.4846,
+    9.0451,
+    -2.4356
+   ],
+   "godot_max": [
+    -11.4795,
+    9.9451,
+    3.302
+   ]
+  },
+  {
+   "name": "ART_Foundation_LowerWestB_House_02",
+   "tris": 48,
+   "godot_min": [
+    -17.1596,
+    8.8302,
+    7.9465
+   ],
+   "godot_max": [
+    -10.6033,
+    9.7302,
+    15.2148
+   ]
+  },
+  {
+   "name": "ART_Foundation_LowerWestB_House_03",
+   "tris": 48,
+   "godot_min": [
+    -20.5528,
+    8.1822,
+    22.1837
+   ],
+   "godot_max": [
+    -13.2293,
+    9.0822,
+    27.7157
+   ]
+  },
+  {
+   "name": "ART_Foundation_LowerWestB_House_04",
+   "tris": 48,
+   "godot_min": [
+    -18.1171,
+    9.0947,
+    33.0616
+   ],
+   "godot_max": [
+    -10.3185,
+    9.9947,
+    39.5772
+   ]
+  },
+  {
+   "name": "ART_Foundation_LowerWestB_House_05",
+   "tris": 48,
+   "godot_min": [
+    -17.2015,
+    9.6629,
+    43.0827
+   ],
+   "godot_max": [
+    -10.1624,
+    10.5629,
+    48.2108
+   ]
+  },
+  {
+   "name": "ART_Foundation_LowerWestB_House_06",
+   "tris": 48,
+   "godot_min": [
+    -16.6311,
+    10.8696,
+    54.4726
+   ],
+   "godot_max": [
+    -8.0649,
+    11.7696,
+    61.5915
+   ]
+  },
+  {
+   "name": "ART_Foundation_LowerWestB_House_07",
+   "tris": 48,
+   "godot_min": [
+    -11.6075,
+    12.222,
+    68.3363
+   ],
+   "godot_max": [
+    -5.74,
+    13.122,
+    74.8113
+   ]
+  },
+  {
+   "name": "ART_Foundation_MarketEast_House_01",
+   "tris": 48,
+   "godot_min": [
+    40.9561,
+    11.2804,
+    58.7874
+   ],
+   "godot_max": [
+    48.8368,
+    12.1804,
+    65.2423
+   ]
+  },
+  {
+   "name": "ART_Foundation_MarketEast_House_02",
+   "tris": 48,
+   "godot_min": [
+    62.7402,
+    11.3782,
+    58.3467
+   ],
+   "godot_max": [
+    72.2087,
+    12.2782,
+    65.4006
+   ]
+  },
+  {
+   "name": "ART_Foundation_MarketEast_House_03",
+   "tris": 48,
+   "godot_min": [
+    27.8429,
+    14.1972,
+    99.131
+   ],
+   "godot_max": [
+    36.1328,
+    15.0972,
+    106.0936
+   ]
+  },
+  {
+   "name": "ART_Foundation_MarketEast_House_04",
+   "tris": 48,
+   "godot_min": [
+    29.3792,
+    14.5659,
+    110.8201
+   ],
+   "godot_max": [
+    35.9947,
+    15.4659,
+    118.1407
+   ]
+  },
+  {
+   "name": "ART_Foundation_MarketEast_House_05",
+   "tris": 48,
+   "godot_min": [
+    28.5842,
+    14.7208,
+    121.401
+   ],
+   "godot_max": [
+    36.5032,
+    15.6208,
+    127.1701
+   ]
+  },
+  {
+   "name": "ART_Foundation_MarketWest_House_01",
+   "tris": 48,
+   "godot_min": [
+    -36.6142,
+    13.4063,
+    78.5229
+   ],
+   "godot_max": [
+    -28.735,
+    14.3063,
+    84.2367
+   ]
+  },
+  {
+   "name": "ART_Foundation_MarketWest_House_02",
+   "tris": 48,
+   "godot_min": [
+    -34.0435,
+    13.6915,
+    85.6744
+   ],
+   "godot_max": [
+    -24.5361,
+    14.5915,
+    93.5919
+   ]
+  },
+  {
+   "name": "ART_Foundation_MarketWest_House_03",
+   "tris": 48,
+   "godot_min": [
+    -34.6812,
+    14.3629,
+    100.1178
+   ],
+   "godot_max": [
+    -26.2262,
+    15.2629,
+    109.4463
+   ]
+  },
+  {
+   "name": "ART_Foundation_MarketWest_House_04",
+   "tris": 48,
+   "godot_min": [
+    -41.4483,
+    14.5104,
+    111.9522
+   ],
+   "godot_max": [
+    -31.9251,
+    15.4104,
+    119.0844
+   ]
+  },
+  {
+   "name": "ART_Foundation_MarketWest_House_05",
+   "tris": 48,
+   "godot_min": [
+    -30.3515,
+    14.8262,
+    125.5185
+   ],
+   "godot_max": [
+    -22.4257,
+    15.7262,
+    132.0286
+   ]
+  },
+  {
+   "name": "ART_Foundation_Riverside_House_01",
+   "tris": 48,
+   "godot_min": [
+    -177.1181,
+    2.8277,
+    -155.5951
+   ],
+   "godot_max": [
+    -171.511,
+    3.7277,
+    -149.3501
+   ]
+  },
+  {
+   "name": "ART_Foundation_Riverside_House_02",
+   "tris": 48,
+   "godot_min": [
+    -165.2,
+    2.5696,
+    -154.0116
+   ],
+   "godot_max": [
+    -155.8463,
+    3.4696,
+    -147.1203
+   ]
+  },
+  {
+   "name": "ART_Foundation_Riverside_House_03",
+   "tris": 48,
+   "godot_min": [
+    -149.2317,
+    2.4127,
+    -151.64
+   ],
+   "godot_max": [
+    -140.9729,
+    3.3127,
+    -144.7165
+   ]
+  },
+  {
+   "name": "ART_Foundation_Riverside_House_04",
+   "tris": 48,
+   "godot_min": [
+    -132.2262,
+    2.2687,
+    -149.0942
+   ],
+   "godot_max": [
+    -126.3766,
+    3.1687,
+    -142.6349
+   ]
+  },
+  {
+   "name": "ART_Foundation_Riverside_House_05",
+   "tris": 48,
+   "godot_min": [
+    -119.4652,
+    2.4103,
+    -146.8796
+   ],
+   "godot_max": [
+    -111.4323,
+    3.3103,
+    -140.9509
+   ]
+  },
+  {
+   "name": "ART_Foundation_Riverside_House_06",
+   "tris": 48,
+   "godot_min": [
+    -89.7854,
+    2.7617,
+    -143.4328
+   ],
+   "godot_max": [
+    -80.4568,
+    3.6617,
+    -135.737
+   ]
+  },
+  {
+   "name": "ART_Foundation_Riverside_House_07",
+   "tris": 48,
+   "godot_min": [
+    -74.5342,
+    3.0352,
+    -140.7362
+   ],
+   "godot_max": [
+    -66.3385,
+    3.9352,
+    -134.5755
+   ]
+  },
+  {
+   "name": "ART_Foundation_Riverside_House_08",
+   "tris": 48,
+   "godot_min": [
+    -59.6107,
+    3.3358,
+    -139.3359
+   ],
+   "godot_max": [
+    -50.6159,
+    4.2358,
+    -131.7865
+   ]
+  },
+  {
+   "name": "ART_Foundation_Riverside_House_09",
+   "tris": 48,
+   "godot_min": [
+    -42.7749,
+    3.6548,
+    -137.4585
+   ],
+   "godot_max": [
+    -35.4685,
+    4.5548,
+    -129.343
+   ]
+  },
+  {
+   "name": "ART_Foundation_UpperEast_House_01",
+   "tris": 48,
+   "godot_min": [
+    16.4894,
+    16.9704,
+    174.4982
+   ],
+   "godot_max": [
+    24.4867,
+    17.8704,
+    180.3766
+   ]
+  },
+  {
+   "name": "ART_Foundation_UpperEast_House_02",
+   "tris": 48,
+   "godot_min": [
+    15.019,
+    17.5603,
+    183.804
+   ],
+   "godot_max": [
+    24.396,
+    18.4603,
+    191.5594
+   ]
+  },
+  {
+   "name": "ART_Foundation_UpperEast_House_03",
+   "tris": 48,
+   "godot_min": [
+    16.1154,
+    18.7962,
+    196.2904
+   ],
+   "godot_max": [
+    24.5268,
+    19.6962,
+    205.5806
+   ]
+  },
+  {
+   "name": "ART_Foundation_UpperEast_House_04",
+   "tris": 48,
+   "godot_min": [
+    12.1492,
+    20.1886,
+    210.6705
+   ],
+   "godot_max": [
+    21.7366,
+    21.0886,
+    217.8953
+   ]
+  },
+  {
+   "name": "ART_Foundation_UpperEast_House_05",
+   "tris": 48,
+   "godot_min": [
+    15.5874,
+    20.9668,
+    221.5549
+   ],
+   "godot_max": [
+    23.6424,
+    21.8668,
+    228.2243
+   ]
+  },
+  {
+   "name": "ART_Foundation_UpperEast_House_06",
+   "tris": 48,
+   "godot_min": [
+    17.444,
+    21.3584,
+    232.0571
+   ],
+   "godot_max": [
+    26.7551,
+    22.2584,
+    238.8885
+   ]
+  },
+  {
+   "name": "ART_Foundation_UpperWest_House_01",
+   "tris": 48,
+   "godot_min": [
+    -35.251,
+    18.3569,
+    188.673
+   ],
+   "godot_max": [
+    -27.2366,
+    19.2569,
+    195.2923
+   ]
+  },
+  {
+   "name": "ART_Foundation_UpperWest_House_02",
+   "tris": 48,
+   "godot_min": [
+    -33.6998,
+    19.1835,
+    196.3578
+   ],
+   "godot_max": [
+    -25.6582,
+    20.0835,
+    205.307
+   ]
+  },
+  {
+   "name": "ART_Foundation_UpperWest_House_03",
+   "tris": 48,
+   "godot_min": [
+    -28.8426,
+    19.7024,
+    207.5761
+   ],
+   "godot_max": [
+    -20.6308,
+    20.6024,
+    213.7601
+   ]
+  },
+  {
+   "name": "ART_Foundation_UpperWest_House_04",
+   "tris": 48,
+   "godot_min": [
+    -27.4701,
+    20.9552,
+    219.8808
+   ],
+   "godot_max": [
+    -17.8269,
+    21.8552,
+    227.9683
+   ]
+  },
+  {
+   "name": "ART_Foundation_UpperWest_House_05",
+   "tris": 48,
+   "godot_min": [
+    -26.5474,
+    21.3832,
+    230.7917
+   ],
+   "godot_max": [
+    -18.5144,
+    22.2832,
+    236.7204
+   ]
+  },
+  {
+   "name": "ART_Foundation_UpperWest_House_06",
+   "tris": 48,
+   "godot_min": [
+    -25.7699,
+    21.5934,
+    240.3013
+   ],
+   "godot_max": [
+    -16.4413,
+    22.4934,
+    247.9971
+   ]
+  },
+  {
+   "name": "ART_Foundation_UpperWest_House_07",
+   "tris": 48,
+   "godot_min": [
+    -20.4925,
+    22.2486,
+    254.6221
+   ],
+   "godot_max": [
+    -13.0031,
+    23.1486,
+    262.8991
+   ]
+  },
+  {
+   "name": "ART_Graded_Terrain_Proxy",
+   "tris": 255,
+   "godot_min": [
+    -252.0066,
+    -3.2223,
+    -353.007
+   ],
+   "godot_max": [
+    252.003,
+    31.5047,
+    353.0187
+   ]
+  },
+  {
+   "name": "ART_GuildFence_N_00",
+   "tris": 532,
+   "godot_min": [
+    -93.0682,
+    17.1097,
+    171.0323
+   ],
+   "godot_max": [
+    -89.2755,
+    18.7533,
+    171.8118
+   ]
+  },
+  {
+   "name": "ART_GuildFence_N_01",
+   "tris": 532,
+   "godot_min": [
+    -89.3682,
+    17.1097,
+    171.0323
+   ],
+   "godot_max": [
+    -85.5755,
+    18.7533,
+    171.8118
+   ]
+  },
+  {
+   "name": "ART_GuildFence_N_02",
+   "tris": 532,
+   "godot_min": [
+    -85.6682,
+    17.1097,
+    171.0323
+   ],
+   "godot_max": [
+    -81.8755,
+    18.7533,
+    171.8118
+   ]
+  },
+  {
+   "name": "ART_GuildFence_N_03",
+   "tris": 532,
+   "godot_min": [
+    -81.9682,
+    17.1097,
+    171.0323
+   ],
+   "godot_max": [
+    -78.1755,
+    18.7533,
+    171.8118
+   ]
+  },
+  {
+   "name": "ART_GuildFence_N_04",
+   "tris": 532,
+   "godot_min": [
+    -78.2682,
+    17.1097,
+    171.0323
+   ],
+   "godot_max": [
+    -74.4755,
+    18.7533,
+    171.8118
+   ]
+  },
+  {
+   "name": "ART_GuildFence_N_05",
+   "tris": 532,
+   "godot_min": [
+    -74.5682,
+    17.1097,
+    171.0323
+   ],
+   "godot_max": [
+    -70.7755,
+    18.7533,
+    171.8118
+   ]
+  },
+  {
+   "name": "ART_GuildFence_S_00",
+   "tris": 532,
+   "godot_min": [
+    -93.0682,
+    16.26,
+    152.0323
+   ],
+   "godot_max": [
+    -89.2755,
+    17.9036,
+    152.8118
+   ]
+  },
+  {
+   "name": "ART_GuildFence_S_01",
+   "tris": 532,
+   "godot_min": [
+    -89.3682,
+    16.26,
+    152.0323
+   ],
+   "godot_max": [
+    -85.5755,
+    17.9036,
+    152.8118
+   ]
+  },
+  {
+   "name": "ART_GuildFence_S_02",
+   "tris": 532,
+   "godot_min": [
+    -85.6682,
+    16.26,
+    152.0323
+   ],
+   "godot_max": [
+    -81.8755,
+    17.9036,
+    152.8118
+   ]
+  },
+  {
+   "name": "ART_GuildFence_S_03",
+   "tris": 532,
+   "godot_min": [
+    -81.9682,
+    16.26,
+    152.0323
+   ],
+   "godot_max": [
+    -78.1755,
+    17.9036,
+    152.8118
+   ]
+  },
+  {
+   "name": "ART_GuildFence_S_04",
+   "tris": 532,
+   "godot_min": [
+    -78.2682,
+    16.26,
+    152.0323
+   ],
+   "godot_max": [
+    -74.4755,
+    17.9036,
+    152.8118
+   ]
+  },
+  {
+   "name": "ART_GuildFence_S_05",
+   "tris": 532,
+   "godot_min": [
+    -74.5682,
+    16.26,
+    152.0323
+   ],
+   "godot_max": [
+    -70.7755,
+    17.9036,
+    152.8118
+   ]
+  },
+  {
+   "name": "ART_GuildFence_W_00",
+   "tris": 532,
+   "godot_min": [
+    -93.3118,
+    16.308,
+    152.4318
+   ],
+   "godot_max": [
+    -92.5323,
+    17.9516,
+    156.2245
+   ]
+  },
+  {
+   "name": "ART_GuildFence_W_01",
+   "tris": 532,
+   "godot_min": [
+    -93.3118,
+    16.4134,
+    156.1318
+   ],
+   "godot_max": [
+    -92.5323,
+    18.057,
+    159.9245
+   ]
+  },
+  {
+   "name": "ART_GuildFence_W_02",
+   "tris": 532,
+   "godot_min": [
+    -93.3118,
+    16.5604,
+    159.8318
+   ],
+   "godot_max": [
+    -92.5323,
+    18.204,
+    163.6245
+   ]
+  },
+  {
+   "name": "ART_GuildFence_W_03",
+   "tris": 532,
+   "godot_min": [
+    -93.3118,
+    16.7455,
+    163.5318
+   ],
+   "godot_max": [
+    -92.5323,
+    18.3891,
+    167.3245
+   ]
+  },
+  {
+   "name": "ART_GuildFence_W_04",
+   "tris": 532,
+   "godot_min": [
+    -93.3118,
+    16.9647,
+    167.2318
+   ],
+   "godot_max": [
+    -92.5323,
+    18.6084,
+    171.0245
+   ]
+  },
+  {
+   "name": "ART_Surface_SM_Plaza_ChurchForecourt",
+   "tris": 1064,
+   "godot_min": [
+    99.0,
+    19.1642,
+    197.0
+   ],
+   "godot_max": [
+    109.0,
+    22.0548,
+    225.0
+   ]
+  },
+  {
+   "name": "ART_Surface_SM_Plaza_GuildForecourt",
+   "tris": 2484,
+   "godot_min": [
+    -40.0,
+    16.1886,
+    146.0
+   ],
+   "godot_max": [
+    -20.0,
+    17.9987,
+    180.0
+   ]
+  },
+  {
+   "name": "ART_Surface_SM_Plaza_MarketSquare",
+   "tris": 2696,
+   "godot_min": [
+    -15.0,
+    14.1665,
+    84.0
+   ],
+   "godot_max": [
+    15.0,
+    15.4769,
+    116.0
+   ]
+  },
+  {
+   "name": "ART_Surface_SM_River_Continuous",
+   "tris": 1000,
+   "godot_min": [
+    -250.0,
+    2.94,
+    -109.9371
+   ],
+   "godot_max": [
+    250.0,
+    2.94,
+    -58.4557
+   ]
+  },
+  {
+   "name": "ART_Surface_SM_Route_ChurchLane",
+   "tris": 1240,
+   "godot_min": [
+    7.6691,
+    16.9501,
+    163.6397
+   ],
+   "godot_max": [
+    105.2005,
+    21.4895,
+    219.7203
+   ]
+  },
+  {
+   "name": "ART_Surface_SM_Route_DockTrack",
+   "tris": 1080,
+   "godot_min": [
+    -158.6214,
+    2.0471,
+    -118.1985
+   ],
+   "godot_max": [
+    -66.4779,
+    6.8932,
+    -72.755
+   ]
+  },
+  {
+   "name": "ART_Surface_SM_Route_GoldenRoute_South",
+   "tris": 3878,
+   "godot_min": [
+    -9.5997,
+    0.4009,
+    -320.0306
+   ],
+   "godot_max": [
+    8.5998,
+    5.8829,
+    -114.6395
+   ]
+  },
+  {
+   "name": "ART_Surface_SM_Route_GoldenRoute_Town",
+   "tris": 7476,
+   "godot_min": [
+    -32.5792,
+    7.6427,
+    -55.6475
+   ],
+   "godot_max": [
+    2.6,
+    27.4315,
+    330.0
+   ]
+  },
+  {
+   "name": "ART_Surface_SM_Route_LowerMarketLoop",
+   "tris": 3520,
+   "godot_min": [
+    -91.5361,
+    9.8735,
+    36.8607
+   ],
+   "godot_max": [
+    -19.3736,
+    15.9953,
+    138.6437
+   ]
+  },
+  {
+   "name": "ART_Surface_SM_Route_MarketEastLoop",
+   "tris": 2470,
+   "godot_min": [
+    22.4021,
+    13.1443,
+    70.4338
+   ],
+   "godot_max": [
+    74.5937,
+    15.871,
+    133.5727
+   ]
+  },
+  {
+   "name": "ART_Surface_SM_Route_RiversideStreet",
+   "tris": 4440,
+   "godot_min": [
+    -174.2345,
+    3.8101,
+    -142.5827
+   ],
+   "godot_max": [
+    155.0571,
+    6.4918,
+    -111.4001
+   ]
+  },
+  {
+   "name": "ART_Surface_SM_Route_UpperResidential",
+   "tris": 3240,
+   "godot_min": [
+    -85.4981,
+    16.4835,
+    159.3085
+   ],
+   "godot_max": [
+    82.3729,
+    23.1762,
+    254.631
+   ]
+  },
+  {
+   "name": "CornerBuilding_01",
+   "tris": 11031,
+   "godot_min": [
+    -78.9851,
+    14.9085,
+    91.8927
+   ],
+   "godot_max": [
+    -64.5958,
+    22.7805,
+    100.8025
+   ]
+  },
+  {
+   "name": "CornerBuilding_02",
+   "tris": 11031,
+   "godot_min": [
+    60.4806,
+    13.8987,
+    76.1665
+   ],
+   "godot_max": [
+    73.9106,
+    21.2459,
+    84.4824
+   ]
+  },
+  {
+   "name": "CornerBuilding_03",
+   "tris": 11031,
+   "godot_min": [
+    -76.5194,
+    20.9605,
+    211.1665
+   ],
+   "godot_max": [
+    -63.0894,
+    28.3076,
+    219.4824
+   ]
+  },
+  {
+   "name": "CornerBuilding_04",
+   "tris": 11031,
+   "godot_min": [
+    67.7549,
+    22.0865,
+    223.7127
+   ],
+   "godot_max": [
+    82.1442,
+    29.9584,
+    232.6225
+   ]
+  },
+  {
+   "name": "CornerBuilding_05",
+   "tris": 11031,
+   "godot_min": [
+    -141.3821,
+    3.0253,
+    -159.9287
+   ],
+   "godot_max": [
+    -124.115,
+    12.4716,
+    -149.2369
+   ]
+  },
+  {
+   "name": "CornerBuilding_06",
+   "tris": 11031,
+   "godot_min": [
+    107.5492,
+    6.3717,
+    -136.3811
+   ],
+   "godot_max": [
+    122.8978,
+    14.7685,
+    -126.8773
+   ]
+  },
+  {
+   "name": "CornerBuilding_07",
+   "tris": 11031,
+   "godot_min": [
+    -100.5194,
+    8.9707,
+    18.1665
+   ],
+   "godot_max": [
+    -87.0894,
+    16.3179,
+    26.4824
+   ]
+  },
+  {
+   "name": "CornerBuilding_08",
+   "tris": 11031,
+   "godot_min": [
+    75.0149,
+    9.8922,
+    33.8927
+   ],
+   "godot_max": [
+    89.4042,
+    17.7641,
+    42.8025
+   ]
+  },
+  {
+   "name": "HERO_Blacksmith",
+   "tris": 1294,
+   "godot_min": [
+    -67.2403,
+    12.9033,
+    58.232
+   ],
+   "godot_max": [
+    -58.3951,
+    21.0029,
+    70.4808
+   ]
+  },
+  {
+   "name": "HERO_Church_BellTower",
+   "tris": 4805,
+   "godot_min": [
+    111.1647,
+    21.6834,
+    219.9781
+   ],
+   "godot_max": [
+    119.6953,
+    43.9434,
+    229.2136
+   ]
+  },
+  {
+   "name": "HERO_Church_Nave",
+   "tris": 11031,
+   "godot_min": [
+    107.0315,
+    20.8088,
+    195.5248
+   ],
+   "godot_max": [
+    122.6126,
+    34.5749,
+    220.688
+   ]
+  },
+  {
+   "name": "HERO_DockWarehouse",
+   "tris": 2438,
+   "godot_min": [
+    -117.0463,
+    5.0706,
+    -125.12
+   ],
+   "godot_max": [
+    -96.1937,
+    13.1713,
+    -111.96
+   ]
+  },
+  {
+   "name": "HERO_Guild_HorizontalHall",
+   "tris": 2094,
+   "godot_min": [
+    -73.3249,
+    16.7383,
+    152.6103
+   ],
+   "godot_max": [
+    -39.179,
+    36.9627,
+    178.8989
+   ]
+  },
+  {
+   "name": "HERO_Guild_TrainingYard",
+   "tris": 48,
+   "godot_min": [
+    -93.0,
+    16.5649,
+    152.5
+   ],
+   "godot_max": [
+    -71.0,
+    16.9149,
+    171.5
+   ]
+  },
+  {
+   "name": "HERO_MainInn",
+   "tris": 11031,
+   "godot_min": [
+    29.8706,
+    14.1109,
+    77.2777
+   ],
+   "godot_max": [
+    48.6566,
+    24.3881,
+    88.91
+   ]
+  },
+  {
+   "name": "HERO_NorthGate_Left",
+   "tris": 4805,
+   "godot_min": [
+    -12.2902,
+    24.3602,
+    279.3268
+   ],
+   "godot_max": [
+    -5.7098,
+    33.155,
+    286.4509
+   ]
+  },
+  {
+   "name": "HERO_NorthGate_Lintel",
+   "tris": 2152,
+   "godot_min": [
+    -7.5715,
+    24.5759,
+    281.9052
+   ],
+   "godot_max": [
+    5.6541,
+    35.7182,
+    284.446
+   ]
+  },
+  {
+   "name": "HERO_NorthGate_Right",
+   "tris": 4805,
+   "godot_min": [
+    5.7098,
+    24.6825,
+    279.3268
+   ],
+   "godot_max": [
+    12.2902,
+    33.4773,
+    286.4509
+   ]
+  },
+  {
+   "name": "InfillBuilding_01",
+   "tris": 1667,
+   "godot_min": [
+    -21.9148,
+    8.7398,
+    -49.9419
+   ],
+   "godot_max": [
+    -12.3152,
+    17.3851,
+    -42.1127
+   ]
+  },
+  {
+   "name": "InfillBuilding_02",
+   "tris": 579,
+   "godot_min": [
+    14.0282,
+    8.1064,
+    -50.1134
+   ],
+   "godot_max": [
+    21.7448,
+    15.4465,
+    -41.473
+   ]
+  },
+  {
+   "name": "InfillBuilding_03",
+   "tris": 1294,
+   "godot_min": [
+    -24.317,
+    9.359,
+    -27.6176
+   ],
+   "godot_max": [
+    -14.6943,
+    15.7221,
+    -20.6688
+   ]
+  },
+  {
+   "name": "InfillBuilding_04",
+   "tris": 1667,
+   "godot_min": [
+    14.0852,
+    9.359,
+    -27.9419
+   ],
+   "godot_max": [
+    23.6848,
+    18.0043,
+    -20.1127
+   ]
+  },
+  {
+   "name": "InfillBuilding_05",
+   "tris": 579,
+   "godot_min": [
+    -34.6416,
+    9.1263,
+    22.3437
+   ],
+   "godot_max": [
+    -27.7824,
+    15.6508,
+    30.024
+   ]
+  },
+  {
+   "name": "InfillBuilding_06",
+   "tris": 1667,
+   "godot_min": [
+    26.1938,
+    9.4811,
+    28.1452
+   ],
+   "godot_max": [
+    35.5813,
+    17.9353,
+    35.8014
+   ]
+  },
+  {
+   "name": "InfillBuilding_07",
+   "tris": 579,
+   "godot_min": [
+    -31.6416,
+    4.3532,
+    -145.6563
+   ],
+   "godot_max": [
+    -24.7824,
+    10.8777,
+    -137.976
+   ]
+  },
+  {
+   "name": "InfillBuilding_08",
+   "tris": 1294,
+   "godot_min": [
+    23.683,
+    5.7008,
+    -145.6176
+   ],
+   "godot_max": [
+    33.3057,
+    12.0639,
+    -138.6689
+   ]
+  },
+  {
+   "name": "InfillBuilding_09",
+   "tris": 1667,
+   "godot_min": [
+    -20.9148,
+    23.3308,
+    263.0581
+   ],
+   "godot_max": [
+    -11.3152,
+    31.976,
+    270.8873
+   ]
+  },
+  {
+   "name": "InfillBuilding_10",
+   "tris": 1667,
+   "godot_min": [
+    11.0852,
+    23.5484,
+    263.0581
+   ],
+   "godot_max": [
+    20.6848,
+    32.1937,
+    270.8873
+   ]
+  },
+  {
+   "name": "InfillBuilding_11",
+   "tris": 579,
+   "godot_min": [
+    49.4082,
+    18.2509,
+    181.2566
+   ],
+   "godot_max": [
+    57.1248,
+    25.5909,
+    189.8969
+   ]
+  },
+  {
+   "name": "InfillBuilding_12",
+   "tris": 1294,
+   "godot_min": [
+    69.683,
+    22.3084,
+    233.3824
+   ],
+   "godot_max": [
+    79.3057,
+    28.6715,
+    240.3311
+   ]
+  },
+  {
+   "name": "LowerEastA_House_01",
+   "tris": 579,
+   "godot_min": [
+    9.7907,
+    9.9204,
+    -5.9676
+   ],
+   "godot_max": [
+    15.812,
+    15.6293,
+    0.77
+   ]
+  },
+  {
+   "name": "LowerEastA_House_02",
+   "tris": 1294,
+   "godot_min": [
+    5.3715,
+    10.1366,
+    4.4311
+   ],
+   "godot_max": [
+    15.7998,
+    16.8178,
+    12.1837
+   ]
+  },
+  {
+   "name": "LowerEastA_House_03",
+   "tris": 1667,
+   "godot_min": [
+    6.4525,
+    9.4459,
+    18.2045
+   ],
+   "godot_max": [
+    15.5607,
+    17.2267,
+    25.8339
+   ]
+  },
+  {
+   "name": "LowerEastA_House_04",
+   "tris": 579,
+   "godot_min": [
+    7.3965,
+    9.8284,
+    29.903
+   ],
+   "godot_max": [
+    13.7575,
+    15.5373,
+    36.942
+   ]
+  },
+  {
+   "name": "LowerEastA_House_05",
+   "tris": 1294,
+   "godot_min": [
+    7.6973,
+    10.2912,
+    39.4631
+   ],
+   "godot_max": [
+    16.4195,
+    16.0179,
+    45.803
+   ]
+  },
+  {
+   "name": "LowerEastA_House_06",
+   "tris": 1667,
+   "godot_min": [
+    10.0407,
+    11.4633,
+    50.6765
+   ],
+   "godot_max": [
+    20.4439,
+    20.5409,
+    59.2974
+   ]
+  },
+  {
+   "name": "LowerEastA_House_07",
+   "tris": 1294,
+   "godot_min": [
+    9.6701,
+    12.8284,
+    64.7904
+   ],
+   "godot_max": [
+    18.7383,
+    18.5551,
+    71.6224
+   ]
+  },
+  {
+   "name": "LowerEastB_House_01",
+   "tris": 1294,
+   "godot_min": [
+    48.3183,
+    9.9398,
+    -3.0313
+   ],
+   "godot_max": [
+    56.9968,
+    15.6666,
+    3.2476
+   ]
+  },
+  {
+   "name": "LowerEastB_House_02",
+   "tris": 1667,
+   "godot_min": [
+    47.1447,
+    10.2206,
+    7.872
+   ],
+   "godot_max": [
+    56.874,
+    18.6748,
+    15.9513
+   ]
+  },
+  {
+   "name": "LowerEastB_House_03",
+   "tris": 579,
+   "godot_min": [
+    48.8612,
+    9.9438,
+    21.6035
+   ],
+   "godot_max": [
+    57.1593,
+    17.2839,
+    30.759
+   ]
+  },
+  {
+   "name": "LowerEastB_House_04",
+   "tris": 1294,
+   "godot_min": [
+    45.5541,
+    10.1097,
+    34.0785
+   ],
+   "godot_max": [
+    55.2137,
+    16.263,
+    41.2979
+   ]
+  },
+  {
+   "name": "LowerEastB_House_05",
+   "tris": 1667,
+   "godot_min": [
+    49.0563,
+    10.7512,
+    44.1678
+   ],
+   "godot_max": [
+    57.7657,
+    18.532,
+    51.2998
+   ]
+  },
+  {
+   "name": "LowerEastB_House_06",
+   "tris": 1294,
+   "godot_min": [
+    50.6423,
+    12.0818,
+    56.4998
+   ],
+   "godot_max": [
+    61.0325,
+    18.7631,
+    64.1979
+   ]
+  },
+  {
+   "name": "LowerEastB_House_07",
+   "tris": 1667,
+   "godot_min": [
+    53.8168,
+    13.5445,
+    68.4571
+   ],
+   "godot_max": [
+    62.4701,
+    20.9419,
+    75.7028
+   ]
+  },
+  {
+   "name": "LowerWestA_House_01",
+   "tris": 1294,
+   "godot_min": [
+    -53.6817,
+    9.8764,
+    -4.0313
+   ],
+   "godot_max": [
+    -45.0032,
+    15.6032,
+    2.2476
+   ]
+  },
+  {
+   "name": "LowerWestA_House_02",
+   "tris": 1667,
+   "godot_min": [
+    -56.6553,
+    9.0348,
+    6.872
+   ],
+   "godot_max": [
+    -46.926,
+    17.489,
+    14.9513
+   ]
+  },
+  {
+   "name": "LowerWestA_House_03",
+   "tris": 579,
+   "godot_min": [
+    -56.7388,
+    9.2146,
+    20.6035
+   ],
+   "godot_max": [
+    -48.4407,
+    16.5547,
+    29.759
+   ]
+  },
+  {
+   "name": "LowerWestA_House_04",
+   "tris": 1294,
+   "godot_min": [
+    -56.4459,
+    10.0277,
+    33.0785
+   ],
+   "godot_max": [
+    -46.7863,
+    16.1809,
+    40.2979
+   ]
+  },
+  {
+   "name": "LowerWestA_House_05",
+   "tris": 1667,
+   "godot_min": [
+    -54.7437,
+    10.6564,
+    43.1678
+   ],
+   "godot_max": [
+    -46.0343,
+    18.4372,
+    50.2998
+   ]
+  },
+  {
+   "name": "LowerWestA_House_06",
+   "tris": 1294,
+   "godot_min": [
+    -61.6095,
+    13.3526,
+    69.4592
+   ],
+   "godot_max": [
+    -51.2193,
+    20.0338,
+    77.1574
+   ]
+  },
+  {
+   "name": "LowerWestA_House_07",
+   "tris": 1667,
+   "godot_min": [
+    -50.7739,
+    13.3587,
+    69.7132
+   ],
+   "godot_max": [
+    -42.1205,
+    20.7562,
+    76.9589
+   ]
+  },
+  {
+   "name": "LowerWestA_House_08",
+   "tris": 579,
+   "godot_min": [
+    -50.4951,
+    14.2216,
+    80.3219
+   ],
+   "godot_max": [
+    -43.1954,
+    20.7461,
+    88.3928
+   ]
+  },
+  {
+   "name": "LowerWestB_House_01",
+   "tris": 1667,
+   "godot_min": [
+    -18.8308,
+    9.9451,
+    -2.745
+   ],
+   "godot_max": [
+    -11.133,
+    16.8613,
+    3.5407
+   ]
+  },
+  {
+   "name": "LowerWestB_House_02",
+   "tris": 579,
+   "godot_min": [
+    -17.4839,
+    9.7302,
+    7.587
+   ],
+   "godot_max": [
+    -10.2791,
+    16.2547,
+    15.5743
+   ]
+  },
+  {
+   "name": "LowerWestB_House_03",
+   "tris": 1294,
+   "godot_min": [
+    -20.9328,
+    9.0822,
+    21.9102
+   ],
+   "godot_max": [
+    -12.8671,
+    14.1726,
+    27.9905
+   ]
+  },
+  {
+   "name": "LowerWestB_House_04",
+   "tris": 1667,
+   "godot_min": [
+    -18.5042,
+    9.9947,
+    32.7121
+   ],
+   "godot_max": [
+    -9.9354,
+    17.3921,
+    39.8513
+   ]
+  },
+  {
+   "name": "LowerWestB_House_05",
+   "tris": 1294,
+   "godot_min": [
+    -17.5675,
+    10.5629,
+    42.8292
+   ],
+   "godot_max": [
+    -9.8143,
+    15.6534,
+    48.4646
+   ]
+  },
+  {
+   "name": "LowerWestB_House_06",
+   "tris": 1667,
+   "godot_min": [
+    -17.0525,
+    11.7696,
+    54.0902
+   ],
+   "godot_max": [
+    -7.6401,
+    19.9827,
+    61.8901
+   ]
+  },
+  {
+   "name": "LowerWestB_House_07",
+   "tris": 579,
+   "godot_min": [
+    -11.8976,
+    13.122,
+    68.0162
+   ],
+   "godot_max": [
+    -5.4499,
+    18.831,
+    75.1315
+   ]
+  },
+  {
+   "name": "MainStoneBridge_DECK",
+   "tris": 3015,
+   "godot_min": [
+    -4.7869,
+    0.539,
+    -104.3397
+   ],
+   "godot_max": [
+    4.787,
+    8.1651,
+    -65.5271
+   ]
+  },
+  {
+   "name": "MarketEast_House_01",
+   "tris": 1667,
+   "godot_min": [
+    40.5666,
+    12.1804,
+    58.4394
+   ],
+   "godot_max": [
+    49.2266,
+    19.9611,
+    65.5108
+   ]
+  },
+  {
+   "name": "MarketEast_House_02",
+   "tris": 1294,
+   "godot_min": [
+    62.2486,
+    12.2782,
+    57.9979
+   ],
+   "godot_max": [
+    72.6769,
+    18.9594,
+    65.7505
+   ]
+  },
+  {
+   "name": "MarketEast_House_03",
+   "tris": 1667,
+   "godot_min": [
+    27.4309,
+    15.0972,
+    98.758
+   ],
+   "godot_max": [
+    36.5392,
+    22.8779,
+    106.3873
+   ]
+  },
+  {
+   "name": "MarketEast_House_04",
+   "tris": 579,
+   "godot_min": [
+    29.052,
+    15.4659,
+    110.4581
+   ],
+   "godot_max": [
+    36.3218,
+    21.9904,
+    118.5027
+   ]
+  },
+  {
+   "name": "MarketEast_House_05",
+   "tris": 1294,
+   "godot_min": [
+    28.1725,
+    15.6208,
+    121.1157
+   ],
+   "godot_max": [
+    36.8948,
+    21.3476,
+    127.4556
+   ]
+  },
+  {
+   "name": "MarketSquare_Well",
+   "tris": 48,
+   "godot_min": [
+    -1.5,
+    15.0,
+    98.5
+   ],
+   "godot_max": [
+    1.5,
+    17.0,
+    101.5
+   ]
+  },
+  {
+   "name": "MarketStall_01",
+   "tris": 690,
+   "godot_min": [
+    10.2833,
+    15.0555,
+    99.0681
+   ],
+   "godot_max": [
+    13.5428,
+    17.6234,
+    101.0534
+   ]
+  },
+  {
+   "name": "MarketStall_02",
+   "tris": 690,
+   "godot_min": [
+    6.9425,
+    15.2562,
+    107.4319
+   ],
+   "godot_max": [
+    10.202,
+    17.8242,
+    109.4172
+   ]
+  },
+  {
+   "name": "MarketStall_03",
+   "tris": 690,
+   "godot_min": [
+    -1.7167,
+    15.3435,
+    111.0681
+   ],
+   "godot_max": [
+    1.5428,
+    17.9114,
+    113.0534
+   ]
+  },
+  {
+   "name": "MarketStall_04",
+   "tris": 690,
+   "godot_min": [
+    -10.028,
+    15.2562,
+    107.4319
+   ],
+   "godot_max": [
+    -6.7686,
+    17.8242,
+    109.4172
+   ]
+  },
+  {
+   "name": "MarketStall_05",
+   "tris": 690,
+   "godot_min": [
+    -13.7167,
+    15.0555,
+    99.0681
+   ],
+   "godot_max": [
+    -10.4572,
+    17.6234,
+    101.0534
+   ]
+  },
+  {
+   "name": "MarketStall_06",
+   "tris": 690,
+   "godot_min": [
+    -10.028,
+    14.7383,
+    90.4613
+   ],
+   "godot_max": [
+    -6.7686,
+    17.3062,
+    92.4467
+   ]
+  },
+  {
+   "name": "MarketStall_07",
+   "tris": 690,
+   "godot_min": [
+    -1.7167,
+    14.5457,
+    87.0681
+   ],
+   "godot_max": [
+    1.5428,
+    17.1136,
+    89.0534
+   ]
+  },
+  {
+   "name": "MarketStall_08",
+   "tris": 690,
+   "godot_min": [
+    6.9425,
+    14.7383,
+    90.4613
+   ],
+   "godot_max": [
+    10.202,
+    17.3062,
+    92.4467
+   ]
+  },
+  {
+   "name": "MarketWest_House_01",
+   "tris": 1294,
+   "godot_min": [
+    -37.0239,
+    14.3063,
+    78.2403
+   ],
+   "godot_max": [
+    -28.3454,
+    20.033,
+    84.5193
+   ]
+  },
+  {
+   "name": "MarketWest_House_02",
+   "tris": 1667,
+   "godot_min": [
+    -34.5152,
+    14.5915,
+    85.2494
+   ],
+   "godot_max": [
+    -24.0686,
+    23.6691,
+    93.9244
+   ]
+  },
+  {
+   "name": "MarketWest_House_03",
+   "tris": 579,
+   "godot_min": [
+    -35.0993,
+    15.2629,
+    99.6565
+   ],
+   "godot_max": [
+    -25.8081,
+    23.4814,
+    109.9076
+   ]
+  },
+  {
+   "name": "MarketWest_House_04",
+   "tris": 1294,
+   "godot_min": [
+    -41.9426,
+    15.4104,
+    111.5995
+   ],
+   "godot_max": [
+    -31.4541,
+    22.0916,
+    119.4384
+   ]
+  },
+  {
+   "name": "MarketWest_House_05",
+   "tris": 1667,
+   "godot_min": [
+    -30.7437,
+    15.7262,
+    125.1678
+   ],
+   "godot_max": [
+    -22.0343,
+    23.507,
+    132.2998
+   ]
+  },
+  {
+   "name": "Riverside_House_01",
+   "tris": 579,
+   "godot_min": [
+    -177.3954,
+    3.7277,
+    -155.9039
+   ],
+   "godot_max": [
+    -171.2337,
+    9.4366,
+    -149.0413
+   ]
+  },
+  {
+   "name": "Riverside_House_02",
+   "tris": 1294,
+   "godot_min": [
+    -165.686,
+    3.4696,
+    -154.3524
+   ],
+   "godot_max": [
+    -155.3838,
+    10.1508,
+    -146.7789
+   ]
+  },
+  {
+   "name": "Riverside_House_03",
+   "tris": 1667,
+   "godot_min": [
+    -149.6419,
+    3.3127,
+    -152.0111
+   ],
+   "godot_max": [
+    -140.5678,
+    11.0934,
+    -144.4247
+   ]
+  },
+  {
+   "name": "Riverside_House_04",
+   "tris": 579,
+   "godot_min": [
+    -132.5155,
+    3.1687,
+    -149.4136
+   ],
+   "godot_max": [
+    -126.0874,
+    8.8776,
+    -142.3155
+   ]
+  },
+  {
+   "name": "Riverside_House_05",
+   "tris": 1294,
+   "godot_min": [
+    -119.8825,
+    3.3103,
+    -147.1728
+   ],
+   "godot_max": [
+    -111.035,
+    9.0371,
+    -140.6571
+   ]
+  },
+  {
+   "name": "Riverside_House_06",
+   "tris": 1667,
+   "godot_min": [
+    -90.2454,
+    3.6617,
+    -143.8469
+   ],
+   "godot_max": [
+    -79.9948,
+    12.7392,
+    -135.4156
+   ]
+  },
+  {
+   "name": "Riverside_House_07",
+   "tris": 1294,
+   "godot_min": [
+    -74.9595,
+    3.9352,
+    -141.0421
+   ],
+   "godot_max": [
+    -65.9332,
+    9.6619,
+    -134.2708
+   ]
+  },
+  {
+   "name": "Riverside_House_08",
+   "tris": 1667,
+   "godot_min": [
+    -60.0518,
+    4.2358,
+    -139.7404
+   ],
+   "godot_max": [
+    -50.169,
+    12.69,
+    -131.4681
+   ]
+  },
+  {
+   "name": "Riverside_House_09",
+   "tris": 579,
+   "godot_min": [
+    -43.1362,
+    4.5548,
+    -137.8598
+   ],
+   "godot_max": [
+    -35.1071,
+    11.8948,
+    -128.9417
+   ]
+  },
+  {
+   "name": "SM_Handoff_BridgeNorth",
+   "tris": 64,
+   "godot_min": [
+    -2.6,
+    6.3944,
+    -68.0
+   ],
+   "godot_max": [
+    2.6,
+    7.8838,
+    -52.0
+   ]
+  },
+  {
+   "name": "SM_Handoff_BridgeSouth",
+   "tris": 68,
+   "godot_min": [
+    -2.6,
+    5.876,
+    -119.0
+   ],
+   "godot_max": [
+    2.6,
+    6.3944,
+    -102.0
+   ]
+  },
+  {
+   "name": "SM_Handoff_GuildChurch",
+   "tris": 252,
+   "godot_min": [
+    -28.8256,
+    17.4576,
+    172.4664
+   ],
+   "godot_max": [
+    45.7335,
+    18.4415,
+    186.7
+   ]
+  },
+  {
+   "name": "SmallServiceBridge_DECK",
+   "tris": 48,
+   "godot_min": [
+    -133.6,
+    5.9123,
+    -116.6084
+   ],
+   "godot_max": [
+    -130.4,
+    6.6123,
+    -79.6084
+   ]
+  },
+  {
+   "name": "SmallServiceBridge_NorthRamp",
+   "tris": 48,
+   "godot_min": [
+    -133.6,
+    6.2928,
+    -80.109
+   ],
+   "godot_max": [
+    -130.4,
+    7.1987,
+    -68.1077
+   ]
+  },
+  {
+   "name": "SmallServiceBridge_PARAPET",
+   "tris": 48,
+   "godot_min": [
+    -133.525,
+    6.6123,
+    -116.6084
+   ],
+   "godot_max": [
+    -133.075,
+    7.7123,
+    -79.6084
+   ]
+  },
+  {
+   "name": "SmallServiceBridge_PARAPET2",
+   "tris": 48,
+   "godot_min": [
+    -130.925,
+    6.6123,
+    -116.6084
+   ],
+   "godot_max": [
+    -130.475,
+    7.7123,
+    -79.6084
+   ]
+  },
+  {
+   "name": "SmallServiceBridge_SouthRamp",
+   "tris": 48,
+   "godot_min": [
+    -133.6,
+    4.324,
+    -128.0541
+   ],
+   "godot_max": [
+    -130.4,
+    6.5969,
+    -116.1626
+   ]
+  },
+  {
+   "name": "UpperEast_House_01",
+   "tris": 1294,
+   "godot_min": [
+    16.0739,
+    17.8704,
+    174.207
+   ],
+   "godot_max": [
+    24.8822,
+    23.5972,
+    180.6673
+   ]
+  },
+  {
+   "name": "UpperEast_House_02",
+   "tris": 1667,
+   "godot_min": [
+    14.5544,
+    18.4603,
+    183.3869
+   ],
+   "godot_max": [
+    24.858,
+    27.5378,
+    191.8838
+   ]
+  },
+  {
+   "name": "UpperEast_House_03",
+   "tris": 579,
+   "godot_min": [
+    15.6994,
+    19.6962,
+    195.831
+   ],
+   "godot_max": [
+    24.9427,
+    27.9146,
+    206.04
+   ]
+  },
+  {
+   "name": "UpperEast_House_04",
+   "tris": 1294,
+   "godot_min": [
+    11.6517,
+    21.0886,
+    210.3132
+   ],
+   "godot_max": [
+    22.2107,
+    27.7698,
+    218.2541
+   ]
+  },
+  {
+   "name": "UpperEast_House_05",
+   "tris": 1667,
+   "godot_min": [
+    15.1882,
+    21.8668,
+    221.1964
+   ],
+   "godot_max": [
+    24.0392,
+    29.6475,
+    228.5034
+   ]
+  },
+  {
+   "name": "UpperEast_House_06",
+   "tris": 1294,
+   "godot_min": [
+    16.9602,
+    22.2584,
+    231.7188
+   ],
+   "godot_max": [
+    27.2155,
+    28.9396,
+    239.2264
+   ]
+  },
+  {
+   "name": "UpperWest_House_01",
+   "tris": 1667,
+   "godot_min": [
+    -35.6461,
+    19.2569,
+    188.3169
+   ],
+   "godot_max": [
+    -26.8396,
+    27.0377,
+    195.5689
+   ]
+  },
+  {
+   "name": "UpperWest_House_02",
+   "tris": 579,
+   "godot_min": [
+    -34.0974,
+    20.0835,
+    195.9152
+   ],
+   "godot_max": [
+    -25.2605,
+    28.2391,
+    205.7495
+   ]
+  },
+  {
+   "name": "UpperWest_House_03",
+   "tris": 1294,
+   "godot_min": [
+    -29.2687,
+    20.6024,
+    207.2703
+   ],
+   "godot_max": [
+    -20.2247,
+    26.3291,
+    214.0672
+   ]
+  },
+  {
+   "name": "UpperWest_House_04",
+   "tris": 1667,
+   "godot_min": [
+    -27.9492,
+    21.8552,
+    219.4474
+   ],
+   "godot_max": [
+    -17.3539,
+    30.9328,
+    228.3092
+   ]
+  },
+  {
+   "name": "UpperWest_House_05",
+   "tris": 1294,
+   "godot_min": [
+    -26.9647,
+    22.2832,
+    230.4986
+   ],
+   "godot_max": [
+    -18.1172,
+    28.0099,
+    237.0142
+   ]
+  },
+  {
+   "name": "UpperWest_House_06",
+   "tris": 1667,
+   "godot_min": [
+    -26.23,
+    22.4934,
+    239.8872
+   ],
+   "godot_max": [
+    -15.9793,
+    31.5709,
+    248.3185
+   ]
+  },
+  {
+   "name": "UpperWest_House_07",
+   "tris": 579,
+   "godot_min": [
+    -20.8628,
+    23.1486,
+    254.2128
+   ],
+   "godot_max": [
+    -12.6327,
+    30.4887,
+    263.3084
+   ]
+  }
+ ]
+}

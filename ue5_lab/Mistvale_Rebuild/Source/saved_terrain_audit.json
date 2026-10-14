@@ -1,0 +1,63 @@
+{
+  "terrain_size_m": [
+    504.0,
+    706.0,
+    33.47488098144531
+  ],
+  "terrain_center_m": [
+    0.0,
+    0.0,
+    14.203770446777344
+  ],
+  "traces": [
+    {
+      "xy": [
+        0,
+        0
+      ],
+      "result": "<Struct 'HitResult' (0x000002E68F852E40) {}>"
+    },
+    {
+      "xy": [
+        0,
+        100
+      ],
+      "result": "<Struct 'HitResult' (0x000002E68F853480) {}>"
+    },
+    {
+      "xy": [
+        -175,
+        -152.65
+      ],
+      "result": "<Struct 'HitResult' (0x000002E68F853700) {}>"
+    },
+    {
+      "xy": [
+        -55,
+        165
+      ],
+      "result": "<Struct 'HitResult' (0x000002E68F853AC0) {}>"
+    },
+    {
+      "xy": [
+        115.43,
+        207.74
+      ],
+      "result": "<Struct 'HitResult' (0x000002E68F853700) {}>"
+    },
+    {
+      "xy": [
+        0,
+        283
+      ],
+      "result": "<Struct 'HitResult' (0x000002E68F853480) {}>"
+    },
+    {
+      "xy": [
+        0,
+        -88
+      ],
+      "result": "<Struct 'HitResult' (0x000002E68F852E40) {}>"
+    }
+  ]
+}

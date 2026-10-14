@@ -1,0 +1,25 @@
+{
+  "resolution": [
+    1024,
+    1024
+  ],
+  "normal_convention": "DirectX",
+  "color_space": {
+    "Color": "sRGB",
+    "Normal": "linear",
+    "ORM": "linear"
+  },
+  "ORM_channels": [
+    "ambient_occlusion",
+    "roughness",
+    "metallic"
+  ],
+  "families": [
+    "Timber",
+    "Stone",
+    "Plaster",
+    "Slate"
+  ],
+  "source": "Original deterministic surface fields; no external or generated reference art",
+  "status": "MATERIAL_DATA_NOT_VISUALLY_ACCEPTED"
+}

@@ -1,0 +1,88 @@
+/* ============================================================================
+   SEKAI · MOTION PRIMITIVES (CSS side)
+   ----------------------------------------------------------------------------
+   motion.js 负责一次性演出（WAAPI）。这里只放：
+   1. 环境层需要的静态基元样式（粒子、线、遮罩容器）
+   2. hover / focus 的**状态**过渡（transition 而不是 animation —— 状态是持久的，
+      而且 transition 被中断时行为正确，这正是 §30「UI 永远优先响应」需要的）
+   3. Reduced Motion 的安全网
+   ========================================================================= */
+
+/* ---------------------------------------------------------------------------
+   1. 基元
+   ------------------------------------------------------------------------ */
+
+/* 极小的浮尘。行为在 SKMotion.particles()，这里只管长相。 */
+.sk-particle {
+  position: absolute;
+  display: block;
+  border-radius: 50%;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+/* SVG 描边线的默认契约：永远不填充，永远圆头。
+   整套 UI 的线条只有这一种长相 —— 这是"同一个游戏"的廉价保证。 */
+.sk-line {
+  fill: none;
+  stroke: var(--sk-line);
+  stroke-width: var(--sk-stroke-hair);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.sk-line--gold {
+  stroke: var(--sk-gold);
+}
+
+.sk-line--faint {
+  stroke: var(--sk-line-faint);
+}
+
+/* 遮罩揭示容器：给 revealMask() 用。overflow 必须裁。 */
+.sk-mask {
+  display: inline-block;
+  overflow: hidden;
+}
+
+/* 会参与 transform 动画的元素统一提层 */
+.sk-anim {
+  will-change: transform, opacity;
+}
+
+/* ---------------------------------------------------------------------------
+   2. 状态过渡（transition）
+   ------------------------------------------------------------------------ */
+.sk-state {
+  transition:
+    color var(--sk-t-fast) var(--sk-e-out),
+    border-color var(--sk-t-fast) var(--sk-e-out),
+    background-color var(--sk-t-fast) var(--sk-e-out),
+    opacity var(--sk-t-fast) var(--sk-e-out);
+}
+
+/* ---------------------------------------------------------------------------
+   3. Reduced Motion 安全网
+   一次性演出由 motion.js 直达终态；这里兜住任何 CSS transition / animation，
+   保证不出现"用户必须看完动画才能用"的情况。
+   ------------------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  .sk-anim,
+  .sk-particle {
+    will-change: auto;
+  }
+  :root[data-motion] .sk-state,
+  .sk-state {
+    transition-duration: 1ms;
+  }
+}
+
+:root[data-motion='reduce'] .sk-state {
+  transition-duration: 1ms;
+}
+
+/* 页面级开关：<html data-motion="reduce"> 时彻底停掉环境循环 */
+:root[data-motion='reduce'] .sk-particle {
+  display: none;
+}

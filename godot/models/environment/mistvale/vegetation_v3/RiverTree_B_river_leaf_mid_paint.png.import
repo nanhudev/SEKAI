@@ -1,0 +1,37 @@
+[remap]
+
+importer="texture"
+type="CompressedTexture2D"
+uid="uid://bl7t3xn7b0op8"
+path="res://.godot/imported/RiverTree_B_river_leaf_mid_paint.png-399133f2f10c021a5bd8ce562750b6aa.ctex"
+metadata={
+"vram_texture": false
+}
+generator_parameters={
+"md5": "2529ef519d5973d9eaa56f40d31046d5"
+}
+
+[deps]
+
+source_file="res://models/environment/mistvale/vegetation_v3/RiverTree_B_river_leaf_mid_paint.png"
+dest_files=["res://.godot/imported/RiverTree_B_river_leaf_mid_paint.png-399133f2f10c021a5bd8ce562750b6aa.ctex"]
+
+[params]
+
+compress/mode=0
+compress/high_quality=false
+compress/lossy_quality=0.7
+compress/hdr_compression=1
+compress/normal_map=0
+compress/channel_pack=0
+mipmaps/generate=true
+mipmaps/limit=-1
+roughness/mode=0
+roughness/src_normal=""
+process/fix_alpha_border=true
+process/premult_alpha=false
+process/normal_map_invert_y=false
+process/hdr_as_srgb=false
+process/hdr_clamp_exposure=false
+process/size_limit=0
+detect_3d/compress_to=1

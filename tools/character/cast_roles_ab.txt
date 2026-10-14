@@ -1,0 +1,32 @@
+# SEKAI / C-PH -- role casting A/B sheet
+#
+# <label>|<res://path>   rendered by:
+#   bash tools/character/render_cast_sheet.sh \
+#        assets_source/characters/placeholders/_review/CAST_ROLES_AB.png \
+#        tools/character/cast_roles_ab.txt 6
+#
+# One line per CANDIDATE, not per role: the "A" row of each pair is the primary
+# pick, the "B" row the alternate.  Silhouette is the deciding evidence here, so
+# the sheet IS the record of the decision -- an opinion in a doc cannot be
+# overruled, a rendered pair can.
+#
+# Canonical role ids come from docs/narrative/CHARACTERS.md:
+#   oren / mira / lia / garran / arn / vell / brann  + rusk (guild) + taim (carter)
+# NOTE the narrative spells it "Vell" (薇尔), not "Veil".  The manifest follows
+# the narrative, not the brief that paraphrased it.
+#
+# Only genuinely ambiguous casts are paired here.  Roles with a single sensible
+# read (blacksmith -> the worker, teenager -> the second casual) are decided in
+# docs/characters/DEMO_CAST.md with the reason written down.
+Lia A adventurer_w|res://assets/characters/placeholders/lpg_adventurer_w.glb
+Lia B casual_w|res://assets/characters/placeholders/lpg_casual_w.glb
+Oren A worker_m|res://assets/characters/placeholders/lpg_worker_m.glb
+Oren B farmer_m|res://assets/characters/placeholders/lpg_farmer_m.glb
+Mira A scifi_w|res://assets/characters/placeholders/lpg_scifi_w.glb
+Mira B witch_w|res://assets/characters/placeholders/lpg_witch_w.glb
+Vell A formal_w|res://assets/characters/placeholders/lpg_formal_w.glb
+Vell B suit_w|res://assets/characters/placeholders/lpg_suit_w.glb
+Taim A casual_m|res://assets/characters/placeholders/lpg_casual_m.glb
+Taim B casual2_m|res://assets/characters/placeholders/lpg_casual2_m.glb
+Cand A adventurer_m|res://assets/characters/placeholders/lpg_adventurer_m.glb
+Cand B king_m|res://assets/characters/placeholders/lpg_king_m.glb

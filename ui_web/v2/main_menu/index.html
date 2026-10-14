@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SEKAI · 世界之外</title>
+<!-- 空白 favicon：否则浏览器会去要 /favicon.ico，出片日志里留一条假 404 -->
+<link rel="icon" href="data:,">
+
+<link rel="stylesheet" href="../../tokens/tokens.css">
+<link rel="stylesheet" href="../../motion/motion.css">
+<link rel="stylesheet" href="../../components/components.css">
+<link rel="stylesheet" href="../../components/loading_glyph.css">
+<link rel="stylesheet" href="../world/world_bg.css">
+<link rel="stylesheet" href="../ui_v2.css">
+<link rel="stylesheet" href="./main_menu_v2.css">
+</head>
+<body>
+
+<!-- 世界层由 ../world/world_bg.js 注入到 body，铺满屏幕，位于所有 UI 之下。
+     UI PASS 02 的第 1 条：THE WORLD IS THE UI BACKGROUND。 -->
+
+<main class="v2-stage" id="stage">
+  <!-- Logo：左上，不占正中，也不盖住右边的景色（§12 §13）。
+       §22/PASS 03：副标题不在这一屏 —— 它是 Launcher 门上的题签，只出现一次。 -->
+  <div class="v2-brand" id="brand">
+    <div class="v2-brand__row">
+      <span class="v2-brand__mark" id="mark"></span>
+      <span class="v2-brand__word" id="word"></span>
+    </div>
+    <div class="v2-brand__cn" id="wordCN"></div>
+    <div class="v2-brand__rule" id="rule"></div>
+  </div>
+
+  <!-- 菜单：纯文字，没有卡片。项由 JS 从 ../v2.config.js 生成 ——
+       加一项只改配置，不写第二套菜单代码。 -->
+  <nav class="v2-nav" id="nav" aria-label="主菜单"></nav>
+
+  <div class="v2-meta" id="meta"></div>
+</main>
+
+<!-- §H：设置不换页 —— 覆盖左区，世界继续在后面动。行由 JS 生成。 -->
+<section class="v2-settings" id="settings" aria-label="设置" hidden>
+  <h2 class="v2-settings__title" id="settingsTitle"></h2>
+  <div class="v2-settings__rows" id="settingsRows"></div>
+  <p class="v2-settings__hint" id="settingsHint"></p>
+</section>
+
+<!-- 启动失败时说清楚，不无限等待（§44） -->
+<div class="v2-failure" id="failure" role="alert" hidden></div>
+<!-- §15 / PASS 05：没有 Loading 屏。等待由 components/loading_glyph.js 书写，
+     不再在这里放一个特例元素（同位叠放会压字）。 -->
+<!-- web 原型里"没有真的拉起进程"这件事，在转场结束之后才说 -->
+<div class="v2-enter-note" id="enterNote" hidden></div>
+<div class="sk-skip" id="skip" hidden></div>
+<div class="sk-cursor" id="cursor" hidden></div>
+
+<script type="module" src="./main_menu_v2.js"></script>
+</body>
+</html>

@@ -1,0 +1,724 @@
+/* ============================================================================
+   SEKAI · UI V2 (PASS 02 · DE-AI)
+   ----------------------------------------------------------------------------
+   这一层是 V2 的全部视觉决定。它**不改 components.css**（V1 还在，A/B 要能跑），
+   只是在它之上重写三个零件：Logo、菜单行、页脚元信息。
+
+   被删掉的东西（STEP 2 的"至少删掉 50% 装饰性 UI"）：
+     ✗ 屏幕中央的大符号 / 圆环 / 环弧（.sk-bg__ring）
+     ✗ 上下两条装饰细线 + 刻度尺 + 发丝标记（.sk-runes 一整层）
+     ✗ 载入环 / 进度条 / 状态文案（.sk-status）
+     ✗ 粒子、烟、暗角（.sk-bg__particles / __smoke / __vignette）
+     ✗ 每个菜单项下面的英文大写副标题（.sk-item__en）
+     ✗ 按钮的斜切卡片外观（.sk-btn 在 V2 里不用）
+     ✗ 页脚三行系统信息（版本 / 构建 / 模式）
+     ✗ 每个菜单项一条独立渐变焦点线（4 条 → 1 条共用的侧线）
+
+   留下来的每一个元素都必须能回答"你是什么状态、你是什么信息"。
+   答不出来的，删。
+
+   版面：不对称。世界占满屏，UI 全部压在**左三分之一**。
+   §14：「右边完全留给世界。」
+   ========================================================================= */
+
+/* ---------------------------------------------------------------------------
+   0. 出片模式：关掉所有 CSS transition
+   ----------------------------------------------------------------------------
+   class 驱动的状态（焦点色、亮度）靠 CSS transition 过渡 —— 在真实使用里这是对的，
+   但逐帧出片时它就成了不确定的来源：截图落在过渡的哪一帧，取决于机器快慢。
+   所以 render 模式下一律瞬变，状态一定是终值。
+
+   注意：只关 transition。世界漂移、雾带、写字全部是 WAAPI，不受影响。
+   ------------------------------------------------------------------------ */
+:root[data-render='1'] *,
+:root[data-render='1'] *::before,
+:root[data-render='1'] *::after {
+  transition: none !important;
+}
+
+/* ---------------------------------------------------------------------------
+   1. 舞台
+   ------------------------------------------------------------------------ */
+.v2-stage {
+  position: fixed;
+  inset: 0;
+  z-index: var(--sk-z-content);
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  column-gap: var(--sk-gutter);
+  /* 行：品牌(上) · 菜单(下) · 元信息(贴底) */
+  grid-template-rows: 20% 1fr auto;
+  padding: var(--sk-s6) 0 var(--sk-s5);
+  pointer-events: none; /* 世界层不需要点；只有下面的可交互元素开启 */
+
+  /* 字是落在**一张照片**上的，所以要一层极淡的暗晕把字托起来。
+     这是功能，不是装饰：世界图的下三分之一是浅色块体，不托底就有两个菜单项读不清。
+     刻意用"晕"而不是"底块/描边"—— 底块会把这一屏重新变回卡片式 UI（§15 禁止），
+     描边会给中文字形镶边，比背景发亮更难看。
+     和 world 层的左侧 scrim 是同一件事的两种尺度：scrim 管整体反差，它管个别笔画。 */
+  --v2-text-lift: 0 1px 10px rgba(6, 10, 16, 0.55), 0 0 3px rgba(6, 10, 16, 0.45);
+}
+
+.v2-stage > * {
+  pointer-events: auto;
+}
+
+/* 左三分之一。col 2 = 从第 2 栅起，避开最左一条与屏幕边缘的"贴边感"。 */
+.v2-brand {
+  grid-column: 2 / span 6;
+  grid-row: 1;
+  align-self: start;
+}
+
+.v2-nav {
+  grid-column: 2 / span 4;
+  grid-row: 2;
+  align-self: end;
+  padding-bottom: var(--sk-s6);
+}
+
+.v2-meta {
+  grid-column: 2 / span 5;
+  grid-row: 3;
+}
+
+/* ---------------------------------------------------------------------------
+   2. Logo
+   ----------------------------------------------------------------------------
+   §12：现有符号降权。它不再是屏幕正中的巨型装置，而是 Logo 的"世界标记"，
+   跟着文字一起待在左上角。§13：Logo 不占正中，且不许盖住最好的那段景色。
+   ------------------------------------------------------------------------ */
+.v2-brand__row {
+  display: flex;
+  align-items: center;
+  gap: var(--sk-s4);
+}
+
+/* 标记方框。
+   尺寸定在**外层 span**上，svg 只负责填满它 —— 这一点是必需的，不是风格选择：
+   启动时 markHome() 动的是这个 span 的 width/height（从交接尺寸 8vmin 缩回本位），
+   如果尺寸写在 svg 自己身上，span 缩小时 svg 不会跟着变，标记就会"飞回来但不变小"。
+   另外这个 span 必须 display:block，否则行内盒子的 height 动画无效。
+
+   **3.4vmin（900px 基准下 ≈30.6px）刻意远小于交接帧的 8vmin（72px）。**
+   标记飞回来时是"一边缩小一边就位"的 —— 那个缩小过程本身就是它从
+   "启动符号"降权成"Logo 的世界标记"（§12）。两边一样大就没有降权可读。
+   ========================================================================= */
+.v2-brand__mark {
+  display: block;
+  flex: none;
+  width: clamp(24px, 3.4vmin, 46px);
+  line-height: 0;
+}
+
+.v2-brand__mark svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* 品牌里的弧在交接帧就是**写完**的（arcProgress = 1），所以这里是 dashoffset 0。
+   Launcher 的标记才从 0 开始写（见 .v2-door__mark）。 */
+.v2-brand__mark .sk-mark__arc {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+
+.v2-brand__word {
+  /* 字距与它自己的补偿写在一起：宽字距会在最后一个字母后面留一个空档，
+     不补掉就不是真的左对齐（右边缘会空出半个字母）。改一个必须改另一个。 */
+  --wm: 0.30em;
+  font-family: var(--sk-font-serif);
+  font-size: var(--sk-fs-display);
+  font-weight: var(--sk-fw-regular);
+  letter-spacing: var(--wm);
+  line-height: var(--sk-lh-tight);
+  color: var(--sk-fg);
+  margin-right: calc(var(--wm) * -1);
+}
+
+.v2-brand__cn {
+  margin-top: var(--sk-s2);
+  font-family: var(--sk-font-serif);
+  font-size: var(--sk-fs-head);
+  /* 中文**不加宽字距**。英文加字距是排印传统，中文加字距会散架 ——
+     §21 说的"中文必须认真处理字重和字间距"，就是这个意思。 */
+  letter-spacing: 0.06em;
+  font-weight: var(--sk-fw-regular);
+  color: var(--sk-fg-dim);
+}
+
+/* 唯一允许的纯装饰元素，收得更短更淡（§D 金色预算） */
+.v2-brand__rule {
+  margin: var(--sk-s4) 0 var(--sk-s3);
+  width: 56px;
+  height: 1px;
+  background: linear-gradient(90deg, var(--sk-gold) 0%, var(--sk-gold-line) 62%, transparent 100%);
+  opacity: 0.75;
+  transform-origin: left center;
+}
+
+/* §22/PASS 03：副标题不在这一屏 —— 它是 Launcher 门上的题签，只出现一次。 */
+
+/* 所有"落在照片上的字"共用一层极淡暗晕。见 .v2-stage 里 --v2-text-lift 的说明。
+   集中成一条规则，是因为漏掉任何一处都会在那个位置单独读不清 ——
+   而"个别字读不清"很难被归因回阴影。 */
+.v2-brand__word,
+.v2-brand__cn,
+.v2-item,
+.v2-meta {
+  text-shadow: var(--v2-text-lift);
+}
+
+/* ---------------------------------------------------------------------------
+   3. 菜单
+   ----------------------------------------------------------------------------
+   §15：不是 Button Card，不是圆角矩形，不是边框盒子。默认就是**字**。
+   §16：选中 = 文字横移 4–8px + 一条线长出来 + 亮度变化，100–180ms。
+        禁止 scale(1.1) / 发光 / 浮起卡片。
+   ------------------------------------------------------------------------ */
+.v2-nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sk-s2);
+}
+
+.v2-item {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 0;
+  border: 0;
+  padding: var(--sk-s2) 0 var(--sk-s2) var(--sk-s5);
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  color: var(--sk-fg-dim);
+  font-family: var(--sk-font-serif);
+  transition: color var(--sk-t-fast) var(--sk-e-out);
+}
+
+/* 侧线 —— 选中标记。竖直长出来（scaleY），不改变线宽。
+   用"侧线"而不是"下划线"：世界是一张有内容的照片，字下的线很容易和背景里的
+   东西混在一起；压在文字**之前**的一条竖线在照片上永远读得出来。
+   全菜单共用这一套元素，不再每项各画一条渐变线。 */
+.v2-item__side {
+  position: absolute;
+  left: 0;
+  top: var(--sk-s2);
+  bottom: var(--sk-s2);
+  width: 1px;
+  background: var(--sk-gold);
+  transform: scaleY(0);
+  transform-origin: center center;
+  will-change: transform;
+}
+
+/* 文字包一层：焦点位移动的是**它**，进场动的是整个 .v2-item。
+   两者都改 transform，落在同一个元素上就会互相覆盖（WAAPI 的 transform
+   关键帧是整条属性替换）—— 分层是唯一干净的解法。 */
+.v2-item__text {
+  display: block;
+  will-change: transform;
+}
+
+.v2-item__cn {
+  display: block;
+  font-size: var(--sk-fs-title);
+  line-height: var(--sk-lh-tight);
+  letter-spacing: var(--sk-track-title);
+}
+
+/* 「继续游戏」的第二行：存档摘要。
+   这不是装饰 —— 它把这一屏从概念稿变成游戏（§18）。 */
+.v2-item__sub {
+  display: block;
+  margin-top: var(--sk-s2);
+  font-family: var(--sk-font-sans);
+  font-size: var(--sk-fs-small);
+  letter-spacing: var(--sk-track-body);
+  color: var(--sk-fg-ghost);
+  transition: color var(--sk-t-fast) var(--sk-e-out);
+}
+
+.v2-item__sep {
+  margin: 0 var(--sk-s2);
+  opacity: 0.5;
+}
+
+.v2-item__time {
+  font-family: var(--sk-font-num);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: var(--sk-track-figure);
+}
+
+.v2-item:hover,
+.v2-item.is-hover {
+  color: var(--sk-fg);
+}
+
+.v2-item:focus-visible,
+.v2-item.is-focus {
+  outline: none;
+  color: var(--sk-fg);
+}
+
+.v2-item:focus-visible .v2-item__sub,
+.v2-item.is-focus .v2-item__sub {
+  color: var(--sk-fg-meta);
+}
+
+/* §13/PASS 03：确认的第一帧反馈。选中项当场 resolve ——
+   字提到最亮、存档摘要跟着提一档。它是 class 状态不是动画：
+   反馈不许等动画，动画只跟着反馈走。 */
+.v2-item.is-resolve {
+  color: var(--sk-accent-hi);
+}
+
+.v2-item.is-resolve .v2-item__sub {
+  color: var(--sk-fg-meta);
+}
+
+/* §18：设置打开时菜单退到更暗一层（不是消失）—— 关掉就回来 */
+.v2-item.is-dimmed {
+  color: var(--sk-fg-ghost);
+}
+
+/* ---------------------------------------------------------------------------
+   4. 元信息
+   ----------------------------------------------------------------------------
+   §7：正式玩家不需要看小标签。所以这里**没有**健康度、没有版本号堆、
+   没有坐标、没有状态文案。只有版本号一项，且极小。
+   开发模式与设置是**入口**，不是信息 —— 它们留在这一行的最右边。
+   ------------------------------------------------------------------------ */
+.v2-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--sk-s3);
+  font-family: var(--sk-font-num);
+  font-size: var(--sk-fs-micro);
+  letter-spacing: var(--sk-track-wide);
+  text-transform: uppercase;
+  color: var(--sk-fg-ghost);
+}
+
+.v2-meta__sep {
+  opacity: 0.45;
+}
+
+.v2-meta__btn {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  cursor: pointer;
+  transition: color var(--sk-t-fast) var(--sk-e-out);
+}
+
+.v2-meta__btn:hover,
+.v2-meta__btn.is-hover,
+.v2-meta__btn:focus-visible {
+  outline: none;
+  color: var(--sk-fg-meta);
+}
+
+/* 开发目标：默认收起（§7 "Developer Mode 可以另外打开"） */
+.v2-dev {
+  display: flex;
+  gap: var(--sk-s4);
+  margin-top: var(--sk-s3);
+  font-family: var(--sk-font-num);
+  font-size: var(--sk-fs-micro);
+  letter-spacing: var(--sk-track-wide);
+  text-transform: uppercase;
+  color: var(--sk-fg-ghost);
+}
+
+/* ---------------------------------------------------------------------------
+   5. Launcher —— 它只是门
+   ----------------------------------------------------------------------------
+   §6/§8：黑 → 标记 → 一条门缝 → 进入。没有品牌序列、没有圆环、没有载入条。
+   ------------------------------------------------------------------------ */
+.v2-door {
+  position: fixed;
+  inset: 0;
+  z-index: var(--sk-z-content);
+  pointer-events: none;
+}
+
+/* 标记：**绝对居中**。
+   交接帧要求它的中心在屏幕正中，而 flow 布局只能保证盒子的边 ——
+   差半个尺寸就是"没对上"，而那一帧是要逐像素验收的。
+   尺寸 = HANDOFF.markSideVmin（8vmin），夹取上下限与 handoff.js 一致。 */
+.v2-door__mark {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  width: clamp(44px, 8vmin, 92px);
+  line-height: 0;
+  pointer-events: none;
+}
+
+.v2-door__mark svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* 启动时弧是"写"出来的 —— 交接帧之前它就是未写完的状态 */
+.v2-door__mark .sk-mark__arc {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+
+/* 点：从很小胀到本体。transform-box 必须显式设成 fill-box，
+   否则 SVG 里 CSS transform 的原点是用户坐标系原点，点会绕着画布左上角缩放。 */
+.v2-door__mark .sk-mark__dot {
+  transform-box: fill-box;
+  transform-origin: center center;
+  transform: scale(0.2);
+}
+
+/* §A1（PASS 03）：题签 —— SEKAI + 副标题。门的三件主要信息里的两件。
+   它必须在 launch 时随门一起合上：交接帧的合同是"void + 居中标记"，
+   多一个字都是违约（见 launcher_v2.js 的 launch()）。 */
+.v2-door__title {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: calc(50% + var(--door-title-gap, clamp(64px, 11vmin, 120px)));
+  text-align: center;
+  pointer-events: none;
+}
+
+.v2-door__title-name {
+  font-family: var(--sk-font-serif);
+  font-size: var(--sk-fs-head);
+  letter-spacing: 0.30em;
+  margin-right: -0.30em; /* 宽字距补偿：不然右边缘空出半个字母，"居中"是假的 */
+  color: var(--sk-fg);
+}
+
+.v2-door__title-sub {
+  margin-top: var(--sk-s2);
+  font-family: var(--sk-font-num);
+  font-size: var(--sk-fs-micro);
+  letter-spacing: var(--sk-track-wide);
+  text-transform: uppercase;
+  color: var(--sk-fg-meta);
+}
+
+/* 门缝与「进入世界」：压在标记下方的一段。用 fixed + calc 而不是 flex 居中，
+   因为标记是 fixed 居中的，两者必须共用同一个"屏幕中心"这个参照物。 */
+.v2-door__col {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: calc(50% + var(--door-gap));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sk-s5);
+  pointer-events: auto;
+}
+
+.v2-door {
+  --door-gap: clamp(56px, 9.6vmin, 104px);
+}
+
+/* 门缝。一条被写出来的横线，比标记窄。
+   §9 那条"切开画面的线"在主菜单里；这里的这一条是同一套语言的更小一次出现，
+   作用是给「进入」一个可读的位置，不是装饰。 */
+.v2-door__seam {
+  display: block;
+  width: clamp(120px, 18vmin, 200px);
+  height: 2px;
+  overflow: visible;
+}
+
+.v2-door__seam path {
+  fill: none;
+  stroke: var(--sk-gold);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  opacity: 0.8;
+}
+
+/* §A3（PASS 03）：不是 CTA 卡，是 typography + focus line。
+   hover = 亮度 + 4px 位移 + 底下一条线 reveal。140ms，全站统一。 */
+.v2-door__enter {
+  position: relative;
+  border: 0;
+  margin: 0;
+  padding: var(--sk-s2) 0;
+  background: none;
+  color: var(--sk-fg-dim);
+  font-family: var(--sk-font-serif);
+  font-size: var(--sk-fs-head);
+  letter-spacing: var(--sk-track-title);
+  cursor: pointer;
+  transition: color var(--sk-t-fast) var(--sk-e-out), transform var(--sk-t-fast) var(--sk-e-out);
+  will-change: transform;
+}
+
+.v2-door__enter:hover,
+.v2-door__enter.is-hover,
+.v2-door__enter:focus-visible {
+  outline: none;
+  color: var(--sk-accent-hi);
+  transform: translateX(4px);
+}
+
+/* 焦点线：悬停/聚焦才长出来（scaleX），不是常驻的装饰下划线。 */
+.v2-door__enter-line {
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  bottom: 0;
+  height: 1px;
+  background: var(--sk-gold);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--sk-t-fast) var(--sk-e-out);
+}
+
+.v2-door__enter:hover .v2-door__enter-line,
+.v2-door__enter.is-hover .v2-door__enter-line,
+.v2-door__enter:focus-visible .v2-door__enter-line {
+  transform: scaleX(1);
+}
+
+.v2-door__enter[disabled] {
+  color: var(--sk-fg-ghost);
+  cursor: default;
+}
+
+/* §A1（PASS 03）：次级信息去**极角落** —— 右下，垂直书写会太"设计"，
+   就是一行极小的字贴着角。它不参与视觉层级。 */
+.v2-door__meta {
+  position: fixed;
+  right: var(--sk-s4);
+  bottom: var(--sk-s3);
+  display: flex;
+  align-items: center;
+  gap: var(--sk-s3);
+  font-family: var(--sk-font-num);
+  font-size: var(--sk-fs-micro);
+  letter-spacing: var(--sk-track-wide);
+  text-transform: uppercase;
+  color: var(--sk-fg-ghost);
+  pointer-events: auto;
+}
+
+.v2-door__dev {
+  position: fixed;
+  left: var(--sk-s4);
+  bottom: var(--sk-s3);
+  display: flex;
+  gap: var(--sk-s4);
+  font-family: var(--sk-font-num);
+  font-size: var(--sk-fs-micro);
+  letter-spacing: var(--sk-track-wide);
+  text-transform: uppercase;
+  color: var(--sk-fg-ghost);
+  pointer-events: auto;
+}
+
+/* ---------------------------------------------------------------------------
+   6. 失败 —— 说清楚，不撒谎，也不无限等待（§44）
+   ------------------------------------------------------------------------ */
+.v2-failure {
+  position: fixed;
+  left: var(--sk-gutter);
+  bottom: var(--sk-s8);
+  max-width: min(520px, 40vw);
+  font-family: var(--sk-font-sans);
+  font-size: var(--sk-fs-small);
+  color: var(--sk-alert);
+}
+
+.v2-failure__detail {
+  margin-top: var(--sk-s2);
+  font-family: var(--sk-font-num);
+  font-size: var(--sk-fs-micro);
+  color: var(--sk-fg-meta);
+  word-break: break-word;
+}
+
+/* ---------------------------------------------------------------------------
+   7. 进入世界 / 退出世界时，UI 自己先退场
+   ------------------------------------------------------------------------ */
+.v2-enter-note {
+  position: fixed;
+  left: var(--sk-gutter);
+  bottom: var(--sk-s5);
+  font-family: var(--sk-font-num);
+  font-size: var(--sk-fs-micro);
+  letter-spacing: var(--sk-track-wide);
+  text-transform: uppercase;
+  color: var(--sk-fg-meta);
+}
+
+/* §15 / PASS 05：loading 语言已统一到 components/loading_glyph.css。
+   这里曾有一条 `.v2-load` 特例线，与加载符号同处左下同一位置；
+   两个元素同时出现时细线会压在标签上（截图里标签顶部多出一串重影字）。
+   特例已删除 —— 等待只由那一个组件书写。
+
+   版本行让位：加载符号的 left 变体与 `.v2-meta` 压在**同一条栅格线**上，
+   两者同时可见时细线横穿版本号（0.3.0-ui01 会被读成一串乱码）。
+   组件在书写期间于 <body> 上发布 `data-loading="1"`，页面在这里决定谁退场 ——
+   同一时刻只说一件事。用 CSS transition 而不是补间动画：这样它天然让位于
+   进入序列里那条本来就存在的 meta 补间（动画优先于过渡，不会互相顶撞），
+   也不会在转场结束时把本该消失的 meta 又淡回来。 */
+.v2-meta {
+  transition: opacity 220ms var(--sk-e-out);
+}
+
+body[data-loading='1'] .v2-meta {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .v2-meta {
+    transition: none;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   8. 设置（§H）—— 覆盖左区，世界继续在后面动
+   ----------------------------------------------------------------------------
+   不是另一套页面：与 Logo / 菜单同一条栅格对齐线（gutter 起步）。
+   无卡片、无玻璃板、无 dashboard —— 排版行 + hair 分隔线，完事。
+   行的交互与菜单完全同构：is-focus = 提亮，←→ 调值。
+   ------------------------------------------------------------------------ */
+.v2-settings {
+  position: fixed;
+  z-index: var(--sk-z-content);
+  left: var(--sk-gutter);
+  top: 24%;
+  width: min(36vw, 560px);
+  pointer-events: none;
+}
+
+.v2-settings__title {
+  margin: 0 0 var(--sk-s4);
+  font-family: var(--sk-font-serif);
+  font-size: var(--sk-fs-head);
+  letter-spacing: 0.06em;
+  font-weight: var(--sk-fw-regular);
+  color: var(--sk-fg);
+  text-shadow: var(--v2-text-lift);
+}
+
+.v2-settings__rows {
+  display: flex;
+  flex-direction: column;
+}
+
+.v2-setrow {
+  display: flex;
+  align-items: center;
+  gap: var(--sk-s4);
+  padding: var(--sk-s3) 0;
+  border-bottom: 1px solid var(--sk-line); /* divider · hair —— 分隔是功能 */
+  color: var(--sk-fg-dim);
+  cursor: default;
+  transition: color var(--sk-t-fast) var(--sk-e-out);
+  text-shadow: var(--v2-text-lift);
+}
+
+.v2-setrow.is-focus {
+  color: var(--sk-fg);
+}
+
+.v2-setrow__cn {
+  flex: none;
+  width: 4.5em;
+  font-family: var(--sk-font-serif);
+  font-size: var(--sk-fs-body);
+  letter-spacing: var(--sk-track-body);
+}
+
+.v2-setrow__val {
+  display: flex;
+  align-items: center;
+  gap: var(--sk-s3);
+  flex: 1;
+}
+
+/* 值条：一条 hair 上的一段填充。不是滑杆控件 —— 设置在这里只有"看+调"，
+   没有拖拽；调值是 ←→ 键（§G17），和手柄同构。 */
+.v2-setrow__bar {
+  position: relative;
+  flex: 1;
+  height: 1px;
+  background: rgba(237, 228, 211, 0.16);
+}
+
+.v2-setrow__barfill {
+  position: absolute;
+  inset: 0;
+  background: var(--sk-gold);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 120ms var(--sk-e-out);
+}
+
+.v2-setrow.is-focus .v2-setrow__barfill {
+  background: var(--sk-gold-bright, var(--sk-gold));
+}
+
+.v2-setrow__num {
+  flex: none;
+  min-width: 3ch;
+  text-align: right;
+  font-family: var(--sk-font-num);
+  font-size: var(--sk-fs-small);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: var(--sk-track-figure);
+  color: var(--sk-fg-meta);
+}
+
+.v2-setrow.is-focus .v2-setrow__num {
+  color: var(--sk-fg);
+}
+
+.v2-settings__hint {
+  margin: var(--sk-s4) 0 0;
+  font-family: var(--sk-font-sans);
+  font-size: var(--sk-fs-micro);
+  letter-spacing: var(--sk-track-body);
+  /* ghost 在这片浅色灰盒上会彻底消失 —— 提示是功能（玩家要知道怎么操作），
+     不是落款，所以给 meta 而不是 ghost。 */
+  color: var(--sk-fg-meta);
+  text-shadow: var(--v2-text-lift);
+}
+
+/* ---------------------------------------------------------------------------
+   9. 窄屏兜底
+   ------------------------------------------------------------------------ */
+@media (max-width: 1100px) {
+  .v2-brand {
+    grid-column: 1 / span 10;
+  }
+  .v2-nav {
+    grid-column: 1 / span 6;
+  }
+  .v2-meta {
+    grid-column: 1 / span 8;
+  }
+  .v2-settings {
+    width: min(80vw, 560px);
+  }
+  .v2-stage {
+    padding-left: var(--sk-s4);
+    padding-right: var(--sk-s4);
+  }
+}

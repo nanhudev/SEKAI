@@ -1,0 +1,408 @@
+{
+ "/Niagara/Modules/Update/Color/Color": {
+  "inputs": [
+   {
+    "name": "Color",
+    "visible": null,
+    "editable": null,
+    "dynamic": null,
+    "staticSwitch": null,
+    "type": "/Script/CoreUObject.LinearColor"
+   },
+   {
+    "name": "Scale Color",
+    "visible": null,
+    "editable": null,
+    "dynamic": null,
+    "staticSwitch": null,
+    "type": "/Script/CoreUObject.Vector3f"
+   },
+   {
+    "name": "Scale Alpha",
+    "visible": null,
+    "editable": null,
+    "dynamic": null,
+    "staticSwitch": null,
+    "type": "/Script/Niagara.NiagaraFloat"
+   }
+  ]
+ },
+ "/Niagara/Modules/Update/Color/ScaleColor": {
+  "inputs": [
+   {
+    "name": "Color Value To Scale",
+    "visible": null,
+    "editable": null,
+    "dynamic": null,
+    "staticSwitch": null,
+    "type": "/Script/CoreUObject.LinearColor"
+   },
+   {
+    "name": "Scale RGB",
+    "visible": null,
+    "editable": null,
+    "dynamic": null,
+    "staticSwitch": null,
+    "type": "/Script/CoreUObject.Vector3f"
+   },
+   {
+    "name": "Scale Alpha",
+    "visible": null,
+    "editable": null,
+    "dynamic": null,
+    "staticSwitch": null,
+    "type": "/Script/Niagara.NiagaraFloat"
+   }
+  ]
+ },
+ "/Niagara/Modules/Update/Size/ScaleSpriteSize": {
+  "inputs": [
+   {
+    "name": "Initial Sprite Size",
+    "visible": null,
+    "editable": null,
+    "dynamic": null,
+    "staticSwitch": null,
+    "type": "/Script/CoreUObject.Vector2f"
+   },
+   {
+    "name": "Uniform Scale Factor",
+    "visible": null,
+    "editable": null,
+    "dynamic": null,
+    "staticSwitch": null,
+    "type": "/Script/Niagara.NiagaraFloat"
+   }
+  ]
+ },
+ "/Niagara/Modules/Update/Size/ScaleMeshSize": {
+  "inputs": [
+   {
+    "name": "Initial Mesh Scale",
+    "visible": null,
+    "editable": null,
+    "dynamic": null,
+    "staticSwitch": null,
+    "type": "/Script/CoreUObject.Vector3f"
+   },
+   {
+    "name": "Scale Factor",
+    "visible": null,
+    "editable": null,
+    "dynamic": null,
+    "staticSwitch": null,
+    "type": "/Script/CoreUObject.Vector3f"
+   }
+  ]
+ },
+ "/Niagara/Modules/Ribbons/RibbonWidth": {
+  "inputs": [
+   {
+    "name": "Ribbon Width",
+    "visible": null,
+    "editable": null,
+    "dynamic": null,
+    "staticSwitch": null,
+    "type": "/Script/Niagara.NiagaraFloat"
+   },
+   {
+    "name": "Beam Twist Amount",
+    "visible": null,
+    "editable": null,
+    "dynamic": null,
+    "staticSwitch": null,
+    "type": "/Script/Niagara.NiagaraFloat"
+   }
+  ]
+ },
+ "/Niagara/Modules/Solvers/SolveForcesAndVelocity": {
+  "inputs": [
+   {
+    "name": "DeltaTime",
+    "visible": null,
+    "editable": null,
+    "dynamic": null,
+    "staticSwitch": null,
+    "type": "/Script/Niagara.NiagaraFloat"
+   },
+   {
+    "name": "Force",
+    "visible": null,
+    "editable": null,
+    "dynamic": null,
+    "staticSwitch": null,
+    "type": "/Script/CoreUObject.Vector3f"
+   },
+   {
+    "name": "Velocity",
+    "visible": null,
+    "editable": null,
+    "dynamic": null,
+    "staticSwitch": null,
+    "type": "/Script/CoreUObject.Vector3f"
+   },
+   {
+    "name": "Mass",
+    "visible": null,
+    "editable": null,
+    "dynamic": null,
+    "staticSwitch": null,
+    "type": "/Script/Niagara.NiagaraFloat"
+   },
+   {
+    "name": "Position",
+    "visible": null,
+    "editable": null,
+    "dynamic": null,
+    "staticSwitch": null,
+    "type": "/Script/Niagara.NiagaraPosition"
+   },
+   {
+    "name": "Speed Limit",
+    "visible": null,
+    "editable": null,
+    "dynamic": null,
+    "staticSwitch": null,
+    "type": "/Script/Niagara.NiagaraFloat"
+   },
+   {
+    "name": "PreviousVelocity",
+    "visible": null,
+    "editable": null,
+    "dynamic": null,
+    "staticSwitch": null,
+    "type": "/Script/CoreUObject.Vector3f"
+   },
+   {
+    "name": "Acceleration Limit",
+    "visible": null,
+    "editable": null,
+    "dynamic": null,
+    "staticSwitch": null,
+    "type": "/Script/Niagara.NiagaraFloat"
+   },
+   {
+    "name": "Write to Intrinsic Properties",
+    "visible": null,
+    "editable": null,
+    "dynamic": null,
+    "staticSwitch": null,
+    "type": "/Script/Niagara.NiagaraBool"
+   },
+   {
+    "name": "Manually Enable Rotational Solver",
+    "visible": null,
+    "editable": null,
+    "dynamic": null,
+    "staticSwitch": null,
+    "type": "/Script/Niagara.NiagaraBool"
+   }
+  ]
+ },
+ "ScaleColor_as_added": [
+  {
+   "name": "Scale Mode",
+   "visible": true,
+   "editable": true,
+   "dynamic": false,
+   "staticSwitch": true,
+   "type": "/Script/Niagara.NiagaraInt32"
+  },
+  {
+   "name": "Linear Color Curve",
+   "visible": false,
+   "editable": false,
+   "dynamic": false,
+   "staticSwitch": false,
+   "type": "/Script/Niagara.NiagaraDataInterfaceColorCurve"
+  },
+  {
+   "name": "ScaleRGB",
+   "visible": true,
+   "editable": true,
+   "dynamic": false,
+   "staticSwitch": false,
+   "type": "/Script/Niagara.NiagaraBool"
+  },
+  {
+   "name": "Scale RGB",
+   "visible": true,
+   "editable": true,
+   "dynamic": false,
+   "staticSwitch": false,
+   "type": "/Script/CoreUObject.Vector3f"
+  },
+  {
+   "name": "ScaleRGBA",
+   "visible": false,
+   "editable": false,
+   "dynamic": false,
+   "staticSwitch": false,
+   "type": "/Script/Niagara.NiagaraBool"
+  },
+  {
+   "name": "Scale RGBA",
+   "visible": false,
+   "editable": false,
+   "dynamic": false,
+   "staticSwitch": false,
+   "type": "/Script/CoreUObject.Vector4f"
+  },
+  {
+   "name": "Curve Index",
+   "visible": false,
+   "editable": false,
+   "dynamic": false,
+   "staticSwitch": false,
+   "type": "/Script/Niagara.NiagaraFloat"
+  },
+  {
+   "name": "ScaleA",
+   "visible": true,
+   "editable": true,
+   "dynamic": false,
+   "staticSwitch": false,
+   "type": "/Script/Niagara.NiagaraBool"
+  },
+  {
+   "name": "Scale Alpha",
+   "visible": true,
+   "editable": true,
+   "dynamic": false,
+   "staticSwitch": false,
+   "type": "/Script/Niagara.NiagaraFloat"
+  },
+  {
+   "name": "Color Value To Scale",
+   "visible": true,
+   "editable": true,
+   "dynamic": false,
+   "staticSwitch": false,
+   "type": "/Script/CoreUObject.LinearColor"
+  },
+  {
+   "name": "Color Scale",
+   "visible": false,
+   "editable": false,
+   "dynamic": false,
+   "staticSwitch": false,
+   "type": "/Script/CoreUObject.LinearColor"
+  }
+ ],
+ "ScaleColor_after_gate": [
+  {
+   "name": "Scale Mode",
+   "visible": true,
+   "editable": true,
+   "dynamic": false,
+   "staticSwitch": true,
+   "type": "/Script/Niagara.NiagaraInt32"
+  },
+  {
+   "name": "Linear Color Curve",
+   "visible": false,
+   "editable": false,
+   "dynamic": false,
+   "staticSwitch": false,
+   "type": "/Script/Niagara.NiagaraDataInterfaceColorCurve"
+  },
+  {
+   "name": "ScaleRGB",
+   "visible": true,
+   "editable": true,
+   "dynamic": false,
+   "staticSwitch": false,
+   "type": "/Script/Niagara.NiagaraBool"
+  },
+  {
+   "name": "Scale RGB",
+   "visible": true,
+   "editable": true,
+   "dynamic": false,
+   "staticSwitch": false,
+   "type": "/Script/CoreUObject.Vector3f"
+  },
+  {
+   "name": "ScaleRGBA",
+   "visible": false,
+   "editable": false,
+   "dynamic": false,
+   "staticSwitch": false,
+   "type": "/Script/Niagara.NiagaraBool"
+  },
+  {
+   "name": "Scale RGBA",
+   "visible": false,
+   "editable": false,
+   "dynamic": false,
+   "staticSwitch": false,
+   "type": "/Script/CoreUObject.Vector4f"
+  },
+  {
+   "name": "Curve Index",
+   "visible": false,
+   "editable": false,
+   "dynamic": false,
+   "staticSwitch": false,
+   "type": "/Script/Niagara.NiagaraFloat"
+  },
+  {
+   "name": "ScaleA",
+   "visible": true,
+   "editable": true,
+   "dynamic": false,
+   "staticSwitch": false,
+   "type": "/Script/Niagara.NiagaraBool"
+  },
+  {
+   "name": "Scale Alpha",
+   "visible": true,
+   "editable": true,
+   "dynamic": false,
+   "staticSwitch": false,
+   "type": "/Script/Niagara.NiagaraFloat"
+  },
+  {
+   "name": "Color Value To Scale",
+   "visible": true,
+   "editable": true,
+   "dynamic": false,
+   "staticSwitch": false,
+   "type": "/Script/CoreUObject.LinearColor"
+  },
+  {
+   "name": "Color Scale",
+   "visible": false,
+   "editable": false,
+   "dynamic": false,
+   "staticSwitch": false,
+   "type": "/Script/CoreUObject.LinearColor"
+  }
+ ],
+ "Color_as_added": [
+  {
+   "name": "Color",
+   "visible": true,
+   "editable": true,
+   "dynamic": false,
+   "staticSwitch": false,
+   "type": "/Script/CoreUObject.LinearColor"
+  },
+  {
+   "name": "Scale Color",
+   "visible": true,
+   "editable": true,
+   "dynamic": false,
+   "staticSwitch": false,
+   "type": "/Script/CoreUObject.Vector3f"
+  },
+  {
+   "name": "Scale Alpha",
+   "visible": true,
+   "editable": true,
+   "dynamic": false,
+   "staticSwitch": false,
+   "type": "/Script/Niagara.NiagaraFloat"
+  }
+ ]
+}

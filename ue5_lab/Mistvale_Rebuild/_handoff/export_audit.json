@@ -1,0 +1,4151 @@
+{
+ "source": "F:/SEKAI/ue5_lab/Mistvale_Rebuild/_handoff/mistvale_current.fbx",
+ "mesh_objects": 226,
+ "non_mesh_objects": 17,
+ "non_mesh_names": [
+  "AbstractNavData-Default",
+  "BuoyancyManager0",
+  "C01_SouthReveal",
+  "C02_RiverHero",
+  "C03_MainBridge",
+  "C04_Market",
+  "C05_Guild",
+  "C06_Church",
+  "C07_RooftopDensity",
+  "C08_NorthGate",
+  "C10_WalkStreet",
+  "ClearDay_Atmosphere",
+  "ClearDay_Sky",
+  "ClearDay_Sun",
+  "GameplayDebuggerPlayerManager0",
+  "PlayerStart_MistvaleSouth",
+  "WorldSettings"
+ ],
+ "verts": 214308,
+ "tris": 281342,
+ "bbox_min": [
+  -252.007,
+  -353.019,
+  -3.222
+ ],
+ "bbox_max": [
+  252.003,
+  353.007,
+  43.943
+ ],
+ "size": [
+  504.01,
+  706.026,
+  47.166
+ ],
+ "materials": 22,
+ "material_names": [
+  "MV_Bridge_ArchVoussoir",
+  "MV_Bridge_Coping",
+  "MV_Bridge_CreamLimestone",
+  "MV_Bridge_Paving",
+  "MV_Bridge_WetStone",
+  "MV_Guild_AmberTrim",
+  "MV_Guild_DarkOak",
+  "MV_Guild_Glass",
+  "MV_Guild_IvoryPlaster",
+  "MV_Guild_RoofEdge",
+  "MV_Guild_SlateTeal",
+  "MV_Guild_WarmStone",
+  "M_House_Clay",
+  "M_House_Moss",
+  "M_House_Russet",
+  "M_House_Slate",
+  "M_River_Surface_Proxy_01",
+  "M_River_Track_01",
+  "M_Town_Road_01",
+  "M_Valley_Grass_01",
+  "M_Weathered_Stone_01",
+  "WorldGridMaterial"
+ ],
+ "images": 2,
+ "image_names": [
+  "Render Result",
+  "Viewer Node"
+ ],
+ "objects": [
+  {
+   "name": "CornerBuilding_01",
+   "verts": 9363,
+   "tris": 11031,
+   "min": [
+    -78.985,
+    -100.803,
+    14.909
+   ],
+   "max": [
+    -64.596,
+    -91.893,
+    22.781
+   ],
+   "materials": [
+    "M_House_Clay"
+   ]
+  },
+  {
+   "name": "CornerBuilding_02",
+   "verts": 9363,
+   "tris": 11031,
+   "min": [
+    60.481,
+    -84.482,
+    13.899
+   ],
+   "max": [
+    73.911,
+    -76.167,
+    21.246
+   ],
+   "materials": [
+    "M_House_Russet"
+   ]
+  },
+  {
+   "name": "CornerBuilding_03",
+   "verts": 9363,
+   "tris": 11031,
+   "min": [
+    -76.519,
+    -219.482,
+    20.96
+   ],
+   "max": [
+    -63.089,
+    -211.167,
+    28.308
+   ],
+   "materials": [
+    "M_House_Slate"
+   ]
+  },
+  {
+   "name": "CornerBuilding_04",
+   "verts": 9363,
+   "tris": 11031,
+   "min": [
+    67.755,
+    -232.623,
+    22.086
+   ],
+   "max": [
+    82.144,
+    -223.713,
+    29.958
+   ],
+   "materials": [
+    "M_House_Moss"
+   ]
+  },
+  {
+   "name": "CornerBuilding_05",
+   "verts": 9363,
+   "tris": 11031,
+   "min": [
+    -141.382,
+    149.237,
+    3.025
+   ],
+   "max": [
+    -124.115,
+    159.929,
+    12.472
+   ],
+   "materials": [
+    "M_House_Clay"
+   ]
+  },
+  {
+   "name": "CornerBuilding_06",
+   "verts": 9363,
+   "tris": 11031,
+   "min": [
+    107.549,
+    126.877,
+    6.372
+   ],
+   "max": [
+    122.898,
+    136.381,
+    14.768
+   ],
+   "materials": [
+    "M_House_Russet"
+   ]
+  },
+  {
+   "name": "CornerBuilding_07",
+   "verts": 9363,
+   "tris": 11031,
+   "min": [
+    -100.519,
+    -26.482,
+    8.971
+   ],
+   "max": [
+    -87.089,
+    -18.167,
+    16.318
+   ],
+   "materials": [
+    "M_House_Slate"
+   ]
+  },
+  {
+   "name": "CornerBuilding_08",
+   "verts": 9363,
+   "tris": 11031,
+   "min": [
+    75.015,
+    -42.803,
+    9.892
+   ],
+   "max": [
+    89.404,
+    -33.893,
+    17.764
+   ],
+   "materials": [
+    "M_House_Moss"
+   ]
+  },
+  {
+   "name": "HERO_Church_Nave",
+   "verts": 9363,
+   "tris": 11031,
+   "min": [
+    107.032,
+    -220.688,
+    20.809
+   ],
+   "max": [
+    122.613,
+    -195.525,
+    34.575
+   ],
+   "materials": [
+    "M_House_Clay"
+   ]
+  },
+  {
+   "name": "HERO_MainInn",
+   "verts": 9363,
+   "tris": 11031,
+   "min": [
+    29.871,
+    -88.91,
+    14.111
+   ],
+   "max": [
+    48.657,
+    -77.278,
+    24.388
+   ],
+   "materials": [
+    "M_House_Clay"
+   ]
+  },
+  {
+   "name": "ART_Surface_SM_Route_GoldenRoute_Town",
+   "verts": 4280,
+   "tris": 7476,
+   "min": [
+    -32.579,
+    -330.0,
+    7.643
+   ],
+   "max": [
+    2.6,
+    55.648,
+    27.431
+   ],
+   "materials": [
+    "M_Town_Road_01"
+   ]
+  },
+  {
+   "name": "HERO_Church_BellTower",
+   "verts": 3226,
+   "tris": 4805,
+   "min": [
+    111.165,
+    -229.214,
+    21.683
+   ],
+   "max": [
+    119.695,
+    -219.978,
+    43.943
+   ],
+   "materials": [
+    "M_House_Slate"
+   ]
+  },
+  {
+   "name": "HERO_NorthGate_Left",
+   "verts": 3226,
+   "tris": 4805,
+   "min": [
+    -12.29,
+    -286.451,
+    24.36
+   ],
+   "max": [
+    -5.71,
+    -279.327,
+    33.155
+   ],
+   "materials": [
+    "M_House_Clay"
+   ]
+  },
+  {
+   "name": "HERO_NorthGate_Right",
+   "verts": 3226,
+   "tris": 4805,
+   "min": [
+    5.71,
+    -286.451,
+    24.682
+   ],
+   "max": [
+    12.29,
+    -279.327,
+    33.477
+   ],
+   "materials": [
+    "M_House_Moss"
+   ]
+  },
+  {
+   "name": "ART_Surface_SM_Route_RiversideStreet",
+   "verts": 2670,
+   "tris": 4440,
+   "min": [
+    -174.234,
+    111.4,
+    3.81
+   ],
+   "max": [
+    155.057,
+    142.583,
+    6.492
+   ],
+   "materials": [
+    "M_River_Track_01"
+   ]
+  },
+  {
+   "name": "ART_Surface_SM_Route_GoldenRoute_South",
+   "verts": 2224,
+   "tris": 3878,
+   "min": [
+    -9.6,
+    114.64,
+    0.401
+   ],
+   "max": [
+    8.6,
+    320.031,
+    5.883
+   ],
+   "materials": [
+    "M_Town_Road_01"
+   ]
+  },
+  {
+   "name": "ART_Surface_SM_Route_LowerMarketLoop",
+   "verts": 2118,
+   "tris": 3520,
+   "min": [
+    -91.536,
+    -138.644,
+    9.874
+   ],
+   "max": [
+    -19.374,
+    -36.861,
+    15.995
+   ],
+   "materials": [
+    "M_Town_Road_01"
+   ]
+  },
+  {
+   "name": "ART_Surface_SM_Route_UpperResidential",
+   "verts": 1950,
+   "tris": 3240,
+   "min": [
+    -85.498,
+    -254.631,
+    16.484
+   ],
+   "max": [
+    82.373,
+    -159.309,
+    23.176
+   ],
+   "materials": [
+    "M_Town_Road_01"
+   ]
+  },
+  {
+   "name": "MainStoneBridge_DECK",
+   "verts": 1962,
+   "tris": 3015,
+   "min": [
+    -4.787,
+    65.527,
+    0.539
+   ],
+   "max": [
+    4.787,
+    104.34,
+    8.165
+   ],
+   "materials": [
+    "MV_Bridge_CreamLimestone",
+    "MV_Bridge_Paving",
+    "MV_Bridge_WetStone",
+    "MV_Bridge_ArchVoussoir",
+    "MV_Bridge_Coping"
+   ]
+  },
+  {
+   "name": "ART_Surface_SM_Plaza_MarketSquare",
+   "verts": 1432,
+   "tris": 2696,
+   "min": [
+    -15.0,
+    -116.0,
+    14.166
+   ],
+   "max": [
+    15.0,
+    -84.0,
+    15.477
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Surface_SM_Plaza_GuildForecourt",
+   "verts": 1316,
+   "tris": 2484,
+   "min": [
+    -40.0,
+    -180.0,
+    16.189
+   ],
+   "max": [
+    -20.0,
+    -146.0,
+    17.999
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Surface_SM_Route_MarketEastLoop",
+   "verts": 1488,
+   "tris": 2470,
+   "min": [
+    22.402,
+    -133.573,
+    13.144
+   ],
+   "max": [
+    74.594,
+    -70.434,
+    15.871
+   ],
+   "materials": [
+    "M_Town_Road_01"
+   ]
+  },
+  {
+   "name": "HERO_DockWarehouse",
+   "verts": 1817,
+   "tris": 2438,
+   "min": [
+    -117.046,
+    111.96,
+    5.071
+   ],
+   "max": [
+    -96.194,
+    125.12,
+    13.171
+   ],
+   "materials": [
+    "M_House_Slate"
+   ]
+  },
+  {
+   "name": "HERO_NorthGate_Lintel",
+   "verts": 1322,
+   "tris": 2152,
+   "min": [
+    -7.572,
+    -284.446,
+    24.576
+   ],
+   "max": [
+    5.654,
+    -281.905,
+    35.718
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "HERO_Guild_HorizontalHall",
+   "verts": 1530,
+   "tris": 2094,
+   "min": [
+    -73.325,
+    -178.899,
+    16.738
+   ],
+   "max": [
+    -39.179,
+    -152.61,
+    36.963
+   ],
+   "materials": [
+    "MV_Guild_WarmStone",
+    "MV_Guild_IvoryPlaster",
+    "MV_Guild_DarkOak",
+    "MV_Guild_SlateTeal",
+    "MV_Guild_RoofEdge",
+    "MV_Guild_AmberTrim",
+    "MV_Guild_Glass"
+   ]
+  },
+  {
+   "name": "InfillBuilding_01",
+   "verts": 1341,
+   "tris": 1667,
+   "min": [
+    -21.915,
+    42.113,
+    8.74
+   ],
+   "max": [
+    -12.315,
+    49.942,
+    17.385
+   ],
+   "materials": [
+    "M_House_Russet"
+   ]
+  },
+  {
+   "name": "InfillBuilding_04",
+   "verts": 1341,
+   "tris": 1667,
+   "min": [
+    14.085,
+    20.113,
+    9.359
+   ],
+   "max": [
+    23.685,
+    27.942,
+    18.004
+   ],
+   "materials": [
+    "M_House_Clay"
+   ]
+  },
+  {
+   "name": "InfillBuilding_06",
+   "verts": 1341,
+   "tris": 1667,
+   "min": [
+    26.194,
+    -35.801,
+    9.481
+   ],
+   "max": [
+    35.581,
+    -28.145,
+    17.935
+   ],
+   "materials": [
+    "M_House_Slate"
+   ]
+  },
+  {
+   "name": "InfillBuilding_09",
+   "verts": 1341,
+   "tris": 1667,
+   "min": [
+    -20.915,
+    -270.887,
+    23.331
+   ],
+   "max": [
+    -11.315,
+    -263.058,
+    31.976
+   ],
+   "materials": [
+    "M_House_Russet"
+   ]
+  },
+  {
+   "name": "InfillBuilding_10",
+   "verts": 1341,
+   "tris": 1667,
+   "min": [
+    11.085,
+    -270.887,
+    23.548
+   ],
+   "max": [
+    20.685,
+    -263.058,
+    32.194
+   ],
+   "materials": [
+    "M_House_Russet"
+   ]
+  },
+  {
+   "name": "LowerEastA_House_03",
+   "verts": 1341,
+   "tris": 1667,
+   "min": [
+    6.452,
+    -25.834,
+    9.446
+   ],
+   "max": [
+    15.561,
+    -18.204,
+    17.227
+   ],
+   "materials": [
+    "M_House_Russet"
+   ]
+  },
+  {
+   "name": "LowerEastA_House_06",
+   "verts": 1341,
+   "tris": 1667,
+   "min": [
+    10.041,
+    -59.297,
+    11.463
+   ],
+   "max": [
+    20.444,
+    -50.677,
+    20.541
+   ],
+   "materials": [
+    "M_House_Clay"
+   ]
+  },
+  {
+   "name": "LowerEastB_House_02",
+   "verts": 1341,
+   "tris": 1667,
+   "min": [
+    47.145,
+    -15.951,
+    10.221
+   ],
+   "max": [
+    56.874,
+    -7.872,
+    18.675
+   ],
+   "materials": [
+    "M_House_Russet"
+   ]
+  },
+  {
+   "name": "LowerEastB_House_05",
+   "verts": 1341,
+   "tris": 1667,
+   "min": [
+    49.056,
+    -51.3,
+    10.751
+   ],
+   "max": [
+    57.766,
+    -44.168,
+    18.532
+   ],
+   "materials": [
+    "M_House_Clay"
+   ]
+  },
+  {
+   "name": "LowerEastB_House_07",
+   "verts": 1341,
+   "tris": 1667,
+   "min": [
+    53.817,
+    -75.703,
+    13.544
+   ],
+   "max": [
+    62.47,
+    -68.457,
+    20.942
+   ],
+   "materials": [
+    "M_House_Slate"
+   ]
+  },
+  {
+   "name": "LowerWestA_House_02",
+   "verts": 1341,
+   "tris": 1667,
+   "min": [
+    -56.655,
+    -14.951,
+    9.035
+   ],
+   "max": [
+    -46.926,
+    -6.872,
+    17.489
+   ],
+   "materials": [
+    "M_House_Slate"
+   ]
+  },
+  {
+   "name": "LowerWestA_House_05",
+   "verts": 1341,
+   "tris": 1667,
+   "min": [
+    -54.744,
+    -50.3,
+    10.656
+   ],
+   "max": [
+    -46.034,
+    -43.168,
+    18.437
+   ],
+   "materials": [
+    "M_House_Russet"
+   ]
+  },
+  {
+   "name": "LowerWestA_House_07",
+   "verts": 1341,
+   "tris": 1667,
+   "min": [
+    -50.774,
+    -76.959,
+    13.359
+   ],
+   "max": [
+    -42.121,
+    -69.713,
+    20.756
+   ],
+   "materials": [
+    "M_House_Moss"
+   ]
+  },
+  {
+   "name": "LowerWestB_House_01",
+   "verts": 1341,
+   "tris": 1667,
+   "min": [
+    -18.831,
+    -3.541,
+    9.945
+   ],
+   "max": [
+    -11.133,
+    2.745,
+    16.861
+   ],
+   "materials": [
+    "M_House_Slate"
+   ]
+  },
+  {
+   "name": "LowerWestB_House_04",
+   "verts": 1341,
+   "tris": 1667,
+   "min": [
+    -18.504,
+    -39.851,
+    9.995
+   ],
+   "max": [
+    -9.935,
+    -32.712,
+    17.392
+   ],
+   "materials": [
+    "M_House_Russet"
+   ]
+  },
+  {
+   "name": "LowerWestB_House_06",
+   "verts": 1341,
+   "tris": 1667,
+   "min": [
+    -17.053,
+    -61.89,
+    11.77
+   ],
+   "max": [
+    -7.64,
+    -54.09,
+    19.983
+   ],
+   "materials": [
+    "M_House_Moss"
+   ]
+  },
+  {
+   "name": "MarketEast_House_01",
+   "verts": 1341,
+   "tris": 1667,
+   "min": [
+    40.567,
+    -65.511,
+    12.18
+   ],
+   "max": [
+    49.227,
+    -58.439,
+    19.961
+   ],
+   "materials": [
+    "M_House_Russet"
+   ]
+  },
+  {
+   "name": "MarketEast_House_03",
+   "verts": 1341,
+   "tris": 1667,
+   "min": [
+    27.431,
+    -106.387,
+    15.097
+   ],
+   "max": [
+    36.539,
+    -98.758,
+    22.878
+   ],
+   "materials": [
+    "M_House_Moss"
+   ]
+  },
+  {
+   "name": "MarketWest_House_02",
+   "verts": 1341,
+   "tris": 1667,
+   "min": [
+    -34.515,
+    -93.924,
+    14.592
+   ],
+   "max": [
+    -24.069,
+    -85.249,
+    23.669
+   ],
+   "materials": [
+    "M_House_Clay"
+   ]
+  },
+  {
+   "name": "MarketWest_House_05",
+   "verts": 1341,
+   "tris": 1667,
+   "min": [
+    -30.744,
+    -132.3,
+    15.726
+   ],
+   "max": [
+    -22.034,
+    -125.168,
+    23.507
+   ],
+   "materials": [
+    "M_House_Moss"
+   ]
+  },
+  {
+   "name": "Riverside_House_03",
+   "verts": 1341,
+   "tris": 1667,
+   "min": [
+    -149.642,
+    144.425,
+    3.313
+   ],
+   "max": [
+    -140.568,
+    152.011,
+    11.093
+   ],
+   "materials": [
+    "M_House_Moss"
+   ]
+  },
+  {
+   "name": "Riverside_House_06",
+   "verts": 1341,
+   "tris": 1667,
+   "min": [
+    -90.245,
+    135.416,
+    3.662
+   ],
+   "max": [
+    -79.995,
+    143.847,
+    12.739
+   ],
+   "materials": [
+    "M_House_Slate"
+   ]
+  },
+  {
+   "name": "Riverside_House_08",
+   "verts": 1341,
+   "tris": 1667,
+   "min": [
+    -60.052,
+    131.468,
+    4.236
+   ],
+   "max": [
+    -50.169,
+    139.74,
+    12.69
+   ],
+   "materials": [
+    "M_House_Clay"
+   ]
+  },
+  {
+   "name": "UpperEast_House_02",
+   "verts": 1341,
+   "tris": 1667,
+   "min": [
+    14.554,
+    -191.884,
+    18.46
+   ],
+   "max": [
+    24.858,
+    -183.387,
+    27.538
+   ],
+   "materials": [
+    "M_House_Slate"
+   ]
+  },
+  {
+   "name": "UpperEast_House_05",
+   "verts": 1341,
+   "tris": 1667,
+   "min": [
+    15.188,
+    -228.503,
+    21.867
+   ],
+   "max": [
+    24.039,
+    -221.196,
+    29.648
+   ],
+   "materials": [
+    "M_House_Russet"
+   ]
+  },
+  {
+   "name": "UpperWest_House_01",
+   "verts": 1341,
+   "tris": 1667,
+   "min": [
+    -35.646,
+    -195.569,
+    19.257
+   ],
+   "max": [
+    -26.84,
+    -188.317,
+    27.038
+   ],
+   "materials": [
+    "M_House_Moss"
+   ]
+  },
+  {
+   "name": "UpperWest_House_04",
+   "verts": 1341,
+   "tris": 1667,
+   "min": [
+    -27.949,
+    -228.309,
+    21.855
+   ],
+   "max": [
+    -17.354,
+    -219.447,
+    30.933
+   ],
+   "materials": [
+    "M_House_Slate"
+   ]
+  },
+  {
+   "name": "UpperWest_House_06",
+   "verts": 1341,
+   "tris": 1667,
+   "min": [
+    -26.23,
+    -248.319,
+    22.493
+   ],
+   "max": [
+    -15.979,
+    -239.887,
+    31.571
+   ],
+   "materials": [
+    "M_House_Clay"
+   ]
+  },
+  {
+   "name": "HERO_Blacksmith",
+   "verts": 920,
+   "tris": 1294,
+   "min": [
+    -67.24,
+    -70.481,
+    12.903
+   ],
+   "max": [
+    -58.395,
+    -58.232,
+    21.003
+   ],
+   "materials": [
+    "M_House_Clay"
+   ]
+  },
+  {
+   "name": "InfillBuilding_03",
+   "verts": 920,
+   "tris": 1294,
+   "min": [
+    -24.317,
+    20.669,
+    9.359
+   ],
+   "max": [
+    -14.694,
+    27.618,
+    15.722
+   ],
+   "materials": [
+    "M_House_Moss"
+   ]
+  },
+  {
+   "name": "InfillBuilding_08",
+   "verts": 920,
+   "tris": 1294,
+   "min": [
+    23.683,
+    138.669,
+    5.701
+   ],
+   "max": [
+    33.306,
+    145.618,
+    12.064
+   ],
+   "materials": [
+    "M_House_Clay"
+   ]
+  },
+  {
+   "name": "InfillBuilding_12",
+   "verts": 920,
+   "tris": 1294,
+   "min": [
+    69.683,
+    -240.331,
+    22.308
+   ],
+   "max": [
+    79.306,
+    -233.382,
+    28.671
+   ],
+   "materials": [
+    "M_House_Moss"
+   ]
+  },
+  {
+   "name": "LowerEastA_House_02",
+   "verts": 920,
+   "tris": 1294,
+   "min": [
+    5.372,
+    -12.184,
+    10.137
+   ],
+   "max": [
+    15.8,
+    -4.431,
+    16.818
+   ],
+   "materials": [
+    "M_House_Clay"
+   ]
+  },
+  {
+   "name": "LowerEastA_House_05",
+   "verts": 920,
+   "tris": 1294,
+   "min": [
+    7.697,
+    -45.803,
+    10.291
+   ],
+   "max": [
+    16.42,
+    -39.463,
+    16.018
+   ],
+   "materials": [
+    "M_House_Moss"
+   ]
+  },
+  {
+   "name": "LowerEastA_House_07",
+   "verts": 920,
+   "tris": 1294,
+   "min": [
+    9.67,
+    -71.622,
+    12.828
+   ],
+   "max": [
+    18.738,
+    -64.79,
+    18.555
+   ],
+   "materials": [
+    "M_House_Russet"
+   ]
+  },
+  {
+   "name": "LowerEastB_House_01",
+   "verts": 920,
+   "tris": 1294,
+   "min": [
+    48.318,
+    -3.248,
+    9.94
+   ],
+   "max": [
+    56.997,
+    3.031,
+    15.667
+   ],
+   "materials": [
+    "M_House_Clay"
+   ]
+  },
+  {
+   "name": "LowerEastB_House_04",
+   "verts": 920,
+   "tris": 1294,
+   "min": [
+    45.554,
+    -41.298,
+    10.11
+   ],
+   "max": [
+    55.214,
+    -34.078,
+    16.263
+   ],
+   "materials": [
+    "M_House_Moss"
+   ]
+  },
+  {
+   "name": "LowerEastB_House_06",
+   "verts": 920,
+   "tris": 1294,
+   "min": [
+    50.642,
+    -64.198,
+    12.082
+   ],
+   "max": [
+    61.032,
+    -56.5,
+    18.763
+   ],
+   "materials": [
+    "M_House_Russet"
+   ]
+  },
+  {
+   "name": "LowerWestA_House_01",
+   "verts": 920,
+   "tris": 1294,
+   "min": [
+    -53.682,
+    -2.248,
+    9.876
+   ],
+   "max": [
+    -45.003,
+    4.031,
+    15.603
+   ],
+   "materials": [
+    "M_House_Russet"
+   ]
+  },
+  {
+   "name": "LowerWestA_House_04",
+   "verts": 920,
+   "tris": 1294,
+   "min": [
+    -56.446,
+    -40.298,
+    10.028
+   ],
+   "max": [
+    -46.786,
+    -33.078,
+    16.181
+   ],
+   "materials": [
+    "M_House_Clay"
+   ]
+  },
+  {
+   "name": "LowerWestA_House_06",
+   "verts": 920,
+   "tris": 1294,
+   "min": [
+    -61.609,
+    -77.157,
+    13.353
+   ],
+   "max": [
+    -51.219,
+    -69.459,
+    20.034
+   ],
+   "materials": [
+    "M_House_Slate"
+   ]
+  },
+  {
+   "name": "LowerWestB_House_03",
+   "verts": 920,
+   "tris": 1294,
+   "min": [
+    -20.933,
+    -27.99,
+    9.082
+   ],
+   "max": [
+    -12.867,
+    -21.91,
+    14.173
+   ],
+   "materials": [
+    "M_House_Clay"
+   ]
+  },
+  {
+   "name": "LowerWestB_House_05",
+   "verts": 920,
+   "tris": 1294,
+   "min": [
+    -17.567,
+    -48.465,
+    10.563
+   ],
+   "max": [
+    -9.814,
+    -42.829,
+    15.653
+   ],
+   "materials": [
+    "M_House_Slate"
+   ]
+  },
+  {
+   "name": "MarketEast_House_02",
+   "verts": 920,
+   "tris": 1294,
+   "min": [
+    62.249,
+    -65.75,
+    12.278
+   ],
+   "max": [
+    72.677,
+    -57.998,
+    18.959
+   ],
+   "materials": [
+    "M_House_Slate"
+   ]
+  },
+  {
+   "name": "MarketEast_House_05",
+   "verts": 920,
+   "tris": 1294,
+   "min": [
+    28.173,
+    -127.456,
+    15.621
+   ],
+   "max": [
+    36.895,
+    -121.116,
+    21.348
+   ],
+   "materials": [
+    "M_House_Russet"
+   ]
+  },
+  {
+   "name": "MarketWest_House_01",
+   "verts": 920,
+   "tris": 1294,
+   "min": [
+    -37.024,
+    -84.519,
+    14.306
+   ],
+   "max": [
+    -28.345,
+    -78.24,
+    20.033
+   ],
+   "materials": [
+    "M_House_Moss"
+   ]
+  },
+  {
+   "name": "MarketWest_House_04",
+   "verts": 920,
+   "tris": 1294,
+   "min": [
+    -41.943,
+    -119.438,
+    15.41
+   ],
+   "max": [
+    -31.454,
+    -111.599,
+    22.092
+   ],
+   "materials": [
+    "M_House_Slate"
+   ]
+  },
+  {
+   "name": "Riverside_House_02",
+   "verts": 920,
+   "tris": 1294,
+   "min": [
+    -165.686,
+    146.779,
+    3.47
+   ],
+   "max": [
+    -155.384,
+    154.352,
+    10.151
+   ],
+   "materials": [
+    "M_House_Slate"
+   ]
+  },
+  {
+   "name": "Riverside_House_05",
+   "verts": 920,
+   "tris": 1294,
+   "min": [
+    -119.883,
+    140.657,
+    3.31
+   ],
+   "max": [
+    -111.035,
+    147.173,
+    9.037
+   ],
+   "materials": [
+    "M_House_Russet"
+   ]
+  },
+  {
+   "name": "Riverside_House_07",
+   "verts": 920,
+   "tris": 1294,
+   "min": [
+    -74.959,
+    134.271,
+    3.935
+   ],
+   "max": [
+    -65.933,
+    141.042,
+    9.662
+   ],
+   "materials": [
+    "M_House_Moss"
+   ]
+  },
+  {
+   "name": "UpperEast_House_01",
+   "verts": 920,
+   "tris": 1294,
+   "min": [
+    16.074,
+    -180.667,
+    17.87
+   ],
+   "max": [
+    24.882,
+    -174.207,
+    23.597
+   ],
+   "materials": [
+    "M_House_Russet"
+   ]
+  },
+  {
+   "name": "UpperEast_House_04",
+   "verts": 920,
+   "tris": 1294,
+   "min": [
+    11.652,
+    -218.254,
+    21.089
+   ],
+   "max": [
+    22.211,
+    -210.313,
+    27.77
+   ],
+   "materials": [
+    "M_House_Clay"
+   ]
+  },
+  {
+   "name": "UpperEast_House_06",
+   "verts": 920,
+   "tris": 1294,
+   "min": [
+    16.96,
+    -239.226,
+    22.258
+   ],
+   "max": [
+    27.216,
+    -231.719,
+    28.94
+   ],
+   "materials": [
+    "M_House_Slate"
+   ]
+  },
+  {
+   "name": "UpperWest_House_03",
+   "verts": 920,
+   "tris": 1294,
+   "min": [
+    -29.269,
+    -214.067,
+    20.602
+   ],
+   "max": [
+    -20.225,
+    -207.27,
+    26.329
+   ],
+   "materials": [
+    "M_House_Russet"
+   ]
+  },
+  {
+   "name": "UpperWest_House_05",
+   "verts": 920,
+   "tris": 1294,
+   "min": [
+    -26.965,
+    -237.014,
+    22.283
+   ],
+   "max": [
+    -18.117,
+    -230.499,
+    28.01
+   ],
+   "materials": [
+    "M_House_Moss"
+   ]
+  },
+  {
+   "name": "ART_Surface_SM_Route_ChurchLane",
+   "verts": 780,
+   "tris": 1240,
+   "min": [
+    7.669,
+    -219.72,
+    16.95
+   ],
+   "max": [
+    105.2,
+    -163.64,
+    21.489
+   ],
+   "materials": [
+    "M_Town_Road_01"
+   ]
+  },
+  {
+   "name": "ART_Surface_SM_Route_DockTrack",
+   "verts": 680,
+   "tris": 1080,
+   "min": [
+    -158.621,
+    72.755,
+    2.047
+   ],
+   "max": [
+    -66.478,
+    118.198,
+    6.893
+   ],
+   "materials": [
+    "M_River_Track_01"
+   ]
+  },
+  {
+   "name": "ART_Surface_SM_Plaza_ChurchForecourt",
+   "verts": 585,
+   "tris": 1064,
+   "min": [
+    99.0,
+    -225.0,
+    19.164
+   ],
+   "max": [
+    109.0,
+    -197.0,
+    22.055
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Surface_SM_River_Continuous",
+   "verts": 1002,
+   "tris": 1000,
+   "min": [
+    -250.0,
+    58.456,
+    2.94
+   ],
+   "max": [
+    250.0,
+    109.937,
+    2.94
+   ],
+   "materials": [
+    "M_River_Surface_Proxy_01"
+   ]
+  },
+  {
+   "name": "MarketStall_01",
+   "verts": 443,
+   "tris": 690,
+   "min": [
+    10.283,
+    -101.053,
+    15.056
+   ],
+   "max": [
+    13.543,
+    -99.068,
+    17.623
+   ],
+   "materials": [
+    "M_House_Russet"
+   ]
+  },
+  {
+   "name": "MarketStall_02",
+   "verts": 443,
+   "tris": 690,
+   "min": [
+    6.943,
+    -109.417,
+    15.256
+   ],
+   "max": [
+    10.202,
+    -107.432,
+    17.824
+   ],
+   "materials": [
+    "M_House_Slate"
+   ]
+  },
+  {
+   "name": "MarketStall_03",
+   "verts": 443,
+   "tris": 690,
+   "min": [
+    -1.717,
+    -113.053,
+    15.344
+   ],
+   "max": [
+    1.543,
+    -111.068,
+    17.911
+   ],
+   "materials": [
+    "M_House_Moss"
+   ]
+  },
+  {
+   "name": "MarketStall_04",
+   "verts": 443,
+   "tris": 690,
+   "min": [
+    -10.028,
+    -109.417,
+    15.256
+   ],
+   "max": [
+    -6.769,
+    -107.432,
+    17.824
+   ],
+   "materials": [
+    "M_House_Clay"
+   ]
+  },
+  {
+   "name": "MarketStall_05",
+   "verts": 443,
+   "tris": 690,
+   "min": [
+    -13.717,
+    -101.053,
+    15.056
+   ],
+   "max": [
+    -10.457,
+    -99.068,
+    17.623
+   ],
+   "materials": [
+    "M_House_Russet"
+   ]
+  },
+  {
+   "name": "MarketStall_06",
+   "verts": 443,
+   "tris": 690,
+   "min": [
+    -10.028,
+    -92.447,
+    14.738
+   ],
+   "max": [
+    -6.769,
+    -90.461,
+    17.306
+   ],
+   "materials": [
+    "M_House_Slate"
+   ]
+  },
+  {
+   "name": "MarketStall_07",
+   "verts": 443,
+   "tris": 690,
+   "min": [
+    -1.717,
+    -89.053,
+    14.546
+   ],
+   "max": [
+    1.543,
+    -87.068,
+    17.114
+   ],
+   "materials": [
+    "M_House_Moss"
+   ]
+  },
+  {
+   "name": "MarketStall_08",
+   "verts": 443,
+   "tris": 690,
+   "min": [
+    6.943,
+    -92.447,
+    14.738
+   ],
+   "max": [
+    10.202,
+    -90.461,
+    17.306
+   ],
+   "materials": [
+    "M_House_Clay"
+   ]
+  },
+  {
+   "name": "InfillBuilding_02",
+   "verts": 500,
+   "tris": 579,
+   "min": [
+    14.028,
+    41.473,
+    8.106
+   ],
+   "max": [
+    21.745,
+    50.113,
+    15.446
+   ],
+   "materials": [
+    "M_House_Slate"
+   ]
+  },
+  {
+   "name": "InfillBuilding_05",
+   "verts": 500,
+   "tris": 579,
+   "min": [
+    -34.642,
+    -30.024,
+    9.126
+   ],
+   "max": [
+    -27.782,
+    -22.344,
+    15.651
+   ],
+   "materials": [
+    "M_House_Russet"
+   ]
+  },
+  {
+   "name": "InfillBuilding_07",
+   "verts": 500,
+   "tris": 579,
+   "min": [
+    -31.642,
+    137.976,
+    4.353
+   ],
+   "max": [
+    -24.782,
+    145.656,
+    10.878
+   ],
+   "materials": [
+    "M_House_Moss"
+   ]
+  },
+  {
+   "name": "InfillBuilding_11",
+   "verts": 500,
+   "tris": 579,
+   "min": [
+    49.408,
+    -189.897,
+    18.251
+   ],
+   "max": [
+    57.125,
+    -181.257,
+    25.591
+   ],
+   "materials": [
+    "M_House_Slate"
+   ]
+  },
+  {
+   "name": "LowerEastA_House_01",
+   "verts": 500,
+   "tris": 579,
+   "min": [
+    9.791,
+    -0.77,
+    9.92
+   ],
+   "max": [
+    15.812,
+    5.968,
+    15.629
+   ],
+   "materials": [
+    "M_House_Moss"
+   ]
+  },
+  {
+   "name": "LowerEastA_House_04",
+   "verts": 500,
+   "tris": 579,
+   "min": [
+    7.396,
+    -36.942,
+    9.828
+   ],
+   "max": [
+    13.758,
+    -29.903,
+    15.537
+   ],
+   "materials": [
+    "M_House_Slate"
+   ]
+  },
+  {
+   "name": "LowerEastB_House_03",
+   "verts": 500,
+   "tris": 579,
+   "min": [
+    48.861,
+    -30.759,
+    9.944
+   ],
+   "max": [
+    57.159,
+    -21.604,
+    17.284
+   ],
+   "materials": [
+    "M_House_Slate"
+   ]
+  },
+  {
+   "name": "LowerWestA_House_03",
+   "verts": 500,
+   "tris": 579,
+   "min": [
+    -56.739,
+    -29.759,
+    9.215
+   ],
+   "max": [
+    -48.441,
+    -20.604,
+    16.555
+   ],
+   "materials": [
+    "M_House_Moss"
+   ]
+  },
+  {
+   "name": "LowerWestA_House_08",
+   "verts": 500,
+   "tris": 579,
+   "min": [
+    -50.495,
+    -88.393,
+    14.222
+   ],
+   "max": [
+    -43.195,
+    -80.322,
+    20.746
+   ],
+   "materials": [
+    "M_House_Clay"
+   ]
+  },
+  {
+   "name": "LowerWestB_House_02",
+   "verts": 500,
+   "tris": 579,
+   "min": [
+    -17.484,
+    -15.574,
+    9.73
+   ],
+   "max": [
+    -10.279,
+    -7.587,
+    16.255
+   ],
+   "materials": [
+    "M_House_Moss"
+   ]
+  },
+  {
+   "name": "LowerWestB_House_07",
+   "verts": 500,
+   "tris": 579,
+   "min": [
+    -11.898,
+    -75.131,
+    13.122
+   ],
+   "max": [
+    -5.45,
+    -68.016,
+    18.831
+   ],
+   "materials": [
+    "M_House_Clay"
+   ]
+  },
+  {
+   "name": "MarketEast_House_04",
+   "verts": 500,
+   "tris": 579,
+   "min": [
+    29.052,
+    -118.503,
+    15.466
+   ],
+   "max": [
+    36.322,
+    -110.458,
+    21.99
+   ],
+   "materials": [
+    "M_House_Clay"
+   ]
+  },
+  {
+   "name": "MarketWest_House_03",
+   "verts": 500,
+   "tris": 579,
+   "min": [
+    -35.099,
+    -109.908,
+    15.263
+   ],
+   "max": [
+    -25.808,
+    -99.656,
+    23.481
+   ],
+   "materials": [
+    "M_House_Russet"
+   ]
+  },
+  {
+   "name": "Riverside_House_01",
+   "verts": 500,
+   "tris": 579,
+   "min": [
+    -177.395,
+    149.041,
+    3.728
+   ],
+   "max": [
+    -171.234,
+    155.904,
+    9.437
+   ],
+   "materials": [
+    "M_House_Russet"
+   ]
+  },
+  {
+   "name": "Riverside_House_04",
+   "verts": 500,
+   "tris": 579,
+   "min": [
+    -132.516,
+    142.316,
+    3.169
+   ],
+   "max": [
+    -126.087,
+    149.414,
+    8.878
+   ],
+   "materials": [
+    "M_House_Clay"
+   ]
+  },
+  {
+   "name": "Riverside_House_09",
+   "verts": 500,
+   "tris": 579,
+   "min": [
+    -43.136,
+    128.942,
+    4.555
+   ],
+   "max": [
+    -35.107,
+    137.86,
+    11.895
+   ],
+   "materials": [
+    "M_House_Russet"
+   ]
+  },
+  {
+   "name": "UpperEast_House_03",
+   "verts": 500,
+   "tris": 579,
+   "min": [
+    15.699,
+    -206.04,
+    19.696
+   ],
+   "max": [
+    24.943,
+    -195.831,
+    27.915
+   ],
+   "materials": [
+    "M_House_Moss"
+   ]
+  },
+  {
+   "name": "UpperWest_House_02",
+   "verts": 500,
+   "tris": 579,
+   "min": [
+    -34.097,
+    -205.75,
+    20.083
+   ],
+   "max": [
+    -25.261,
+    -195.915,
+    28.239
+   ],
+   "materials": [
+    "M_House_Clay"
+   ]
+  },
+  {
+   "name": "UpperWest_House_07",
+   "verts": 500,
+   "tris": 579,
+   "min": [
+    -20.863,
+    -263.308,
+    23.149
+   ],
+   "max": [
+    -12.633,
+    -254.213,
+    30.489
+   ],
+   "materials": [
+    "M_House_Russet"
+   ]
+  },
+  {
+   "name": "ART_GuildFence_N_00",
+   "verts": 319,
+   "tris": 532,
+   "min": [
+    -93.068,
+    -171.812,
+    17.11
+   ],
+   "max": [
+    -89.276,
+    -171.032,
+    18.753
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_GuildFence_N_01",
+   "verts": 319,
+   "tris": 532,
+   "min": [
+    -89.368,
+    -171.812,
+    17.11
+   ],
+   "max": [
+    -85.576,
+    -171.032,
+    18.753
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_GuildFence_N_02",
+   "verts": 319,
+   "tris": 532,
+   "min": [
+    -85.668,
+    -171.812,
+    17.11
+   ],
+   "max": [
+    -81.876,
+    -171.032,
+    18.753
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_GuildFence_N_03",
+   "verts": 319,
+   "tris": 532,
+   "min": [
+    -81.968,
+    -171.812,
+    17.11
+   ],
+   "max": [
+    -78.176,
+    -171.032,
+    18.753
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_GuildFence_N_04",
+   "verts": 319,
+   "tris": 532,
+   "min": [
+    -78.268,
+    -171.812,
+    17.11
+   ],
+   "max": [
+    -74.476,
+    -171.032,
+    18.753
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_GuildFence_N_05",
+   "verts": 319,
+   "tris": 532,
+   "min": [
+    -74.568,
+    -171.812,
+    17.11
+   ],
+   "max": [
+    -70.776,
+    -171.032,
+    18.753
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_GuildFence_S_00",
+   "verts": 319,
+   "tris": 532,
+   "min": [
+    -93.068,
+    -152.812,
+    16.26
+   ],
+   "max": [
+    -89.276,
+    -152.032,
+    17.904
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_GuildFence_S_01",
+   "verts": 319,
+   "tris": 532,
+   "min": [
+    -89.368,
+    -152.812,
+    16.26
+   ],
+   "max": [
+    -85.576,
+    -152.032,
+    17.904
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_GuildFence_S_02",
+   "verts": 319,
+   "tris": 532,
+   "min": [
+    -85.668,
+    -152.812,
+    16.26
+   ],
+   "max": [
+    -81.876,
+    -152.032,
+    17.904
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_GuildFence_S_03",
+   "verts": 319,
+   "tris": 532,
+   "min": [
+    -81.968,
+    -152.812,
+    16.26
+   ],
+   "max": [
+    -78.176,
+    -152.032,
+    17.904
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_GuildFence_S_04",
+   "verts": 319,
+   "tris": 532,
+   "min": [
+    -78.268,
+    -152.812,
+    16.26
+   ],
+   "max": [
+    -74.476,
+    -152.032,
+    17.904
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_GuildFence_S_05",
+   "verts": 319,
+   "tris": 532,
+   "min": [
+    -74.568,
+    -152.812,
+    16.26
+   ],
+   "max": [
+    -70.776,
+    -152.032,
+    17.904
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_GuildFence_W_00",
+   "verts": 319,
+   "tris": 532,
+   "min": [
+    -93.312,
+    -156.224,
+    16.308
+   ],
+   "max": [
+    -92.532,
+    -152.432,
+    17.952
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_GuildFence_W_01",
+   "verts": 319,
+   "tris": 532,
+   "min": [
+    -93.312,
+    -159.924,
+    16.413
+   ],
+   "max": [
+    -92.532,
+    -156.132,
+    18.057
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_GuildFence_W_02",
+   "verts": 319,
+   "tris": 532,
+   "min": [
+    -93.312,
+    -163.624,
+    16.56
+   ],
+   "max": [
+    -92.532,
+    -159.832,
+    18.204
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_GuildFence_W_03",
+   "verts": 319,
+   "tris": 532,
+   "min": [
+    -93.312,
+    -167.324,
+    16.746
+   ],
+   "max": [
+    -92.532,
+    -163.532,
+    18.389
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_GuildFence_W_04",
+   "verts": 319,
+   "tris": 532,
+   "min": [
+    -93.312,
+    -171.024,
+    16.965
+   ],
+   "max": [
+    -92.532,
+    -167.232,
+    18.608
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Graded_Terrain_Proxy",
+   "verts": 155,
+   "tris": 255,
+   "min": [
+    -252.007,
+    -353.019,
+    -3.222
+   ],
+   "max": [
+    252.003,
+    353.007,
+    31.505
+   ],
+   "materials": [
+    "M_Valley_Grass_01"
+   ]
+  },
+  {
+   "name": "SM_Handoff_GuildChurch",
+   "verts": 254,
+   "tris": 252,
+   "min": [
+    -28.826,
+    -186.7,
+    17.458
+   ],
+   "max": [
+    45.733,
+    -172.466,
+    18.441
+   ],
+   "materials": [
+    "M_Town_Road_01"
+   ]
+  },
+  {
+   "name": "SM_Handoff_BridgeSouth",
+   "verts": 70,
+   "tris": 68,
+   "min": [
+    -2.6,
+    102.0,
+    5.876
+   ],
+   "max": [
+    2.6,
+    119.0,
+    6.394
+   ],
+   "materials": [
+    "M_Town_Road_01"
+   ]
+  },
+  {
+   "name": "SM_Handoff_BridgeNorth",
+   "verts": 66,
+   "tris": 64,
+   "min": [
+    -2.6,
+    52.0,
+    6.394
+   ],
+   "max": [
+    2.6,
+    68.0,
+    7.884
+   ],
+   "materials": [
+    "M_Town_Road_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_CornerBuilding_01",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    -78.348,
+    -99.753,
+    14.009
+   ],
+   "max": [
+    -65.244,
+    -92.191,
+    14.909
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_CornerBuilding_02",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    61.075,
+    -83.502,
+    12.999
+   ],
+   "max": [
+    73.306,
+    -76.445,
+    13.899
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_CornerBuilding_03",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    -75.925,
+    -218.502,
+    20.06
+   ],
+   "max": [
+    -63.694,
+    -211.445,
+    20.96
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_CornerBuilding_04",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    68.392,
+    -231.573,
+    21.186
+   ],
+   "max": [
+    81.496,
+    -224.011,
+    22.086
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_CornerBuilding_05",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    -140.617,
+    150.497,
+    2.125
+   ],
+   "max": [
+    -124.893,
+    159.571,
+    3.025
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_CornerBuilding_06",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    108.229,
+    127.997,
+    5.472
+   ],
+   "max": [
+    122.207,
+    136.063,
+    6.372
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_CornerBuilding_07",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    -99.925,
+    -25.502,
+    8.071
+   ],
+   "max": [
+    -87.694,
+    -18.445,
+    8.971
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_CornerBuilding_08",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    75.652,
+    -41.753,
+    8.992
+   ],
+   "max": [
+    88.756,
+    -34.191,
+    9.892
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_HERO_Blacksmith",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    -66.842,
+    -69.931,
+    12.003
+   ],
+   "max": [
+    -58.793,
+    -58.81,
+    12.903
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_HERO_Church_Nave",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    108.868,
+    -219.555,
+    19.909
+   ],
+   "max": [
+    122.092,
+    -196.639,
+    20.809
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_HERO_DockWarehouse",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    -116.108,
+    112.552,
+    4.171
+   ],
+   "max": [
+    -97.132,
+    124.528,
+    5.071
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_HERO_MainInn",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    30.703,
+    -87.539,
+    13.211
+   ],
+   "max": [
+    47.811,
+    -77.667,
+    14.111
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_HERO_NorthGate_Left",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    -11.994,
+    -286.13,
+    23.462
+   ],
+   "max": [
+    -6.006,
+    -279.647,
+    24.362
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_HERO_NorthGate_Right",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    6.006,
+    -286.13,
+    23.784
+   ],
+   "max": [
+    11.994,
+    -279.647,
+    24.684
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_InfillBuilding_01",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    -21.483,
+    42.41,
+    7.84
+   ],
+   "max": [
+    -12.747,
+    49.557,
+    8.74
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_InfillBuilding_02",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    14.375,
+    41.862,
+    7.206
+   ],
+   "max": [
+    21.398,
+    49.725,
+    8.106
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_InfillBuilding_03",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    -23.863,
+    20.982,
+    8.459
+   ],
+   "max": [
+    -15.126,
+    27.305,
+    9.359
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_InfillBuilding_04",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    14.517,
+    20.41,
+    8.459
+   ],
+   "max": [
+    23.253,
+    27.557,
+    9.359
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_InfillBuilding_05",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    -34.333,
+    -29.678,
+    8.226
+   ],
+   "max": [
+    -28.091,
+    -22.689,
+    9.126
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_InfillBuilding_06",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    26.616,
+    -35.511,
+    8.581
+   ],
+   "max": [
+    35.159,
+    -28.522,
+    9.481
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_InfillBuilding_07",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    -31.333,
+    138.322,
+    3.453
+   ],
+   "max": [
+    -25.091,
+    145.311,
+    4.353
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_InfillBuilding_08",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    24.137,
+    138.982,
+    4.801
+   ],
+   "max": [
+    32.874,
+    145.305,
+    5.701
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_InfillBuilding_09",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    -20.483,
+    -270.59,
+    22.431
+   ],
+   "max": [
+    -11.747,
+    -263.443,
+    23.331
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_InfillBuilding_10",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    11.517,
+    -270.59,
+    22.648
+   ],
+   "max": [
+    20.253,
+    -263.443,
+    23.548
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_InfillBuilding_11",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    49.755,
+    -189.508,
+    17.351
+   ],
+   "max": [
+    56.778,
+    -181.645,
+    18.251
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_InfillBuilding_12",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    70.137,
+    -240.018,
+    21.408
+   ],
+   "max": [
+    78.874,
+    -233.695,
+    22.308
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_LowerEastA_House_01",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    10.062,
+    -0.467,
+    9.02
+   ],
+   "max": [
+    15.541,
+    5.664,
+    9.92
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_LowerEastA_House_02",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    5.863,
+    -11.834,
+    9.237
+   ],
+   "max": [
+    15.332,
+    -4.78,
+    10.137
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_LowerEastA_House_03",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    6.864,
+    -25.54,
+    8.546
+   ],
+   "max": [
+    15.154,
+    -18.577,
+    9.446
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_LowerEastA_House_04",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    7.683,
+    -36.625,
+    8.928
+   ],
+   "max": [
+    13.471,
+    -30.22,
+    9.828
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_LowerEastA_House_05",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    8.109,
+    -45.517,
+    9.391
+   ],
+   "max": [
+    16.028,
+    -39.748,
+    10.291
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_LowerEastA_House_06",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    10.506,
+    -58.967,
+    10.563
+   ],
+   "max": [
+    19.974,
+    -51.099,
+    11.463
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_LowerEastA_House_07",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    10.097,
+    -71.315,
+    11.928
+   ],
+   "max": [
+    18.331,
+    -65.099,
+    12.828
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_LowerEastB_House_01",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    48.728,
+    -2.965,
+    9.04
+   ],
+   "max": [
+    56.607,
+    2.749,
+    9.94
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_LowerEastB_House_02",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    47.584,
+    -15.642,
+    9.321
+   ],
+   "max": [
+    56.439,
+    -8.268,
+    10.221
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_LowerEastB_House_03",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    49.235,
+    -30.347,
+    9.044
+   ],
+   "max": [
+    56.786,
+    -22.016,
+    9.944
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_LowerEastB_House_04",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    46.009,
+    -40.972,
+    9.21
+   ],
+   "max": [
+    54.78,
+    -34.403,
+    10.11
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_LowerEastB_House_05",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    49.449,
+    -51.029,
+    9.851
+   ],
+   "max": [
+    57.374,
+    -44.519,
+    10.751
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_LowerEastB_House_06",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    51.132,
+    -63.852,
+    11.182
+   ],
+   "max": [
+    60.566,
+    -56.847,
+    12.082
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_LowerEastB_House_07",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    54.203,
+    -75.424,
+    12.644
+   ],
+   "max": [
+    62.079,
+    -68.811,
+    13.544
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_LowerWestA_House_01",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    -53.272,
+    -1.965,
+    8.976
+   ],
+   "max": [
+    -45.393,
+    3.749,
+    9.876
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_LowerWestA_House_02",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    -56.216,
+    -14.642,
+    8.135
+   ],
+   "max": [
+    -47.361,
+    -7.268,
+    9.035
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_LowerWestA_House_03",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    -56.365,
+    -29.347,
+    8.315
+   ],
+   "max": [
+    -48.814,
+    -21.016,
+    9.215
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_LowerWestA_House_04",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    -55.991,
+    -39.972,
+    9.128
+   ],
+   "max": [
+    -47.22,
+    -33.403,
+    10.028
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_LowerWestA_House_05",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    -54.351,
+    -50.029,
+    9.756
+   ],
+   "max": [
+    -46.426,
+    -43.519,
+    10.656
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_LowerWestA_House_06",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    -61.12,
+    -76.811,
+    12.453
+   ],
+   "max": [
+    -51.686,
+    -69.807,
+    13.353
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_LowerWestA_House_07",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    -50.388,
+    -76.68,
+    12.459
+   ],
+   "max": [
+    -42.512,
+    -70.068,
+    13.359
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_LowerWestA_House_08",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    -50.167,
+    -88.03,
+    13.322
+   ],
+   "max": [
+    -43.524,
+    -80.685,
+    14.222
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_LowerWestB_House_01",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    -18.485,
+    -3.302,
+    9.045
+   ],
+   "max": [
+    -11.479,
+    2.436,
+    9.945
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_LowerWestB_House_02",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    -17.16,
+    -15.215,
+    8.83
+   ],
+   "max": [
+    -10.603,
+    -7.946,
+    9.73
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_LowerWestB_House_03",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    -20.553,
+    -27.716,
+    8.182
+   ],
+   "max": [
+    -13.229,
+    -22.184,
+    9.082
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_LowerWestB_House_04",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    -18.117,
+    -39.577,
+    9.095
+   ],
+   "max": [
+    -10.318,
+    -33.062,
+    9.995
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_LowerWestB_House_05",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    -17.202,
+    -48.211,
+    9.663
+   ],
+   "max": [
+    -10.162,
+    -43.083,
+    10.563
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_LowerWestB_House_06",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    -16.631,
+    -61.592,
+    10.87
+   ],
+   "max": [
+    -8.065,
+    -54.473,
+    11.77
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_LowerWestB_House_07",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    -11.607,
+    -74.811,
+    12.222
+   ],
+   "max": [
+    -5.74,
+    -68.336,
+    13.122
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_MarketEast_House_01",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    40.956,
+    -65.242,
+    11.28
+   ],
+   "max": [
+    48.837,
+    -58.787,
+    12.18
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_MarketEast_House_02",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    62.74,
+    -65.401,
+    11.378
+   ],
+   "max": [
+    72.209,
+    -58.347,
+    12.278
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_MarketEast_House_03",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    27.843,
+    -106.094,
+    14.197
+   ],
+   "max": [
+    36.133,
+    -99.131,
+    15.097
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_MarketEast_House_04",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    29.379,
+    -118.141,
+    14.566
+   ],
+   "max": [
+    35.995,
+    -110.82,
+    15.466
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_MarketEast_House_05",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    28.584,
+    -127.17,
+    14.721
+   ],
+   "max": [
+    36.503,
+    -121.401,
+    15.621
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_MarketWest_House_01",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    -36.614,
+    -84.237,
+    13.406
+   ],
+   "max": [
+    -28.735,
+    -78.523,
+    14.306
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_MarketWest_House_02",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    -34.044,
+    -93.592,
+    13.692
+   ],
+   "max": [
+    -24.536,
+    -85.674,
+    14.592
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_MarketWest_House_03",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    -34.681,
+    -109.446,
+    14.363
+   ],
+   "max": [
+    -26.226,
+    -100.118,
+    15.263
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_MarketWest_House_04",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    -41.448,
+    -119.084,
+    14.51
+   ],
+   "max": [
+    -31.925,
+    -111.952,
+    15.41
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_MarketWest_House_05",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    -30.351,
+    -132.029,
+    14.826
+   ],
+   "max": [
+    -22.426,
+    -125.519,
+    15.726
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_Riverside_House_01",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    -177.118,
+    149.35,
+    2.828
+   ],
+   "max": [
+    -171.511,
+    155.595,
+    3.728
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_Riverside_House_02",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    -165.2,
+    147.12,
+    2.57
+   ],
+   "max": [
+    -155.846,
+    154.012,
+    3.47
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_Riverside_House_03",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    -149.232,
+    144.717,
+    2.413
+   ],
+   "max": [
+    -140.973,
+    151.64,
+    3.313
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_Riverside_House_04",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    -132.226,
+    142.635,
+    2.269
+   ],
+   "max": [
+    -126.377,
+    149.094,
+    3.169
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_Riverside_House_05",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    -119.465,
+    140.951,
+    2.41
+   ],
+   "max": [
+    -111.432,
+    146.88,
+    3.31
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_Riverside_House_06",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    -89.785,
+    135.737,
+    2.762
+   ],
+   "max": [
+    -80.457,
+    143.433,
+    3.662
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_Riverside_House_07",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    -74.534,
+    134.575,
+    3.035
+   ],
+   "max": [
+    -66.338,
+    140.736,
+    3.935
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_Riverside_House_08",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    -59.611,
+    131.786,
+    3.336
+   ],
+   "max": [
+    -50.616,
+    139.336,
+    4.236
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_Riverside_House_09",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    -42.775,
+    129.343,
+    3.655
+   ],
+   "max": [
+    -35.468,
+    137.459,
+    4.555
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_UpperEast_House_01",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    16.489,
+    -180.377,
+    16.97
+   ],
+   "max": [
+    24.487,
+    -174.498,
+    17.87
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_UpperEast_House_02",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    15.019,
+    -191.559,
+    17.56
+   ],
+   "max": [
+    24.396,
+    -183.804,
+    18.46
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_UpperEast_House_03",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    16.115,
+    -205.581,
+    18.796
+   ],
+   "max": [
+    24.527,
+    -196.29,
+    19.696
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_UpperEast_House_04",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    12.149,
+    -217.895,
+    20.189
+   ],
+   "max": [
+    21.737,
+    -210.67,
+    21.089
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_UpperEast_House_05",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    15.587,
+    -228.224,
+    20.967
+   ],
+   "max": [
+    23.642,
+    -221.555,
+    21.867
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_UpperEast_House_06",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    17.444,
+    -238.889,
+    21.358
+   ],
+   "max": [
+    26.755,
+    -232.057,
+    22.258
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_UpperWest_House_01",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    -35.251,
+    -195.292,
+    18.357
+   ],
+   "max": [
+    -27.237,
+    -188.673,
+    19.257
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_UpperWest_House_02",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    -33.7,
+    -205.307,
+    19.183
+   ],
+   "max": [
+    -25.658,
+    -196.358,
+    20.083
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_UpperWest_House_03",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    -28.843,
+    -213.76,
+    19.702
+   ],
+   "max": [
+    -20.631,
+    -207.576,
+    20.602
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_UpperWest_House_04",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    -27.47,
+    -227.968,
+    20.955
+   ],
+   "max": [
+    -17.827,
+    -219.881,
+    21.855
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_UpperWest_House_05",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    -26.547,
+    -236.72,
+    21.383
+   ],
+   "max": [
+    -18.514,
+    -230.792,
+    22.283
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_UpperWest_House_06",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    -25.77,
+    -247.997,
+    21.593
+   ],
+   "max": [
+    -16.441,
+    -240.301,
+    22.493
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "ART_Foundation_UpperWest_House_07",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    -20.492,
+    -262.899,
+    22.249
+   ],
+   "max": [
+    -13.003,
+    -254.622,
+    23.149
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "HERO_Guild_TrainingYard",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    -93.0,
+    -171.5,
+    16.565
+   ],
+   "max": [
+    -71.0,
+    -152.5,
+    16.915
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "MarketSquare_Well",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    -1.5,
+    -101.5,
+    15.0
+   ],
+   "max": [
+    1.5,
+    -98.5,
+    17.0
+   ],
+   "materials": [
+    "WorldGridMaterial"
+   ]
+  },
+  {
+   "name": "SmallServiceBridge_DECK",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    -133.6,
+    79.608,
+    5.912
+   ],
+   "max": [
+    -130.4,
+    116.608,
+    6.612
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "SmallServiceBridge_NorthRamp",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    -133.6,
+    68.108,
+    6.293
+   ],
+   "max": [
+    -130.4,
+    80.109,
+    7.199
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "SmallServiceBridge_PARAPET",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    -133.525,
+    79.608,
+    6.612
+   ],
+   "max": [
+    -133.075,
+    116.608,
+    7.712
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "SmallServiceBridge_PARAPET2",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    -130.925,
+    79.608,
+    6.612
+   ],
+   "max": [
+    -130.475,
+    116.608,
+    7.712
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  },
+  {
+   "name": "SmallServiceBridge_SouthRamp",
+   "verts": 26,
+   "tris": 48,
+   "min": [
+    -133.6,
+    116.163,
+    4.324
+   ],
+   "max": [
+    -130.4,
+    128.054,
+    6.597
+   ],
+   "materials": [
+    "M_Weathered_Stone_01"
+   ]
+  }
+ ]
+}

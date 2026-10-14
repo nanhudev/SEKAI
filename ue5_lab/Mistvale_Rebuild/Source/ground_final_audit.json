@@ -1,0 +1,93 @@
+{
+  "roads_reseated": 480,
+  "largest_road_shift_m": [
+    3.552713678800501e-15,
+    "UpperResidential_05_05"
+  ],
+  "building_bottom_gap_m": {
+    "min": 0.035,
+    "max": 0.514,
+    "largest_abs": [
+      [
+        0.514,
+        "HERO_Church_Nave"
+      ],
+      [
+        0.448,
+        "UpperWest_House_02"
+      ],
+      [
+        0.443,
+        "HERO_Blacksmith"
+      ],
+      [
+        0.39,
+        "LowerWestA_House_06"
+      ],
+      [
+        0.376,
+        "UpperWest_House_01"
+      ],
+      [
+        0.32,
+        "LowerEastA_House_04"
+      ],
+      [
+        0.312,
+        "CornerBuilding_05"
+      ],
+      [
+        0.31,
+        "UpperEast_House_01"
+      ],
+      [
+        0.271,
+        "LowerWestB_House_04"
+      ],
+      [
+        0.271,
+        "LowerEastB_House_04"
+      ]
+    ]
+  },
+  "riverside_positions_m": [
+    [
+      -175.0,
+      -152.7
+    ],
+    [
+      -160.0,
+      -150.4
+    ],
+    [
+      -145.0,
+      -148.2
+    ],
+    [
+      -130.0,
+      -146.0
+    ],
+    [
+      -115.0,
+      -143.8
+    ],
+    [
+      -85.0,
+      -139.6
+    ],
+    [
+      -70.0,
+      -137.5
+    ],
+    [
+      -55.0,
+      -135.6
+    ],
+    [
+      -40.0,
+      -133.6
+    ]
+  ],
+  "terrain_asset": "/Game/MistvaleArt/Terrain/SM_Mistvale_Terrain_Art.SM_Mistvale_Terrain_Art",
+  "foundations": 87
+}

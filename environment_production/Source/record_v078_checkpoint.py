@@ -1,0 +1,12 @@
+from pathlib import Path as _SekaiPath
+import os as _sekai_os
+_SEKAI_ROOT = _SekaiPath(_sekai_os.environ['SEKAI_ROOT']).resolve() if 'SEKAI_ROOT' in _sekai_os.environ else next(p for p in _SekaiPath(__file__).resolve().parents if (p / 'godot/project.godot').is_file())
+_SEKAI_RUNTIME = _SekaiPath(_sekai_os.environ.get('SEKAI_RUNTIME_DIR', str(_SEKAI_ROOT / '.local')))
+from pathlib import Path
+root=Path(str(_SEKAI_ROOT / 'environment_production'))
+note='''LATEST AUTHORITATIVE CHECKPOINT (2026-10-14 v078): USER bridge-left break fixed. Source dense sampling proves old approach along (-48,-58)->(-46,-45) dipped to riverbed-.55m before deck3.12m; old 14 node-only floor rays missed between-node break. v077 restored original grade via ~13.6m closed stone ramp/ground-reaching abutment,4.96m wide. v076 adds two west terrace homes; v077 CAM04 was inside lower new home, NOT valid six-view review. v078 re-seats it to(-52,28) using nine ground samples, retains fixed cameras/light. Actual v078 six fixed views inspected and integrity passed; still not reference quality. Godot menu NOW v078, current geometry/planting/bridge and32-body collision synced. Valid physical LEFT BRIDGE proof via actual Main.start_region -> real Player moves from(-48,3.42,58) to(-40.07,4.02,44.42),40/40 sampled grounded -> return_to_title -> test exit0, log v078_bridge_left_gameflow.log copied into Terrain/v078/Godot_Review. Raw world-instance tests v077 and initialv078 reached bridge but crashed AFTERPASS at teardown; do not use their PASS as clean. Native current bridge_left.png and water time captures in v078/Godot_Review/Native, Godot water static control remains0. Existing zero-target/looking_at warnings persist, no combat code changed. Report Terrain/v078/ART_CHECKPOINT.md. UE water inherits v075 corrected sample UVs (old Coordinates silently failed); strict UE flow/background validation remains incomplete. Clouds still absent, bare terrain/tree/vegetation/buildings/estate/water/whole-route/reference goals remain ACTIVE. UE desktop tour defaultv067, not current. Existing live Godot game is not auto-replaced; rerun for newest map. Latest user allows Godot integration now. No new agents/threads/timers/auth/reference generation.
+
+'''
+for p in [root/'Terrain/CURRENT_STATE.md',root/'Source/RESUME_BRIEF.md']:
+    text=p.read_text(encoding='utf-8');assert note.splitlines()[0] not in text
+    p.write_text(note+text,encoding='utf-8')

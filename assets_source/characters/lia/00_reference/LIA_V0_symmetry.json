@@ -1,0 +1,117 @@
+{
+  "mirror_plane_x": 0.008,
+  "rows": [
+    {
+      "region": "boots/feet",
+      "verts": 31870,
+      "rms_mm": 1.28,
+      "p50_mm": 0.93,
+      "p95_mm": 2.38,
+      "max_mm": 9.93
+    },
+    {
+      "region": "lower legs",
+      "verts": 8083,
+      "rms_mm": 7.57,
+      "p50_mm": 1.91,
+      "p95_mm": 3.16,
+      "max_mm": 143.93
+    },
+    {
+      "region": "knees",
+      "verts": 9136,
+      "rms_mm": 58.07,
+      "p50_mm": 3.1,
+      "p95_mm": 118.42,
+      "max_mm": 143.93
+    },
+    {
+      "region": "thighs",
+      "verts": 39245,
+      "rms_mm": 30.53,
+      "p50_mm": 2.99,
+      "p95_mm": 74.87,
+      "max_mm": 130.64
+    },
+    {
+      "region": "hips/skirt",
+      "verts": 44638,
+      "rms_mm": 32.66,
+      "p50_mm": 2.61,
+      "p95_mm": 22.49,
+      "max_mm": 233.79
+    },
+    {
+      "region": "waist",
+      "verts": 24621,
+      "rms_mm": 52.39,
+      "p50_mm": 2.96,
+      "p95_mm": 209.62,
+      "max_mm": 234.93
+    },
+    {
+      "region": "chest/bust",
+      "verts": 34078,
+      "rms_mm": 61.5,
+      "p50_mm": 1.27,
+      "p95_mm": 197.1,
+      "max_mm": 234.93
+    },
+    {
+      "region": "shoulders/arms",
+      "verts": 52390,
+      "rms_mm": 31.08,
+      "p50_mm": 1.2,
+      "p95_mm": 63.46,
+      "max_mm": 191.25
+    },
+    {
+      "region": "shoulders-core",
+      "verts": 32838,
+      "rms_mm": 11.29,
+      "p50_mm": 0.98,
+      "p95_mm": 26.37,
+      "max_mm": 71.99
+    },
+    {
+      "region": "arms",
+      "verts": 12556,
+      "rms_mm": 34.76,
+      "p50_mm": 14.26,
+      "p95_mm": 75.3,
+      "max_mm": 128.52
+    },
+    {
+      "region": "hands",
+      "verts": 20706,
+      "rms_mm": 26.04,
+      "p50_mm": 1.53,
+      "p95_mm": 41.13,
+      "max_mm": 212.05
+    },
+    {
+      "region": "neck",
+      "verts": 7946,
+      "rms_mm": 12.19,
+      "p50_mm": 0.83,
+      "p95_mm": 2.24,
+      "max_mm": 83.43
+    },
+    {
+      "region": "head",
+      "verts": 49161,
+      "rms_mm": 35.84,
+      "p50_mm": 11.97,
+      "p95_mm": 73.87,
+      "max_mm": 105.8
+    },
+    {
+      "region": "head (skull)",
+      "verts": 27007,
+      "rms_mm": 22.27,
+      "p50_mm": 3.04,
+      "p95_mm": 53.55,
+      "max_mm": 99.09
+    }
+  ]
+}

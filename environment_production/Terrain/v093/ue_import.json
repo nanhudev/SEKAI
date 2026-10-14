@@ -1,0 +1,137 @@
+{
+  "map": "/Game/Environment/Village/Landscape/L_StarterValley_v093",
+  "assets": [
+    "SM_VIL_Valley_Terrain_v009",
+    "SM_VIL_Valley_Stream_v009",
+    "SM_VIL_Valley_CriticalRoute_v009",
+    "SM_VIL_River_Bank_West",
+    "SM_VIL_River_Bank_East",
+    "SM_VIL_Terrace_Face_WestHomes",
+    "SM_VIL_Terrace_Face_UpperHomes",
+    "SM_VIL_Terrace_Face_Training",
+    "SM_VIL_Valley_Surroundings",
+    "SM_VIL_Hero_AncientTree_Wood",
+    "SM_VIL_Hero_AncientTree_Foliage",
+    "SM_VIL_Plaza_PavingAndTreeTerrace",
+    "SM_VIL_EntranceBridge_Railing",
+    "SM_VIL_Hero_Tavern_Placed",
+    "SM_VIL_Cascade_Bedrock_v030",
+    "SM_VIL_Pine_Library_0",
+    "SM_VIL_Pine_Library_1",
+    "SM_VIL_Pine_Library_2",
+    "SM_VIL_Road_EmbeddedStones",
+    "SM_VIL_Road_BrokenShoulders",
+    "SM_VIL_EntranceBridge_StoneSupports",
+    "SM_VIL_Plaza_RailsAndLanterns_v044",
+    "SM_VIL_Plaza_Planting_v044",
+    "SM_VIL_Tavern_Rear_Completion_v045",
+    "SM_VIL_Forge_OpenWorkshop_v051",
+    "SM_VIL_Home_PorchCottage_v052",
+    "SM_VIL_Home_BalconySaltbox_v052",
+    "SM_VIL_Forge_Forecourt_v055",
+    "SM_VIL_Tavern_ServiceWing_v057",
+    "SM_VIL_BorderCount_Estate_v060",
+    "SM_VIL_BorderCount_Viaduct_v060",
+    "SM_VIL_TreeRoot_Grounding_v061",
+    "SM_VIL_Route_FittedStone_v065",
+    "SM_VIL_Home_PorchCottage_v068",
+    "SM_VIL_Home_BalconySaltbox_v068",
+    "SM_VIL_Home_Footings_v070",
+    "SM_VIL_Route_Planting_v072",
+    "SM_VIL_Home_PorchCottage_v076",
+    "SM_VIL_Home_BalconySaltbox_v076",
+    "SM_VIL_Bridge_LeftApproach_v077",
+    "SM_VIL_Terrace_Gardens_v088",
+    "SM_VIL_Plaza_FlowerPlanters_v090",
+    "SM_VIL_Planter_Planting_v090",
+    "SM_VIL_Home_Courtyards_v093",
+    "SM_VIL_Home_Flowerbox_Planting_v093"
+  ],
+  "status": "IMPORTED_NOT_VISUALLY_ACCEPTED",
+  "cameras": [
+    {
+      "name": "CAM_01_Entrance",
+      "position_m": [
+        -58,
+        -100,
+        3.54
+      ],
+      "target_m": [
+        -45,
+        -48,
+        2.4166333208230895
+      ],
+      "fov": 75
+    },
+    {
+      "name": "CAM_02_Bridge",
+      "position_m": [
+        -46,
+        -45,
+        4.7
+      ],
+      "target_m": [
+        18,
+        12,
+        10.970327868852458
+      ],
+      "fov": 75
+    },
+    {
+      "name": "CAM_03_Plaza",
+      "position_m": [
+        20,
+        -3,
+        9.069098360655737
+      ],
+      "target_m": [
+        -1,
+        47,
+        16.41567859448994
+      ],
+      "fov": 75
+    },
+    {
+      "name": "CAM_04_Residential",
+      "position_m": [
+        -56,
+        20,
+        10.337841087149373
+      ],
+      "target_m": [
+        20,
+        13,
+        11.018278688524589
+      ],
+      "fov": 75
+    },
+    {
+      "name": "CAM_05_Exit",
+      "position_m": [
+        50,
+        85,
+        18.052099644128113
+      ],
+      "target_m": [
+        20,
+        13,
+        11.018278688524589
+      ],
+      "fov": 75
+    },
+    {
+      "name": "CAM_06_Aerial",
+      "position_m": [
+        190,
+        -285,
+        250
+      ],
+      "target_m": [
+        0,
+        15,
+        6
+      ],
+      "fov": 50
+    }
+  ]
+}

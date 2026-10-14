@@ -1,0 +1,308 @@
+{
+  "version": 1,
+  "generated_by": "hand, from docs/narrative/CHARACTERS.md + docs/characters/DEMO_CAST.md",
+  "validated_by": "tools/character/validate_cast.py",
+
+  "note": [
+    "character_id is the STORY identity. It never changes, and narrative/dialogue/",
+    "quest code must reference ONLY character_id -- never placeholder_model.",
+    "placeholder_model is the rehearsal costume. It is expected to be replaced, and",
+    "replacing it must be a one-line edit in this file with no other change anywhere.",
+    "These low-poly actors are REHEARSAL ACTORS: they may be ugly, but they must not",
+    "change a character's design. If a model is wrong for a role, change the model."
+  ],
+
+  "skeleton_profiles": {
+    "female_medium": {
+      "source_pack": "third_party/quaternius/ultimate_modular_women",
+      "bones": 51,
+      "height_m": 1.70,
+      "rig_repairs": ["legs_reparented_to_pelvis"],
+      "anim_library": "res://assets/characters/_third_party/AnimationLibrary_Godot_Standard.glb",
+      "clips": 37,
+      "why_this_field": "A model swap is only safe if the skeleton behaves the same. rig_repairs records what had to be corrected on import; a new model that needs DIFFERENT repairs is a different profile, not a drop-in."
+    },
+    "male_medium": {
+      "source_pack": "third_party/quaternius/ultimate_modular_characters",
+      "bones": 62,
+      "height_m": 1.70,
+      "rig_repairs": [],
+      "anim_library": "res://assets/characters/_third_party/AnimationLibrary_Godot_Standard.glb",
+      "clips": 37,
+      "why_this_field": "Same clip, same retarget, no repair -- the two packs are NOT the same rig. See docs/characters/DEMO_CAST.md section 4."
+    }
+  },
+
+  "base_motions": {
+    "_comment": "The shared vocabulary from the brief section 7. 'clips' lists library clips that already satisfy it; status is covered/partial/missing so the remaining authoring work is a list, not a feeling.",
+    "Idle":     {"clips": ["Idle"],            "status": "covered"},
+    "Idle_Talk":{"clips": ["Idle_Talking"],   "status": "covered"},
+    "Walk":     {"clips": ["Walk"],            "status": "covered"},
+    "Run":      {"clips": ["Jog_Fwd"],         "status": "covered"},
+    "Sprint":   {"clips": ["Sprint"],          "status": "covered"},
+    "Crouch":   {"clips": ["Crouch_Idle"],     "status": "covered"},
+    "Sit":      {"clips": ["Sitting_Idle"],    "status": "covered"},
+    "Sit_Enter":{"clips": ["Sitting_Enter"],   "status": "covered"},
+    "Sit_Exit": {"clips": ["Sitting_Exit"],    "status": "covered"},
+    "Kneel":    {"clips": ["Fixing_Kneeling"], "status": "covered"},
+    "Pickup":   {"clips": ["PickUp_Table"],    "status": "covered"},
+    "Interact": {"clips": ["Interact"],        "status": "covered"},
+    "Push":     {"clips": ["Push"],            "status": "covered"},
+    "HitReact": {"clips": ["Hit_Chest", "Hit_Head"], "status": "covered"},
+    "Death":    {"clips": ["Death01"],         "status": "covered"},
+    "Jump":     {"clips": ["Jump_Start", "Jump", "Jump_Land"], "status": "covered"},
+    "Look":     {"clips": [],                  "status": "missing",
+                 "plan": "head-only additive on Idle; no library clip. Cheapest useful authoring target."},
+    "Point":    {"clips": [],                  "status": "missing",
+                 "plan": "upper-body additive; needed by Taim (indicate) and Mira (point_finding)."},
+    "Turn":     {"clips": [],                  "status": "missing",
+                 "plan": "needed the moment an NPC walks_to a marker. Author as a pose variant of Walk."},
+    "Start":    {"clips": [],                  "status": "missing",
+                 "plan": "Walk in-blend; can be a 0.2s additive lead-in."},
+    "Stop":     {"clips": [],                  "status": "missing",
+                 "plan": "Walk out-blend; same."},
+    "Carry":    {"clips": ["Interact"],        "status": "partial",
+                 "plan": "Interact is a reach, not a carry. Town life needs a real carry (crate/sack)."},
+    "Stand":    {"clips": ["Sitting_Exit"],    "status": "partial",
+                 "plan": "Sitting_Exit ends standing but is keyed to a seat height."}
+  },
+
+  "animation_profiles": {
+    "_comment": "The CHARACTER LAYER from the brief section 6: one shared base motion, per-character pose/timing variant. Four fully separate walk cycles were explicitly NOT wanted.",
+    "lia_demo": {
+      "walk":  {"speed_scale": 1.08, "posture": "relaxed", "note": "light and steady; she is used to moving"},
+      "talk":  {"gesture_amount": 0.55},
+      "actions": ["lia_stand_relaxed", "lia_river_look", "lia_rope_handle",
+                  "lia_push_boat", "lia_boat_stand", "lia_talk_idle"]
+    },
+    "oren_demo": {
+      "walk":  {"speed_scale": 0.88, "posture": "low_center", "note": "stable, weight low"},
+      "talk":  {"gesture_amount": 0.15, "note": "he does not stop working to talk; gesture is the work"},
+      "actions": ["oren_chop_wood", "oren_pick_log", "oren_stack_firewood",
+                  "oren_tool_idle", "oren_look_player", "oren_talk_idle", "oren_sword_demo_01"]
+    },
+    "mira_demo": {
+      "walk":  {"speed_scale": 1.15, "posture": "forward_lean", "note": "slightly quicker; thinking ahead of her feet"},
+      "talk":  {"gesture_amount": 0.45, "note": "fast small gestures, not stage waving"},
+      "actions": ["mira_inspect", "mira_note", "mira_argue", "mira_point_finding", "mira_quick_cast"]
+    },
+    "vell_demo": {
+      "walk":  {"speed_scale": 0.92, "posture": "restrained", "note": "contained; nothing wasted"},
+      "talk":  {"gesture_amount": 0.10},
+      "actions": ["vell_desk_idle", "vell_write", "vell_turn_page", "vell_receive_document",
+                  "vell_read", "vell_look_up", "vell_notice_anomaly", "vell_denial_recover"]
+    },
+    "taim_demo": {
+      "walk":  {"speed_scale": 0.45, "posture": "limp", "note": "injured; replaces the base walk outright"},
+      "talk":  {"gesture_amount": 0.20},
+      "actions": ["taim_injured_idle", "taim_pain_shift", "taim_call_out",
+                  "taim_point_indicate", "taim_stand_assisted", "taim_limp"]
+    },
+    "garran_demo": {
+      "walk":  {"speed_scale": 0.95, "posture": "heavy_shoulders"},
+      "talk":  {"gesture_amount": 0.30},
+      "actions": ["garran_forge_idle", "garran_hammer", "garran_examine_hand"]
+    },
+    "arn_demo": {
+      "walk":  {"speed_scale": 1.20, "posture": "restless"},
+      "talk":  {"gesture_amount": 0.70},
+      "actions": ["arn_pester", "arn_show_map", "arn_wait_at_gate"]
+    },
+    "brann_demo": {
+      "walk":  {"speed_scale": 0.85, "posture": "patrol"},
+      "talk":  {"gesture_amount": 0.15},
+      "actions": ["brann_desk_idle", "brann_check_list", "brann_wave_through"]
+    },
+    "rusk_demo": {
+      "walk":  {"speed_scale": 0.90, "posture": "tired"},
+      "talk":  {"gesture_amount": 0.20},
+      "actions": ["rusk_papers_idle", "rusk_compare_sheets"]
+    },
+    "crowd_demo": {
+      "walk":  {"speed_scale": 1.00, "posture": "generic"},
+      "talk":  {"gesture_amount": 0.35},
+      "actions": ["town_carry_crate", "town_sweep", "town_sit", "town_talk",
+                  "town_walk", "town_inspect_stall", "town_move_sack"]
+    }
+  },
+
+  "characters": [
+    {
+      "character_id": "lia",
+      "display_name": "Lia",
+      "display_name_zh": "莉娅",
+      "placeholder_model": "res://assets/characters/placeholders/lpg_adventurer_w.glb",
+      "placeholder_model_alt": "res://assets/characters/placeholders/lpg_casual_w.glb",
+      "skeleton_profile": "female_medium",
+      "animation_profile": "lia_demo",
+      "scene_role": "ferry_guide",
+      "priority": "P0",
+      "cast_reason": "Utility wear, boots, ponytail, no ornament. She works on a river, not in a hall."
+    },
+    {
+      "character_id": "oren",
+      "display_name": "Oren",
+      "display_name_zh": "奥伦",
+      "placeholder_model": "res://assets/characters/placeholders/lpg_farmer_m.glb",
+      "placeholder_model_alt": "res://assets/characters/placeholders/lpg_worker_m.glb",
+      "skeleton_profile": "male_medium",
+      "animation_profile": "oren_demo",
+      "scene_role": "retired_swordsman",
+      "priority": "P0",
+      "cast_reason": "DEVIATES FROM THE BRIEF. The brief proposed worker_m; its hi-vis safety vest and hard hat read 'municipal works crew', a hard modern signifier in a misty fantasy village. farmer_m (straw hat, cloth shirt, overalls) reads 'person who works with their hands outdoors', which is the role. See the A/B sheet."
+    },
+    {
+      "character_id": "mira",
+      "display_name": "Mira",
+      "display_name_zh": "米拉",
+      "placeholder_model": "res://assets/characters/placeholders/lpg_scifi_w.glb",
+      "placeholder_model_alt": "res://assets/characters/placeholders/lpg_witch_w.glb",
+      "skeleton_profile": "female_medium",
+      "animation_profile": "mira_demo",
+      "scene_role": "magic_researcher",
+      "priority": "P1",
+      "cast_reason": "Asymmetric modern functional wear. A pointed hat would declare 'traditional witch' before she says a word, which is the one thing the role must not be."
+    },
+    {
+      "character_id": "vell",
+      "display_name": "Vell",
+      "display_name_zh": "薇尔",
+      "placeholder_model": "res://assets/characters/placeholders/lpg_formal_w.glb",
+      "placeholder_model_alt": "res://assets/characters/placeholders/lpg_suit_w.glb",
+      "skeleton_profile": "female_medium",
+      "animation_profile": "vell_demo",
+      "scene_role": "tower_recorder",
+      "priority": "P0",
+      "cast_reason": "GENUINE TOSS-UP, user's call. suit_w reads 'administrator' more sharply but imports a modern office signifier; formal_w is period-neutral and reads 'townsfolk in formal dress'. Default kept as the brief's pick. One-line change in this file if you disagree.",
+      "id_note": "The narrative spells this character 'Vell' (docs/narrative/CHARACTERS.md section 6). The brief wrote 'Veil'. The manifest follows the narrative; 'veil' is NOT an accepted alias."
+    },
+    {
+      "character_id": "taim",
+      "display_name": "Taim",
+      "display_name_zh": "泰姆",
+      "placeholder_model": "res://assets/characters/placeholders/lpg_casual_m.glb",
+      "placeholder_model_alt": "res://assets/characters/placeholders/lpg_casual2_m.glb",
+      "skeleton_profile": "male_medium",
+      "animation_profile": "taim_demo",
+      "scene_role": "injured_carter",
+      "priority": "P0",
+      "cast_reason": "Must not read as a hero. He is the ordinary person the player's first fight happened to.",
+      "soft_note": "casual2_m (plain tee, jeans) reads slightly older and more work-worn; casual_m's shorts read younger. Either is defensible."
+    },
+    {
+      "character_id": "garran",
+      "display_name": "Garran",
+      "display_name_zh": "格兰",
+      "placeholder_model": "res://assets/characters/placeholders/lpg_worker_m.glb",
+      "skeleton_profile": "male_medium",
+      "animation_profile": "garran_demo",
+      "scene_role": "blacksmith",
+      "priority": "P1",
+      "cast_reason": "ADDED BY ME, not in the brief's map, but he has a DAILY PRESENCE entry and is the player's first roof and first paying work. The tradesman read is the closest this pack has to a smith."
+    },
+    {
+      "character_id": "arn",
+      "display_name": "Arn",
+      "display_name_zh": "阿诺",
+      "placeholder_model": "res://assets/characters/placeholders/lpg_casual2_m.glb",
+      "skeleton_profile": "male_medium",
+      "animation_profile": "arn_demo",
+      "scene_role": "teenager",
+      "priority": "P1",
+      "cast_reason": "ADDED BY ME. He is the only NPC who walks up to the player, and he is sixteen -- the plainest male model is the correct one.",
+      "narrative_note": "CHARACTERS.md is internally inconsistent: section 1 titles him 'Arn', the section 14 table says 'Ano'. Flagged for narrative, not resolved here; the manifest uses 'arn'."
+    },
+    {
+      "character_id": "brann",
+      "display_name": "Brann",
+      "display_name_zh": "布兰",
+      "placeholder_model": "res://assets/characters/placeholders/lpg_swat_m.glb",
+      "skeleton_profile": "male_medium",
+      "animation_profile": "brann_demo",
+      "scene_role": "ferry_warden",
+      "priority": "P1",
+      "cast_reason": "ADDED BY ME. He is the registration gate the player fails at. Drawn from the guard pool on purpose: his function is procedural, not heroic.",
+      "world_note": "The model's real-world 'SWAT' meaning must never reach the world bible. It is a GUARD ACTOR."
+    },
+    {
+      "character_id": "rusk",
+      "display_name": "Rusk",
+      "display_name_zh": "鲁斯克",
+      "placeholder_model": "res://assets/characters/placeholders/lpg_suit_m.glb",
+      "skeleton_profile": "male_medium",
+      "animation_profile": "rusk_demo",
+      "scene_role": "guild_lead",
+      "priority": "P1",
+      "cast_reason": "The brief's 'Guild Lead'. His whole manner is paperwork and exhaustion, not authority in armour."
+    },
+    {
+      "character_id": "second_candidate",
+      "display_name": "Second Candidate",
+      "display_name_zh": "第二候选者",
+      "placeholder_model": "res://assets/characters/placeholders/lpg_adventurer_m.glb",
+      "skeleton_profile": "male_medium",
+      "animation_profile": "",
+      "scene_role": "destiny_candidate",
+      "priority": "P2",
+      "animation": "NONE BY DESIGN",
+      "cast_reason": "Registered and deliberately NOT animated. In Act I this character exists only as rumour -- nobody has seen them. king_m was rejected outright: its crown is a hard 'he is a king' signifier and would leak a design decision the narrative has not made.",
+      "world_law": "No name, no face, no background in Act I."
+    }
+  ],
+
+  "pools": {
+    "town_crowd": {
+      "naming": "town_citizen_01 .. town_citizen_NN -- generic instances, NO stable story id, ever",
+      "models": [
+        "res://assets/characters/placeholders/lpg_casual_w.glb",
+        "res://assets/characters/placeholders/lpg_worker_w.glb",
+        "res://assets/characters/placeholders/lpg_medieval_w.glb",
+        "res://assets/characters/placeholders/lpg_beach_m.glb",
+        "res://assets/characters/placeholders/lpg_soldier_w.glb"
+      ],
+      "actions": "town_carry_crate, town_sweep, town_sit, town_talk, town_walk, town_inspect_stall, town_move_sack",
+      "discipline": "Do NOT all stand on marks rocking left-right. A town reads as inhabited when people are doing something to something."
+    },
+    "guard": {
+      "models": [
+        "res://assets/characters/placeholders/lpg_soldier_w.glb",
+        "res://assets/characters/placeholders/lpg_medieval_w.glb"
+      ],
+      "world_note": "GUARD ACTORS. No real-world unit meaning is imported.",
+      "why_not_swat_m": "swat_m IS Brann (the ferry warden). Putting it in the background guard pool too would let a villager read as a named character."
+    },
+    "hostile_humanoid_test": {
+      "models": [
+        "res://assets/characters/placeholders/lpg_punk_m.glb",
+        "res://assets/characters/placeholders/lpg_punk_w.glb",
+        "res://assets/characters/placeholders/lpg_swat_m.glb"
+      ],
+      "discipline": "Test-only. The Act I first enemy is 遗迹哨兵, which is NOT human. Having humanoid actors must not change that."
+    },
+    "not_cast_as_villagers": {
+      "models": [
+        "res://assets/characters/placeholders/lpg_king_m.glb",
+        "res://assets/characters/placeholders/lpg_spacesuit_m.glb",
+        "res://assets/characters/placeholders/lpg_witch_w.glb",
+        "res://assets/characters/placeholders/lpg_punk_w.glb",
+        "res://assets/characters/placeholders/lpg_punk_m.glb"
+      ],
+      "why": "Each carries a hard out-of-genre signifier (crown, spacesuit, pointed witch hat, mohawk). Putting one in a Mistvale crowd would spend a first impression the narrative has not made yet."
+    }
+  },
+
+  "deliberately_uncast": [
+    {
+      "role": "elf_girl",
+      "why": "Nothing in this pack reads as non-human. Do NOT turn her into a human to make a model fit -- that is changing character design to suit a placeholder."
+    },
+    {
+      "role": "observer_agent",
+      "why": "First impression is a narrative asset. Spending it on a generic casual model is worse than not appearing."
+    },
+    {
+      "role": "chain_school_mentor",
+      "why": "Not needed on screen yet; no binding until the narrative asks for her."
+    }
+  ]
+}

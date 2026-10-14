@@ -1,0 +1,87 @@
+{
+  "generatedBy": "ui_web/tools/emit_svg.mjs",
+  "source": "ui_web/svg/library.js",
+  "note": "这些文件的颜色用 tokens.css 的 fallback 值。改颜色请改 ui_web/tokens/tokens.css 后重新生成。",
+  "parts": [
+    {
+      "name": "sekai_mark",
+      "file": "sekai_mark.svg",
+      "verdict": "identity",
+      "exported": true,
+      "note": "品牌标记：开口的环 + 正中一点（信标 / 观察者）。16px 到 150px 都成立。同时是存档图标 / 加载字形。",
+      "owner": "ART（可重绘，但缺口角度与点的比例必须保持）"
+    },
+    {
+      "name": "sekai_mark_arc_only",
+      "file": "sekai_mark_arc_only.svg",
+      "verdict": "identity",
+      "exported": true,
+      "note": "只有环、没有点。用于\"点还没落下来\"的过渡帧，或极小的角落水印。",
+      "owner": "ART"
+    },
+    {
+      "name": "ring_arc",
+      "file": null,
+      "verdict": "demote",
+      "exported": false,
+      "note": "⛔ 不表达任何状态，只是\"看起来很 SEKAI\"（DE-AI 清单第 3 条）。V2 全线禁用。",
+      "owner": "（无 —— 已停止导出）"
+    },
+    {
+      "name": "focus_line",
+      "file": "focus_line.svg",
+      "verdict": "state",
+      "exported": true,
+      "note": "菜单焦点线：右端固定、左端推进，读作\"这条被划上了\"。stroke 用非缩放描边，所以任何宽度都是 1px。",
+      "owner": "UI 自用 / Godot 菜单"
+    },
+    {
+      "name": "corner_frame",
+      "file": null,
+      "verdict": "delete",
+      "exported": false,
+      "note": "⛔ 装饰角框 —— 装饰边框的第一块砖。不表达状态：内容怎么变，角都不变。",
+      "owner": "（无 —— 已停止导出）"
+    },
+    {
+      "name": "divider_key",
+      "file": "divider_key.svg",
+      "verdict": "identity",
+      "exported": true,
+      "note": "64px 金色渐变短线。**只允许出现在 Logo 下，全片一条。**",
+      "owner": "UI 自用"
+    },
+    {
+      "name": "divider_hair",
+      "file": "divider_hair.svg",
+      "verdict": "state",
+      "exported": true,
+      "note": "全宽 1px 细线。用于分组（设置行之间），不用于强调。",
+      "owner": "UI 自用 / 面板分组"
+    },
+    {
+      "name": "loading_ring",
+      "file": "loading_ring.svg",
+      "verdict": "state",
+      "exported": true,
+      "note": "环境加载环。不是进度条。注意 V2 主菜单改用 line state（§15），环留给游戏内加载。",
+      "owner": "UI 自用 / Godot BootScene"
+    },
+    {
+      "name": "ability_segment",
+      "file": "ability_segment.svg",
+      "verdict": "state",
+      "exported": true,
+      "note": "能力轮盘扇区的一段扇环（不是实心块）。from/to 是角度，0 = 正右、逆时针为正。",
+      "owner": "COMBAT 提供状态，UI 负责表现"
+    },
+    {
+      "name": "location_ornament",
+      "file": "location_ornament.svg",
+      "verdict": "state",
+      "exported": true,
+      "note": "⚠ 只允许作为\"地点标题被写出时的下划线\"，必须与标题同一个 write 动画。单独/静态出现即为装饰，删。",
+      "owner": "UI 自用 / 地点标题"
+    }
+  ]
+}

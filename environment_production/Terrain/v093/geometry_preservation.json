@@ -1,0 +1,11 @@
+{
+  "before": "v092",
+  "after": "v093",
+  "existing_fbx_byte_identical": true,
+  "fixed_cameras_and_lights_unchanged": true,
+  "new_assets": [
+    "SM_VIL_Home_Flowerbox_Planting_v093",
+    "SM_VIL_Home_Courtyards_v093"
+  ],
+  "scope": "Original geometry preserved; new additions still require native and physical review"
+}

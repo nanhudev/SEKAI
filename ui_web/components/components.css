@@ -1,0 +1,499 @@
+/* ============================================================================
+   SEKAI · COMPONENTS
+   ----------------------------------------------------------------------------
+   只放零件。页面自己不做视觉决定（不做圆角、不做阴影、不选自造颜色）。
+
+   母题：8px 斜切 + 1px 细线 + 极淡底色 + 留白优先。
+   反例（禁止）：大圆角卡片 / glassmorphism / 大 CTA / SaaS 渐变 / 统一 hover 放大
+   ========================================================================= */
+
+/* ===========================================================================
+   0. RESET
+   ========================================================================= */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* hidden 必须真的隐藏。
+   作者样式里的 display:flex/grid 会盖掉 UA 的 [hidden]{display:none}，
+   不加这条就会出现"该藏起来的东西全在屏幕上"。 */
+[hidden] {
+  display: none !important;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  background: var(--sk-void);
+  color: var(--sk-fg);
+  font-family: var(--sk-font-sans);
+  font-size: var(--sk-fs-body);
+  font-weight: var(--sk-fw-regular);
+  line-height: var(--sk-lh-body);
+  letter-spacing: var(--sk-track-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow: hidden;
+  user-select: none;
+}
+
+/* 数字永远等宽、永远拉丁 —— 数值对齐是"精密感"的一半来源 */
+.sk-num {
+  font-family: var(--sk-font-num);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: var(--sk-track-figure);
+}
+
+.sk-serif {
+  font-family: var(--sk-font-serif);
+}
+
+/* ===========================================================================
+   1. 斜切 —— 唯一的几何母题
+   ========================================================================= */
+.sk-cut {
+  --c: var(--sk-chamfer);
+  clip-path: polygon(
+    var(--c) 0,
+    100% 0,
+    100% calc(100% - var(--c)),
+    calc(100% - var(--c)) 100%,
+    0 100%,
+    0 var(--c)
+  );
+}
+
+.sk-cut--all {
+  --c: var(--sk-chamfer);
+  clip-path: polygon(
+    var(--c) 0,
+    calc(100% - var(--c)) 0,
+    100% var(--c),
+    100% calc(100% - var(--c)),
+    calc(100% - var(--c)) 100%,
+    var(--c) 100%,
+    0 calc(100% - var(--c)),
+    0 var(--c)
+  );
+}
+
+/* ===========================================================================
+   2. 线
+   ========================================================================= */
+.sk-rule {
+  height: var(--sk-stroke-hair);
+  width: 100%;
+  background: var(--sk-line-faint);
+  border: 0;
+  flex: none;
+}
+
+/* 重点分隔：64px 宽，两端透明的金色渐变。整套 UI 唯一允许的纯装饰元素。 */
+.sk-rule--key {
+  width: 64px;
+  background: linear-gradient(90deg, transparent, var(--sk-gold), transparent);
+  opacity: 0.8;
+}
+
+.sk-rule--key-long {
+  width: min(180px, 28%);
+  height: var(--sk-stroke-hair);
+  background: linear-gradient(90deg, transparent, var(--sk-gold-line) 12%, var(--sk-gold) 50%, var(--sk-gold-line) 88%, transparent);
+}
+
+/* ===========================================================================
+   3. 文本层级
+   ========================================================================= */
+.sk-meta {
+  font-family: var(--sk-font-num);
+  font-size: var(--sk-fs-micro);
+  letter-spacing: var(--sk-track-wide);
+  color: var(--sk-fg-meta);
+  text-transform: uppercase;
+  font-weight: var(--sk-fw-medium);
+}
+
+.sk-label {
+  font-size: var(--sk-fs-micro);
+  letter-spacing: var(--sk-track-wide);
+  color: var(--sk-fg-meta);
+  text-transform: uppercase;
+  font-weight: var(--sk-fw-medium);
+}
+
+.sk-note {
+  font-size: var(--sk-fs-small);
+  color: var(--sk-fg-dim);
+  letter-spacing: var(--sk-track-body);
+}
+
+/* ===========================================================================
+   4. 按钮
+   三态 + 主行动。永远不是"圆角矩形 + 渐变 + 阴影"。
+   ========================================================================= */
+.sk-btn {
+  --c: var(--sk-chamfer);
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sk-s3);
+  padding: 0 var(--sk-s6) 0 var(--sk-s5);
+  min-height: 44px;
+  border: 0;
+  margin: 0;
+  background: var(--sk-line-soft);
+  color: var(--sk-fg);
+  font-family: var(--sk-font-sans);
+  font-size: var(--sk-fs-body);
+  letter-spacing: var(--sk-track-body);
+  text-align: left;
+  cursor: pointer;
+  clip-path: polygon(
+    var(--c) 0,
+    100% 0,
+    100% calc(100% - var(--c)),
+    calc(100% - var(--c)) 100%,
+    0 100%,
+    0 var(--c)
+  );
+  transition: background-color var(--sk-t-fast) var(--sk-e-out);
+}
+
+/* 内层：承担"底色"，与 1px 外圈形成描边效果 */
+.sk-btn::before {
+  content: '';
+  position: absolute;
+  inset: 1px;
+  z-index: -1;
+  --ci: calc(var(--c) - 1px);
+  background: var(--sk-surface-2);
+  clip-path: polygon(
+    var(--ci) 0,
+    100% 0,
+    100% calc(100% - var(--ci)),
+    calc(100% - var(--ci)) 100%,
+    0 100%,
+    0 var(--ci)
+  );
+  transition: background-color var(--sk-t-fast) var(--sk-e-out);
+}
+
+.sk-btn:hover,
+.sk-btn.is-hover {
+  background: var(--sk-gold);
+}
+
+.sk-btn:hover::before,
+.sk-btn.is-hover::before {
+  background: var(--sk-surface-hover);
+}
+
+.sk-btn:focus-visible,
+.sk-btn.is-focus {
+  outline: none;
+  background: var(--sk-gold);
+}
+
+.sk-btn:focus-visible::before,
+.sk-btn.is-focus::before {
+  background: var(--sk-surface-focus);
+}
+
+.sk-btn:active,
+.sk-btn.is-press {
+  transform: translateY(1px);
+}
+
+/* 按下时短暂压暗 —— 90ms 内必须到达（§30） */
+.sk-btn:active::before,
+.sk-btn.is-press::before {
+  background: var(--sk-surface-press);
+}
+
+.sk-btn__main {
+  display: block;
+  line-height: 1.2;
+}
+
+.sk-btn__sub {
+  display: block;
+  font-size: var(--sk-fs-micro);
+  letter-spacing: var(--sk-track-wide);
+  color: var(--sk-fg-meta);
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+.sk-btn--primary {
+  background: var(--sk-gold);
+}
+
+.sk-btn--primary::before {
+  background: var(--sk-surface-primary);
+}
+
+.sk-btn--primary .sk-btn__main {
+  color: var(--sk-accent-hi);
+  letter-spacing: var(--sk-track-title);
+}
+
+.sk-btn--primary:hover::before,
+.sk-btn--primary.is-hover::before {
+  background: var(--sk-surface-press);
+}
+
+.sk-btn--quiet {
+  background: transparent;
+}
+
+.sk-btn--quiet::before {
+  background: transparent;
+}
+
+.sk-btn[disabled],
+.sk-btn.is-disabled {
+  pointer-events: none;
+  background: var(--sk-line-faint);
+}
+
+.sk-btn[disabled]::before,
+.sk-btn.is-disabled::before {
+  background: rgba(14, 20, 24, 0.6);
+}
+
+.sk-btn[disabled] .sk-btn__main,
+.sk-btn.is-disabled .sk-btn__main {
+  color: var(--sk-fg-ghost);
+}
+
+/* ===========================================================================
+   5. 面板（复用率最高的资产）
+   ========================================================================= */
+.sk-panel {
+  position: relative;
+  background: linear-gradient(180deg, var(--sk-ink), var(--sk-ink-soft));
+  box-shadow: var(--sk-shadow-2), inset 0 0 0 1px var(--sk-line-faint);
+  padding: var(--sk-s6);
+}
+
+.sk-panel::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  box-shadow: inset 0 0 0 2px var(--sk-gold-faint);
+}
+
+.sk-panel__title {
+  font-family: var(--sk-font-serif);
+  font-size: var(--sk-fs-head);
+  letter-spacing: var(--sk-track-title);
+  color: var(--sk-fg);
+  padding-bottom: var(--sk-s4);
+  margin-bottom: var(--sk-s5);
+  border-bottom: var(--sk-stroke-hair) solid var(--sk-line-faint);
+}
+
+/* ===========================================================================
+   6. 菜单行（Main Menu 用）
+   选中 = 一条被写出来的线 + 4px 位移 + 极淡底色。不是放大。
+   ========================================================================= */
+.sk-item {
+  position: relative;
+  display: block;
+  width: 100%;
+  border: 0;
+  margin: 0;
+  padding: var(--sk-s2) 0 var(--sk-s2) calc(var(--sk-s5) + 14px);
+  background: transparent;
+  color: var(--sk-fg-dim);
+  font-family: var(--sk-font-serif);
+  font-size: var(--sk-fs-head);
+  letter-spacing: var(--sk-track-title);
+  text-align: left;
+  cursor: pointer;
+  transition:
+    color var(--sk-t-fast) var(--sk-e-out),
+    transform var(--sk-t-fast) var(--sk-e-out);
+}
+
+/* 焦点线容器：位于文字左下方 */
+.sk-item__line {
+  position: absolute;
+  left: 0;
+  bottom: 4px;
+  width: calc(100% - 8px);
+  height: 1px;
+  overflow: visible;
+  pointer-events: none;
+}
+
+/* 左侧刻度：一小段 2px 竖线，选中时收拢出现 */
+.sk-item__tick {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 2px;
+  height: 0;
+  margin-top: 0;
+  background: var(--sk-gold);
+  pointer-events: none;
+  transition: height var(--sk-t-fast) var(--sk-e-unfold);
+}
+
+.sk-item__en {
+  display: block;
+  font-family: var(--sk-font-num);
+  font-size: var(--sk-fs-micro);
+  letter-spacing: var(--sk-track-wide);
+  color: var(--sk-fg-ghost);
+  text-transform: uppercase;
+  margin-top: 3px;
+  transition: color var(--sk-t-fast) var(--sk-e-out);
+}
+
+.sk-item:hover,
+.sk-item.is-hover {
+  color: var(--sk-fg);
+}
+
+.sk-item:hover .sk-item__en {
+  color: var(--sk-fg-meta);
+}
+
+.sk-item:hover .sk-item__tick,
+.sk-item.is-focus .sk-item__tick {
+  height: 14px;
+  margin-top: -7px;
+}
+
+.sk-item:focus-visible,
+.sk-item.is-focus {
+  outline: none;
+  color: var(--sk-accent-hi);
+  transform: translateX(4px);
+}
+
+/* 选中项的副行**不用金色**。一个选中行已经有 3 处金（中文名 / 刻度 / 焦点线），
+   副行再金就变成"整行刷金"，违反 §D 的金色预算（金只做小面积重音）。
+   这里让它随行一起提亮到暖灰，金色因此更醒目。 */
+.sk-item:focus-visible .sk-item__en,
+.sk-item.is-focus .sk-item__en {
+  color: var(--sk-fg-meta);
+}
+
+.sk-item[disabled],
+.sk-item.is-disabled {
+  color: var(--sk-fg-ghost);
+  pointer-events: none;
+}
+
+/* ===========================================================================
+   7. 自定义光标（精确、细十字）
+   ========================================================================= */
+.sk-cursor {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  z-index: var(--sk-z-cursor);
+  pointer-events: none;
+  mix-blend-mode: normal;
+}
+
+.sk-cursor__dot {
+  position: absolute;
+  left: -1.5px;
+  top: -1.5px;
+  width: 3px;
+  height: 3px;
+  background: var(--sk-gold-bright);
+  border-radius: 50%;
+  transition: transform var(--sk-t-fast) var(--sk-e-snap);
+}
+
+.sk-cursor__x,
+.sk-cursor__y {
+  position: absolute;
+  background: var(--sk-gold);
+  opacity: 0.55;
+  transition:
+    opacity var(--sk-t-fast) var(--sk-e-out),
+    width var(--sk-t-fast) var(--sk-e-out),
+    height var(--sk-t-fast) var(--sk-e-out);
+}
+
+.sk-cursor__x {
+  left: -14px;
+  top: 0;
+  width: 28px;
+  height: 1px;
+}
+
+.sk-cursor__y {
+  left: 0;
+  top: -14px;
+  width: 1px;
+  height: 28px;
+}
+
+/* 悬停可交互元素时：十字变长、变亮、中心点变大。仍然是"精确"而不是"卡通手" */
+:root[data-cursor-on='1'].sk-hovering .sk-cursor__x {
+  left: -20px;
+  width: 40px;
+  opacity: 0.9;
+}
+
+:root[data-cursor-on='1'].sk-hovering .sk-cursor__y {
+  top: -20px;
+  height: 40px;
+  opacity: 0.9;
+}
+
+:root[data-cursor-on='1'].sk-hovering .sk-cursor__dot {
+  transform: scale(1.6);
+}
+
+:root[data-cursor-on='1'].sk-pressing .sk-cursor__dot {
+  transform: scale(2.4);
+}
+
+/* 开启自定义光标时藏掉系统光标 */
+:root[data-cursor-on='1'] .sk-native-cursor-off,
+:root[data-cursor-on='1'] body {
+  cursor: none;
+}
+
+/* ===========================================================================
+   8. 无障碍
+   ========================================================================= */
+.sk-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.sk-skip {
+  position: fixed;
+  bottom: var(--sk-s5);
+  right: var(--sk-s5);
+  z-index: var(--sk-z-overlay);
+  opacity: 0;
+  transition: opacity var(--sk-t-base) var(--sk-e-out);
+}
+
+.sk-skip.is-on {
+  opacity: 1;
+}

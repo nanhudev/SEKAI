@@ -1,0 +1,129 @@
+[gd_scene load_steps=20 format=3]
+
+; Starter village v068. Preserve the existing Player/director siblings.
+
+[ext_resource type="Script" path="res://scripts/world/starter_village_playable.gd" id="1_world"]
+[ext_resource type="PackedScene" path="res://scenes/player/Player.tscn" id="2_player"]
+[ext_resource type="Script" path="res://scripts/combat/time_effect_manager.gd" id="3_timefx"]
+[ext_resource type="Script" path="res://scripts/combat/combat_screen_fx.gd" id="4_screenfx"]
+[ext_resource type="PackedScene" path="res://scenes/ui/CombatHUD.tscn" id="5_hud"]
+[ext_resource type="Script" path="res://scripts/systems/audio_state_controller.gd" id="6_audio_state"]
+[ext_resource type="Script" path="res://scripts/combat/iaido_director.gd" id="7_iaido"]
+[ext_resource type="Script" path="res://scripts/combat/iaido_target_collector.gd" id="8_iaido_targets"]
+[ext_resource type="Script" path="res://scripts/combat/iaido_tear_3d.gd" id="9_iaido_tear"]
+[ext_resource type="Script" path="res://scripts/combat/iaido_screen_fx.gd" id="10_iaido_fx"]
+[ext_resource type="Script" path="res://scripts/combat/world_pause_manager.gd" id="11_pause"]
+[ext_resource type="Script" path="res://scripts/player/foreground_weapon_layer.gd" id="12_fgweapon"]
+[ext_resource type="Script" path="res://scripts/combat/iaido_glass_layer.gd" id="13_glass"]
+[ext_resource type="Script" path="res://scripts/combat/iaido_audio_timeline.gd" id="14_iaido_audio"]
+[ext_resource type="Script" path="res://scripts/combat/moment_of_no_moon_director.gd" id="15_moon"]
+[ext_resource type="Script" path="res://scripts/audio/combat_audio_director.gd" id="16_audiodir"]
+
+[sub_resource type="ProceduralSkyMaterial" id="SkyMaterial_mistvale"]
+sky_top_color = Color(0.38, 0.54, 0.76, 1)
+sky_horizon_color = Color(0.76, 0.8, 0.82, 1)
+sky_curve = 0.18
+ground_bottom_color = Color(0.42, 0.47, 0.51, 1)
+ground_horizon_color = Color(0.68, 0.72, 0.72, 1)
+sun_angle_max = 1.2
+sun_curve = 0.08
+
+[sub_resource type="Sky" id="Sky_mistvale"]
+sky_material = SubResource("SkyMaterial_mistvale")
+
+[sub_resource type="Environment" id="Environment_mistvale"]
+background_mode = 2
+sky = SubResource("Sky_mistvale")
+ambient_light_source = 3
+ambient_light_sky_contribution = 1.0
+ambient_light_energy = 0.5
+tonemap_mode = 4
+tonemap_white = 1.0
+fog_enabled = true
+fog_light_color = Color(0.74, 0.79, 0.83, 1)
+fog_light_energy = 0.9
+fog_density = 0.00055
+fog_aerial_perspective = 0.3
+fog_sky_affect = 0.25
+
+[node name="StarterVillagePlayable" type="Node3D"]
+script = ExtResource("1_world")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_mistvale")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.56, 0, -0.84, -0.588, 0.714, -0.392, 0.6, 0.7, 0.4, 0, 0, 0)
+light_energy = 1.2
+light_indirect_energy = 0.4
+shadow_enabled = true
+directional_shadow_max_distance = 260.0
+directional_shadow_fade_start = 0.8
+shadow_bias = 0.08
+shadow_normal_bias = 2.5
+; The terrain is a single 504 x 706 m mesh. Letting it cast would make one
+; heightfield shadow itself and cost a full extra pass over the whole valley,
+; so it is the props and the buildings that shadow. Same call as the greybox
+; region makes in mistvale_terrain.gd.
+
+[node name="Bounce" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.826, 0, 0.563, 0.338, 0.799, 0.496, -0.45, 0.6, -0.66, 0, 0, 0)
+light_energy = 0.4
+light_color = Color(0.66, 0.75, 0.95, 1)
+shadow_enabled = false
+
+[node name="Player" parent="." instance=ExtResource("2_player")]
+
+[node name="CombatHUD" parent="." instance=ExtResource("5_hud")]
+
+[node name="CombatScreenFX" type="CanvasLayer" parent="."]
+layer = 5
+script = ExtResource("4_screenfx")
+
+[node name="TimeEffectManager" type="Node" parent="."]
+script = ExtResource("3_timefx")
+
+[node name="AudioStateController" type="Node" parent="."]
+script = ExtResource("6_audio_state")
+
+[node name="CombatAudioDirector" type="Node" parent="."]
+process_mode = 3
+script = ExtResource("16_audiodir")
+log_cues = false
+
+[node name="WorldPauseManager" type="Node" parent="."]
+process_mode = 3
+script = ExtResource("11_pause")
+
+[node name="ForegroundWeaponLayer" type="CanvasLayer" parent="."]
+process_mode = 3
+layer = 8
+script = ExtResource("12_fgweapon")
+
+[node name="IaidoTargetCollector" type="Node" parent="."]
+script = ExtResource("8_iaido_targets")
+
+[node name="IaidoAudioTimeline" type="Node" parent="."]
+process_mode = 3
+script = ExtResource("14_iaido_audio")
+
+[node name="IaidoGlassLayer" type="CanvasLayer" parent="."]
+process_mode = 3
+layer = 7
+script = ExtResource("13_glass")
+
+[node name="IaidoDirector" type="Node" parent="."]
+process_mode = 3
+script = ExtResource("7_iaido")
+
+[node name="MomentOfNoMoonDirector" type="Node" parent="."]
+script = ExtResource("15_moon")
+
+[node name="IaidoTear3D" type="Node3D" parent="."]
+process_mode = 3
+script = ExtResource("9_iaido_tear")
+
+[node name="IaidoScreenFX" type="CanvasLayer" parent="."]
+process_mode = 3
+layer = 6
+script = ExtResource("10_iaido_fx")

@@ -1,0 +1,206 @@
+[gd_scene load_steps=28 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/player/Player.tscn" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/TechnicalDummy.tscn" id="2"]
+[ext_resource type="Script" path="res://scripts/combat/developer_panel.gd" id="3"]
+[ext_resource type="Script" path="res://scripts/combat/time_effect_manager.gd" id="4"]
+[ext_resource type="Script" path="res://scripts/combat/combat_screen_fx.gd" id="5"]
+[ext_resource type="Script" path="res://scripts/combat/combat_sandbox.gd" id="6"]
+[ext_resource type="PackedScene" path="res://scenes/ui/CombatHUD.tscn" id="7"]
+[ext_resource type="Script" path="res://scripts/systems/combat_music.gd" id="8"]
+[ext_resource type="AudioStream" path="res://audio/music/first-encounter.mp3" id="9"]
+[ext_resource type="Script" path="res://scripts/systems/audio_state_controller.gd" id="10"]
+[ext_resource type="Script" path="res://scripts/combat/iaido_director.gd" id="11"]
+[ext_resource type="Script" path="res://scripts/combat/iaido_target_collector.gd" id="12"]
+[ext_resource type="Script" path="res://scripts/combat/iaido_tear_3d.gd" id="13"]
+[ext_resource type="Script" path="res://scripts/combat/iaido_screen_fx.gd" id="17"]
+[ext_resource type="Script" path="res://scripts/combat/world_pause_manager.gd" id="19"]
+[ext_resource type="Script" path="res://scripts/player/foreground_weapon_layer.gd" id="20"]
+[ext_resource type="Script" path="res://scripts/combat/iaido_glass_layer.gd" id="21"]
+[ext_resource type="Script" path="res://scripts/combat/iaido_audio_timeline.gd" id="22"]
+[ext_resource type="Script" path="res://scripts/systems/arena_dressing.gd" id="23"]
+[ext_resource type="Script" path="res://scripts/combat/moment_of_no_moon_director.gd" id="24"]
+[ext_resource type="Script" path="res://scripts/combat/parry_debug_overlay.gd" id="25"]
+[ext_resource type="Script" path="res://scripts/audio/combat_audio_director.gd" id="26"]
+
+[sub_resource type="StandardMaterial3D" id="FloorDebugMaterial"]
+albedo_color = Color(0.5, 0.48, 0.43, 1)
+roughness = 1.0
+
+[sub_resource type="BoxMesh" id="FloorMesh"]
+size = Vector3(24, 0.5, 24)
+material = SubResource("FloorDebugMaterial")
+
+[sub_resource type="BoxShape3D" id="FloorShape"]
+size = Vector3(24, 0.5, 24)
+material = SubResource("FloorDebugMaterial")
+
+[sub_resource type="BoxMesh" id="PlatformMesh"]
+size = Vector3(5, 1.5, 5)
+
+[sub_resource type="BoxShape3D" id="PlatformShape"]
+size = Vector3(5, 1.5, 5)
+
+[sub_resource type="Environment" id="Environment_1"]
+background_mode = 1
+background_color = Color(0.45, 0.65, 0.75, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.58, 0.66, 0.7, 1)
+
+; ---- PASS 4.1 · THE CUT WITNESS -------------------------------------------
+;
+; The blade's line is fixed in SCREEN space: it runs through the centre of the
+; frame at -30 degrees, whatever is in front of the camera. So the only question
+; staged here is WHAT IS IN FRONT OF IT, and on PASS 4 the measured answer was:
+;
+;     42% of the line, no geometry at all (sky)
+;     36% of it, a FLAT FACE square-on to the eye (ndot 0.84-1.00)
+;     21% of it, a silhouette the eye could measure a step against
+;
+; — including six unbroken samples of dead-flat wall running straight through
+; the centre of the picture. A displacement is only legible where something
+; already has an EDGE: move a flat featureless face by 15px and the frame is
+; pixel-identical. `tools/probe_iaido_line.gd` prints that breakdown, and it is
+; the reason 世界 A/B 的错位仍然太含蓄 was never a `separation_px` problem.
+;
+; This is one dressed ruin column, placed so the line crosses BOTH of its
+; vertical edges — 一根原本连续的直线被错开 8-14px, in the middle of the frame,
+; on an element that has no other business in the shot. It is inert scenery: it
+; is not part of the cut, it has no script, and it casts a shadow because a
+; column standing on the deck that does not would read as floating.
+[sub_resource type="BoxMesh" id="CutWitnessMesh"]
+size = Vector3(0.45, 4.5, 0.45)
+
+[sub_resource type="StandardMaterial3D" id="CutWitnessMaterial"]
+albedo_color = Color(0.255, 0.245, 0.225, 1)
+roughness = 0.92
+metallic = 0.0
+
+[node name="CombatSandbox" type="Node3D"]
+process_mode = 1
+script = ExtResource("6")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_1")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+rotation = Vector3(-0.8, -0.5, 0)
+light_energy = 2.3
+shadow_enabled = true
+
+[node name="ArenaDressing" type="Node3D" parent="."]
+script = ExtResource("23")
+
+[node name="Floor" type="StaticBody3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor"]
+mesh = SubResource("FloorMesh")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor"]
+shape = SubResource("FloorShape")
+
+; MOVED BACK, AND THE ENEMY IS WHY. At z=-4 this block's footprint covered the
+; target: the dummy at x=-2.45 sat with its left 0.85m INSIDE a 5x1.5x5 box and
+; its lower 1.25m inside the block's height, so from the camera — which is to
+; the right of the block — only the sliver of the body poking out past the
+; block's right face was ever on screen. Measured on the PASS 4 hero hold, the
+; target's visible width was 86px against the 138px its own radius projects to,
+; and what did show shared the block's exact luminance band.
+;
+; 身体还埋在建筑里 is not a lighting problem and it is not a separation problem.
+; Pushed to z=-8.5 the block stops occluding anything, stays the dark mass on
+; the left of the shot, and becomes the BACKDROP the target needs to be read
+; against — a body cannot be seen to be cut in half against nothing.
+[node name="RaisedPlatform" type="StaticBody3D" parent="."]
+position = Vector3(-5, 0.75, -8.5)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RaisedPlatform"]
+mesh = SubResource("PlatformMesh")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RaisedPlatform"]
+shape = SubResource("PlatformShape")
+
+[node name="Player" parent="." instance=ExtResource("1")]
+
+; ON THE BLADE'S LINE, AND CLOSER. The plane is cut from the camera, so its
+; normal has no z component: a body keeps its exact relationship to the wound
+; when it is moved along z, which is what lets the target be brought forward
+; without re-deriving anything. x=-2.487 puts the wound at world y=1.00 — 0.75m
+; up the body, i.e. the middle of the cylinder rather than a shave off its top.
+; z=-1.8 takes it from 8.6m to 6.8m, which is 174px -> 232px of body at 720p
+; and 0.93 -> 1.10 px per centimetre: a 2-4cm misalignment goes 1.9-3.7px
+; -> 2.2-4.4px, and the 10-20cm release goes 9-19px -> 11-22px.
+[node name="TechnicalDummy" parent="." instance=ExtResource("2")]
+position = Vector3(-2.487, 0.25, -2.6)
+
+[node name="DeveloperPanel" type="CanvasLayer" parent="."]
+script = ExtResource("3")
+
+[node name="CombatScreenFX" type="CanvasLayer" parent="."]
+layer = 5
+script = ExtResource("5")
+
+[node name="TimeEffectManager" type="Node" parent="."]
+script = ExtResource("4")
+
+[node name="CombatHUD" parent="." instance=ExtResource("7")]
+
+[node name="CombatMusic" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("9")
+script = ExtResource("8")
+
+[node name="AudioStateController" type="Node" parent="."]
+script = ExtResource("10")
+
+[node name="CombatAudioDirector" type="Node" parent="."]
+process_mode = 3
+script = ExtResource("26")
+log_cues = true
+
+[node name="WorldPauseManager" type="Node" parent="."]
+process_mode = 3
+script = ExtResource("19")
+
+[node name="ForegroundWeaponLayer" type="CanvasLayer" parent="."]
+process_mode = 3
+layer = 8
+script = ExtResource("20")
+
+[node name="IaidoTargetCollector" type="Node" parent="."]
+script = ExtResource("12")
+
+[node name="IaidoAudioTimeline" type="Node" parent="."]
+process_mode = 3
+script = ExtResource("22")
+
+[node name="IaidoGlassLayer" type="CanvasLayer" parent="."]
+process_mode = 3
+layer = 7
+script = ExtResource("21")
+
+[node name="IaidoDirector" type="Node" parent="."]
+process_mode = 3
+script = ExtResource("11")
+
+[node name="MomentOfNoMoonDirector" type="Node" parent="."]
+script = ExtResource("24")
+
+[node name="ParryDebugOverlay" type="CanvasLayer" parent="."]
+layer = 4
+script = ExtResource("25")
+
+[node name="IaidoTear3D" type="Node3D" parent="."]
+process_mode = 3
+script = ExtResource("13")
+
+[node name="IaidoScreenFX" type="CanvasLayer" parent="."]
+process_mode = 3
+layer = 6
+script = ExtResource("17")
+
+[node name="CutWitness" type="Node3D" parent="."]
+
+[node name="Column" type="MeshInstance3D" parent="CutWitness"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.483, 2.25, -4.0)
+mesh = SubResource("CutWitnessMesh")
+material_override = SubResource("CutWitnessMaterial")

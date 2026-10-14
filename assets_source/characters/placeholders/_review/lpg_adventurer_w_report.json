@@ -1,0 +1,347 @@
+{
+  "aabb_pos": [
+    -0.766846001148224,
+    -0.000472278625238687,
+    -0.187082648277283
+  ],
+  "aabb_size": [
+    1.53369200229645,
+    1.70000016689301,
+    0.428156018257141
+  ],
+  "bone_names": [
+    "Root",
+    "Hips",
+    "Abdomen",
+    "Torso",
+    "Chest",
+    "Neck",
+    "Head",
+    "Shoulder.L",
+    "UpperArm.L",
+    "LowerArm.L",
+    "Hand.L",
+    "Index1.L",
+    "Index2.L",
+    "Index3.L",
+    "Middle1.L",
+    "Middle2.L",
+    "Middle3.L",
+    "Ring1.L",
+    "Ring2.L",
+    "Ring3.L",
+    "Pinky1.L",
+    "Pinky2.L",
+    "Pinky3.L",
+    "Thumb1.L",
+    "Thumb2.L",
+    "Thumb3.L",
+    "Shoulder.R",
+    "UpperArm.R",
+    "LowerArm.R",
+    "Hand.R",
+    "Index1.R",
+    "Index2.R",
+    "Index3.R",
+    "Middle1.R",
+    "Middle2.R",
+    "Middle3.R",
+    "Ring1.R",
+    "Ring2.R",
+    "Ring3.R",
+    "Pinky1.R",
+    "Pinky2.R",
+    "Pinky3.R",
+    "Thumb1.R",
+    "Thumb2.R",
+    "Thumb3.R",
+    "UpperLeg.L",
+    "LowerLeg.L",
+    "Foot.L",
+    "UpperLeg.R",
+    "LowerLeg.R",
+    "Foot.R",
+    "neutral_bone"
+  ],
+  "bones": 52,
+  "camera_pos": [
+    0.0,
+    1.18585956096649,
+    3.13494157791138
+  ],
+  "clips": [
+    {
+      "length": 2.0,
+      "name": "Crouch_Fwd",
+      "tracks": 20
+    },
+    {
+      "length": 2.95833325386047,
+      "name": "Crouch_Idle",
+      "tracks": 20
+    },
+    {
+      "length": 1.0,
+      "name": "Dance",
+      "tracks": 20
+    },
+    {
+      "length": 2.41666674613953,
+      "name": "Death01",
+      "tracks": 20
+    },
+    {
+      "length": 1.66666662693024,
+      "name": "Driving",
+      "tracks": 20
+    },
+    {
+      "length": 5.20833349227905,
+      "name": "Fixing_Kneeling",
+      "tracks": 20
+    },
+    {
+      "length": 0.333333343267441,
+      "name": "Hit_Chest",
+      "tracks": 20
+    },
+    {
+      "length": 0.458333343267441,
+      "name": "Hit_Head",
+      "tracks": 20
+    },
+    {
+      "length": 2.5,
+      "name": "Idle",
+      "tracks": 20
+    },
+    {
+      "length": 2.95833325386047,
+      "name": "Idle_Talking",
+      "tracks": 20
+    },
+    {
+      "length": 1.29166662693024,
+      "name": "Idle_Torch",
+      "tracks": 20
+    },
+    {
+      "length": 2.0,
+      "name": "Interact",
+      "tracks": 20
+    },
+    {
+      "length": 0.958333313465118,
+      "name": "Jog_Fwd",
+      "tracks": 20
+    },
+    {
+      "length": 2.5,
+      "name": "Jump",
+      "tracks": 20
+    },
+    {
+      "length": 1.29166662693024,
+      "name": "Jump_Land",
+      "tracks": 20
+    },
+    {
+      "length": 1.33333337306976,
+      "name": "Jump_Start",
+      "tracks": 20
+    },
+    {
+      "length": 0.833333313465118,
+      "name": "PickUp_Table",
+      "tracks": 20
+    },
+    {
+      "length": 1.0,
+      "name": "Punch_Cross",
+      "tracks": 20
+    },
+    {
+      "length": 0.875,
+      "name": "Punch_Enter",
+      "tracks": 20
+    },
+    {
+      "length": 0.875,
+      "name": "Punch_Jab",
+      "tracks": 20
+    },
+    {
+      "length": 2.66666674613953,
+      "name": "Push",
+      "tracks": 20
+    },
+    {
+      "length": 1.5,
+      "name": "Roll",
+      "tracks": 20
+    },
+    {
+      "length": 1.33333337306976,
+      "name": "Sitting_Enter",
+      "tracks": 20
+    },
+    {
+      "length": 1.04166662693024,
+      "name": "Sitting_Exit",
+      "tracks": 20
+    },
+    {
+      "length": 1.66666662693024,
+      "name": "Sitting_Idle",
+      "tracks": 20
+    },
+    {
+      "length": 2.95833325386047,
+      "name": "Sitting_Talking",
+      "tracks": 20
+    },
+    {
+      "length": 0.541666686534882,
+      "name": "Spell_Simple_Enter",
+      "tracks": 20
+    },
+    {
+      "length": 0.458333343267441,
+      "name": "Spell_Simple_Exit",
+      "tracks": 20
+    },
+    {
+      "length": 2.125,
+      "name": "Spell_Simple_Idle",
+      "tracks": 20
+    },
+    {
+      "length": 0.5,
+      "name": "Spell_Simple_Shoot",
+      "tracks": 20
+    },
+    {
+      "length": 0.666666686534882,
+      "name": "Sprint",
+      "tracks": 20
+    },
+    {
+      "length": 1.33333337306976,
+      "name": "Swim_Fwd",
+      "tracks": 20
+    },
+    {
+      "length": 3.33333325386047,
+      "name": "Swim_Idle",
+      "tracks": 20
+    },
+    {
+      "length": 1.54166662693024,
+      "name": "Sword_Attack",
+      "tracks": 20
+    },
+    {
+      "length": 1.66666662693024,
+      "name": "Sword_Idle",
+      "tracks": 20
+    },
+    {
+      "length": 1.33333337306976,
+      "name": "Walk",
+      "tracks": 20
+    },
+    {
+      "length": 1.33333337306976,
+      "name": "Walk_Formal",
+      "tracks": 20
+    }
+  ],
+  "dist": 3.14500030875206,
+  "glb": "res://assets/characters/placeholders/lpg_adventurer_w.glb",
+  "loaded": true,
+  "mesh_nodes": [
+    {
+      "name": "Adventurer_Body",
+      "pos": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "visible": true,
+      "visible_in_tree": true
+    },
+    {
+      "name": "Adventurer_Feet",
+      "pos": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "visible": true,
+      "visible_in_tree": true
+    },
+    {
+      "name": "Adventurer_Head",
+      "pos": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "visible": true,
+      "visible_in_tree": true
+    },
+    {
+      "name": "Adventurer_Legs",
+      "pos": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "visible": true,
+      "visible_in_tree": true
+    }
+  ],
+  "meshes": [
+    {
+      "name": "Adventurer_Body",
+      "surfaces": 5,
+      "tris": 3970
+    },
+    {
+      "name": "Adventurer_Feet",
+      "surfaces": 2,
+      "tris": 772
+    },
+    {
+      "name": "Adventurer_Head",
+      "surfaces": 3,
+      "tris": 646
+    },
+    {
+      "name": "Adventurer_Legs",
+      "surfaces": 6,
+      "tris": 1412
+    }
+  ],
+  "pivot_y": 0.934527813165914
+}

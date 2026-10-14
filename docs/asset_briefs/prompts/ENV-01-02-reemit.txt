@@ -1,0 +1,36 @@
+RE-EMIT REQUEST — formatting only, do not change the code
+
+Your five chunks arrived, but the code did not come through in a form I can extract reliably.
+The `# C2B:CHUNK <name>` lines were rendered as markdown headings, so the code underneath
+got split into 25 disconnected fragments and the leading part of each function was lost.
+
+Please re-output exactly the same five chunks again, with two changes and nothing else:
+
+1. Wrap the WHOLE of each chunk in ONE fenced code block, opened with ```python and closed with ```.
+2. Put the `# C2B:CHUNK <name>` line as the FIRST line INSIDE the fence, and the `# C2B:END`
+   line as the LAST line INSIDE the fence.
+
+So the shape must be exactly:
+
+```python
+# C2B:CHUNK kit_common
+<the full chunk code, unmodified>
+# C2B:END
+```
+
+```python
+# C2B:CHUNK terraces
+<the full chunk code, unmodified>
+# C2B:END
+```
+
+and so on for stairs_ramps, walls_edges, bridge.
+
+Rules:
+- Do NOT change, shorten, summarise or "improve" any of the code. Same code, same order, same content.
+- Do NOT split a chunk across two fences. One chunk = one fence.
+- Do NOT put any prose inside the fences.
+- Keep a short line of prose between chunks if you like, but nothing else changes.
+
+I extract the code by reading each fenced block directly, so the fence must be the outermost
+container for every chunk.

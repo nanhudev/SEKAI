@@ -1,0 +1,31 @@
+[gd_scene load_steps=3 format=3]
+
+; FIRST ENCOUNTER ENEMY — 灰烬猎犬.
+;
+; THE SCENE IS ALMOST EMPTY ON PURPOSE. The body, the hurtbox, the bite hitbox and
+; the three audio players are all built in `first_encounter_enemy.gd`, for the same
+; reason the project builds its arenas in code: a quadruped placeholder assembled
+; from fifteen primitives is a hundred lines of .tscn that nobody can review and
+; that cannot be re-derived when the proportions change. What lives in the SCENE is
+; exactly the part a designer or a future artist would want to move by hand - the
+; collision capsule the character controller actually uses, and the root transform.
+;
+; THE CAPSULE IS NOT THE SILHOUETTE. It is 0.68 m across and 1.05 m tall, which is
+; the volume a hound OCCUPIES in a street; the mesh is 1.62 m long because an animal
+; is long, and a collision capsule that is also long makes a corner impossible to
+; walk around. The two numbers answer different questions and are allowed to
+; disagree.
+
+[ext_resource type="Script" path="res://scripts/enemies/first_encounter_enemy.gd" id="1"]
+
+[sub_resource type="CapsuleShape3D" id="HoundShape"]
+radius = 0.34
+height = 1.05
+
+
+[node name="FirstEncounterEnemy" type="CharacterBody3D" groups=["hostiles"]]
+script = ExtResource("1")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.52, 0)
+shape = SubResource("HoundShape")

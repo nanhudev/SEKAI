@@ -1,0 +1,25 @@
+# SEKAI / CHARACTER LINE - placeholder character manifest
+# name<TAB>source_fbx<TAB>target_height_m
+# Baked by tools/character/bake_placeholders.sh (retarget_humanoid.py).
+# Height is uniform on purpose: one camera rig, one ground offset, one state machine.
+lpg_adventurer_w	third_party/quaternius/ultimate_modular_women/Humanoid Rigs/Individual Characters/FBX/Adventurer.fbx	1.70
+lpg_casual_w	third_party/quaternius/ultimate_modular_women/Humanoid Rigs/Individual Characters/FBX/Casual.fbx	1.70
+lpg_formal_w	third_party/quaternius/ultimate_modular_women/Humanoid Rigs/Individual Characters/FBX/Formal.fbx	1.70
+lpg_medieval_w	third_party/quaternius/ultimate_modular_women/Humanoid Rigs/Individual Characters/FBX/Medieval.fbx	1.70
+lpg_punk_w	third_party/quaternius/ultimate_modular_women/Humanoid Rigs/Individual Characters/FBX/Punk.fbx	1.70
+lpg_scifi_w	third_party/quaternius/ultimate_modular_women/Humanoid Rigs/Individual Characters/FBX/SciFi.fbx	1.70
+lpg_soldier_w	third_party/quaternius/ultimate_modular_women/Humanoid Rigs/Individual Characters/FBX/Soldier.fbx	1.70
+lpg_suit_w	third_party/quaternius/ultimate_modular_women/Humanoid Rigs/Individual Characters/FBX/Suit.fbx	1.70
+lpg_witch_w	third_party/quaternius/ultimate_modular_women/Humanoid Rigs/Individual Characters/FBX/Witch.fbx	1.70
+lpg_worker_w	third_party/quaternius/ultimate_modular_women/Humanoid Rigs/Individual Characters/FBX/Worker.fbx	1.70
+lpg_adventurer_m	third_party/quaternius/ultimate_modular_characters/Humanoid Rig/Individual Characters/FBX/Adventurer.fbx	1.70
+lpg_beach_m	third_party/quaternius/ultimate_modular_characters/Humanoid Rig/Individual Characters/FBX/Beach.fbx	1.70
+lpg_casual_m	third_party/quaternius/ultimate_modular_characters/Humanoid Rig/Individual Characters/FBX/Casual.fbx	1.70
+lpg_casual2_m	third_party/quaternius/ultimate_modular_characters/Humanoid Rig/Individual Characters/FBX/Casual2.fbx	1.70
+lpg_farmer_m	third_party/quaternius/ultimate_modular_characters/Humanoid Rig/Individual Characters/FBX/Farmer.fbx	1.70
+lpg_king_m	third_party/quaternius/ultimate_modular_characters/Humanoid Rig/Individual Characters/FBX/King.fbx	1.70
+lpg_punk_m	third_party/quaternius/ultimate_modular_characters/Humanoid Rig/Individual Characters/FBX/Punk.fbx	1.70
+lpg_spacesuit_m	third_party/quaternius/ultimate_modular_characters/Humanoid Rig/Individual Characters/FBX/Spacesuit.fbx	1.70
+lpg_suit_m	third_party/quaternius/ultimate_modular_characters/Humanoid Rig/Individual Characters/FBX/Suit.fbx	1.70
+lpg_swat_m	third_party/quaternius/ultimate_modular_characters/Humanoid Rig/Individual Characters/FBX/Swat.fbx	1.70
+lpg_worker_m	third_party/quaternius/ultimate_modular_characters/Humanoid Rig/Individual Characters/FBX/Worker.fbx	1.70

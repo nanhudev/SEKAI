@@ -1,0 +1,228 @@
+/* ============================================================================
+   SEKAI · WORLD LAYER (UI PASS 02)
+   ----------------------------------------------------------------------------
+   §1 的最高原则：THE WORLD IS THE UI BACKGROUND。
+
+   所以这一层里没有渐变底、没有圆环、没有粒子、没有暗角 —— 只有：
+     ① 真场景渲染图（godot/tools/menu_vista_renderer.gd 出的图）
+     ② 三条漂移的雾带
+     ③ 一块左边缘压暗（**功能**，不是装饰：不加就有半个菜单读不清）
+
+   层次结构（外面的动，里面的不动，反之亦然）：
+     .world                  固定铺满，屏幕空间
+       .world__push          进入世界时的推进（外层 transform）
+         .world__drift       90 秒的几乎静止漂移（内层 transform）
+           img.world__base   真画面
+           .world__mist × 3  雾带
+       .world__scrim         左边缘压暗
+       .world__curtain × 2   启动时遮住世界、从中间往两边退开的黑幕
+       .world__line          切开画面的那一条线（一根 scaleX 的 div）
+       .world__wipe          进入世界时从镜头前经过的一片雾（§16）
+
+   为什么推进和漂移要分成两层：
+   两者都改 transform，写在同一元素上必然互相覆盖（WAAPI 的 transform
+   关键帧是整条属性替换，不是叠加）。嵌套一层就自然是相乘关系。
+   ========================================================================= */
+
+.world {
+  position: fixed;
+  inset: 0;
+  z-index: var(--sk-z-bg, 0);
+  overflow: hidden;
+  background: var(--sk-void);
+  pointer-events: none;
+}
+
+.world__push,
+.world__drift {
+  position: absolute;
+  inset: 0;
+  transform-origin: 62% 46%; /* 世界兴趣点在右侧，所以以右中为缩放原点 */
+  will-change: transform;
+}
+
+/* 真画面。cover 而不是 contain：任何画幅下都不能出现黑边。
+   一像素的 -0.6% 上移是刻意的 —— 让地平线略高于画面中心，天多一点。 */
+.world__base {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 44%;
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* 图还没到位时不许留白屏 */
+.world__base[data-loaded='0'] {
+  opacity: 0;
+}
+
+.world__mist {
+  position: absolute;
+  left: -22%;
+  right: -22%;
+  pointer-events: none;
+  background-repeat: no-repeat;
+  will-change: transform;
+}
+
+/* --- 低层：河谷里最厚的一条 -------------------------------------------- */
+.world__mist[data-k='low'] {
+  background-image:
+    radial-gradient(ellipse 34% 100% at 26% 52%, rgba(216, 224, 228, 0.95), rgba(216, 224, 228, 0) 68%),
+    radial-gradient(ellipse 28% 92% at 58% 46%, rgba(210, 219, 224, 0.8), rgba(210, 219, 224, 0) 70%),
+    radial-gradient(ellipse 24% 86% at 84% 58%, rgba(206, 216, 222, 0.7), rgba(206, 216, 222, 0) 72%);
+}
+
+/* --- 中层：拉长、更淡、方向相反 ---------------------------------------- */
+.world__mist[data-k='mid'] {
+  background-image:
+    radial-gradient(ellipse 44% 100% at 40% 50%, rgba(214, 222, 227, 0.85), rgba(214, 222, 227, 0) 70%),
+    radial-gradient(ellipse 32% 88% at 78% 54%, rgba(208, 217, 223, 0.72), rgba(208, 217, 223, 0) 74%);
+}
+
+/* --- 高层：只在天际线附近，最淡 ---------------------------------------- */
+.world__mist[data-k='high'] {
+  background-image:
+    radial-gradient(ellipse 52% 100% at 52% 50%, rgba(220, 227, 231, 0.8), rgba(220, 227, 231, 0) 72%),
+    radial-gradient(ellipse 34% 90% at 16% 56%, rgba(216, 224, 229, 0.6), rgba(216, 224, 229, 0) 76%);
+}
+
+/* 左边缘压暗。
+   存在的理由只有一个：文字要读得清。所以它只压左边 ~55%、最深处 0.68，
+   并且**不做暗角**（四边同时压暗就是"filters/装饰"，是 checklist 要删的东西）。
+
+   为什么是 0.68 而不是更早那版 0.6：世界图的下三分之一是浅色块体，
+   菜单正好落在上面。纯靠 scrim 压到能读，右半边也会开始发灰；所以
+   这里只压到 0.68，剩下的交给字自身的暗晕（ui_v2.css 的 --v2-text-lift）。
+   两者管的是不同尺度：scrim 管整块反差，晕管个别笔画。 */
+.world__scrim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    rgba(6, 10, 16, 0.68) 0%,
+    rgba(6, 10, 16, 0.58) 20%,
+    rgba(6, 10, 16, 0.36) 35%,
+    rgba(6, 10, 16, 0.11) 47%,
+    rgba(6, 10, 16, 0) 55%
+  );
+}
+
+/* 启动时的两块黑幕。从中间那条线往上下退开 = "世界被切开"。
+   它们是**屏幕空间**的，所以放在 .world 直下、不在 push/drift 里面；
+   放进里面就会被缩放带跑，退开的位置就不在屏幕中线上。 */
+.world__curtain {
+  position: absolute;
+  left: 0;
+  right: 0;
+  background: var(--sk-void);
+  pointer-events: none;
+  will-change: height;
+}
+
+.world__curtain--top {
+  top: 0;
+  height: 50%;
+}
+
+.world__curtain--bottom {
+  bottom: 0;
+  height: 50%;
+}
+
+/* 切开画面的那一条线。
+   **是一根真 div，不是 SVG。** 理由见 world_bg.js 里 worldLine() 的注释：
+   SVG 的虚线写法在"整屏横向非等比拉伸"下会退化成一条虚线。
+   这里 1px 高、scaleX 0→1，拉伸不会改竖向厚度，所以"细"是稳的。 */
+.world__line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  margin-top: -0.5px;
+  background: var(--sk-text);
+  transform: scaleX(0);
+  transform-origin: left center;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+/* §16：从镜头前经过的一片雾。只在进入世界的转场里出现一次。
+   挂在 push 层（不随推进缩放），横向走 vw —— 它是"空气"，不是"场景里的物体"。 */
+.world__wipe {
+  position: absolute;
+  top: -20%;
+  bottom: -20%;
+  left: 0;
+  width: 70%;
+  pointer-events: none;
+  opacity: 0;
+  will-change: transform, opacity;
+  /* 三层：亮核 + 冷灰中层 + **暗底缘**。
+     第三层不是装饰 —— 现在的灰盒背景几乎和雾一样浅，纯亮雾在同色背景上
+     没有剪影，片子里读不出"有东西经过"。底缘压一点暗，雾在任何亮度的
+     背景上都能读出体积。真场景（更暗、有纹理）到位后它依然成立。 */
+  background:
+    radial-gradient(58% 42% at 50% 46%, rgba(226, 231, 229, 0.75) 0%, rgba(226, 231, 229, 0.34) 44%, rgba(226, 231, 229, 0) 72%),
+    radial-gradient(70% 55% at 46% 60%, rgba(206, 213, 211, 0.5) 0%, rgba(206, 213, 211, 0) 70%),
+    radial-gradient(62% 30% at 52% 88%, rgba(96, 106, 110, 0.34) 0%, rgba(96, 106, 110, 0) 74%);
+  filter: blur(26px);
+}
+
+/* ---- PASS 04 · Key Art 2.5D 视差（仅 ?bg=a|b|c 时存在这些层） -------------
+   同一张图复制出 sky / fg 两个软 mask 副本，加 base 共三层：
+     sky  = 顶部软带，随指针同向轻移（最远，幅度最小）
+     base = 全图（mid）
+     fg   = 底部软带，反向轻移（最近，幅度最大）
+   简报 PART B：层间只动 2–8px，不是 Ken Burns。mask 渐变把每层的边藏进
+   相邻层 —— 三层静止时逐像素对齐（同一张图），动起来读成"景深在呼吸"，
+   而不是"图被切了三条"。位移由 .world 上的 --par-x / --par-y（-1..1）
+   驱动；世界自身的 scale 漂移动画在 drift 层，互不覆盖。 */
+.world__layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 44%;
+  display: block;
+  user-select: none;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.world__layer--sky {
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 34%, transparent 58%);
+  mask-image: linear-gradient(180deg, #000 0%, #000 34%, transparent 58%);
+  transform: translate3d(calc(var(--par-x, 0) * 3px), calc(var(--par-y, 0) * 2px), 0);
+}
+
+.world__layer--fg {
+  -webkit-mask-image: linear-gradient(180deg, transparent 62%, #000 86%);
+  mask-image: linear-gradient(180deg, transparent 62%, #000 86%);
+  transform: translate3d(calc(var(--par-x, 0) * -8px), calc(var(--par-y, 0) * -4px), 0);
+}
+
+.world--keyart .world__base {
+  transform: translate3d(calc(var(--par-x, 0) * -3px), calc(var(--par-y, 0) * -2px), 0);
+  will-change: transform;
+}
+
+/* reduced motion：世界停在画面里，但不再动；转场雾也不出现 */
+@media (prefers-reduced-motion: reduce) {
+  .world__drift,
+  .world__mist,
+  .world__layer,
+  .world--keyart .world__base {
+    transform: none !important;
+  }
+  .world__wipe {
+    display: none;
+  }
+}

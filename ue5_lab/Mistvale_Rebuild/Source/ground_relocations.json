@@ -1,0 +1,82 @@
+{
+  "HERO_Church_Nave": [
+    115.43,
+    207.74
+  ],
+  "HERO_MainInn": [
+    38.99,
+    82.64
+  ],
+  "HERO_DockWarehouse": [
+    -106.62,
+    -118.54
+  ],
+  "LowerWestA_House_06": [
+    -55.89,
+    73.48
+  ],
+  "LowerWestB_House_01": [
+    -14.89,
+    0.42
+  ],
+  "LowerEastB_House_07": [
+    58.24,
+    72.11
+  ],
+  "MarketWest_House_01": [
+    -32.23,
+    81.51
+  ],
+  "MarketWest_House_02": [
+    -29.17,
+    89.61
+  ],
+  "MarketWest_House_03": [
+    -31.46,
+    104.62
+  ],
+  "MarketWest_House_04": [
+    -36.16,
+    115.64
+  ],
+  "MarketEast_House_01": [
+    45.0,
+    62.0
+  ],
+  "MarketEast_House_02": [
+    68.0,
+    62.0
+  ],
+  "MarketEast_House_03": [
+    32.09,
+    102.59
+  ],
+  "MarketEast_House_04": [
+    31.89,
+    114.34
+  ],
+  "MarketEast_House_05": [
+    32.99,
+    124.41
+  ],
+  "UpperWest_House_01": [
+    -31.14,
+    191.97
+  ],
+  "UpperWest_House_02": [
+    -30.67,
+    200.63
+  ],
+  "UpperWest_House_07": [
+    -17.62,
+    258.5
+  ],
+  "CornerBuilding_04": [
+    74.74,
+    227.82
+  ],
+  "InfillBuilding_11": [
+    52.38,
+    185.37
+  ]
+}

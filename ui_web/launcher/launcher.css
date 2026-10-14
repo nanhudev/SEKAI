@@ -1,0 +1,395 @@
+/* ============================================================================
+   SEKAI · LAUNCHER
+   ----------------------------------------------------------------------------
+   版式决定：主体落在 12 栅的第 3–8 列（视觉中线偏左）。
+   这是"编辑排版"而不是"落地页居中堆叠"，也是主菜单会继承的同一套栅格。
+   ========================================================================= */
+
+.sk-launcher {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: 1fr auto;
+  align-items: center;
+  background: var(--sk-void);
+}
+
+/* ===========================================================================
+   3. 脉动 —— 笔尖落纸
+   一条竖线从上方落下来，触到标记中心后收回去，接着那颗点就出现了。
+   =========================================================================== */
+.sk-pulse {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 1px;
+  height: 0;
+  background: var(--sk-gold-bright);
+  box-shadow: 0 0 8px rgba(232, 206, 140, 0.45);
+  opacity: 0;
+  /* 底端固定在标记中心：高度增长 = 从上方落下来 */
+  transform: translate(-50%, -100%);
+}
+
+/* ===========================================================================
+   4. 主体栏
+   =========================================================================== */
+.sk-column {
+  grid-column: 3 / span 6;
+  grid-row: 1;
+  align-self: center;
+  z-index: var(--sk-z-content);
+}
+
+/* ---- 标记 ---- */
+.sk-brand__mark {
+  position: relative;
+  width: clamp(44px, 8vmin, 92px);
+  height: clamp(44px, 8vmin, 92px);
+}
+
+.sk-brand__mark svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* 点的缩放必须绕自己，不是绕 SVG 的原点 */
+.sk-mark__dot {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+/* ---- 字标 ---- */
+.sk-brand__word {
+  margin: var(--sk-s5) 0 0;
+  font-family: var(--sk-font-serif);
+  font-size: var(--sk-fs-mega);
+  font-weight: var(--sk-fw-light);
+  letter-spacing: var(--sk-track-mega);
+  line-height: var(--sk-lh-tight);
+  color: var(--sk-fg);
+  text-transform: uppercase;
+  /* 字距会在最后一个字后面留出同宽的空隙，光学左对齐要抵消掉 */
+  margin-right: calc(-1 * var(--sk-track-mega));
+}
+
+.sk-letter {
+  display: inline-block;
+  will-change: clip-path;
+}
+
+.sk-brand__cn {
+  margin: var(--sk-s3) 0 0;
+  font-size: var(--sk-fs-title);
+  font-weight: var(--sk-fw-regular);
+  letter-spacing: var(--sk-track-title);
+  color: var(--sk-text-2);
+  line-height: 1.2;
+}
+
+.sk-brand__rule {
+  width: 64px;
+  height: 1px;
+  margin-top: var(--sk-s4);
+  background: linear-gradient(90deg, var(--sk-gold), rgba(201, 166, 92, 0.15));
+  transform-origin: left center;
+}
+
+.sk-brand__sub {
+  margin: var(--sk-s4) 0 0;
+  font-family: var(--sk-font-num);
+  font-size: var(--sk-fs-micro);
+  font-weight: var(--sk-fw-medium);
+  letter-spacing: var(--sk-track-wide);
+  color: var(--sk-text-3);
+  text-transform: uppercase;
+}
+
+/* ===========================================================================
+   5. 加载表现
+   =========================================================================== */
+.sk-status {
+  display: flex;
+  align-items: center;
+  gap: var(--sk-s4);
+  margin-top: var(--sk-s8);
+  max-width: 560px;
+  opacity: 0;
+}
+
+.sk-status__ring {
+  flex: none;
+}
+
+.sk-status__ring svg {
+  width: clamp(26px, 3.2vmin, 38px);
+  height: clamp(26px, 3.2vmin, 38px);
+  display: block;
+}
+
+.sk-status__meter {
+  flex: 1;
+  min-width: 0;
+}
+
+/* 裁切窗口。它不是一条 1px 的线 —— 它是**一道 4px 高的缝**，
+   笔迹从这道缝里被裁出来，所以笔画比格线重。
+   参考格线是缝里压着的一条 1px（::before），不是容器本身。
+   overflow 必须是 hidden：否则 translateX(-100%) 的笔迹会跑到窗口外面，
+   在屏幕上拉出一条横贯左半屏的杂线（一眼就是渲染事故）。 */
+.sk-status__track {
+  position: relative;
+  height: 4px;
+  overflow: hidden;
+}
+
+.sk-status__track::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  background: var(--sk-line-faint);
+}
+
+/* 正在被写完的那条线。
+   它是一个**向右移动的渐变**被上面那道缝裁出来 —— 亮的一端永远在最前，
+   后面逐渐淡去。所以读作"笔在走"，不是"电量在涨"。
+   进度 = translateX(-100%) -> translateX(0)。 */
+.sk-status__write {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    rgba(201, 166, 92, 0) 0%,
+    rgba(201, 166, 92, 0.1) 22%,
+    rgba(201, 166, 92, 0.55) 68%,
+    var(--sk-gold) 86%,
+    var(--sk-gold-bright) 96%,
+    rgba(201, 166, 92, 0) 100%
+  );
+}
+
+.sk-status__label {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--sk-s4);
+  margin-top: var(--sk-s3);
+}
+
+.sk-status__cn {
+  font-size: var(--sk-fs-small);
+  letter-spacing: var(--sk-track-title);
+  color: var(--sk-text-2);
+}
+
+/* ===========================================================================
+   6. 行动区
+   =========================================================================== */
+.sk-actions {
+  margin-top: var(--sk-s7);
+  max-width: 360px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--sk-s3);
+}
+
+.sk-actions .sk-btn {
+  width: 100%;
+}
+
+/* 开发者入口：不作为按钮，不参与视觉竞争。正式玩家看不到。 */
+.sk-actions__dev {
+  margin-top: var(--sk-s4);
+  width: 100%;
+  padding-top: var(--sk-s4);
+  border-top: 1px solid var(--sk-line-faint);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sk-s2) var(--sk-s5);
+}
+
+.sk-dev-link {
+  background: none;
+  border: 0;
+  padding: 0;
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--sk-s3);
+  color: var(--sk-text-3);
+  font-family: var(--sk-font-sans);
+  font-size: var(--sk-fs-micro);
+  letter-spacing: var(--sk-track-title);
+  cursor: pointer;
+  transition: color var(--sk-t-fast) var(--sk-e-out);
+}
+
+.sk-dev-link:hover {
+  color: var(--sk-gold);
+}
+
+/* ===========================================================================
+   7. 页脚
+   =========================================================================== */
+.sk-footer {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  z-index: var(--sk-z-actions);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: var(--sk-s5);
+  padding: 0 var(--sk-gutter) var(--sk-s5);
+}
+
+.sk-footer__left {
+  display: flex;
+  align-items: center;
+  gap: var(--sk-s3);
+}
+
+.sk-dev {
+  font-family: var(--sk-font-num);
+  font-size: var(--sk-fs-nano);
+  letter-spacing: var(--sk-track-wide);
+  font-weight: var(--sk-fw-semi);
+  color: var(--sk-void);
+  background: var(--sk-gold);
+  padding: 1px 6px;
+}
+
+.sk-footer__right {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--sk-s5);
+}
+
+/* 安静按钮：不是按钮，是一行字。hover 时下方长出一条线。 */
+.sk-quiet {
+  position: relative;
+  background: none;
+  border: 0;
+  padding: 0 0 4px;
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--sk-s3);
+  color: var(--sk-text-3);
+  font-family: var(--sk-font-sans);
+  font-size: var(--sk-fs-micro);
+  letter-spacing: var(--sk-track-title);
+  cursor: pointer;
+  transition: color var(--sk-t-fast) var(--sk-e-out);
+}
+
+.sk-quiet::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 1px;
+  width: 100%;
+  background: var(--sk-gold);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--sk-t-base) var(--sk-e-write);
+}
+
+.sk-quiet:hover {
+  color: var(--sk-fg);
+}
+
+.sk-quiet:hover::after {
+  transform: scaleX(1);
+}
+
+.sk-quiet__en {
+  opacity: 0.7;
+}
+
+/* ===========================================================================
+   8. 失败态
+   =========================================================================== */
+.sk-failure {
+  position: fixed;
+  inset: 0;
+  z-index: var(--sk-z-overlay);
+  display: grid;
+  place-items: center;
+  background: rgba(4, 7, 11, 0.84);
+  backdrop-filter: blur(3px);
+}
+
+.sk-failure__box {
+  --c: var(--sk-chamfer-lg);
+  min-width: min(420px, 76vw);
+  max-width: min(560px, 84vw);
+  padding: var(--sk-s6) var(--sk-s6) var(--sk-s5);
+  background: var(--sk-ink);
+  box-shadow: inset 0 0 0 1px var(--sk-line);
+}
+
+.sk-failure__cn {
+  margin: 0;
+  font-size: var(--sk-fs-title);
+  letter-spacing: var(--sk-track-title);
+  color: var(--sk-fg);
+}
+
+.sk-failure__en {
+  margin: var(--sk-s2) 0 0;
+  text-transform: none;
+  letter-spacing: var(--sk-track-body);
+}
+
+.sk-failure__detail {
+  margin: var(--sk-s4) 0 0;
+  padding: var(--sk-s3);
+  max-height: 160px;
+  overflow: auto;
+  background: rgba(0, 0, 0, 0.35);
+  border-left: 1px solid var(--sk-alert);
+  color: var(--sk-text-3);
+  font-family: var(--sk-font-num);
+  font-size: var(--sk-fs-nano);
+  white-space: pre-wrap;
+  user-select: text;
+}
+
+.sk-failure__row {
+  display: flex;
+  gap: var(--sk-s3);
+  margin-top: var(--sk-s5);
+}
+
+/* ===========================================================================
+   9. 窄窗降级
+   =========================================================================== */
+@media (max-width: 1100px) {
+  .sk-column {
+    grid-column: 2 / span 10;
+  }
+  .sk-hair-mark {
+    left: calc(100% / 12);
+  }
+}
+
+@media (max-width: 760px) {
+  .sk-column {
+    grid-column: 1 / -1;
+    padding-left: var(--sk-gutter);
+    padding-right: var(--sk-gutter);
+  }
+  .sk-footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

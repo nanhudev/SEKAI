@@ -1,0 +1,340 @@
+{
+ "schema_version": 1,
+ "source": "MELO legacy asset audit round 1",
+ "read_only_source": true,
+ "staged_into_godot": false,
+ "note": "assets_source/ is the ART source tree; nothing here is referenced by any .tscn",
+ "count": 19,
+ "items": [
+  {
+   "staged_file": "source/msh_arc_altar_main_v001.glb",
+   "original_asset_name": "msh_arc_altar_main_v001",
+   "source_project": "Melo: Light Rhythm Prototype",
+   "source_project_path": "C:/Users/Administrator/Desktop/\u9879\u76ee_\u5f00\u53d1\u4e0e\u7814\u7a76/Melo-Godot-Prototype",
+   "source_revision": "fa018898b68707a445c8af34b1c7d90a342f33e5",
+   "original_path": "asset_library/architecture/arc_ancient_sanctuary_kit/meshes/msh_arc_altar_main_v001.glb",
+   "sha256_16": "af9ccd7de1ed8b0c",
+   "dims_m": [
+    4.0328,
+    3.7594,
+    1.4186
+   ],
+   "triangles": 1280,
+   "helper_objects_stripped": [
+    "altar_plinth",
+    "altar_step"
+   ],
+   "reuse_notes": "see MELO_TOP_CANDIDATES.md"
+  },
+  {
+   "staged_file": "source/msh_arc_ancient_terminal_v001.glb",
+   "original_asset_name": "msh_arc_ancient_terminal_v001",
+   "source_project": "Melo: Light Rhythm Prototype",
+   "source_project_path": "C:/Users/Administrator/Desktop/\u9879\u76ee_\u5f00\u53d1\u4e0e\u7814\u7a76/Melo-Godot-Prototype",
+   "source_revision": "fa018898b68707a445c8af34b1c7d90a342f33e5",
+   "original_path": "asset_library/architecture/arc_ancient_sanctuary_kit/meshes/msh_arc_ancient_terminal_v001.glb",
+   "sha256_16": "2d87de814a44664b",
+   "dims_m": [
+    1.6,
+    1.4174,
+    1.41
+   ],
+   "triangles": 764,
+   "helper_objects_stripped": [],
+   "reuse_notes": "see MELO_TOP_CANDIDATES.md"
+  },
+  {
+   "staged_file": "source/msh_arc_arch_frame_v001.glb",
+   "original_asset_name": "msh_arc_arch_frame_v001",
+   "source_project": "Melo: Light Rhythm Prototype",
+   "source_project_path": "C:/Users/Administrator/Desktop/\u9879\u76ee_\u5f00\u53d1\u4e0e\u7814\u7a76/Melo-Godot-Prototype",
+   "source_revision": "fa018898b68707a445c8af34b1c7d90a342f33e5",
+   "original_path": "asset_library/architecture/arc_ancient_sanctuary_kit/meshes/msh_arc_arch_frame_v001.glb",
+   "sha256_16": "479fb6debd9546b0",
+   "dims_m": [
+    5.2,
+    1.0813,
+    5.478
+   ],
+   "triangles": 1252,
+   "helper_objects_stripped": [],
+   "reuse_notes": "see MELO_TOP_CANDIDATES.md"
+  },
+  {
+   "staged_file": "source/msh_arc_crystal_cluster_a_v001.glb",
+   "original_asset_name": "msh_arc_crystal_cluster_a_v001",
+   "source_project": "Melo: Light Rhythm Prototype",
+   "source_project_path": "C:/Users/Administrator/Desktop/\u9879\u76ee_\u5f00\u53d1\u4e0e\u7814\u7a76/Melo-Godot-Prototype",
+   "source_revision": "fa018898b68707a445c8af34b1c7d90a342f33e5",
+   "original_path": "asset_library/architecture/arc_ancient_sanctuary_kit/meshes/msh_arc_crystal_cluster_a_v001.glb",
+   "sha256_16": "9cb363a99610adb0",
+   "dims_m": [
+    0.8661,
+    0.8832,
+    1.134
+   ],
+   "triangles": 900,
+   "helper_objects_stripped": [],
+   "reuse_notes": "see MELO_TOP_CANDIDATES.md"
+  },
+  {
+   "staged_file": "source/msh_arc_door_frame_v001.glb",
+   "original_asset_name": "msh_arc_door_frame_v001",
+   "source_project": "Melo: Light Rhythm Prototype",
+   "source_project_path": "C:/Users/Administrator/Desktop/\u9879\u76ee_\u5f00\u53d1\u4e0e\u7814\u7a76/Melo-Godot-Prototype",
+   "source_revision": "fa018898b68707a445c8af34b1c7d90a342f33e5",
+   "original_path": "asset_library/architecture/arc_ancient_sanctuary_kit/meshes/msh_arc_door_frame_v001.glb",
+   "sha256_16": "9f062cbf13d1791f",
+   "dims_m": [
+    3.2,
+    1.0802,
+    3.598
+   ],
+   "triangles": 1036,
+   "helper_objects_stripped": [],
+   "reuse_notes": "see MELO_TOP_CANDIDATES.md"
+  },
+  {
+   "staged_file": "source/msh_arc_energy_core_large_v001.glb",
+   "original_asset_name": "msh_arc_energy_core_large_v001",
+   "source_project": "Melo: Light Rhythm Prototype",
+   "source_project_path": "C:/Users/Administrator/Desktop/\u9879\u76ee_\u5f00\u53d1\u4e0e\u7814\u7a76/Melo-Godot-Prototype",
+   "source_revision": "fa018898b68707a445c8af34b1c7d90a342f33e5",
+   "original_path": "asset_library/architecture/arc_ancient_sanctuary_kit/meshes/msh_arc_energy_core_large_v001.glb",
+   "sha256_16": "73c42b422430b5d7",
+   "dims_m": [
+    3.2288,
+    3.2288,
+    3.6836
+   ],
+   "triangles": 2050,
+   "helper_objects_stripped": [],
+   "reuse_notes": "see MELO_TOP_CANDIDATES.md"
+  },
+  {
+   "staged_file": "source/msh_arc_energy_core_medium_v001.glb",
+   "original_asset_name": "msh_arc_energy_core_medium_v001",
+   "source_project": "Melo: Light Rhythm Prototype",
+   "source_project_path": "C:/Users/Administrator/Desktop/\u9879\u76ee_\u5f00\u53d1\u4e0e\u7814\u7a76/Melo-Godot-Prototype",
+   "source_revision": "fa018898b68707a445c8af34b1c7d90a342f33e5",
+   "original_path": "asset_library/architecture/arc_ancient_sanctuary_kit/meshes/msh_arc_energy_core_medium_v001.glb",
+   "sha256_16": "4f474d61922fefd9",
+   "dims_m": [
+    1.8518,
+    1.8518,
+    2.1706
+   ],
+   "triangles": 2050,
+   "helper_objects_stripped": [],
+   "reuse_notes": "see MELO_TOP_CANDIDATES.md"
+  },
+  {
+   "staged_file": "source/msh_arc_energy_door_frame_v001.glb",
+   "original_asset_name": "msh_arc_energy_door_frame_v001",
+   "source_project": "Melo: Light Rhythm Prototype",
+   "source_project_path": "C:/Users/Administrator/Desktop/\u9879\u76ee_\u5f00\u53d1\u4e0e\u7814\u7a76/Melo-Godot-Prototype",
+   "source_revision": "fa018898b68707a445c8af34b1c7d90a342f33e5",
+   "original_path": "asset_library/architecture/arc_ancient_sanctuary_kit/meshes/msh_arc_energy_door_frame_v001.glb",
+   "sha256_16": "7839d25e971bd8e0",
+   "dims_m": [
+    4.4,
+    1.081,
+    4.746
+   ],
+   "triangles": 1468,
+   "helper_objects_stripped": [],
+   "reuse_notes": "see MELO_TOP_CANDIDATES.md"
+  },
+  {
+   "staged_file": "source/msh_arc_gate_frame_large_v001.glb",
+   "original_asset_name": "msh_arc_gate_frame_large_v001",
+   "source_project": "Melo: Light Rhythm Prototype",
+   "source_project_path": "C:/Users/Administrator/Desktop/\u9879\u76ee_\u5f00\u53d1\u4e0e\u7814\u7a76/Melo-Godot-Prototype",
+   "source_revision": "fa018898b68707a445c8af34b1c7d90a342f33e5",
+   "original_path": "asset_library/architecture/arc_ancient_sanctuary_kit/meshes/msh_arc_gate_frame_large_v001.glb",
+   "sha256_16": "9f2b88f548ba6923",
+   "dims_m": [
+    7.0,
+    1.082,
+    7.3
+   ],
+   "triangles": 1252,
+   "helper_objects_stripped": [],
+   "reuse_notes": "see MELO_TOP_CANDIDATES.md"
+  },
+  {
+   "staged_file": "source/msh_arc_pillar_broken_v001.glb",
+   "original_asset_name": "msh_arc_pillar_broken_v001",
+   "source_project": "Melo: Light Rhythm Prototype",
+   "source_project_path": "C:/Users/Administrator/Desktop/\u9879\u76ee_\u5f00\u53d1\u4e0e\u7814\u7a76/Melo-Godot-Prototype",
+   "source_revision": "fa018898b68707a445c8af34b1c7d90a342f33e5",
+   "original_path": "asset_library/architecture/arc_ancient_sanctuary_kit/meshes/msh_arc_pillar_broken_v001.glb",
+   "sha256_16": "ffb547de92c0b3e0",
+   "dims_m": [
+    2.4002,
+    1.5472,
+    4.4909
+   ],
+   "triangles": 1256,
+   "helper_objects_stripped": [],
+   "reuse_notes": "see MELO_TOP_CANDIDATES.md"
+  },
+  {
+   "staged_file": "source/msh_arc_pillar_large_v001.glb",
+   "original_asset_name": "msh_arc_pillar_large_v001",
+   "source_project": "Melo: Light Rhythm Prototype",
+   "source_project_path": "C:/Users/Administrator/Desktop/\u9879\u76ee_\u5f00\u53d1\u4e0e\u7814\u7a76/Melo-Godot-Prototype",
+   "source_revision": "fa018898b68707a445c8af34b1c7d90a342f33e5",
+   "original_path": "asset_library/architecture/arc_ancient_sanctuary_kit/meshes/msh_arc_pillar_large_v001.glb",
+   "sha256_16": "d9cf1fc0e51cf8ba",
+   "dims_m": [
+    1.45,
+    1.45,
+    7.415
+   ],
+   "triangles": 928,
+   "helper_objects_stripped": [
+    "shaft.002"
+   ],
+   "reuse_notes": "see MELO_TOP_CANDIDATES.md"
+  },
+  {
+   "staged_file": "source/msh_arc_ramp_v001.glb",
+   "original_asset_name": "msh_arc_ramp_v001",
+   "source_project": "Melo: Light Rhythm Prototype",
+   "source_project_path": "C:/Users/Administrator/Desktop/\u9879\u76ee_\u5f00\u53d1\u4e0e\u7814\u7a76/Melo-Godot-Prototype",
+   "source_revision": "fa018898b68707a445c8af34b1c7d90a342f33e5",
+   "original_path": "asset_library/architecture/arc_ancient_sanctuary_kit/meshes/msh_arc_ramp_v001.glb",
+   "sha256_16": "72b1541e4056d948",
+   "dims_m": [
+    4.0,
+    7.9711,
+    1.9879
+   ],
+   "triangles": 188,
+   "helper_objects_stripped": [],
+   "reuse_notes": "see MELO_TOP_CANDIDATES.md"
+  },
+  {
+   "staged_file": "source/msh_arc_ring_device_large_v001.glb",
+   "original_asset_name": "msh_arc_ring_device_large_v001",
+   "source_project": "Melo: Light Rhythm Prototype",
+   "source_project_path": "C:/Users/Administrator/Desktop/\u9879\u76ee_\u5f00\u53d1\u4e0e\u7814\u7a76/Melo-Godot-Prototype",
+   "source_revision": "fa018898b68707a445c8af34b1c7d90a342f33e5",
+   "original_path": "asset_library/architecture/arc_ancient_sanctuary_kit/meshes/msh_arc_ring_device_large_v001.glb",
+   "sha256_16": "6d5e1cf1c7e0c573",
+   "dims_m": [
+    3.78,
+    2.4,
+    3.78
+   ],
+   "triangles": 1478,
+   "helper_objects_stripped": [],
+   "reuse_notes": "see MELO_TOP_CANDIDATES.md"
+  },
+  {
+   "staged_file": "source/msh_arc_ring_device_small_v001.glb",
+   "original_asset_name": "msh_arc_ring_device_small_v001",
+   "source_project": "Melo: Light Rhythm Prototype",
+   "source_project_path": "C:/Users/Administrator/Desktop/\u9879\u76ee_\u5f00\u53d1\u4e0e\u7814\u7a76/Melo-Godot-Prototype",
+   "source_revision": "fa018898b68707a445c8af34b1c7d90a342f33e5",
+   "original_path": "asset_library/architecture/arc_ancient_sanctuary_kit/meshes/msh_arc_ring_device_small_v001.glb",
+   "sha256_16": "7eb4dde3dad3e94d",
+   "dims_m": [
+    1.701,
+    1.08,
+    1.701
+   ],
+   "triangles": 1478,
+   "helper_objects_stripped": [],
+   "reuse_notes": "see MELO_TOP_CANDIDATES.md"
+  },
+  {
+   "staged_file": "source/msh_arc_ruin_fragment_c_v001.glb",
+   "original_asset_name": "msh_arc_ruin_fragment_c_v001",
+   "source_project": "Melo: Light Rhythm Prototype",
+   "source_project_path": "C:/Users/Administrator/Desktop/\u9879\u76ee_\u5f00\u53d1\u4e0e\u7814\u7a76/Melo-Godot-Prototype",
+   "source_revision": "fa018898b68707a445c8af34b1c7d90a342f33e5",
+   "original_path": "asset_library/architecture/arc_ancient_sanctuary_kit/meshes/msh_arc_ruin_fragment_c_v001.glb",
+   "sha256_16": "20d1c74be49f3ec8",
+   "dims_m": [
+    1.9285,
+    1.4962,
+    2.0359
+   ],
+   "triangles": 244,
+   "helper_objects_stripped": [],
+   "reuse_notes": "see MELO_TOP_CANDIDATES.md"
+  },
+  {
+   "staged_file": "source/msh_arc_shrine_device_v001.glb",
+   "original_asset_name": "msh_arc_shrine_device_v001",
+   "source_project": "Melo: Light Rhythm Prototype",
+   "source_project_path": "C:/Users/Administrator/Desktop/\u9879\u76ee_\u5f00\u53d1\u4e0e\u7814\u7a76/Melo-Godot-Prototype",
+   "source_revision": "fa018898b68707a445c8af34b1c7d90a342f33e5",
+   "original_path": "asset_library/architecture/arc_ancient_sanctuary_kit/meshes/msh_arc_shrine_device_v001.glb",
+   "sha256_16": "8ce5d1a89780c9bb",
+   "dims_m": [
+    3.0,
+    2.4,
+    3.15
+   ],
+   "triangles": 900,
+   "helper_objects_stripped": [],
+   "reuse_notes": "see MELO_TOP_CANDIDATES.md"
+  },
+  {
+   "staged_file": "source/msh_arc_stairs_v001.glb",
+   "original_asset_name": "msh_arc_stairs_v001",
+   "source_project": "Melo: Light Rhythm Prototype",
+   "source_project_path": "C:/Users/Administrator/Desktop/\u9879\u76ee_\u5f00\u53d1\u4e0e\u7814\u7a76/Melo-Godot-Prototype",
+   "source_revision": "fa018898b68707a445c8af34b1c7d90a342f33e5",
+   "original_path": "asset_library/architecture/arc_ancient_sanctuary_kit/meshes/msh_arc_stairs_v001.glb",
+   "sha256_16": "b7132afe787e9e4f",
+   "dims_m": [
+    4.0,
+    8.0,
+    2.2
+   ],
+   "triangles": 972,
+   "helper_objects_stripped": [],
+   "reuse_notes": "see MELO_TOP_CANDIDATES.md"
+  },
+  {
+   "staged_file": "source/msh_arc_tree_a_v001.glb",
+   "original_asset_name": "msh_arc_tree_a_v001",
+   "source_project": "Melo: Light Rhythm Prototype",
+   "source_project_path": "C:/Users/Administrator/Desktop/\u9879\u76ee_\u5f00\u53d1\u4e0e\u7814\u7a76/Melo-Godot-Prototype",
+   "source_revision": "fa018898b68707a445c8af34b1c7d90a342f33e5",
+   "original_path": "asset_library/architecture/arc_ancient_sanctuary_kit/meshes/msh_arc_tree_a_v001.glb",
+   "sha256_16": "1cc5e06d63919ab9",
+   "dims_m": [
+    2.6914,
+    2.4947,
+    5.35
+   ],
+   "triangles": 1644,
+   "helper_objects_stripped": [],
+   "reuse_notes": "see MELO_TOP_CANDIDATES.md"
+  },
+  {
+   "staged_file": "source/msh_cre_ancient_sentinel_lod0_v001.glb",
+   "original_asset_name": "msh_cre_ancient_sentinel_lod0_v001",
+   "source_project": "Melo: Light Rhythm Prototype",
+   "source_project_path": "C:/Users/Administrator/Desktop/\u9879\u76ee_\u5f00\u53d1\u4e0e\u7814\u7a76/Melo-Godot-Prototype",
+   "source_revision": "fa018898b68707a445c8af34b1c7d90a342f33e5",
+   "original_path": "asset_library/creatures/cre_ancient_sentinel/meshes/msh_cre_ancient_sentinel_lod0_v001.glb",
+   "sha256_16": "d0a6078f74c2347c",
+   "dims_m": [
+    0.9177,
+    0.2871,
+    1.0633
+   ],
+   "triangles": 18188,
+   "helper_objects_stripped": [
+    "\u68f1\u89d2\u7403"
+   ],
+   "reuse_notes": "see MELO_TOP_CANDIDATES.md"
+  }
+ ]
+}

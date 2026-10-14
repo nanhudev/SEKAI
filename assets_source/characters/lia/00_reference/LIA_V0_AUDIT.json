@@ -1,0 +1,118 @@
+{
+  "source": {
+    "fbx_path": "F:\\SEKAI\\assets_source\\characters\\lia\\01_v0_original\\LIA_v0_original.fbx",
+    "fbx_bytes": 12787356,
+    "blender_version": "5.1.2"
+  },
+  "scene": {
+    "objects": [
+      {
+        "name": "Mesh_0",
+        "type": "MESH",
+        "parent": null,
+        "parent_type": null,
+        "collections": [
+          "Scene Collection"
+        ],
+        "location": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation_euler_deg": [
+          90.0,
+          -0.0,
+          0.0
+        ],
+        "rotation_mode": "XYZ",
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "dimensions": [
+          0.624939,
+          1.122286,
+          0.342476
+        ],
+        "modifiers": [],
+        "hide_render": false,
+        "verts": 249786,
+        "materials": [],
+        "shape_keys": [],
+        "uv_layers": [],
+        "vertex_groups": 0
+      }
+    ],
+    "object_count": 1
+  },
+  "scale": {
+    "bbox_min_m": [
+      -0.26703,
+      -0.12498,
+      -0.0
+    ],
+    "bbox_max_m": [
+      0.35791,
+      0.2175,
+      1.12229
+    ],
+    "size_m": [
+      0.62494,
+      0.34248,
+      1.12229
+    ],
+    "height_Z_m": 1.12229,
+    "width_X_m": 0.62494,
+    "depth_Y_m": 0.34248,
+    "feet_at_z": -0.0,
+    "note_units": "Blender m; 1 unit = 1 m assumed"
+  },
+  "geometry": {
+    "per_mesh": {
+      "Mesh_0": {
+        "verts": 249786,
+        "edges": 749622,
+        "faces": 499748,
+        "tris": 499748,
+        "quads": 0,
+        "ngons": 0,
+        "degenerate_faces": 0,
+        "non_manifold_edges": 0,
+        "boundary_edges": 0,
+        "wire_edges": 0,
+        "non_contiguous_edges": 0,
+        "loose_verts": 0,
+        "duplicate_verts": 0,
+        "duplicate_faces": 0,
+        "area_m2": 1.417651,
+        "uv": {},
+        "has_custom_normals": true,
+        "shade_smooth_faces": 499748,
+        "auto_smooth": null
+      }
+    },
+    "total_tris": 499748,
+    "total_verts": 249786,
+    "mesh_object_count": 1,
+    "aabb_overlaps": [],
+    "aabb_overlap_count": 0
+  },
+  "materials": {
+    "list": [],
+    "count": 0,
+    "images": []
+  },
+  "rig": {
+    "armatures": {},
+    "armature_count": 0,
+    "verdict": "NO ARMATURE IN SOURCE — rig must be built from scratch"
+  },
+  "weights": {
+    "per_mesh": {}
+  },
+  "shape_keys": {
+    "per_mesh": {},
+    "count": 0
+  }
+}

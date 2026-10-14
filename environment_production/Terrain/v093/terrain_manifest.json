@@ -1,0 +1,2624 @@
+{
+  "stage": "DESIGNED_HOMES_REQUIRES_FIXED_AND_FREE_CAMERA_REVIEW",
+  "core_extent_m": [
+    180,
+    220
+  ],
+  "assets": [
+    "SM_VIL_Valley_Terrain_v009",
+    "SM_VIL_Valley_Stream_v009",
+    "SM_VIL_Valley_CriticalRoute_v009",
+    "SM_VIL_River_Bank_West",
+    "SM_VIL_River_Bank_East",
+    "SM_VIL_Terrace_Face_WestHomes",
+    "SM_VIL_Terrace_Face_UpperHomes",
+    "SM_VIL_Terrace_Face_Training",
+    "SM_VIL_Valley_Surroundings",
+    "SM_VIL_Hero_AncientTree_Wood",
+    "SM_VIL_Hero_AncientTree_Foliage",
+    "SM_VIL_Plaza_PavingAndTreeTerrace",
+    "SM_VIL_EntranceBridge_Railing",
+    "SM_VIL_Hero_Tavern_Placed",
+    "SM_VIL_Cascade_Bedrock_v030",
+    "SM_VIL_Pine_Library_0",
+    "SM_VIL_Pine_Library_1",
+    "SM_VIL_Pine_Library_2",
+    "SM_VIL_Road_EmbeddedStones",
+    "SM_VIL_Road_BrokenShoulders",
+    "SM_VIL_EntranceBridge_StoneSupports",
+    "SM_VIL_Plaza_RailsAndLanterns_v044",
+    "SM_VIL_Plaza_Planting_v044",
+    "SM_VIL_Tavern_Rear_Completion_v045",
+    "SM_VIL_Forge_OpenWorkshop_v051",
+    "SM_VIL_Home_PorchCottage_v052",
+    "SM_VIL_Home_BalconySaltbox_v052",
+    "SM_VIL_Forge_Forecourt_v055",
+    "SM_VIL_Tavern_ServiceWing_v057",
+    "SM_VIL_BorderCount_Estate_v060",
+    "SM_VIL_BorderCount_Viaduct_v060",
+    "SM_VIL_TreeRoot_Grounding_v061",
+    "SM_VIL_Route_FittedStone_v065",
+    "SM_VIL_Home_PorchCottage_v068",
+    "SM_VIL_Home_BalconySaltbox_v068",
+    "SM_VIL_Home_Footings_v070",
+    "SM_VIL_Route_Planting_v072",
+    "SM_VIL_Home_PorchCottage_v076",
+    "SM_VIL_Home_BalconySaltbox_v076",
+    "SM_VIL_Bridge_LeftApproach_v077",
+    "SM_VIL_Terrace_Gardens_v088",
+    "SM_VIL_Plaza_FlowerPlanters_v090",
+    "SM_VIL_Planter_Planting_v090",
+    "SM_VIL_Home_Courtyards_v093",
+    "SM_VIL_Home_Flowerbox_Planting_v093"
+  ],
+  "pads": [
+    {
+      "name": "Plaza",
+      "center_m": [
+        20,
+        13,
+        8.2
+      ],
+      "radius_m": [
+        27,
+        24
+      ]
+    },
+    {
+      "name": "Tavern",
+      "center_m": [
+        38,
+        42,
+        11.3
+      ],
+      "radius_m": [
+        21,
+        17
+      ]
+    },
+    {
+      "name": "Forge",
+      "center_m": [
+        61,
+        27,
+        10.2
+      ],
+      "radius_m": [
+        16,
+        17
+      ]
+    },
+    {
+      "name": "Tree",
+      "center_m": [
+        -1,
+        47,
+        13.4
+      ],
+      "radius_m": [
+        17,
+        16
+      ]
+    },
+    {
+      "name": "WestResidential",
+      "center_m": [
+        -57,
+        15,
+        8.6
+      ],
+      "radius_m": [
+        21,
+        24
+      ]
+    },
+    {
+      "name": "UpperResidential",
+      "center_m": [
+        -48,
+        63,
+        14.2
+      ],
+      "radius_m": [
+        20,
+        24
+      ]
+    },
+    {
+      "name": "EastResidential",
+      "center_m": [
+        38,
+        -24,
+        5.6
+      ],
+      "radius_m": [
+        19,
+        15
+      ]
+    },
+    {
+      "name": "Farm",
+      "center_m": [
+        65,
+        -33,
+        4.9
+      ],
+      "radius_m": [
+        18,
+        23
+      ]
+    },
+    {
+      "name": "Training",
+      "center_m": [
+        51,
+        81,
+        16.2
+      ],
+      "radius_m": [
+        27,
+        21
+      ]
+    },
+    {
+      "name": "Entrance",
+      "center_m": [
+        -57,
+        -88,
+        1.9
+      ],
+      "radius_m": [
+        16,
+        18
+      ]
+    }
+  ],
+  "cameras": [
+    {
+      "name": "CAM_01_Entrance",
+      "position_m": [
+        -58,
+        -100,
+        3.54
+      ],
+      "target_m": [
+        -45,
+        -48,
+        2.4166333208230895
+      ],
+      "fov": 75
+    },
+    {
+      "name": "CAM_02_Bridge",
+      "position_m": [
+        -46,
+        -45,
+        4.7
+      ],
+      "target_m": [
+        18,
+        12,
+        10.970327868852458
+      ],
+      "fov": 75
+    },
+    {
+      "name": "CAM_03_Plaza",
+      "position_m": [
+        20,
+        -3,
+        9.069098360655737
+      ],
+      "target_m": [
+        -1,
+        47,
+        16.41567859448994
+      ],
+      "fov": 75
+    },
+    {
+      "name": "CAM_04_Residential",
+      "position_m": [
+        -56,
+        20,
+        10.337841087149373
+      ],
+      "target_m": [
+        20,
+        13,
+        11.018278688524589
+      ],
+      "fov": 75
+    },
+    {
+      "name": "CAM_05_Exit",
+      "position_m": [
+        50,
+        85,
+        18.052099644128113
+      ],
+      "target_m": [
+        20,
+        13,
+        11.018278688524589
+      ],
+      "fov": 75
+    },
+    {
+      "name": "CAM_06_Aerial",
+      "position_m": [
+        190,
+        -285,
+        250
+      ],
+      "target_m": [
+        0,
+        15,
+        6
+      ],
+      "fov": 50
+    }
+  ],
+  "route_m": [
+    [
+      -58,
+      -99,
+      1.9
+    ],
+    [
+      -56,
+      -77,
+      2.1
+    ],
+    [
+      -48,
+      -58,
+      2.5
+    ],
+    [
+      -46,
+      -45,
+      3.0
+    ],
+    [
+      -18,
+      -42,
+      3.0
+    ],
+    [
+      0,
+      -23,
+      4.7
+    ],
+    [
+      18,
+      -6,
+      7.3
+    ],
+    [
+      19,
+      0,
+      8.2
+    ],
+    [
+      20,
+      16,
+      8.2
+    ],
+    [
+      20,
+      26,
+      8.2
+    ],
+    [
+      18,
+      40,
+      11.6
+    ],
+    [
+      30,
+      59,
+      14.0
+    ],
+    [
+      46,
+      80,
+      16.2
+    ],
+    [
+      57,
+      101,
+      17.0
+    ]
+  ],
+  "known_gaps": [
+    "reference composition fidelity",
+    "forge and other architecture",
+    "terrain geology and PBR",
+    "tree crown density and branch transitions",
+    "water shading and waterfall foam",
+    "walkability verification"
+  ],
+  "material_palette": {
+    "MV_Tree_Bark": [
+      0.25,
+      0.20000000298023224,
+      0.12999999523162842
+    ],
+    "MV_Foliage_Leaf_00": [
+      0.13,
+      0.24,
+      0.08
+    ],
+    "MV_Foliage_Leaf_01": [
+      0.22,
+      0.38,
+      0.09
+    ],
+    "MV_Foliage_Leaf_02": [
+      0.4,
+      0.51,
+      0.13
+    ],
+    "MV_Foliage_Leaf_03": [
+      0.11,
+      0.23,
+      0.1
+    ],
+    "MV_Foliage_Leaf_04": [
+      0.35,
+      0.45,
+      0.08
+    ],
+    "MV_Plaza_Stone_00": [
+      0.4300000071525574,
+      0.44999998807907104,
+      0.4000000059604645
+    ],
+    "MV_Plaza_Stone_01": [
+      0.3400000035762787,
+      0.3799999952316284,
+      0.36000001430511475
+    ],
+    "MV_Plaza_Stone_02": [
+      0.47999998927116394,
+      0.46000000834465027,
+      0.3799999952316284
+    ],
+    "MV_Plaza_Stone_03": [
+      0.3799999952316284,
+      0.4099999964237213,
+      0.38999998569488525
+    ],
+    "MV_Bridge_Timber": [
+      0.27000001072883606,
+      0.17000000178813934,
+      0.08500000089406967
+    ],
+    "MV_Metal_BlackIron": [
+      0.035,
+      0.043,
+      0.047
+    ],
+    "MV_Timber_Warm": [
+      0.3199999928474426,
+      0.17000000178813934,
+      0.07000000029802322
+    ],
+    "MV_Timber_Dark": [
+      0.15000000596046448,
+      0.07500000298023224,
+      0.032999999821186066
+    ],
+    "MV_Window_Amber": [
+      0.6000000238418579,
+      0.28999999165534973,
+      0.054999999701976776
+    ],
+    "MV_Plaster_Warm": [
+      0.6800000071525574,
+      0.6000000238418579,
+      0.4300000071525574
+    ],
+    "MV_Stone_0": [
+      0.36000001430511475,
+      0.3700000047683716,
+      0.3400000035762787
+    ],
+    "MV_Stone_3": [
+      0.49000000953674316,
+      0.46000000834465027,
+      0.3799999952316284
+    ],
+    "MV_Stone_2": [
+      0.30000001192092896,
+      0.33000001311302185,
+      0.33000001311302185
+    ],
+    "MV_Stone_1": [
+      0.4300000071525574,
+      0.41999998688697815,
+      0.36000001430511475
+    ],
+    "MV_Roof_Slate_1": [
+      0.14000000059604645,
+      0.20999999344348907,
+      0.27000001072883606
+    ],
+    "MV_Roof_Slate_3": [
+      0.11999999731779099,
+      0.18000000715255737,
+      0.23000000417232513
+    ],
+    "MV_Roof_Slate_0": [
+      0.10000000149011612,
+      0.1599999964237213,
+      0.20999999344348907
+    ],
+    "MV_Roof_Slate_2": [
+      0.1899999976158142,
+      0.23999999463558197,
+      0.2800000011920929
+    ],
+    "MV_Roof_Slate_4": [
+      0.2199999988079071,
+      0.25,
+      0.25
+    ],
+    "MV_Escarpment_Stone_0": [
+      0.39,
+      0.43,
+      0.43
+    ],
+    "MV_Escarpment_Stone_1": [
+      0.32,
+      0.37,
+      0.38
+    ],
+    "MV_Escarpment_Stone_2": [
+      0.45,
+      0.46,
+      0.4
+    ],
+    "MV_Escarpment_Stone_3": [
+      0.29,
+      0.33,
+      0.33
+    ],
+    "MV_Escarpment_Turf": [
+      0.27,
+      0.35,
+      0.13
+    ],
+    "MV_Valley_Surface": [
+      0.3,
+      0.4,
+      0.2
+    ],
+    "MV_Valley_BackdropSurface": [
+      0.3,
+      0.4,
+      0.2
+    ],
+    "MV_Valley_FallingWater": [
+      0.24,
+      0.48,
+      0.51
+    ],
+    "MV_Valley_Foam_Detail": [
+      0.72,
+      0.82,
+      0.79
+    ],
+    "MV_Foliage_Leaf_Pine_0": [
+      0.09,
+      0.205,
+      0.095
+    ],
+    "MV_Foliage_Leaf_Pine_1": [
+      0.145,
+      0.265,
+      0.075
+    ],
+    "MV_Foliage_Leaf_Pine_2": [
+      0.19,
+      0.3,
+      0.085
+    ],
+    "MV_Road_Earth_00": [
+      0.25,
+      0.19,
+      0.115
+    ],
+    "MV_Road_Earth_01": [
+      0.29,
+      0.225,
+      0.14
+    ],
+    "MV_Road_Earth_02": [
+      0.33,
+      0.265,
+      0.17
+    ],
+    "MV_Road_Earth_03": [
+      0.36,
+      0.295,
+      0.195
+    ],
+    "MV_Road_Earth_04": [
+      0.31,
+      0.245,
+      0.155
+    ],
+    "MV_Road_Earth_05": [
+      0.39,
+      0.32,
+      0.22
+    ],
+    "MV_Road_Earth_06": [
+      0.275,
+      0.205,
+      0.13
+    ],
+    "MV_Road_Stone_00": [
+      0.34,
+      0.37,
+      0.32
+    ],
+    "MV_Road_Stone_01": [
+      0.4,
+      0.415,
+      0.35
+    ],
+    "MV_Road_Stone_02": [
+      0.46,
+      0.445,
+      0.365
+    ],
+    "MV_Road_Stone_03": [
+      0.3,
+      0.325,
+      0.285
+    ],
+    "MV_Road_Stone_04": [
+      0.49,
+      0.48,
+      0.41
+    ],
+    "MV_Timber_Bridge_00": [
+      0.27,
+      0.15,
+      0.065
+    ],
+    "MV_Timber_Bridge_01": [
+      0.33,
+      0.195,
+      0.085
+    ],
+    "MV_Timber_Bridge_02": [
+      0.23,
+      0.12,
+      0.049
+    ],
+    "MV_Timber_Bridge_03": [
+      0.38,
+      0.23,
+      0.11
+    ],
+    "MV_Plaza_Timber_Rail": [
+      0.24,
+      0.115,
+      0.043
+    ],
+    "MV_Plaza_Stone_Edge": [
+      0.32,
+      0.35,
+      0.3
+    ],
+    "MV_Plaza_Stone_Light": [
+      0.42,
+      0.43,
+      0.35
+    ],
+    "MV_Plaza_Lantern_Frame": [
+      0.07,
+      0.055,
+      0.035
+    ],
+    "MV_Plaza_Lantern_Glass": [
+      0.72,
+      0.36,
+      0.07
+    ],
+    "MV_Foliage_Leaf_GroundDark": [
+      0.065,
+      0.16,
+      0.024
+    ],
+    "MV_Foliage_Leaf_GroundLight": [
+      0.19,
+      0.32,
+      0.045
+    ],
+    "MV_Foliage_Leaf_FlowerWhite": [
+      0.75,
+      0.78,
+      0.62
+    ],
+    "MV_Foliage_Leaf_FlowerBlue": [
+      0.12,
+      0.2,
+      0.48
+    ],
+    "MV_Foliage_Leaf_FlowerGold": [
+      0.58,
+      0.38,
+      0.04
+    ],
+    "MV_Foliage_Leaf_UnderstoryDeep": [
+      0.045,
+      0.125,
+      0.023
+    ],
+    "MV_Foliage_Leaf_UnderstoryMid": [
+      0.12,
+      0.24,
+      0.038
+    ],
+    "MV_Foliage_Leaf_UnderstorySun": [
+      0.23,
+      0.34,
+      0.067
+    ],
+    "MV_Foliage_Leaf_UnderstoryStem": [
+      0.13,
+      0.17,
+      0.044
+    ],
+    "MV_Foliage_Leaf_DaisyCream": [
+      0.78,
+      0.77,
+      0.64
+    ],
+    "MV_Foliage_Leaf_WildBlue": [
+      0.12,
+      0.23,
+      0.48
+    ],
+    "MV_Foliage_Leaf_PollenGold": [
+      0.59,
+      0.4,
+      0.026
+    ],
+    "MV_PlantedSoil": [
+      0.12,
+      0.1,
+      0.065
+    ],
+    "MV_Forge_Timber_Weathered": [
+      0.2,
+      0.105,
+      0.047
+    ],
+    "MV_Forge_Timber_Edge": [
+      0.31,
+      0.18,
+      0.078
+    ],
+    "MV_Forge_Plaster_Lime": [
+      0.57,
+      0.52,
+      0.38
+    ],
+    "MV_Forge_Stone_Dark": [
+      0.24,
+      0.27,
+      0.26
+    ],
+    "MV_Forge_Stone_Warm": [
+      0.36,
+      0.36,
+      0.29
+    ],
+    "MV_Forge_Stone_Light": [
+      0.44,
+      0.43,
+      0.35
+    ],
+    "MV_Forge_Slate_0": [
+      0.1,
+      0.16,
+      0.2
+    ],
+    "MV_Forge_Slate_1": [
+      0.16,
+      0.21,
+      0.23
+    ],
+    "MV_Forge_Slate_2": [
+      0.21,
+      0.25,
+      0.25
+    ],
+    "MV_Forge_Iron": [
+      0.045,
+      0.055,
+      0.06
+    ],
+    "MV_Forge_Coal": [
+      0.024,
+      0.018,
+      0.014
+    ],
+    "MV_Forge_Ember": [
+      0.72,
+      0.095,
+      0.009
+    ],
+    "MV_Forge_Window": [
+      0.38,
+      0.21,
+      0.064
+    ],
+    "MV_Home_Timber_Dark": [
+      0.16,
+      0.083,
+      0.037
+    ],
+    "MV_Home_Timber_Light": [
+      0.29,
+      0.175,
+      0.085
+    ],
+    "MV_Home_Plaster_Cream": [
+      0.62,
+      0.57,
+      0.44
+    ],
+    "MV_Home_Plaster_Cool": [
+      0.48,
+      0.5,
+      0.42
+    ],
+    "MV_Home_Stone_0": [
+      0.28,
+      0.32,
+      0.29
+    ],
+    "MV_Home_Stone_1": [
+      0.39,
+      0.4,
+      0.34
+    ],
+    "MV_Home_Stone_2": [
+      0.45,
+      0.44,
+      0.37
+    ],
+    "MV_Home_Slate_0": [
+      0.09,
+      0.15,
+      0.2
+    ],
+    "MV_Home_Slate_1": [
+      0.15,
+      0.21,
+      0.26
+    ],
+    "MV_Home_Slate_2": [
+      0.22,
+      0.25,
+      0.26
+    ],
+    "MV_Home_Glass": [
+      0.22,
+      0.29,
+      0.29
+    ],
+    "MV_Home_Iron": [
+      0.065,
+      0.072,
+      0.076
+    ],
+    "MV_Polish_Limestone_0": [
+      0.25,
+      0.265,
+      0.24
+    ],
+    "MV_Polish_Limestone_1": [
+      0.3,
+      0.29,
+      0.25
+    ],
+    "MV_Polish_Limestone_2": [
+      0.34,
+      0.32,
+      0.27
+    ],
+    "MV_Polish_Limestone_3": [
+      0.27,
+      0.29,
+      0.28
+    ],
+    "MV_Polish_Limestone_4": [
+      0.37,
+      0.35,
+      0.29
+    ],
+    "MV_Polish_Mortar": [
+      0.185,
+      0.18,
+      0.145
+    ],
+    "MV_Polish_Moss": [
+      0.12,
+      0.19,
+      0.052
+    ],
+    "MV_Estate_Stone_Warm": [
+      0.29,
+      0.3,
+      0.265
+    ],
+    "MV_Estate_Stone_Shadow": [
+      0.19,
+      0.22,
+      0.23
+    ],
+    "MV_Estate_Plaster": [
+      0.46,
+      0.43,
+      0.35
+    ],
+    "MV_Estate_Timber": [
+      0.14,
+      0.083,
+      0.048
+    ],
+    "MV_Estate_Slate": [
+      0.1,
+      0.15,
+      0.2
+    ],
+    "MV_Estate_Window": [
+      0.12,
+      0.18,
+      0.19
+    ],
+    "MV_Estate_Copper": [
+      0.22,
+      0.29,
+      0.25
+    ],
+    "MV_Root_Soil": [
+      0.105,
+      0.095,
+      0.06
+    ]
+  },
+  "acceptance_reference": "SEKAI_REFERENCES/MASTER/acceptance_stylized_20261012.png",
+  "geometry_changes": [
+    "Four cottage rear service canopies, bracket-supported flower boxes and open-entry stone courtyards",
+    "Existing house envelopes, terrain, bridge, plaza, tree, cameras and lighting preserved"
+  ],
+  "review_lighting": {
+    "exposure_bias": 1.0,
+    "note": "Moderate skylight fill trial; sun and exposure retained",
+    "sky_intensity": 2.5,
+    "sky_luminance_factor": 2.0,
+    "sun_temperature_kelvin": 5700.0
+  },
+  "ground_acceptance_reference": "SEKAI_REFERENCES/MASTER/acceptance_plaza_ground_20261012.png",
+  "geometry_source_version": "v075",
+  "import_changes": [
+    "Baked existing authored grass/rock/snow colors to linear planar textures",
+    "Terrain and backdrop use separate UV0 textures; geometry and cameras unchanged"
+  ],
+  "surface_color_textures": {
+    "MV_Valley_Surface": "T_MV_Valley_Surface_AuthoredColor",
+    "MV_Valley_BackdropSurface": "T_MV_Valley_BackdropSurface_AuthoredColor"
+  },
+  "water_material_trial": true,
+  "water_flow_texture": true,
+  "library_assets": [
+    "SM_VIL_Pine_Library_0",
+    "SM_VIL_Pine_Library_1",
+    "SM_VIL_Pine_Library_2"
+  ],
+  "instances": [
+    {
+      "mesh": "SM_VIL_Pine_Library_0",
+      "position_m": [
+        -94.23487789447812,
+        -34.39154622578013,
+        26.9079833984375
+      ],
+      "yaw_degrees": -156.77602291446007,
+      "scale": 1.0603445223939427
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_1",
+      "position_m": [
+        -56.210246750645766,
+        -51.281591752619946,
+        2.185235595703125
+      ],
+      "yaw_degrees": 47.37184446784843,
+      "scale": 1.0951245768429552
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_2",
+      "position_m": [
+        49.449079677348564,
+        -101.65675362632969,
+        1.490380859375
+      ],
+      "yaw_degrees": 95.39097704397636,
+      "scale": 0.9916723842615556
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_0",
+      "position_m": [
+        53.239975970194806,
+        124.63085818347315,
+        29.132814025878908
+      ],
+      "yaw_degrees": -15.965300876646353,
+      "scale": 1.0915165945560181
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_1",
+      "position_m": [
+        -67.08267489933318,
+        -12.408283380153108,
+        8.481378173828125
+      ],
+      "yaw_degrees": 141.2025126452371,
+      "scale": 0.861645350048813
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_2",
+      "position_m": [
+        -46.36460724601749,
+        91.086728450474,
+        12.24898681640625
+      ],
+      "yaw_degrees": 3.250311521293895,
+      "scale": 1.0981426696628547
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_0",
+      "position_m": [
+        59.55777489264578,
+        -110.88411720705179,
+        1.4941192626953126
+      ],
+      "yaw_degrees": -28.121089121692393,
+      "scale": 1.1356010098498222
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_1",
+      "position_m": [
+        47.6563157132925,
+        -54.51935551947355,
+        2.18721923828125
+      ],
+      "yaw_degrees": -69.72280642516414,
+      "scale": 0.7795479833604848
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_2",
+      "position_m": [
+        -64.17686225720041,
+        135.8520394101148,
+        34.0569091796875
+      ],
+      "yaw_degrees": -57.852413650551355,
+      "scale": 0.9898527327833078
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_0",
+      "position_m": [
+        -99.06025829792085,
+        140.74644093011628,
+        49.894273376464845
+      ],
+      "yaw_degrees": -141.26462969720507,
+      "scale": 1.0906507509632255
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_1",
+      "position_m": [
+        -86.68738333985144,
+        68.28575384264165,
+        39.302362060546876
+      ],
+      "yaw_degrees": 163.51834847828172,
+      "scale": 0.8085339573556412
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_2",
+      "position_m": [
+        -72.53075367949789,
+        117.91379187343419,
+        47.05359802246094
+      ],
+      "yaw_degrees": -125.56605277842782,
+      "scale": 0.8315123861888779
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_0",
+      "position_m": [
+        -96.73008035626535,
+        21.662929870868904,
+        32.259683227539064
+      ],
+      "yaw_degrees": -74.17267391622221,
+      "scale": 0.9242122330852328
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_1",
+      "position_m": [
+        98.00009393656292,
+        44.4612046535227,
+        31.265252685546876
+      ],
+      "yaw_degrees": -117.15832017090713,
+      "scale": 0.8918472603894219
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_2",
+      "position_m": [
+        87.2468678567207,
+        97.07183060347172,
+        35.46376953125
+      ],
+      "yaw_degrees": 103.91531710314291,
+      "scale": 0.9738619829127444
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_0",
+      "position_m": [
+        -94.28682322536778,
+        108.84363715932597,
+        48.9729248046875
+      ],
+      "yaw_degrees": -100.99408819648892,
+      "scale": 1.0658517403847683
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_1",
+      "position_m": [
+        -67.17743494756594,
+        84.47929563630203,
+        15.4209228515625
+      ],
+      "yaw_degrees": 132.33173886108528,
+      "scale": 1.0028286651692757
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_2",
+      "position_m": [
+        66.81348675975998,
+        -92.90369554109117,
+        2.3695159912109376
+      ],
+      "yaw_degrees": -150.7340800887201,
+      "scale": 0.7869173293256767
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_0",
+      "position_m": [
+        97.85168383722039,
+        -94.14112357656995,
+        20.713723754882814
+      ],
+      "yaw_degrees": 38.57168908821703,
+      "scale": 1.1354878482256927
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_1",
+      "position_m": [
+        83.88337198714306,
+        -94.30072237249219,
+        19.65523681640625
+      ],
+      "yaw_degrees": 107.78547947106,
+      "scale": 0.9467033321698841
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_2",
+      "position_m": [
+        98.95588759160398,
+        11.181006591995386,
+        31.95545349121094
+      ],
+      "yaw_degrees": -17.597529098957295,
+      "scale": 1.039866884228244
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_0",
+      "position_m": [
+        39.22531599272709,
+        138.23780285721278,
+        33.005517578125
+      ],
+      "yaw_degrees": -16.925188286768417,
+      "scale": 0.7385911453834884
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_1",
+      "position_m": [
+        -97.0742215676354,
+        -55.25107419649101,
+        19.37630615234375
+      ],
+      "yaw_degrees": -1.2294449634234752,
+      "scale": 1.0489627408739473
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_2",
+      "position_m": [
+        68.42765853569108,
+        107.82069291526388,
+        20.908547973632814
+      ],
+      "yaw_degrees": -148.52451557744092,
+      "scale": 1.0246731939837663
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_0",
+      "position_m": [
+        99.3844757848866,
+        -2.8871649673026565,
+        23.31001434326172
+      ],
+      "yaw_degrees": 61.2814671729368,
+      "scale": 1.041614710303597
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_1",
+      "position_m": [
+        37.098229407661265,
+        -103.35457543488002,
+        1.73946533203125
+      ],
+      "yaw_degrees": 57.93992321502506,
+      "scale": 0.9978410474778907
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_2",
+      "position_m": [
+        93.86594194222467,
+        85.13894994047111,
+        38.794732666015626
+      ],
+      "yaw_degrees": -149.0899266841623,
+      "scale": 1.1400709040802646
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_0",
+      "position_m": [
+        42.52384212485769,
+        -5.054066656974093,
+        8.24239501953125
+      ],
+      "yaw_degrees": -83.0764162428617,
+      "scale": 0.913326658699924
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_1",
+      "position_m": [
+        -68.43956508460057,
+        128.25558184062518,
+        44.569558715820314
+      ],
+      "yaw_degrees": -138.17237580663345,
+      "scale": 1.0158050470265714
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_2",
+      "position_m": [
+        63.74785230665689,
+        -81.38777480633048,
+        2.2737518310546876
+      ],
+      "yaw_degrees": -98.87725474208975,
+      "scale": 0.9528238272373144
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_0",
+      "position_m": [
+        -75.0586988529567,
+        -22.547192548178515,
+        28.329156494140626
+      ],
+      "yaw_degrees": 10.971478125122871,
+      "scale": 1.1173985488873246
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_1",
+      "position_m": [
+        98.67475527419963,
+        25.63949948746078,
+        31.25538024902344
+      ],
+      "yaw_degrees": -102.11073896090562,
+      "scale": 0.8709653603413217
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_2",
+      "position_m": [
+        95.07716338416529,
+        116.93488422233636,
+        42.66916046142578
+      ],
+      "yaw_degrees": 99.9977005815328,
+      "scale": 0.850162199579838
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_0",
+      "position_m": [
+        -99.6489812052867,
+        -102.45153945354168,
+        20.783364868164064
+      ],
+      "yaw_degrees": 111.64111821971312,
+      "scale": 0.7230379718671767
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_1",
+      "position_m": [
+        -88.6983072244595,
+        10.591887480496384,
+        29.3901611328125
+      ],
+      "yaw_degrees": 92.66462300815874,
+      "scale": 1.0167502400716066
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_2",
+      "position_m": [
+        -98.05306868142182,
+        39.84832416382626,
+        33.16620025634766
+      ],
+      "yaw_degrees": -106.25265042350101,
+      "scale": 1.1053988348450199
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_0",
+      "position_m": [
+        44.77921051155362,
+        -79.78868019413464,
+        2.1140533447265626
+      ],
+      "yaw_degrees": 34.785130481105654,
+      "scale": 0.9187337733833192
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_1",
+      "position_m": [
+        -97.0278323724132,
+        31.21329963613165,
+        32.8032470703125
+      ],
+      "yaw_degrees": -55.44436985558076,
+      "scale": 0.8723790210597838
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_2",
+      "position_m": [
+        38.02629702912635,
+        -60.15150977380027,
+        2.1447998046875
+      ],
+      "yaw_degrees": 39.55621781980233,
+      "scale": 0.9852488790937712
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_0",
+      "position_m": [
+        -66.9404321877019,
+        106.4857300683069,
+        42.402581787109376
+      ],
+      "yaw_degrees": 99.34369736893768,
+      "scale": 0.9865950125838885
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_1",
+      "position_m": [
+        -52.990816727924056,
+        121.5235149489267,
+        26.840730285644533
+      ],
+      "yaw_degrees": 23.90644346739282,
+      "scale": 0.9915045581923145
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_2",
+      "position_m": [
+        76.38140880594464,
+        130.3988994761334,
+        35.886453247070314
+      ],
+      "yaw_degrees": -123.24411390877238,
+      "scale": 0.8871907305499622
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_0",
+      "position_m": [
+        82.7941491432893,
+        38.755494760101854,
+        27.282952880859376
+      ],
+      "yaw_degrees": -101.36838971912942,
+      "scale": 1.1229255510570537
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_1",
+      "position_m": [
+        -82.37822726994038,
+        34.42093503554175,
+        31.376626586914064
+      ],
+      "yaw_degrees": -147.3450249144362,
+      "scale": 1.028661135686033
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_2",
+      "position_m": [
+        47.3803846880381,
+        -109.39061208920177,
+        1.554864501953125
+      ],
+      "yaw_degrees": 66.5481869517514,
+      "scale": 0.7776525744873322
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_0",
+      "position_m": [
+        98.25904208000063,
+        -38.94742924182826,
+        26.65253601074219
+      ],
+      "yaw_degrees": 0.012550019418654301,
+      "scale": 1.0066096313147426
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_1",
+      "position_m": [
+        96.8638670606312,
+        108.26607572889621,
+        37.505174255371095
+      ],
+      "yaw_degrees": 154.8679421191551,
+      "scale": 1.0942255183986638
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_2",
+      "position_m": [
+        -93.80725201799133,
+        120.23670953559987,
+        49.38411102294922
+      ],
+      "yaw_degrees": 75.53633174035434,
+      "scale": 1.0697248138503097
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_0",
+      "position_m": [
+        -33.48558090000972,
+        89.39623563461276,
+        12.30562744140625
+      ],
+      "yaw_degrees": -4.4941289576847225,
+      "scale": 1.1038311399531486
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_1",
+      "position_m": [
+        45.395410530727645,
+        -63.84476961125291,
+        2.0647979736328126
+      ],
+      "yaw_degrees": -37.223209864666984,
+      "scale": 1.0755945176056465
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_2",
+      "position_m": [
+        42.393991409206706,
+        126.973402129014,
+        30.486978149414064
+      ],
+      "yaw_degrees": 171.30266554170203,
+      "scale": 0.8762715165941243
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_0",
+      "position_m": [
+        -97.6055209716843,
+        5.428785518532656,
+        32.059197998046876
+      ],
+      "yaw_degrees": -117.33419950821704,
+      "scale": 0.9612497160259875
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_1",
+      "position_m": [
+        98.29995943982887,
+        -13.119852990103741,
+        26.10323486328125
+      ],
+      "yaw_degrees": -153.03084907495474,
+      "scale": 1.1276876791021575
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_2",
+      "position_m": [
+        -64.23691453111944,
+        -50.05333117834851,
+        2.4425140380859376
+      ],
+      "yaw_degrees": -22.09123591141551,
+      "scale": 1.132071585271845
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_0",
+      "position_m": [
+        -68.3534232720634,
+        -39.14993384790574,
+        5.704461669921875
+      ],
+      "yaw_degrees": -171.10790984389604,
+      "scale": 0.774452764245122
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_1",
+      "position_m": [
+        85.82952486717595,
+        -74.35701285730472,
+        18.49697265625
+      ],
+      "yaw_degrees": 155.31333675100825,
+      "scale": 1.0916543108247245
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_2",
+      "position_m": [
+        95.40206346324037,
+        -22.697564053384017,
+        26.01876220703125
+      ],
+      "yaw_degrees": 167.91436990401417,
+      "scale": 0.854784623012557
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_0",
+      "position_m": [
+        -69.01217269350403,
+        49.10972308559434,
+        14.179620361328125
+      ],
+      "yaw_degrees": 42.92576241779821,
+      "scale": 0.8457061609405372
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_1",
+      "position_m": [
+        -82.80044615158722,
+        -12.222967478601428,
+        25.965760803222658
+      ],
+      "yaw_degrees": -35.04684965649531,
+      "scale": 0.7960495089042242
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_2",
+      "position_m": [
+        84.76181536324106,
+        81.55943911908206,
+        38.09046325683594
+      ],
+      "yaw_degrees": -38.24688822144111,
+      "scale": 0.8692875909234664
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_0",
+      "position_m": [
+        65.83868120160606,
+        -70.25880306547548,
+        2.5534912109375
+      ],
+      "yaw_degrees": -124.2944020547744,
+      "scale": 0.9411860658525312
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_1",
+      "position_m": [
+        -56.38724241237942,
+        -40.40941931262438,
+        2.353265380859375
+      ],
+      "yaw_degrees": 21.37452426025027,
+      "scale": 0.9949544944077597
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_2",
+      "position_m": [
+        -93.56256589623862,
+        -44.27907042578523,
+        26.315225219726564
+      ],
+      "yaw_degrees": 153.18283908294995,
+      "scale": 1.0509583451301046
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_0",
+      "position_m": [
+        34.03274566354195,
+        -69.4413446073194,
+        2.265863037109375
+      ],
+      "yaw_degrees": -61.30103062971213,
+      "scale": 0.947375118863046
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_1",
+      "position_m": [
+        48.726839330530915,
+        108.00367917381683,
+        16.184182739257814
+      ],
+      "yaw_degrees": 140.67677396349353,
+      "scale": 1.0509335207415522
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_2",
+      "position_m": [
+        86.27162955273896,
+        -33.05964369423271,
+        24.873880004882814
+      ],
+      "yaw_degrees": -161.77132397729636,
+      "scale": 1.0900984917565277
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_0",
+      "position_m": [
+        -84.25029634106536,
+        21.066716472220858,
+        29.14862976074219
+      ],
+      "yaw_degrees": 69.2755400340757,
+      "scale": 0.7886763546732531
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_1",
+      "position_m": [
+        85.17877297051113,
+        -102.12504385356414,
+        17.3105712890625
+      ],
+      "yaw_degrees": -51.49195537433849,
+      "scale": 0.9932283199018077
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_2",
+      "position_m": [
+        -84.52276333557684,
+        104.76261796437298,
+        46.93013153076172
+      ],
+      "yaw_degrees": 171.5856364657364,
+      "scale": 0.8452644508138413
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_0",
+      "position_m": [
+        -53.410913389696645,
+        -20.797154764273134,
+        2.718560791015625
+      ],
+      "yaw_degrees": 117.12869517578577,
+      "scale": 1.1153825606349232
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_1",
+      "position_m": [
+        98.58487367896313,
+        -59.60088973229605,
+        20.88228759765625
+      ],
+      "yaw_degrees": -45.54746766260118,
+      "scale": 0.8185306369764888
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_2",
+      "position_m": [
+        77.6429278486265,
+        -71.5405059972209,
+        17.6380859375
+      ],
+      "yaw_degrees": -59.87571427395663,
+      "scale": 1.0184459335502203
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_0",
+      "position_m": [
+        77.60245367861194,
+        98.10820033337181,
+        33.76632843017578
+      ],
+      "yaw_degrees": 122.70947765715965,
+      "scale": 1.0958511824867916
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_1",
+      "position_m": [
+        -77.62511973565371,
+        129.18019676233502,
+        45.720849609375
+      ],
+      "yaw_degrees": -101.9312748925832,
+      "scale": 0.8210477710577743
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_2",
+      "position_m": [
+        -83.5666819833045,
+        119.73330137423898,
+        49.07327423095703
+      ],
+      "yaw_degrees": 27.39272005909723,
+      "scale": 0.9170207949322371
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_0",
+      "position_m": [
+        94.17478285952245,
+        -110.98327524985079,
+        16.644708251953126
+      ],
+      "yaw_degrees": 74.13035204943111,
+      "scale": 0.7271348518913303
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_1",
+      "position_m": [
+        53.60984340063397,
+        -90.7553388645556,
+        1.708123779296875
+      ],
+      "yaw_degrees": 19.8088535437235,
+      "scale": 0.8610943826146269
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_2",
+      "position_m": [
+        -86.2505477863945,
+        -89.68311599424337,
+        17.49115905761719
+      ],
+      "yaw_degrees": -153.5227818130455,
+      "scale": 0.9561750919192991
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_0",
+      "position_m": [
+        65.7218860106342,
+        138.61411841912707,
+        33.153245544433595
+      ],
+      "yaw_degrees": 126.26632377084934,
+      "scale": 0.7504151503221219
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_1",
+      "position_m": [
+        -95.67330500354629,
+        -13.689584099071219,
+        26.56348571777344
+      ],
+      "yaw_degrees": 61.770553424472524,
+      "scale": 1.1422565272375034
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_2",
+      "position_m": [
+        63.175783601319644,
+        117.08230756379989,
+        23.6311279296875
+      ],
+      "yaw_degrees": -33.4519693033908,
+      "scale": 0.8937396551224561
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_0",
+      "position_m": [
+        -32.96164871654783,
+        27.528956023536594,
+        8.42830810546875
+      ],
+      "yaw_degrees": 163.2631926235016,
+      "scale": 0.9994860584706214
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_1",
+      "position_m": [
+        59.18051453873767,
+        0.6984981180002148,
+        4.810662841796875
+      ],
+      "yaw_degrees": -110.51466297454616,
+      "scale": 1.1131601768251747
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_2",
+      "position_m": [
+        -88.38809391059858,
+        -60.079511250922124,
+        17.91842041015625
+      ],
+      "yaw_degrees": -45.87777764795723,
+      "scale": 0.7363265579135398
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_0",
+      "position_m": [
+        -46.96110100750772,
+        128.27064200190293,
+        31.086221313476564
+      ],
+      "yaw_degrees": 69.61798657962987,
+      "scale": 0.9391091911477953
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_1",
+      "position_m": [
+        -65.09701124698204,
+        114.60555173767277,
+        44.485269165039064
+      ],
+      "yaw_degrees": -107.4918357512903,
+      "scale": 1.03333752723824
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_2",
+      "position_m": [
+        99.47810425688776,
+        57.164658224404796,
+        30.522554016113283
+      ],
+      "yaw_degrees": -176.86490420105747,
+      "scale": 0.7232980998969678
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_0",
+      "position_m": [
+        65.98725825333162,
+        -59.75625908108815,
+        2.756951904296875
+      ],
+      "yaw_degrees": -79.07670268142466,
+      "scale": 1.0239515039272031
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_1",
+      "position_m": [
+        -44.17206703820967,
+        100.0102582531712,
+        12.672128295898437
+      ],
+      "yaw_degrees": 9.946003742019798,
+      "scale": 1.1259746107712207
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_2",
+      "position_m": [
+        93.17619697143436,
+        -84.40059505024567,
+        23.637261962890626
+      ],
+      "yaw_degrees": 98.70596183695176,
+      "scale": 0.7873017042990083
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_0",
+      "position_m": [
+        64.90654890348564,
+        -102.9395949279439,
+        1.611962890625
+      ],
+      "yaw_degrees": 15.196327992385363,
+      "scale": 0.8425299456487635
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_1",
+      "position_m": [
+        -86.52643480441031,
+        -30.844341066838275,
+        27.076715087890626
+      ],
+      "yaw_degrees": 62.55097699245391,
+      "scale": 0.924583557827286
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_2",
+      "position_m": [
+        -38.17053851072187,
+        109.77401999494633,
+        17.560845947265626
+      ],
+      "yaw_degrees": -144.47395388331688,
+      "scale": 1.0950113873376996
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_0",
+      "position_m": [
+        -69.55626847867539,
+        -108.9324482901097,
+        1.7158294677734376
+      ],
+      "yaw_degrees": -37.89761542429244,
+      "scale": 1.0199506340893352
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_1",
+      "position_m": [
+        -53.55827559440642,
+        -115.27293035072088,
+        1.6518646240234376
+      ],
+      "yaw_degrees": -14.927386572566775,
+      "scale": 1.0883893937896953
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_2",
+      "position_m": [
+        89.65670933934963,
+        49.28775625217957,
+        30.119386291503908
+      ],
+      "yaw_degrees": -170.9292926364169,
+      "scale": 1.1285404836223385
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_0",
+      "position_m": [
+        -62.62159714958168,
+        -23.435963190088057,
+        4.608209228515625
+      ],
+      "yaw_degrees": -91.68938662542739,
+      "scale": 0.8657757727626536
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_1",
+      "position_m": [
+        53.68302987060964,
+        -60.51906764586854,
+        2.17183837890625
+      ],
+      "yaw_degrees": 142.64621876689517,
+      "scale": 1.136626702151147
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_2",
+      "position_m": [
+        86.90110724612339,
+        -22.172468255927598,
+        26.072320556640626
+      ],
+      "yaw_degrees": 160.59797439910676,
+      "scale": 1.0272703191418935
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_0",
+      "position_m": [
+        95.27785547370037,
+        136.2271751041048,
+        48.593675231933595
+      ],
+      "yaw_degrees": 86.01648375253257,
+      "scale": 1.1305782749028757
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_1",
+      "position_m": [
+        -97.50024579247925,
+        -64.56764457470625,
+        19.729608154296876
+      ],
+      "yaw_degrees": 115.13937927428498,
+      "scale": 0.7829726865175257
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_2",
+      "position_m": [
+        86.37914356836181,
+        16.543464928685637,
+        28.937539672851564
+      ],
+      "yaw_degrees": 1.4197012532412145,
+      "scale": 0.8384864518534358
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_0",
+      "position_m": [
+        -96.24178748790034,
+        -78.38806959720637,
+        20.05654296875
+      ],
+      "yaw_degrees": -115.40911011868133,
+      "scale": 0.8799664898533371
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_1",
+      "position_m": [
+        -89.77094246892966,
+        -21.349528122636524,
+        26.573236083984376
+      ],
+      "yaw_degrees": -112.80481786095275,
+      "scale": 0.9388978003486432
+    },
+    {
+      "mesh": "SM_VIL_Pine_Library_2",
+      "position_m": [
+        66.26975997788851,
+        129.30361745078287,
+        31.761087036132814
+      ],
+      "yaw_degrees": 70.05261240388657,
+      "scale": 0.7687250183233503
+    }
+  ],
+  "entrance_detail_counts": {
+    "embedded_stones": 2378,
+    "deck_boards": 81
+  },
+  "reference_match": {
+    "layout_master": "MASTER/layout_annotated_20261012.png",
+    "primary_ground": "MASTER/acceptance_plaza_ground_20261012.png",
+    "height_support": "MASTER/valley_aerial_support_20261012.png",
+    "status": "NOT_ACCEPTED",
+    "terrace_contours": [
+      [
+        "Central plaza cliff",
+        8.2,
+        [
+          [
+            -13,
+            5
+          ],
+          [
+            -10,
+            -3
+          ],
+          [
+            2,
+            -11
+          ],
+          [
+            23,
+            -13
+          ],
+          [
+            43,
+            -7
+          ],
+          [
+            49,
+            10
+          ],
+          [
+            44,
+            28
+          ],
+          [
+            27,
+            34
+          ],
+          [
+            11,
+            32
+          ],
+          [
+            -6,
+            24
+          ]
+        ]
+      ],
+      [
+        "West lower homes",
+        8.6,
+        [
+          [
+            -79,
+            -12
+          ],
+          [
+            -62,
+            -17
+          ],
+          [
+            -47,
+            -11
+          ],
+          [
+            -40,
+            1
+          ],
+          [
+            -39,
+            19
+          ],
+          [
+            -46,
+            31
+          ],
+          [
+            -64,
+            37
+          ],
+          [
+            -82,
+            24
+          ]
+        ]
+      ],
+      [
+        "West upper homes",
+        14.2,
+        [
+          [
+            -79,
+            38
+          ],
+          [
+            -63,
+            35
+          ],
+          [
+            -47,
+            40
+          ],
+          [
+            -34,
+            52
+          ],
+          [
+            -31,
+            70
+          ],
+          [
+            -43,
+            81
+          ],
+          [
+            -64,
+            85
+          ],
+          [
+            -82,
+            67
+          ]
+        ]
+      ],
+      [
+        "Forge terrace",
+        10.2,
+        [
+          [
+            44,
+            10
+          ],
+          [
+            61,
+            7
+          ],
+          [
+            78,
+            13
+          ],
+          [
+            83,
+            29
+          ],
+          [
+            77,
+            43
+          ],
+          [
+            60,
+            47
+          ],
+          [
+            46,
+            37
+          ]
+        ]
+      ],
+      [
+        "Training terrace",
+        16.2,
+        [
+          [
+            30,
+            67
+          ],
+          [
+            42,
+            58
+          ],
+          [
+            60,
+            60
+          ],
+          [
+            77,
+            73
+          ],
+          [
+            79,
+            94
+          ],
+          [
+            64,
+            103
+          ],
+          [
+            44,
+            104
+          ],
+          [
+            31,
+            89
+          ]
+        ]
+      ],
+      [
+        "Lower east homes",
+        5.6,
+        [
+          [
+            18,
+            -39
+          ],
+          [
+            37,
+            -42
+          ],
+          [
+            52,
+            -33
+          ],
+          [
+            55,
+            -18
+          ],
+          [
+            45,
+            -8
+          ],
+          [
+            27,
+            -10
+          ],
+          [
+            16,
+            -21
+          ]
+        ]
+      ]
+    ],
+    "mountain_control_peaks": [
+      [
+        -300,
+        270,
+        153,
+        160,
+        180
+      ],
+      [
+        -180,
+        370,
+        177,
+        145,
+        175
+      ],
+      [
+        -375,
+        105,
+        123,
+        125,
+        175
+      ],
+      [
+        -70,
+        460,
+        145,
+        145,
+        150
+      ],
+      [
+        275,
+        340,
+        165,
+        160,
+        180
+      ],
+      [
+        360,
+        145,
+        129,
+        140,
+        170
+      ],
+      [
+        380,
+        -175,
+        99,
+        140,
+        170
+      ],
+      [
+        -350,
+        -200,
+        106,
+        150,
+        180
+      ]
+    ]
+  },
+  "mesh_source_versions": {
+    "SM_VIL_Valley_Terrain_v009": "v048",
+    "SM_VIL_Valley_Stream_v009": "v041",
+    "SM_VIL_Valley_CriticalRoute_v009": "v041",
+    "SM_VIL_River_Bank_West": "v041",
+    "SM_VIL_River_Bank_East": "v041",
+    "SM_VIL_Terrace_Face_WestHomes": "v041",
+    "SM_VIL_Terrace_Face_UpperHomes": "v041",
+    "SM_VIL_Terrace_Face_Training": "v041",
+    "SM_VIL_Valley_Surroundings": "v048",
+    "SM_VIL_EntranceBridge_Railing": "v060",
+    "SM_VIL_Hero_Tavern_Placed": "v041",
+    "SM_VIL_Cascade_Bedrock_v030": "v041",
+    "SM_VIL_Pine_Library_0": "v041",
+    "SM_VIL_Pine_Library_1": "v041",
+    "SM_VIL_Pine_Library_2": "v041",
+    "SM_VIL_Road_EmbeddedStones": "v065",
+    "SM_VIL_Road_BrokenShoulders": "v041",
+    "SM_VIL_EntranceBridge_StoneSupports": "v062",
+    "SM_VIL_Plaza_RailsAndLanterns_v044": "v044",
+    "SM_VIL_Plaza_Planting_v044": "v058",
+    "SM_VIL_Tavern_Rear_Completion_v045": "v048",
+    "SM_VIL_Forge_OpenWorkshop_v051": "v055",
+    "SM_VIL_Home_PorchCottage_v052": "v055",
+    "SM_VIL_Home_BalconySaltbox_v052": "v055",
+    "SM_VIL_Forge_Forecourt_v055": "v055",
+    "SM_VIL_Tavern_ServiceWing_v057": "v058",
+    "SM_VIL_BorderCount_Estate_v060": "v062",
+    "SM_VIL_BorderCount_Viaduct_v060": "v062",
+    "SM_VIL_TreeRoot_Grounding_v061": "v062",
+    "SM_VIL_Route_FittedStone_v065": "v065",
+    "SM_VIL_Home_PorchCottage_v068": "v068",
+    "SM_VIL_Home_BalconySaltbox_v068": "v068",
+    "SM_VIL_Home_Footings_v070": "v071",
+    "SM_VIL_Route_Planting_v072": "v072",
+    "SM_VIL_Home_BalconySaltbox_v076": "v077",
+    "SM_VIL_Bridge_LeftApproach_v077": "v077",
+    "SM_VIL_Home_PorchCottage_v076": "v078",
+    "SM_VIL_Hero_AncientTree_Wood": "v086",
+    "SM_VIL_Hero_AncientTree_Foliage": "v086",
+    "SM_VIL_Terrace_Gardens_v088": "v088",
+    "SM_VIL_Plaza_FlowerPlanters_v090": "v090",
+    "SM_VIL_Planter_Planting_v090": "v090",
+    "SM_VIL_Plaza_PavingAndTreeTerrace": "v092"
+  },
+  "material_properties": {
+    "MV_Forge_Timber_Weathered": {
+      "normal_map": "/Game/Environment/Village/Textures/OriginalSurfaces/T_VIL_Timber_Normal"
+    },
+    "MV_Forge_Timber_Edge": {
+      "normal_map": "/Game/Environment/Village/Textures/OriginalSurfaces/T_VIL_Timber_Normal"
+    },
+    "MV_Forge_Plaster_Lime": {
+      "normal_map": "/Game/Environment/Village/Textures/OriginalSurfaces/T_VIL_Plaster_Normal"
+    },
+    "MV_Forge_Stone_Dark": {
+      "normal_map": "/Game/Environment/Village/Textures/OriginalSurfaces/T_VIL_Stone_Normal"
+    },
+    "MV_Forge_Stone_Warm": {
+      "normal_map": "/Game/Environment/Village/Textures/OriginalSurfaces/T_VIL_Stone_Normal"
+    },
+    "MV_Forge_Stone_Light": {
+      "normal_map": "/Game/Environment/Village/Textures/OriginalSurfaces/T_VIL_Stone_Normal"
+    },
+    "MV_Forge_Slate_0": {
+      "normal_map": "/Game/Environment/Village/Textures/OriginalSurfaces/T_VIL_Slate_Normal"
+    },
+    "MV_Forge_Slate_1": {
+      "normal_map": "/Game/Environment/Village/Textures/OriginalSurfaces/T_VIL_Slate_Normal"
+    },
+    "MV_Forge_Slate_2": {
+      "normal_map": "/Game/Environment/Village/Textures/OriginalSurfaces/T_VIL_Slate_Normal"
+    },
+    "MV_Forge_Iron": {
+      "metallic": 0.82,
+      "roughness": 0.46
+    },
+    "MV_Forge_Ember": {
+      "emissive": [
+        80,
+        4.5,
+        0.35
+      ],
+      "roughness": 0.92
+    },
+    "MV_Home_Timber_Dark": {
+      "normal_map": "/Game/Environment/Village/Textures/OriginalSurfaces/T_VIL_Timber_Normal"
+    },
+    "MV_Home_Timber_Light": {
+      "normal_map": "/Game/Environment/Village/Textures/OriginalSurfaces/T_VIL_Timber_Normal"
+    },
+    "MV_Home_Plaster_Cream": {
+      "normal_map": "/Game/Environment/Village/Textures/OriginalSurfaces/T_VIL_Plaster_Normal"
+    },
+    "MV_Home_Plaster_Cool": {
+      "normal_map": "/Game/Environment/Village/Textures/OriginalSurfaces/T_VIL_Plaster_Normal"
+    },
+    "MV_Home_Stone_0": {
+      "normal_map": "/Game/Environment/Village/Textures/OriginalSurfaces/T_VIL_Stone_Normal"
+    },
+    "MV_Home_Stone_1": {
+      "normal_map": "/Game/Environment/Village/Textures/OriginalSurfaces/T_VIL_Stone_Normal"
+    },
+    "MV_Home_Stone_2": {
+      "normal_map": "/Game/Environment/Village/Textures/OriginalSurfaces/T_VIL_Stone_Normal"
+    },
+    "MV_Home_Slate_0": {
+      "normal_map": "/Game/Environment/Village/Textures/OriginalSurfaces/T_VIL_Slate_Normal"
+    },
+    "MV_Home_Slate_1": {
+      "normal_map": "/Game/Environment/Village/Textures/OriginalSurfaces/T_VIL_Slate_Normal"
+    },
+    "MV_Home_Slate_2": {
+      "normal_map": "/Game/Environment/Village/Textures/OriginalSurfaces/T_VIL_Slate_Normal"
+    },
+    "MV_Home_Iron": {
+      "metallic": 0.75,
+      "roughness": 0.5
+    },
+    "MV_Polish_Limestone_0": {
+      "detail_color_map": "T_Polish_StoneColor",
+      "detail_normal_map": "T_Polish_StoneNormal",
+      "detail_roughness_map": "T_Polish_StoneRoughness"
+    },
+    "MV_Polish_Limestone_1": {
+      "detail_color_map": "T_Polish_StoneColor",
+      "detail_normal_map": "T_Polish_StoneNormal",
+      "detail_roughness_map": "T_Polish_StoneRoughness"
+    },
+    "MV_Polish_Limestone_2": {
+      "detail_color_map": "T_Polish_StoneColor",
+      "detail_normal_map": "T_Polish_StoneNormal",
+      "detail_roughness_map": "T_Polish_StoneRoughness"
+    },
+    "MV_Polish_Limestone_3": {
+      "detail_color_map": "T_Polish_StoneColor",
+      "detail_normal_map": "T_Polish_StoneNormal",
+      "detail_roughness_map": "T_Polish_StoneRoughness"
+    },
+    "MV_Polish_Limestone_4": {
+      "detail_color_map": "T_Polish_StoneColor",
+      "detail_normal_map": "T_Polish_StoneNormal",
+      "detail_roughness_map": "T_Polish_StoneRoughness"
+    },
+    "MV_Tree_Bark": {
+      "detail_color_map": "T_Polish_BarkColor",
+      "detail_normal_map": "T_Polish_BarkNormal"
+    }
+  },
+  "noncollision_assets": [
+    "SM_VIL_Plaza_Planting_v044",
+    "SM_VIL_TreeRoot_Grounding_v061",
+    "SM_VIL_Route_Planting_v072",
+    "SM_VIL_Terrace_Gardens_v088",
+    "SM_VIL_Planter_Planting_v090",
+    "SM_VIL_Home_Flowerbox_Planting_v093"
+  ],
+  "authored_detail_textures": [
+    "T_Polish_StoneColor",
+    "T_Polish_StoneNormal",
+    "T_Polish_StoneRoughness",
+    "T_Polish_BarkColor",
+    "T_Polish_BarkNormal"
+  ],
+  "atmosphere_trial": {
+    "cloud_layer_bottom_km": 0.65,
+    "cloud_layer_height_km": 1.8,
+    "haze_density": 0.004,
+    "note": "Art-directed native volume cloud banks; geometry/sun/exposure/cameras unchanged.",
+    "clone_engine_template": true,
+    "native_cumulus": true
+  },
+  "water_animation_trial": true,
+  "terrain_detail_trial": {
+    "materials": [
+      "MV_Valley_Surface",
+      "MV_Valley_BackdropSurface"
+    ],
+    "textures": [
+      {
+        "asset_page": "https://polyhaven.com/a/grass_ground",
+        "map": "Diffuse",
+        "md5": "fd97f2402677e6686b2d9159fc3a4256",
+        "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/grass_ground/grass_ground_diff_2k.jpg",
+        "file": "environment_production/LicensedMaterials/PolyHaven/grass_ground/grass_ground_diff_2k.jpg",
+        "license": "CC0",
+        "asset": "grass_ground"
+      },
+      {
+        "asset_page": "https://polyhaven.com/a/grass_ground",
+        "map": "nor_dx",
+        "md5": "0469115c5909ac07a1ef4132b84a6c8e",
+        "source": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/grass_ground/grass_ground_nor_dx_2k.png",
+        "file": "environment_production/LicensedMaterials/PolyHaven/grass_ground/grass_ground_nor_dx_2k.png",
+        "license": "CC0",
+        "asset": "grass_ground"
+      },
+      {
+        "asset_page": "https://polyhaven.com/a/grass_ground",
+        "map": "Rough",
+        "md5": "0685285b42a7110ce0876f676a2f79c2",
+        "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/grass_ground/grass_ground_rough_2k.jpg",
+        "file": "environment_production/LicensedMaterials/PolyHaven/grass_ground/grass_ground_rough_2k.jpg",
+        "license": "CC0",
+        "asset": "grass_ground"
+      },
+      {
+        "asset_page": "https://polyhaven.com/a/rock_face_03",
+        "map": "Diffuse",
+        "md5": "657add9e8a8dffaeed19bdfc58078b59",
+        "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/rock_face_03/rock_face_03_diff_2k.jpg",
+        "file": "environment_production/LicensedMaterials/PolyHaven/rock_face_03/rock_face_03_diff_2k.jpg",
+        "license": "CC0",
+        "asset": "rock_face_03"
+      },
+      {
+        "asset_page": "https://polyhaven.com/a/rock_face_03",
+        "map": "nor_dx",
+        "md5": "c1e35f43856f897b993074ff3f592377",
+        "source": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/rock_face_03/rock_face_03_nor_dx_2k.png",
+        "file": "environment_production/LicensedMaterials/PolyHaven/rock_face_03/rock_face_03_nor_dx_2k.png",
+        "license": "CC0",
+        "asset": "rock_face_03"
+      },
+      {
+        "asset_page": "https://polyhaven.com/a/rock_face_03",
+        "map": "Rough",
+        "md5": "8895a8b199487fd6cfeed2fed1fb39b4",
+        "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/rock_face_03/rock_face_03_rough_2k.jpg",
+        "file": "environment_production/LicensedMaterials/PolyHaven/rock_face_03/rock_face_03_rough_2k.jpg",
+        "license": "CC0",
+        "asset": "rock_face_03"
+      }
+    ],
+    "description": "World projected slope-blended grass/rock detail preserving authored color."
+  },
+  "version": "v093",
+  "surface_water_flow": true,
+  "water_clock_parameters": true,
+  "water_detail_change": "Increase authored flowing normal slopes; previous near-flat normal did not produce independently readable movement.",
+  "additional_review_views": [
+    [
+      "HOME_EastPorch_Front",
+      [
+        25.5,
+        3.999999999999999,
+        10.149301147460937
+      ],
+      [
+        33.5,
+        4.0,
+        10.949301147460936
+      ]
+    ],
+    [
+      "HOME_EastPorch_Rear",
+      [
+        47.5,
+        2.0000000000000004,
+        10.149301147460937
+      ],
+      [
+        40.5,
+        4.0,
+        10.949301147460936
+      ]
+    ],
+    [
+      "HOME_EastBalcony_Front",
+      [
+        18.5,
+        18.0,
+        10.276971435546875
+      ],
+      [
+        26.5,
+        18.0,
+        11.076971435546874
+      ]
+    ],
+    [
+      "HOME_EastBalcony_Rear",
+      [
+        40.5,
+        16.0,
+        10.276971435546875
+      ],
+      [
+        33.5,
+        18.0,
+        11.076971435546874
+      ]
+    ],
+    [
+      "HOME_WestPorch_Front",
+      [
+        -40.51478710008874,
+        26.372153372177856,
+        10.546288871765137
+      ],
+      [
+        -48.43562358278616,
+        27.494806218951748,
+        11.346288871765136
+      ]
+    ],
+    [
+      "HOME_WestPorch_Rear",
+      [
+        -62.21444512788061,
+        31.467724142649764,
+        10.546288871765137
+      ],
+      [
+        -55.56437641721384,
+        28.505193781048252,
+        11.346288871765136
+      ]
+    ],
+    [
+      "HOME_WestBalcony_Front",
+      [
+        -34.75073902170749,
+        75.38833151850102,
+        16.144097900390623
+      ],
+      [
+        -42.57631187617184,
+        73.72688350563074,
+        16.944097900390624
+      ]
+    ],
+    [
+      "HOME_WestBalcony_Rear",
+      [
+        -56.68642637470204,
+        72.77574269672387,
+        16.144097900390623
+      ],
+      [
+        -49.42368812382816,
+        72.27311649436926,
+        16.944097900390624
+      ]
+    ]
+  ]
+}

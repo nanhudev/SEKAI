@@ -1,0 +1,36 @@
+LIA V0 AUDIT RAW — blender 5.1.2
+fbx: F:\SEKAI\assets_source\characters\lia\01_v0_original\LIA_v0_original.fbx (12787356 bytes)
+
+== SCALE ==
+  bbox_min_m         [-0.26703, -0.12498, -0.0]
+  bbox_max_m         [0.35791, 0.2175, 1.12229]
+  size_m             [0.62494, 0.34248, 1.12229]
+  height_Z_m         1.12229
+  width_X_m          0.62494
+  depth_Y_m          0.34248
+  feet_at_z          -0.0
+  note_units         Blender m; 1 unit = 1 m assumed
+
+== OBJECTS ==
+  Mesh_0                         MESH      parent=None                   scale=[1.0, 1.0, 1.0] dim=[0.624939, 1.122286, 0.342476]
+
+== GEOMETRY ==
+  Mesh_0
+     verts=249786 tris=499748 faces=499748 quads=0 ngons=0 degen=0
+     nonmanifold=0 boundary=0 wire=0 noncontig=0 looseV=0 dupV=0 dupF=0
+     area=1.417651 m2  smooth_faces=499748/499748 custom_normals=True
+
+  TOTAL tris = 499748  verts = 249786  meshes = 1
+
+== MATERIALS ==
+
+  images:
+
+== RIG ==
+  NO ARMATURE
+
+== WEIGHTS ==
+
+== SHAPE KEYS ==
+
+== AABB OVERLAPS (proximity, >1cm on all axes) ==

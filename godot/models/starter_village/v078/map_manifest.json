@@ -1,0 +1,83 @@
+{
+  "version": "v078",
+  "route": [
+    [
+      -58,
+      1.9,
+      99
+    ],
+    [
+      -56,
+      2.1,
+      77
+    ],
+    [
+      -48,
+      2.5,
+      58
+    ],
+    [
+      -46,
+      3.0,
+      45
+    ],
+    [
+      -18,
+      3.0,
+      42
+    ],
+    [
+      0,
+      4.7,
+      23
+    ],
+    [
+      18,
+      7.3,
+      6
+    ],
+    [
+      19,
+      8.2,
+      0
+    ],
+    [
+      20,
+      8.2,
+      -16
+    ],
+    [
+      20,
+      8.2,
+      -26
+    ],
+    [
+      18,
+      11.6,
+      -40
+    ],
+    [
+      30,
+      14.0,
+      -59
+    ],
+    [
+      46,
+      16.2,
+      -80
+    ],
+    [
+      57,
+      17.0,
+      -101
+    ]
+  ],
+  "source": "authored Blender checkpoint",
+  "axis_mapping": "Godot=(Blender.x,Blender.z,-Blender.y)",
+  "noncollision_assets": [
+    "SM_VIL_Plaza_Planting_v044",
+    "SM_VIL_TreeRoot_Grounding_v061",
+    "SM_VIL_Route_Planting_v072"
+  ],
+  "materials": "baked palette; UE shader graph is not transferred"
+}

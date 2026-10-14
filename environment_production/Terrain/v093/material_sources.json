@@ -1,0 +1,56 @@
+[
+  {
+    "asset_page": "https://polyhaven.com/a/grass_ground",
+    "map": "Diffuse",
+    "md5": "fd97f2402677e6686b2d9159fc3a4256",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/grass_ground/grass_ground_diff_2k.jpg",
+    "file": "E:\\SEKAI_Environment_Runtime\\LicensedMaterials\\PolyHaven\\grass_ground\\grass_ground_diff_2k.jpg",
+    "license": "CC0",
+    "asset": "grass_ground"
+  },
+  {
+    "asset_page": "https://polyhaven.com/a/grass_ground",
+    "map": "nor_dx",
+    "md5": "0469115c5909ac07a1ef4132b84a6c8e",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/grass_ground/grass_ground_nor_dx_2k.png",
+    "file": "E:\\SEKAI_Environment_Runtime\\LicensedMaterials\\PolyHaven\\grass_ground\\grass_ground_nor_dx_2k.png",
+    "license": "CC0",
+    "asset": "grass_ground"
+  },
+  {
+    "asset_page": "https://polyhaven.com/a/grass_ground",
+    "map": "Rough",
+    "md5": "0685285b42a7110ce0876f676a2f79c2",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/grass_ground/grass_ground_rough_2k.jpg",
+    "file": "E:\\SEKAI_Environment_Runtime\\LicensedMaterials\\PolyHaven\\grass_ground\\grass_ground_rough_2k.jpg",
+    "license": "CC0",
+    "asset": "grass_ground"
+  },
+  {
+    "asset_page": "https://polyhaven.com/a/rock_face_03",
+    "map": "Diffuse",
+    "md5": "657add9e8a8dffaeed19bdfc58078b59",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/rock_face_03/rock_face_03_diff_2k.jpg",
+    "file": "E:\\SEKAI_Environment_Runtime\\LicensedMaterials\\PolyHaven\\rock_face_03\\rock_face_03_diff_2k.jpg",
+    "license": "CC0",
+    "asset": "rock_face_03"
+  },
+  {
+    "asset_page": "https://polyhaven.com/a/rock_face_03",
+    "map": "nor_dx",
+    "md5": "c1e35f43856f897b993074ff3f592377",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/rock_face_03/rock_face_03_nor_dx_2k.png",
+    "file": "E:\\SEKAI_Environment_Runtime\\LicensedMaterials\\PolyHaven\\rock_face_03\\rock_face_03_nor_dx_2k.png",
+    "license": "CC0",
+    "asset": "rock_face_03"
+  },
+  {
+    "asset_page": "https://polyhaven.com/a/rock_face_03",
+    "map": "Rough",
+    "md5": "8895a8b199487fd6cfeed2fed1fb39b4",
+    "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/rock_face_03/rock_face_03_rough_2k.jpg",
+    "file": "E:\\SEKAI_Environment_Runtime\\LicensedMaterials\\PolyHaven\\rock_face_03\\rock_face_03_rough_2k.jpg",
+    "license": "CC0",
+    "asset": "rock_face_03"
+  }
+]

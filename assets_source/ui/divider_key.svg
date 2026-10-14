@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SEKAI · divider_key
+     64px 金色渐变短线。**只允许出现在 Logo 下，全片一条。**
+     裁決：identity
+     归属：UI 自用
+     本文件由 ui_web/tools/emit_svg.mjs 从 ui_web/svg/library.js 生成。
+     不要直接改这里 —— 改库，然后重新运行 emitter。
+-->
+<svg width="64" height="1" viewBox="0 0 64 1"
+    xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" aria-hidden="true">
+  <defs>
+    <!-- 同上：bbox 高为 0，必须 userSpaceOnUse，否则整条不画 -->
+    <linearGradient id="skdv" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="64" y2="0">
+      <stop offset="0%" stop-color="#C9A65C" stop-opacity="0"/>
+      <stop offset="50%" stop-color="#C9A65C" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#C9A65C" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <path pathLength="1" d="M 0 0.5 H 64" stroke="url(#skdv)" stroke-width="1"/>
+</svg>

@@ -1,0 +1,857 @@
+[
+  {
+    "label": "HERO_Church_Nave",
+    "kind": "admin",
+    "position_m": [
+      99.0,
+      217.0
+    ],
+    "scale": 1.22
+  },
+  {
+    "label": "HERO_MainInn",
+    "kind": "admin",
+    "position_m": [
+      32.0,
+      83.0
+    ],
+    "scale": 0.911
+  },
+  {
+    "label": "HERO_Blacksmith",
+    "kind": "shed",
+    "position_m": [
+      -63.0,
+      65.0
+    ],
+    "scale": 1.097
+  },
+  {
+    "label": "HERO_DockWarehouse",
+    "kind": "wide_shed",
+    "position_m": [
+      -106.0,
+      -123.0
+    ],
+    "scale": 0.852
+  },
+  {
+    "label": "HERO_NorthGate_Left",
+    "kind": "tower",
+    "position_m": [
+      -9.0,
+      283.0
+    ],
+    "scale": 0.81
+  },
+  {
+    "label": "HERO_NorthGate_Right",
+    "kind": "tower",
+    "position_m": [
+      9.0,
+      283.0
+    ],
+    "scale": 0.81
+  },
+  {
+    "label": "MarketStall_01",
+    "kind": "woodroof",
+    "position_m": [
+      12.0,
+      100.0
+    ],
+    "scale": 0.618
+  },
+  {
+    "label": "MarketStall_02",
+    "kind": "woodroof",
+    "position_m": [
+      8.5,
+      108.5
+    ],
+    "scale": 0.618
+  },
+  {
+    "label": "MarketStall_03",
+    "kind": "woodroof",
+    "position_m": [
+      0.0,
+      112.0
+    ],
+    "scale": 0.618
+  },
+  {
+    "label": "MarketStall_04",
+    "kind": "woodroof",
+    "position_m": [
+      -8.5,
+      108.5
+    ],
+    "scale": 0.618
+  },
+  {
+    "label": "MarketStall_05",
+    "kind": "woodroof",
+    "position_m": [
+      -12.0,
+      100.0
+    ],
+    "scale": 0.618
+  },
+  {
+    "label": "MarketStall_06",
+    "kind": "woodroof",
+    "position_m": [
+      -8.5,
+      91.5
+    ],
+    "scale": 0.618
+  },
+  {
+    "label": "MarketStall_07",
+    "kind": "woodroof",
+    "position_m": [
+      -0.0,
+      88.0
+    ],
+    "scale": 0.618
+  },
+  {
+    "label": "MarketStall_08",
+    "kind": "woodroof",
+    "position_m": [
+      8.5,
+      91.5
+    ],
+    "scale": 0.618
+  },
+  {
+    "label": "LowerWestA_House_01",
+    "kind": "shed",
+    "position_m": [
+      -48.9,
+      -0.8
+    ],
+    "scale": 0.776
+  },
+  {
+    "label": "LowerWestA_House_02",
+    "kind": "cubby",
+    "position_m": [
+      -51.7,
+      10.9
+    ],
+    "scale": 1.045
+  },
+  {
+    "label": "LowerWestA_House_03",
+    "kind": "pent",
+    "position_m": [
+      -53.5,
+      25.0
+    ],
+    "scale": 0.833
+  },
+  {
+    "label": "LowerWestA_House_04",
+    "kind": "shed",
+    "position_m": [
+      -51.1,
+      36.8
+    ],
+    "scale": 0.834
+  },
+  {
+    "label": "LowerWestA_House_05",
+    "kind": "cubby",
+    "position_m": [
+      -50.3,
+      46.8
+    ],
+    "scale": 0.962
+  },
+  {
+    "label": "LowerWestA_House_06",
+    "kind": "shed",
+    "position_m": [
+      -49.2,
+      59.5
+    ],
+    "scale": 0.905
+  },
+  {
+    "label": "LowerWestA_House_07",
+    "kind": "cubby",
+    "position_m": [
+      -46.4,
+      73.4
+    ],
+    "scale": 0.915
+  },
+  {
+    "label": "LowerWestA_House_08",
+    "kind": "pent",
+    "position_m": [
+      -47.6,
+      84.1
+    ],
+    "scale": 0.74
+  },
+  {
+    "label": "LowerWestB_House_01",
+    "kind": "cubby",
+    "position_m": [
+      -11.9,
+      0.2
+    ],
+    "scale": 0.855
+  },
+  {
+    "label": "LowerWestB_House_02",
+    "kind": "pent",
+    "position_m": [
+      -14.7,
+      11.4
+    ],
+    "scale": 0.74
+  },
+  {
+    "label": "LowerWestB_House_03",
+    "kind": "shed",
+    "position_m": [
+      -16.5,
+      25.0
+    ],
+    "scale": 0.69
+  },
+  {
+    "label": "LowerWestB_House_04",
+    "kind": "cubby",
+    "position_m": [
+      -14.1,
+      36.3
+    ],
+    "scale": 0.915
+  },
+  {
+    "label": "LowerWestB_House_05",
+    "kind": "shed",
+    "position_m": [
+      -13.3,
+      45.8
+    ],
+    "scale": 0.69
+  },
+  {
+    "label": "LowerWestB_House_06",
+    "kind": "cubby",
+    "position_m": [
+      -12.2,
+      58.0
+    ],
+    "scale": 1.015
+  },
+  {
+    "label": "LowerWestB_House_07",
+    "kind": "pent",
+    "position_m": [
+      -9.4,
+      71.4
+    ],
+    "scale": 0.648
+  },
+  {
+    "label": "LowerEastA_House_01",
+    "kind": "pent",
+    "position_m": [
+      12.1,
+      -2.8
+    ],
+    "scale": 0.648
+  },
+  {
+    "label": "LowerEastA_House_02",
+    "kind": "shed",
+    "position_m": [
+      11.1,
+      8.4
+    ],
+    "scale": 0.905
+  },
+  {
+    "label": "LowerEastA_House_03",
+    "kind": "cubby",
+    "position_m": [
+      11.1,
+      22.0
+    ],
+    "scale": 0.962
+  },
+  {
+    "label": "LowerEastA_House_04",
+    "kind": "pent",
+    "position_m": [
+      9.9,
+      33.3
+    ],
+    "scale": 0.648
+  },
+  {
+    "label": "LowerEastA_House_05",
+    "kind": "shed",
+    "position_m": [
+      12.5,
+      42.8
+    ],
+    "scale": 0.776
+  },
+  {
+    "label": "LowerEastA_House_06",
+    "kind": "cubby",
+    "position_m": [
+      15.4,
+      55.0
+    ],
+    "scale": 1.122
+  },
+  {
+    "label": "LowerEastA_House_07",
+    "kind": "shed",
+    "position_m": [
+      14.6,
+      68.4
+    ],
+    "scale": 0.776
+  },
+  {
+    "label": "LowerEastB_House_01",
+    "kind": "shed",
+    "position_m": [
+      53.1,
+      0.2
+    ],
+    "scale": 0.776
+  },
+  {
+    "label": "LowerEastB_House_02",
+    "kind": "cubby",
+    "position_m": [
+      52.1,
+      11.9
+    ],
+    "scale": 1.045
+  },
+  {
+    "label": "LowerEastB_House_03",
+    "kind": "pent",
+    "position_m": [
+      52.1,
+      26.0
+    ],
+    "scale": 0.833
+  },
+  {
+    "label": "LowerEastB_House_04",
+    "kind": "shed",
+    "position_m": [
+      50.9,
+      37.8
+    ],
+    "scale": 0.834
+  },
+  {
+    "label": "LowerEastB_House_05",
+    "kind": "cubby",
+    "position_m": [
+      53.5,
+      47.8
+    ],
+    "scale": 0.962
+  },
+  {
+    "label": "LowerEastB_House_06",
+    "kind": "shed",
+    "position_m": [
+      56.4,
+      60.5
+    ],
+    "scale": 0.905
+  },
+  {
+    "label": "LowerEastB_House_07",
+    "kind": "cubby",
+    "position_m": [
+      55.6,
+      74.4
+    ],
+    "scale": 0.915
+  },
+  {
+    "label": "MarketWest_House_01",
+    "kind": "shed",
+    "position_m": [
+      -24.9,
+      77.2
+    ],
+    "scale": 0.776
+  },
+  {
+    "label": "MarketWest_House_02",
+    "kind": "cubby",
+    "position_m": [
+      -27.7,
+      89.9
+    ],
+    "scale": 1.122
+  },
+  {
+    "label": "MarketWest_House_03",
+    "kind": "pent",
+    "position_m": [
+      -29.5,
+      105.0
+    ],
+    "scale": 0.932
+  },
+  {
+    "label": "MarketWest_House_04",
+    "kind": "shed",
+    "position_m": [
+      -27.1,
+      117.8
+    ],
+    "scale": 0.905
+  },
+  {
+    "label": "MarketWest_House_05",
+    "kind": "cubby",
+    "position_m": [
+      -26.3,
+      128.8
+    ],
+    "scale": 0.962
+  },
+  {
+    "label": "MarketEast_House_01",
+    "kind": "cubby",
+    "position_m": [
+      25.1,
+      77.2
+    ],
+    "scale": 0.962
+  },
+  {
+    "label": "MarketEast_House_02",
+    "kind": "shed",
+    "position_m": [
+      24.1,
+      88.9
+    ],
+    "scale": 0.905
+  },
+  {
+    "label": "MarketEast_House_03",
+    "kind": "cubby",
+    "position_m": [
+      24.1,
+      103.0
+    ],
+    "scale": 0.962
+  },
+  {
+    "label": "MarketEast_House_04",
+    "kind": "pent",
+    "position_m": [
+      22.9,
+      114.8
+    ],
+    "scale": 0.74
+  },
+  {
+    "label": "MarketEast_House_05",
+    "kind": "shed",
+    "position_m": [
+      25.5,
+      124.8
+    ],
+    "scale": 0.776
+  },
+  {
+    "label": "UpperWest_House_01",
+    "kind": "cubby",
+    "position_m": [
+      -19.1,
+      188.6
+    ],
+    "scale": 0.962
+  },
+  {
+    "label": "UpperWest_House_02",
+    "kind": "pent",
+    "position_m": [
+      -22.0,
+      198.2
+    ],
+    "scale": 0.925
+  },
+  {
+    "label": "UpperWest_House_03",
+    "kind": "shed",
+    "position_m": [
+      -24.3,
+      210.8
+    ],
+    "scale": 0.776
+  },
+  {
+    "label": "UpperWest_House_04",
+    "kind": "cubby",
+    "position_m": [
+      -22.5,
+      223.9
+    ],
+    "scale": 1.122
+  },
+  {
+    "label": "UpperWest_House_05",
+    "kind": "shed",
+    "position_m": [
+      -22.1,
+      233.9
+    ],
+    "scale": 0.776
+  },
+  {
+    "label": "UpperWest_House_06",
+    "kind": "cubby",
+    "position_m": [
+      -21.0,
+      244.1
+    ],
+    "scale": 1.122
+  },
+  {
+    "label": "UpperWest_House_07",
+    "kind": "pent",
+    "position_m": [
+      -17.6,
+      257.5
+    ],
+    "scale": 0.833
+  },
+  {
+    "label": "UpperEast_House_01",
+    "kind": "shed",
+    "position_m": [
+      20.9,
+      177.6
+    ],
+    "scale": 0.776
+  },
+  {
+    "label": "UpperEast_House_02",
+    "kind": "cubby",
+    "position_m": [
+      19.8,
+      187.7
+    ],
+    "scale": 1.122
+  },
+  {
+    "label": "UpperEast_House_03",
+    "kind": "pent",
+    "position_m": [
+      19.3,
+      200.8
+    ],
+    "scale": 0.932
+  },
+  {
+    "label": "UpperEast_House_04",
+    "kind": "shed",
+    "position_m": [
+      17.5,
+      214.4
+    ],
+    "scale": 0.905
+  },
+  {
+    "label": "UpperEast_House_05",
+    "kind": "cubby",
+    "position_m": [
+      19.7,
+      224.9
+    ],
+    "scale": 0.962
+  },
+  {
+    "label": "UpperEast_House_06",
+    "kind": "shed",
+    "position_m": [
+      22.6,
+      235.6
+    ],
+    "scale": 0.905
+  },
+  {
+    "label": "Riverside_House_01",
+    "kind": "pent",
+    "position_m": [
+      -172.1,
+      -150.4
+    ],
+    "scale": 0.648
+  },
+  {
+    "label": "Riverside_House_02",
+    "kind": "shed",
+    "position_m": [
+      -173.2,
+      -140.3
+    ],
+    "scale": 0.905
+  },
+  {
+    "label": "Riverside_House_03",
+    "kind": "cubby",
+    "position_m": [
+      -173.7,
+      -127.2
+    ],
+    "scale": 0.962
+  },
+  {
+    "label": "Riverside_House_04",
+    "kind": "pent",
+    "position_m": [
+      -175.5,
+      -113.6
+    ],
+    "scale": 0.648
+  },
+  {
+    "label": "Riverside_House_05",
+    "kind": "shed",
+    "position_m": [
+      -173.3,
+      -103.1
+    ],
+    "scale": 0.776
+  },
+  {
+    "label": "Riverside_House_06",
+    "kind": "cubby",
+    "position_m": [
+      -170.4,
+      -92.4
+    ],
+    "scale": 1.122
+  },
+  {
+    "label": "Riverside_House_07",
+    "kind": "shed",
+    "position_m": [
+      -170.6,
+      -78.5
+    ],
+    "scale": 0.776
+  },
+  {
+    "label": "Riverside_House_08",
+    "kind": "cubby",
+    "position_m": [
+      -169.5,
+      -65.8
+    ],
+    "scale": 1.045
+  },
+  {
+    "label": "Riverside_House_09",
+    "kind": "pent",
+    "position_m": [
+      -169.8,
+      -55.8
+    ],
+    "scale": 0.833
+  },
+  {
+    "label": "CornerBuilding_01",
+    "kind": "admin",
+    "position_m": [
+      -72.0,
+      96.0
+    ],
+    "scale": 0.698
+  },
+  {
+    "label": "CornerBuilding_02",
+    "kind": "admin",
+    "position_m": [
+      67.0,
+      80.0
+    ],
+    "scale": 0.651
+  },
+  {
+    "label": "CornerBuilding_03",
+    "kind": "admin",
+    "position_m": [
+      -70.0,
+      215.0
+    ],
+    "scale": 0.651
+  },
+  {
+    "label": "CornerBuilding_04",
+    "kind": "admin",
+    "position_m": [
+      66.0,
+      222.0
+    ],
+    "scale": 0.698
+  },
+  {
+    "label": "CornerBuilding_05",
+    "kind": "admin",
+    "position_m": [
+      -133.0,
+      -155.0
+    ],
+    "scale": 0.837
+  },
+  {
+    "label": "CornerBuilding_06",
+    "kind": "admin",
+    "position_m": [
+      115.0,
+      -132.0
+    ],
+    "scale": 0.744
+  },
+  {
+    "label": "CornerBuilding_07",
+    "kind": "admin",
+    "position_m": [
+      -94.0,
+      22.0
+    ],
+    "scale": 0.651
+  },
+  {
+    "label": "CornerBuilding_08",
+    "kind": "admin",
+    "position_m": [
+      82.0,
+      38.0
+    ],
+    "scale": 0.698
+  },
+  {
+    "label": "InfillBuilding_01",
+    "kind": "cubby",
+    "position_m": [
+      -17.0,
+      -46.0
+    ],
+    "scale": 1.069
+  },
+  {
+    "label": "InfillBuilding_02",
+    "kind": "pent",
+    "position_m": [
+      17.0,
+      -46.0
+    ],
+    "scale": 0.833
+  },
+  {
+    "label": "InfillBuilding_03",
+    "kind": "shed",
+    "position_m": [
+      -19.0,
+      -24.0
+    ],
+    "scale": 0.862
+  },
+  {
+    "label": "InfillBuilding_04",
+    "kind": "cubby",
+    "position_m": [
+      19.0,
+      -24.0
+    ],
+    "scale": 1.069
+  },
+  {
+    "label": "InfillBuilding_05",
+    "kind": "pent",
+    "position_m": [
+      -32.0,
+      26.0
+    ],
+    "scale": 0.74
+  },
+  {
+    "label": "InfillBuilding_06",
+    "kind": "cubby",
+    "position_m": [
+      31.0,
+      32.0
+    ],
+    "scale": 1.045
+  },
+  {
+    "label": "InfillBuilding_07",
+    "kind": "pent",
+    "position_m": [
+      -29.0,
+      -142.0
+    ],
+    "scale": 0.74
+  },
+  {
+    "label": "InfillBuilding_08",
+    "kind": "shed",
+    "position_m": [
+      29.0,
+      -142.0
+    ],
+    "scale": 0.862
+  },
+  {
+    "label": "InfillBuilding_09",
+    "kind": "cubby",
+    "position_m": [
+      -16.0,
+      267.0
+    ],
+    "scale": 1.069
+  },
+  {
+    "label": "InfillBuilding_10",
+    "kind": "cubby",
+    "position_m": [
+      16.0,
+      267.0
+    ],
+    "scale": 1.069
+  },
+  {
+    "label": "InfillBuilding_11",
+    "kind": "pent",
+    "position_m": [
+      53.0,
+      184.0
+    ],
+    "scale": 0.833
+  },
+  {
+    "label": "InfillBuilding_12",
+    "kind": "shed",
+    "position_m": [
+      75.0,
+      237.0
+    ],
+    "scale": 0.862
+  }
+]

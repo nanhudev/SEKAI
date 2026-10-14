@@ -1,0 +1,45 @@
+{
+  "houses": [
+    {
+      "house": "east_porch",
+      "centre_m": [
+        37,
+        4,
+        8.249301147460937
+      ],
+      "rear_posts_reach_sampled_ground": true,
+      "courtyard_front_open": true
+    },
+    {
+      "house": "east_balcony",
+      "centre_m": [
+        30,
+        18,
+        8.376971435546874
+      ],
+      "rear_posts_reach_sampled_ground": true,
+      "courtyard_front_open": true
+    },
+    {
+      "house": "west_porch",
+      "centre_m": [
+        -52,
+        28,
+        8.646288871765137
+      ],
+      "rear_posts_reach_sampled_ground": true,
+      "courtyard_front_open": true
+    },
+    {
+      "house": "west_balcony",
+      "centre_m": [
+        -46,
+        73,
+        14.244097900390624
+      ],
+      "rear_posts_reach_sampled_ground": true,
+      "courtyard_front_open": true
+    }
+  ],
+  "scope": "Source attachment/support, requires native review; not full walking acceptance"
+}

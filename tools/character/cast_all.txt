@@ -1,0 +1,24 @@
+# SEKAI / C-PH -- cast list for character_asset_test.gd --cast-file
+# <name>|<res://path>   order = bake manifest order (women then men)
+# regenerate: tools/character/make_cast_list.py
+lpg_adventurer_w|res://assets/characters/placeholders/lpg_adventurer_w.glb
+lpg_casual_w|res://assets/characters/placeholders/lpg_casual_w.glb
+lpg_formal_w|res://assets/characters/placeholders/lpg_formal_w.glb
+lpg_medieval_w|res://assets/characters/placeholders/lpg_medieval_w.glb
+lpg_punk_w|res://assets/characters/placeholders/lpg_punk_w.glb
+lpg_scifi_w|res://assets/characters/placeholders/lpg_scifi_w.glb
+lpg_soldier_w|res://assets/characters/placeholders/lpg_soldier_w.glb
+lpg_suit_w|res://assets/characters/placeholders/lpg_suit_w.glb
+lpg_witch_w|res://assets/characters/placeholders/lpg_witch_w.glb
+lpg_worker_w|res://assets/characters/placeholders/lpg_worker_w.glb
+lpg_adventurer_m|res://assets/characters/placeholders/lpg_adventurer_m.glb
+lpg_beach_m|res://assets/characters/placeholders/lpg_beach_m.glb
+lpg_casual_m|res://assets/characters/placeholders/lpg_casual_m.glb
+lpg_casual2_m|res://assets/characters/placeholders/lpg_casual2_m.glb
+lpg_farmer_m|res://assets/characters/placeholders/lpg_farmer_m.glb
+lpg_king_m|res://assets/characters/placeholders/lpg_king_m.glb
+lpg_punk_m|res://assets/characters/placeholders/lpg_punk_m.glb
+lpg_spacesuit_m|res://assets/characters/placeholders/lpg_spacesuit_m.glb
+lpg_suit_m|res://assets/characters/placeholders/lpg_suit_m.glb
+lpg_swat_m|res://assets/characters/placeholders/lpg_swat_m.glb
+lpg_worker_m|res://assets/characters/placeholders/lpg_worker_m.glb

@@ -1,0 +1,205 @@
+{
+ "systems": [
+  {
+   "name": "NS_SW_Core_EdgeTrail",
+   "path": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_EdgeTrail.NS_SW_Core_EdgeTrail",
+   "emitters": [
+    {
+     "name": "E_Trail",
+     "stacks": {},
+     "error": "GetEmitterTopology: <MagicMock name='unreal.ToolsetRegistry.execute_tool().get_editor_property()' id='2542624412944'>"
+    }
+   ],
+   "issues": [],
+   "load": true,
+   "compile_state": null,
+   "compile_error": "GetSystemCompileState: <MagicMock name='unreal.ToolsetRegistry.execute_tool().get_editor_property()' id='2542624412944'>",
+   "stack_issues_raw": null
+  },
+  {
+   "name": "NS_SW_Core_Glint",
+   "path": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_Glint.NS_SW_Core_Glint",
+   "emitters": [
+    {
+     "name": "E_Glint",
+     "stacks": {},
+     "error": "GetEmitterTopology: <MagicMock name='unreal.ToolsetRegistry.execute_tool().get_editor_property()' id='2542624412944'>"
+    }
+   ],
+   "issues": [],
+   "load": true,
+   "compile_state": null,
+   "compile_error": "GetSystemCompileState: <MagicMock name='unreal.ToolsetRegistry.execute_tool().get_editor_property()' id='2542624412944'>",
+   "stack_issues_raw": null
+  },
+  {
+   "name": "NS_SW_Core_AirSlice",
+   "path": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_AirSlice.NS_SW_Core_AirSlice",
+   "emitters": [
+    {
+     "name": "E_Slice",
+     "stacks": {},
+     "error": "GetEmitterTopology: <MagicMock name='unreal.ToolsetRegistry.execute_tool().get_editor_property()' id='2542624412944'>"
+    }
+   ],
+   "issues": [],
+   "load": true,
+   "compile_state": null,
+   "compile_error": "GetSystemCompileState: <MagicMock name='unreal.ToolsetRegistry.execute_tool().get_editor_property()' id='2542624412944'>",
+   "stack_issues_raw": null
+  },
+  {
+   "name": "NS_SW_Core_Wave",
+   "path": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_Wave.NS_SW_Core_Wave",
+   "emitters": [
+    {
+     "name": "E_Wave",
+     "stacks": {},
+     "error": "GetEmitterTopology: <MagicMock name='unreal.ToolsetRegistry.execute_tool().get_editor_property()' id='2542624412944'>"
+    },
+    {
+     "name": "E_MistWake",
+     "stacks": {},
+     "error": "GetEmitterTopology: <MagicMock name='unreal.ToolsetRegistry.execute_tool().get_editor_property()' id='2542624412944'>"
+    }
+   ],
+   "issues": [],
+   "load": true,
+   "compile_state": null,
+   "compile_error": "GetSystemCompileState: <MagicMock name='unreal.ToolsetRegistry.execute_tool().get_editor_property()' id='2542624412944'>",
+   "stack_issues_raw": null
+  },
+  {
+   "name": "NS_SW_Core_SpatialScar",
+   "path": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_SpatialScar.NS_SW_Core_SpatialScar",
+   "emitters": [
+    {
+     "name": "E_Scar",
+     "stacks": {},
+     "error": "GetEmitterTopology: <MagicMock name='unreal.ToolsetRegistry.execute_tool().get_editor_property()' id='2542624412944'>"
+    },
+    {
+     "name": "E_ScarMist",
+     "stacks": {},
+     "error": "GetEmitterTopology: <MagicMock name='unreal.ToolsetRegistry.execute_tool().get_editor_property()' id='2542624412944'>"
+    }
+   ],
+   "issues": [],
+   "load": true,
+   "compile_state": null,
+   "compile_error": "GetSystemCompileState: <MagicMock name='unreal.ToolsetRegistry.execute_tool().get_editor_property()' id='2542624412944'>",
+   "stack_issues_raw": null
+  },
+  {
+   "name": "NS_SW_Core_MajorArc",
+   "path": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_MajorArc.NS_SW_Core_MajorArc",
+   "emitters": [
+    {
+     "name": "E_Arc",
+     "stacks": {},
+     "error": "GetEmitterTopology: <MagicMock name='unreal.ToolsetRegistry.execute_tool().get_editor_property()' id='2542624412944'>"
+    },
+    {
+     "name": "E_ArcMist",
+     "stacks": {},
+     "error": "GetEmitterTopology: <MagicMock name='unreal.ToolsetRegistry.execute_tool().get_editor_property()' id='2542624412944'>"
+    }
+   ],
+   "issues": [],
+   "load": true,
+   "compile_state": null,
+   "compile_error": "GetSystemCompileState: <MagicMock name='unreal.ToolsetRegistry.execute_tool().get_editor_property()' id='2542624412944'>",
+   "stack_issues_raw": null
+  },
+  {
+   "name": "NS_SW_Core_MistWake",
+   "path": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_MistWake.NS_SW_Core_MistWake",
+   "emitters": [
+    {
+     "name": "E_Wisp",
+     "stacks": {},
+     "error": "GetEmitterTopology: <MagicMock name='unreal.ToolsetRegistry.execute_tool().get_editor_property()' id='2542624412944'>"
+    }
+   ],
+   "issues": [],
+   "load": true,
+   "compile_state": null,
+   "compile_error": "GetSystemCompileState: <MagicMock name='unreal.ToolsetRegistry.execute_tool().get_editor_property()' id='2542624412944'>",
+   "stack_issues_raw": null
+  },
+  {
+   "name": "NS_SW_Core_PurpleMotes",
+   "path": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_PurpleMotes.NS_SW_Core_PurpleMotes",
+   "emitters": [
+    {
+     "name": "E_Motes",
+     "stacks": {},
+     "error": "GetEmitterTopology: <MagicMock name='unreal.ToolsetRegistry.execute_tool().get_editor_property()' id='2542624412944'>"
+    }
+   ],
+   "issues": [],
+   "load": true,
+   "compile_state": null,
+   "compile_error": "GetSystemCompileState: <MagicMock name='unreal.ToolsetRegistry.execute_tool().get_editor_property()' id='2542624412944'>",
+   "stack_issues_raw": null
+  },
+  {
+   "name": "NS_SW_Core_Hit",
+   "path": "/Game/SEKAI/VFX/Sword/Systems/NS_SW_Core_Hit.NS_SW_Core_Hit",
+   "emitters": [
+    {
+     "name": "E_Hit",
+     "stacks": {},
+     "error": "GetEmitterTopology: <MagicMock name='unreal.ToolsetRegistry.execute_tool().get_editor_property()' id='2542624412944'>"
+    }
+   ],
+   "issues": [],
+   "load": true,
+   "compile_state": null,
+   "compile_error": "GetSystemCompileState: <MagicMock name='unreal.ToolsetRegistry.execute_tool().get_editor_property()' id='2542624412944'>",
+   "stack_issues_raw": null
+  }
+ ],
+ "errors": [
+  "NS_SW_Core_EdgeTrail: GetSystemCompileState: GetSystemCompileState: <MagicMock name='unreal.ToolsetRegistry.execute_tool().get_editor_property()' id='2542624412944'>",
+  "NS_SW_Core_EdgeTrail: GetStackIssues: GetStackIssues: <MagicMock name='unreal.ToolsetRegistry.execute_tool().get_editor_property()' id='2542624412944'>",
+  "NS_SW_Core_EdgeTrail/E_Trail: GetEmitterTopology: <MagicMock name='unreal.ToolsetRegistry.execute_tool().get_editor_property()' id='2542624412944'>",
+  "NS_SW_Core_Glint: GetSystemCompileState: GetSystemCompileState: <MagicMock name='unreal.ToolsetRegistry.execute_tool().get_editor_property()' id='2542624412944'>",
+  "NS_SW_Core_Glint: GetStackIssues: GetStackIssues: <MagicMock name='unreal.ToolsetRegistry.execute_tool().get_editor_property()' id='2542624412944'>",
+  "NS_SW_Core_Glint/E_Glint: GetEmitterTopology: <MagicMock name='unreal.ToolsetRegistry.execute_tool().get_editor_property()' id='2542624412944'>",
+  "NS_SW_Core_AirSlice: GetSystemCompileState: GetSystemCompileState: <MagicMock name='unreal.ToolsetRegistry.execute_tool().get_editor_property()' id='2542624412944'>",
+  "NS_SW_Core_AirSlice: GetStackIssues: GetStackIssues: <MagicMock name='unreal.ToolsetRegistry.execute_tool().get_editor_property()' id='2542624412944'>",
+  "NS_SW_Core_AirSlice/E_Slice: GetEmitterTopology: <MagicMock name='unreal.ToolsetRegistry.execute_tool().get_editor_property()' id='2542624412944'>",
+  "NS_SW_Core_Wave: GetSystemCompileState: GetSystemCompileState: <MagicMock name='unreal.ToolsetRegistry.execute_tool().get_editor_property()' id='2542624412944'>",
+  "NS_SW_Core_Wave: GetStackIssues: GetStackIssues: <MagicMock name='unreal.ToolsetRegistry.execute_tool().get_editor_property()' id='2542624412944'>",
+  "NS_SW_Core_Wave/E_Wave: GetEmitterTopology: <MagicMock name='unreal.ToolsetRegistry.execute_tool().get_editor_property()' id='2542624412944'>",
+  "NS_SW_Core_Wave/E_MistWake: GetEmitterTopology: <MagicMock name='unreal.ToolsetRegistry.execute_tool().get_editor_property()' id='2542624412944'>",
+  "NS_SW_Core_SpatialScar: GetSystemCompileState: GetSystemCompileState: <MagicMock name='unreal.ToolsetRegistry.execute_tool().get_editor_property()' id='2542624412944'>",
+  "NS_SW_Core_SpatialScar: GetStackIssues: GetStackIssues: <MagicMock name='unreal.ToolsetRegistry.execute_tool().get_editor_property()' id='2542624412944'>",
+  "NS_SW_Core_SpatialScar/E_Scar: GetEmitterTopology: <MagicMock name='unreal.ToolsetRegistry.execute_tool().get_editor_property()' id='2542624412944'>",
+  "NS_SW_Core_SpatialScar/E_ScarMist: GetEmitterTopology: <MagicMock name='unreal.ToolsetRegistry.execute_tool().get_editor_property()' id='2542624412944'>",
+  "NS_SW_Core_MajorArc: GetSystemCompileState: GetSystemCompileState: <MagicMock name='unreal.ToolsetRegistry.execute_tool().get_editor_property()' id='2542624412944'>",
+  "NS_SW_Core_MajorArc: GetStackIssues: GetStackIssues: <MagicMock name='unreal.ToolsetRegistry.execute_tool().get_editor_property()' id='2542624412944'>",
+  "NS_SW_Core_MajorArc/E_Arc: GetEmitterTopology: <MagicMock name='unreal.ToolsetRegistry.execute_tool().get_editor_property()' id='2542624412944'>",
+  "NS_SW_Core_MajorArc/E_ArcMist: GetEmitterTopology: <MagicMock name='unreal.ToolsetRegistry.execute_tool().get_editor_property()' id='2542624412944'>",
+  "NS_SW_Core_MistWake: GetSystemCompileState: GetSystemCompileState: <MagicMock name='unreal.ToolsetRegistry.execute_tool().get_editor_property()' id='2542624412944'>",
+  "NS_SW_Core_MistWake: GetStackIssues: GetStackIssues: <MagicMock name='unreal.ToolsetRegistry.execute_tool().get_editor_property()' id='2542624412944'>",
+  "NS_SW_Core_MistWake/E_Wisp: GetEmitterTopology: <MagicMock name='unreal.ToolsetRegistry.execute_tool().get_editor_property()' id='2542624412944'>",
+  "NS_SW_Core_PurpleMotes: GetSystemCompileState: GetSystemCompileState: <MagicMock name='unreal.ToolsetRegistry.execute_tool().get_editor_property()' id='2542624412944'>",
+  "NS_SW_Core_PurpleMotes: GetStackIssues: GetStackIssues: <MagicMock name='unreal.ToolsetRegistry.execute_tool().get_editor_property()' id='2542624412944'>",
+  "NS_SW_Core_PurpleMotes/E_Motes: GetEmitterTopology: <MagicMock name='unreal.ToolsetRegistry.execute_tool().get_editor_property()' id='2542624412944'>",
+  "NS_SW_Core_Hit: GetSystemCompileState: GetSystemCompileState: <MagicMock name='unreal.ToolsetRegistry.execute_tool().get_editor_property()' id='2542624412944'>",
+  "NS_SW_Core_Hit: GetStackIssues: GetStackIssues: <MagicMock name='unreal.ToolsetRegistry.execute_tool().get_editor_property()' id='2542624412944'>",
+  "NS_SW_Core_Hit/E_Hit: GetEmitterTopology: <MagicMock name='unreal.ToolsetRegistry.execute_tool().get_editor_property()' id='2542624412944'>"
+ ],
+ "summary": {
+  "loaded": 9,
+  "compile_state_read": 0,
+  "emitters_ok": 0,
+  "emitters_total": 12,
+  "systems_with_issues": 0,
+  "total_issues": 0,
+  "issues_with_fixes": 0,
+  "errors": 30
+ }
+}

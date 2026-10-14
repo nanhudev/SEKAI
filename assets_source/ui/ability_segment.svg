@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SEKAI · ability_segment
+     能力轮盘扇区的一段扇环（不是实心块）。from/to 是角度，0 = 正右、逆时针为正。
+     裁決：state
+     归属：COMBAT 提供状态，UI 负责表现
+     本文件由 ui_web/tools/emit_svg.mjs 从 ui_web/svg/library.js 生成。
+     不要直接改这里 —— 改库，然后重新运行 emitter。
+-->
+<svg width="268" height="268" viewBox="0 0 268 268"
+    xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="none" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke" stroke-width="1">
+  <path pathLength="1" d="M 264.00 134.00 A 130 130 0 0 0 89.54 11.84 L 116.21 85.14 A 52 52 0 0 1 186.00 134.00 Z" stroke="#C9A65C"/>
+</svg>

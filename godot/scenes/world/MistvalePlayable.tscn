@@ -1,0 +1,171 @@
+[gd_scene load_steps=20 format=3]
+
+; MISTVALE PLAYABLE - the imported UE5 town as the game's main world.
+;
+; The art is res://models/mistvale_ue/mistvale_rebuild.glb, exported from the
+; saved UE5 level and verified back against that level's own per-actor world
+; bounds to 0.1 mm (tools/ue5_import/export_glb.py + tools/probe_mistvale_ue.gd).
+; tools/bake_mistvale_collision.gd bakes the walkable collision once, so this
+; scene builds nothing at run time; the script derives every POI / exit / safe
+; point / narrative anchor from the model's own bounds.
+;
+; THE DIRECTOR STACK IS NOT OPTIONAL, IT IS A CONTRACT. CombatController does
+; `player.get_parent().get_node("CombatScreenFX")` -- get_node, not
+; get_node_or_null -- so a world that mounts Player.tscn without its siblings
+; does not fail loudly at load; it fails at the first combat reset with
+; "Attempt to call function 'reset' in base 'null instance'". The stack below
+; is copied from TrainingGround.tscn, which is the project's working playable
+; scene, rather than re-derived. Anything optional there
+; (MomentOfNoMoonDirector, CombatHUD, IaidoDirector) is optional here too, and
+; is included so the sword behaves the way it behaves everywhere else -- the
+; brief asks for the Training Yard to be usable for combat testing.
+;
+; WHAT IS DELIBERATELY ABSENT: DeveloperPanel and ParryDebugOverlay are
+; developer readouts, and nothing outside developer_panel.gd needs them; they
+; stay out of the playable world (brief §52).
+;
+; LIGHTING: AgX (tonemap_mode 4), the discipline the newest scene uses and the
+; one tools/probe_tonemap.gd confirmed is actually implemented under
+; gl_compatibility. MistvaleRegion.tscn still carries the superseded FILMIC
+; setting with a comment explaining a premise measurement has since disproved;
+; that file is ART's and is left alone.
+;
+; FOG IS RESTRAINED ON PURPOSE (brief §34). These numbers came from
+; MistvaleRegion.tscn, where the fog was tuned for a 600 m procedural valley, and
+; at 0.0014 the imported town was unreadable from the south entry: measured with
+; tools/mistvale_map_shot.gd from the same anchored camera, the 250 m approach
+; put the whole town behind a 30% haze wash and the first thing a player saw was
+; 200 m of empty green with a smear on the horizon. 0.00055 puts that at 13%,
+; which keeps the depth cue the valley wants without hiding the destination the
+; golden route is walking toward. Fog is a lighting setting, not level art, so
+; changing it does not touch the frozen geometry (brief §3).
+;
+; The sun and bounce bases are copied from MistvaleRegion.tscn, where they were
+; derived against renders: a south-east sun at 44 deg, and the north-west fill
+; that keeps the north face of the hill out of pure black with one key light.
+
+[ext_resource type="Script" path="res://scripts/world/mistvale_playable.gd" id="1_world"]
+[ext_resource type="PackedScene" path="res://scenes/player/Player.tscn" id="2_player"]
+[ext_resource type="Script" path="res://scripts/combat/time_effect_manager.gd" id="3_timefx"]
+[ext_resource type="Script" path="res://scripts/combat/combat_screen_fx.gd" id="4_screenfx"]
+[ext_resource type="PackedScene" path="res://scenes/ui/CombatHUD.tscn" id="5_hud"]
+[ext_resource type="Script" path="res://scripts/systems/audio_state_controller.gd" id="6_audio_state"]
+[ext_resource type="Script" path="res://scripts/combat/iaido_director.gd" id="7_iaido"]
+[ext_resource type="Script" path="res://scripts/combat/iaido_target_collector.gd" id="8_iaido_targets"]
+[ext_resource type="Script" path="res://scripts/combat/iaido_tear_3d.gd" id="9_iaido_tear"]
+[ext_resource type="Script" path="res://scripts/combat/iaido_screen_fx.gd" id="10_iaido_fx"]
+[ext_resource type="Script" path="res://scripts/combat/world_pause_manager.gd" id="11_pause"]
+[ext_resource type="Script" path="res://scripts/player/foreground_weapon_layer.gd" id="12_fgweapon"]
+[ext_resource type="Script" path="res://scripts/combat/iaido_glass_layer.gd" id="13_glass"]
+[ext_resource type="Script" path="res://scripts/combat/iaido_audio_timeline.gd" id="14_iaido_audio"]
+[ext_resource type="Script" path="res://scripts/combat/moment_of_no_moon_director.gd" id="15_moon"]
+[ext_resource type="Script" path="res://scripts/audio/combat_audio_director.gd" id="16_audiodir"]
+
+[sub_resource type="ProceduralSkyMaterial" id="SkyMaterial_mistvale"]
+sky_top_color = Color(0.38, 0.54, 0.76, 1)
+sky_horizon_color = Color(0.76, 0.8, 0.82, 1)
+sky_curve = 0.18
+ground_bottom_color = Color(0.42, 0.47, 0.51, 1)
+ground_horizon_color = Color(0.68, 0.72, 0.72, 1)
+sun_angle_max = 1.2
+sun_curve = 0.08
+
+[sub_resource type="Sky" id="Sky_mistvale"]
+sky_material = SubResource("SkyMaterial_mistvale")
+
+[sub_resource type="Environment" id="Environment_mistvale"]
+background_mode = 2
+sky = SubResource("Sky_mistvale")
+ambient_light_source = 3
+ambient_light_sky_contribution = 1.0
+ambient_light_energy = 0.5
+tonemap_mode = 4
+tonemap_white = 1.0
+fog_enabled = true
+fog_light_color = Color(0.74, 0.79, 0.83, 1)
+fog_light_energy = 0.9
+fog_density = 0.00055
+fog_aerial_perspective = 0.3
+fog_sky_affect = 0.25
+
+[node name="MistvalePlayable" type="Node3D"]
+script = ExtResource("1_world")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_mistvale")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.56, 0, -0.84, -0.588, 0.714, -0.392, 0.6, 0.7, 0.4, 0, 0, 0)
+light_energy = 1.2
+light_indirect_energy = 0.4
+shadow_enabled = true
+directional_shadow_max_distance = 260.0
+directional_shadow_fade_start = 0.8
+shadow_bias = 0.08
+shadow_normal_bias = 2.5
+; The terrain is a single 504 x 706 m mesh. Letting it cast would make one
+; heightfield shadow itself and cost a full extra pass over the whole valley,
+; so it is the props and the buildings that shadow. Same call as the greybox
+; region makes in mistvale_terrain.gd.
+
+[node name="Bounce" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.826, 0, 0.563, 0.338, 0.799, 0.496, -0.45, 0.6, -0.66, 0, 0, 0)
+light_energy = 0.4
+light_color = Color(0.66, 0.75, 0.95, 1)
+shadow_enabled = false
+
+[node name="Player" parent="." instance=ExtResource("2_player")]
+
+[node name="CombatHUD" parent="." instance=ExtResource("5_hud")]
+
+[node name="CombatScreenFX" type="CanvasLayer" parent="."]
+layer = 5
+script = ExtResource("4_screenfx")
+
+[node name="TimeEffectManager" type="Node" parent="."]
+script = ExtResource("3_timefx")
+
+[node name="AudioStateController" type="Node" parent="."]
+script = ExtResource("6_audio_state")
+
+[node name="CombatAudioDirector" type="Node" parent="."]
+process_mode = 3
+script = ExtResource("16_audiodir")
+log_cues = false
+
+[node name="WorldPauseManager" type="Node" parent="."]
+process_mode = 3
+script = ExtResource("11_pause")
+
+[node name="ForegroundWeaponLayer" type="CanvasLayer" parent="."]
+process_mode = 3
+layer = 8
+script = ExtResource("12_fgweapon")
+
+[node name="IaidoTargetCollector" type="Node" parent="."]
+script = ExtResource("8_iaido_targets")
+
+[node name="IaidoAudioTimeline" type="Node" parent="."]
+process_mode = 3
+script = ExtResource("14_iaido_audio")
+
+[node name="IaidoGlassLayer" type="CanvasLayer" parent="."]
+process_mode = 3
+layer = 7
+script = ExtResource("13_glass")
+
+[node name="IaidoDirector" type="Node" parent="."]
+process_mode = 3
+script = ExtResource("7_iaido")
+
+[node name="MomentOfNoMoonDirector" type="Node" parent="."]
+script = ExtResource("15_moon")
+
+[node name="IaidoTear3D" type="Node3D" parent="."]
+process_mode = 3
+script = ExtResource("9_iaido_tear")
+
+[node name="IaidoScreenFX" type="CanvasLayer" parent="."]
+process_mode = 3
+layer = 6
+script = ExtResource("10_iaido_fx")

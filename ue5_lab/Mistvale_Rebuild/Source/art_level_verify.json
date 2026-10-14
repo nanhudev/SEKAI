@@ -1,0 +1,12 @@
+{
+  "level": "/Game/Maps/L_Mistvale_Rebuild",
+  "actors": 652,
+  "fab_replacements": 95,
+  "missing": [],
+  "wrong_asset": [],
+  "max_ground_offset_m": [
+    0.43371045608520475,
+    "HERO_Church_Nave"
+  ],
+  "house_count": 81
+}

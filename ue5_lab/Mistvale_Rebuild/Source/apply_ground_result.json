@@ -1,0 +1,9 @@
+{
+  "level": "/Game/Maps/L_Mistvale_Rebuild",
+  "terrain_asset": "/Game/MistvaleArt/Terrain/SM_Mistvale_Terrain_Art.SM_Mistvale_Terrain_Art",
+  "buildings_resettled": 30,
+  "foundations": 87,
+  "max_actor_vertical_adjust_m": 0.023,
+  "max_sampled_footprint_relief_m": 0.821,
+  "actors": 756
+}

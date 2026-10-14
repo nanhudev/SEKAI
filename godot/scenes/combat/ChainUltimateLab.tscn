@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3]
+
+; CHAIN ULTIMATE LAB — the room the 缚星链 I skill is watched in.
+;
+; It MOUNTS the sandbox rather than rebuilding a world, because `CombatController`
+; resolves CombatScreenFX / TimeEffectManager / IaidoDirector from its parent and
+; a Player without them cannot even `_ready()`. `chain_ultimate_lab.gd` retires
+; the arena's props out of it in code and builds this room's stage on top.
+;
+; Run it directly:
+;   godot --path F:/SEKAI/godot res://scenes/combat/ChainUltimateLab.tscn
+; I fires the ultimate, R resets the take.
+
+[ext_resource type="PackedScene" path="res://scenes/combat/CombatSandbox.tscn" id="1"]
+[ext_resource type="Script" path="res://scripts/combat/chain_ultimate_lab.gd" id="2"]
+
+[node name="ChainUltimateLab" type="Node3D"]
+script = ExtResource("2")
+
+[node name="Sandbox" parent="." instance=ExtResource("1")]

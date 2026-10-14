@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="230" viewBox="0 0 400 230">
+  <!-- ===== 1. normal ===== -->
+  <path d="M 60,26 H 332 L 340,34 V 62 L 332,70 H 68 L 60,62 V 34 Z"
+        fill="#16202A" stroke="#2C3A44" stroke-width="1"/>
+  <text x="200" y="49" font-family="Noto Sans SC, Source Han Sans SC, sans-serif"
+        font-size="18" fill="#EDE4D3" text-anchor="middle" dominant-baseline="middle">继续</text>
+  <text x="352" y="49" font-family="Inter, Roboto, sans-serif" font-size="12"
+        fill="#2C3A44" dominant-baseline="middle">NORMAL</text>
+
+  <!-- ===== 2. hover ===== -->
+  <path d="M 60,86 H 332 L 340,94 V 122 L 332,130 H 68 L 60,122 V 94 Z"
+        fill="#C9A65C" fill-opacity="0.10" stroke="#C9A65C" stroke-width="1"/>
+  <text x="200" y="109" font-family="Noto Sans SC, Source Han Sans SC, sans-serif"
+        font-size="18" fill="#EDE4D3" text-anchor="middle" dominant-baseline="middle">设置</text>
+  <text x="352" y="109" font-family="Inter, Roboto, sans-serif" font-size="12"
+        fill="#2C3A44" dominant-baseline="middle">HOVER</text>
+
+  <!-- ===== 3. primary action ===== -->
+  <path d="M 60,146 H 332 L 340,154 V 182 L 332,190 H 68 L 60,182 V 154 Z"
+        fill="#C9A65C" fill-opacity="0.12" stroke="#C9A65C" stroke-width="2"/>
+  <text x="200" y="169" font-family="Noto Sans SC, Source Han Sans SC, sans-serif"
+        font-size="18" fill="#E8CE8C" text-anchor="middle" dominant-baseline="middle">开始游戏</text>
+  <text x="352" y="169" font-family="Inter, Roboto, sans-serif" font-size="12"
+        fill="#2C3A44" dominant-baseline="middle">PRIMARY</text>
+
+  <!-- ===== 4. pressed (1px offset + deeper fill) ===== -->
+  <path d="M 60,207 H 332 L 340,215 V 229 H 60 Z"
+        fill="#C9A65C" fill-opacity="0.18" stroke="#C9A65C" stroke-width="1"/>
+  <text x="200" y="222" font-family="Noto Sans SC, Source Han Sans SC, sans-serif"
+        font-size="18" fill="#E8CE8C" text-anchor="middle" dominant-baseline="middle">退出</text>
+  <text x="352" y="222" font-family="Inter, Roboto, sans-serif" font-size="12"
+        fill="#2C3A44" dominant-baseline="middle">PRESSED</text>
+
+  <!-- spec annotations -->
+  <text x="8" y="14" font-family="Inter, Roboto, sans-serif" font-size="11" fill="#2C3A44"
+        letter-spacing="1">H 44px · PAD 24px · BODY 18 · CHAMFER 8px</text>
+</svg>

@@ -1,0 +1,380 @@
+{
+  "code": "SWD",
+  "rows": [
+    {
+      "id": "ceremony",
+      "archetype": "仪式型",
+      "world_name": "暗金仪式剑",
+      "tier": "concept",
+      "tris": 2956,
+      "parts": [
+        "Blade",
+        "Habaki",
+        "Guard",
+        "Grip",
+        "Wrap",
+        "Pommel"
+      ],
+      "sockets": [
+        "SOC_GRIP",
+        "SOC_MOUTH",
+        "SOC_TIP",
+        "SOC_EDGE_MID",
+        "FX_TRAIL_A",
+        "FX_TRAIL_B"
+      ],
+      "aabb_mm": [
+        84.0,
+        72.0,
+        911.0
+      ],
+      "length_mm": 911.0,
+      "grip_behind_mm": 171.0,
+      "reach_mm": 740.0,
+      "section": "flat_diamond",
+      "guard": "tsuba",
+      "grip_length_mm": 155.0,
+      "wrapped": true,
+      "seams": 0,
+      "channel": false
+    },
+    {
+      "id": "conduit",
+      "archetype": "属性导流型",
+      "world_name": "符文剑",
+      "tier": "concept",
+      "tris": 3772,
+      "parts": [
+        "Blade",
+        "Habaki",
+        "Guard",
+        "Grip",
+        "Wrap",
+        "Pommel",
+        "Blade_Channel"
+      ],
+      "sockets": [
+        "FX_Rune_A",
+        "FX_Rune_B",
+        "SOC_GRIP",
+        "SOC_MOUTH",
+        "SOC_TIP",
+        "SOC_EDGE_MID",
+        "FX_TRAIL_A",
+        "FX_TRAIL_B"
+      ],
+      "aabb_mm": [
+        224.0,
+        28.1,
+        879.0
+      ],
+      "length_mm": 879.0,
+      "grip_behind_mm": 164.0,
+      "reach_mm": 715.0,
+      "section": "flat_diamond",
+      "guard": "cross",
+      "grip_length_mm": 148.0,
+      "wrapped": true,
+      "seams": 0,
+      "channel": true
+    },
+    {
+      "id": "duelist",
+      "archetype": "决斗窄刃型",
+      "world_name": "轻型决斗剑",
+      "tier": "concept",
+      "tris": 1744,
+      "parts": [
+        "Blade",
+        "Habaki",
+        "Guard",
+        "Grip",
+        "Pommel"
+      ],
+      "sockets": [
+        "SOC_GRIP",
+        "SOC_MOUTH",
+        "SOC_TIP",
+        "SOC_EDGE_MID",
+        "FX_TRAIL_A",
+        "FX_TRAIL_B"
+      ],
+      "aabb_mm": [
+        92.0,
+        80.0,
+        914.0
+      ],
+      "length_mm": 914.0,
+      "grip_behind_mm": 134.0,
+      "reach_mm": 780.0,
+      "section": "diamond",
+      "guard": "shell",
+      "grip_length_mm": 118.0,
+      "wrapped": false,
+      "seams": 0,
+      "channel": false
+    },
+    {
+      "id": "paragon",
+      "archetype": "极端流派型",
+      "world_name": "月银长剑",
+      "tier": "concept",
+      "tris": 2356,
+      "parts": [
+        "Blade",
+        "Habaki",
+        "Guard",
+        "Grip",
+        "Pommel"
+      ],
+      "sockets": [
+        "SOC_GRIP",
+        "SOC_MOUTH",
+        "SOC_TIP",
+        "SOC_EDGE_MID",
+        "FX_TRAIL_A",
+        "FX_TRAIL_B"
+      ],
+      "aabb_mm": [
+        116.0,
+        25.0,
+        1011.0
+      ],
+      "length_mm": 1011.0,
+      "grip_behind_mm": 191.0,
+      "reach_mm": 820.0,
+      "section": "flat_diamond",
+      "guard": "cross",
+      "grip_length_mm": 175.0,
+      "wrapped": false,
+      "seams": 0,
+      "channel": false
+    },
+    {
+      "id": "reforged",
+      "archetype": "断刃重铸型",
+      "world_name": "破损遗迹剑",
+      "tier": "concept",
+      "tris": 2912,
+      "parts": [
+        "Blade",
+        "Habaki",
+        "Guard",
+        "Grip",
+        "Wrap",
+        "Pommel"
+      ],
+      "sockets": [
+        "SOC_GRIP",
+        "SOC_MOUTH",
+        "SOC_TIP",
+        "SOC_EDGE_MID",
+        "FX_TRAIL_A",
+        "FX_TRAIL_B"
+      ],
+      "aabb_mm": [
+        196.0,
+        27.5,
+        691.0
+      ],
+      "length_mm": 691.0,
+      "grip_behind_mm": 146.0,
+      "reach_mm": 545.0,
+      "section": "backed",
+      "guard": "cross",
+      "grip_length_mm": 130.0,
+      "wrapped": true,
+      "seams": 0,
+      "channel": false
+    },
+    {
+      "id": "relic",
+      "archetype": "拼合遗物型",
+      "world_name": "古文明结构剑",
+      "tier": "hero",
+      "tris": 3116,
+      "parts": [
+        "Blade",
+        "Habaki",
+        "Guard",
+        "Grip",
+        "Wrap",
+        "Pommel",
+        "Seam_01",
+        "Seam_02"
+      ],
+      "sockets": [
+        "FX_Rune_A",
+        "FX_Rune_B",
+        "FX_Seam",
+        "SOC_GRIP",
+        "SOC_MOUTH",
+        "SOC_TIP",
+        "SOC_EDGE_MID",
+        "FX_TRAIL_A",
+        "FX_TRAIL_B"
+      ],
+      "aabb_mm": [
+        80.0,
+        66.0,
+        901.0
+      ],
+      "length_mm": 901.0,
+      "grip_behind_mm": 166.0,
+      "reach_mm": 735.0,
+      "section": "flat_diamond",
+      "guard": "tsuba",
+      "grip_length_mm": 150.0,
+      "wrapped": true,
+      "seams": 2,
+      "channel": false
+    },
+    {
+      "id": "service",
+      "archetype": "制式军团型",
+      "world_name": "王国制式军剑",
+      "tier": "concept",
+      "tris": 2956,
+      "parts": [
+        "Blade",
+        "Habaki",
+        "Guard",
+        "Grip",
+        "Wrap",
+        "Pommel"
+      ],
+      "sockets": [
+        "SOC_GRIP",
+        "SOC_MOUTH",
+        "SOC_TIP",
+        "SOC_EDGE_MID",
+        "FX_TRAIL_A",
+        "FX_TRAIL_B"
+      ],
+      "aabb_mm": [
+        260.0,
+        27.5,
+        886.0
+      ],
+      "length_mm": 886.0,
+      "grip_behind_mm": 166.0,
+      "reach_mm": 720.0,
+      "section": "flat_diamond",
+      "guard": "cross",
+      "grip_length_mm": 150.0,
+      "wrapped": true,
+      "seams": 0,
+      "channel": false
+    },
+    {
+      "id": "standard",
+      "archetype": "中正通用型",
+      "world_name": "流浪剑士标准剑",
+      "tier": "concept",
+      "tris": 2956,
+      "parts": [
+        "Blade",
+        "Habaki",
+        "Guard",
+        "Grip",
+        "Wrap",
+        "Pommel"
+      ],
+      "sockets": [
+        "SOC_GRIP",
+        "SOC_MOUTH",
+        "SOC_TIP",
+        "SOC_EDGE_MID",
+        "FX_TRAIL_A",
+        "FX_TRAIL_B"
+      ],
+      "aabb_mm": [
+        210.0,
+        28.1,
+        861.0
+      ],
+      "length_mm": 861.0,
+      "grip_behind_mm": 161.0,
+      "reach_mm": 700.0,
+      "section": "flat_diamond",
+      "guard": "cross",
+      "grip_length_mm": 145.0,
+      "wrapped": true,
+      "seams": 0,
+      "channel": false
+    },
+    {
+      "id": "thrust",
+      "archetype": "轻刺型",
+      "world_name": "风属性轻刃",
+      "tier": "concept",
+      "tris": 2268,
+      "parts": [
+        "Blade",
+        "Habaki",
+        "Guard",
+        "Grip",
+        "Pommel"
+      ],
+      "sockets": [
+        "SOC_GRIP",
+        "SOC_MOUTH",
+        "SOC_TIP",
+        "SOC_EDGE_MID",
+        "FX_TRAIL_A",
+        "FX_TRAIL_B"
+      ],
+      "aabb_mm": [
+        156.0,
+        23.5,
+        896.0
+      ],
+      "length_mm": 896.0,
+      "grip_behind_mm": 136.0,
+      "reach_mm": 760.0,
+      "section": "diamond",
+      "guard": "cross",
+      "grip_length_mm": 120.0,
+      "wrapped": false,
+      "seams": 0,
+      "channel": false
+    },
+    {
+      "id": "two_hand",
+      "archetype": "长柄双手型",
+      "world_name": "圣职审判剑",
+      "tier": "concept",
+      "tris": 2956,
+      "parts": [
+        "Blade",
+        "Habaki",
+        "Guard",
+        "Grip",
+        "Wrap",
+        "Pommel"
+      ],
+      "sockets": [
+        "SOC_GRIP",
+        "SOC_MOUTH",
+        "SOC_TIP",
+        "SOC_EDGE_MID",
+        "FX_TRAIL_A",
+        "FX_TRAIL_B"
+      ],
+      "aabb_mm": [
+        330.0,
+        29.0,
+        1141.0
+      ],
+      "length_mm": 1141.0,
+      "grip_behind_mm": 261.0,
+      "reach_mm": 880.0,
+      "section": "flat_diamond",
+      "guard": "cross",
+      "grip_length_mm": 245.0,
+      "wrapped": true,
+      "seams": 0,
+      "channel": false
+    }
+  ]
+}

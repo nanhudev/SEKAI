@@ -1,0 +1,51 @@
+#overlay{align-items:flex-start;padding:0 0 0 clamp(42px,8vw,160px);background:linear-gradient(90deg,rgba(4,13,18,.93),rgba(5,18,24,.72) 31%,rgba(8,18,24,.08) 72%),url('../assets/art/sekai-title-key-art.png') center center/cover no-repeat;overflow:hidden}
+#overlay::before{content:'';position:absolute;inset:-4%;pointer-events:none;background:radial-gradient(ellipse at 63% 42%,transparent 35%,#0b151a65 100%);animation:title-breath 12s ease-in-out infinite alternate}
+#overlay::after{content:'';position:absolute;inset:0;pointer-events:none;background:linear-gradient(0deg,#07121788,transparent 24%);opacity:.8}
+#overlay>*{position:relative;z-index:1}
+#overlay h1{font-size:clamp(70px,8vw,124px);line-height:1;letter-spacing:.2em;color:#f3eddb;text-shadow:0 10px 35px #0009}
+#overlay .sub{margin-top:16px;font-size:12px;letter-spacing:.28em;color:#eee4c8}
+#overlay .menu{margin-top:clamp(35px,6vh,75px);min-width:275px}
+#overlay .menu button{font-size:15px;padding:13px 20px;border-left:1px solid #f3eddb40;transition:background .15s,border-color .15s,transform .15s,color .15s}
+#overlay .menu button:first-child:not(:disabled){font-size:18px;color:#fff6df;border-left:2px solid #c4ab7c;background:linear-gradient(90deg,#d5bc8433,transparent)}
+#overlay .menu button:hover:not(:disabled){transform:translateX(6px);background:#f3eddb20}
+#pause,#settings,#credits,#save-slots{background:linear-gradient(110deg,#06151bc9,#0711169c);backdrop-filter:blur(13px)}
+#settings .panel{max-height:88vh;overflow:auto;scrollbar-color:#a9926a #102126}
+#settings input[type=range]{appearance:none;width:100%;height:16px;background:transparent;cursor:pointer;accent-color:#c9b486}
+#settings input[type=range]::-webkit-slider-runnable-track{height:3px;border-radius:3px;background:linear-gradient(90deg,#d8c394,#597474)}
+#settings input[type=range]::-webkit-slider-thumb{appearance:none;width:13px;height:13px;margin-top:-5px;border:2px solid #e9dcc0;border-radius:50%;background:#476b6c;box-shadow:0 0 0 3px #102126}
+#settings input[type=checkbox]{accent-color:#bda976}
+#settings select{color:#f3eddb;background:#15282b;border:1px solid #a9926a88;padding:5px 9px}
+#save-slots{position:absolute;inset:0;z-index:13;display:none;align-items:center;justify-content:center}
+#save-slots .panel{width:min(560px,92vw)}
+#slot-list{display:grid;gap:8px;margin:24px 0}
+.slot{width:100%;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:15px 16px;text-align:left;color:#f3eddb;background:#ffffff0d;border:1px solid #c4ab7c4a;transition:background .15s,border-color .15s}
+.slot:hover:not(:disabled){background:#c4ab7c24;border-color:#c4ab7c}
+.slot:disabled{opacity:.42;cursor:default}
+.slot strong{font-size:14px;font-weight:500;white-space:nowrap}.slot span{font:12px/1.4 sans-serif;color:#d5d5c5;text-align:right}
+#location-reveal{position:absolute;z-index:7;left:6%;top:54%;display:flex;flex-direction:column;gap:4px;opacity:0;transform:translateY(12px);pointer-events:none;text-shadow:0 3px 15px #000b;transition:opacity .55s,transform .55s}
+#location-reveal.visible{opacity:1;transform:translateY(0)}
+#location-reveal .location-region{font:11px sans-serif;letter-spacing:.28em;color:#e6ddc3}
+#location-reveal strong{font-size:clamp(27px,3vw,42px);font-weight:400;letter-spacing:.2em;color:#fff7df}
+#location-reveal .location-subtitle{font:12px sans-serif;letter-spacing:.27em;color:#e2e3d7}
+#save-indicator{position:absolute;right:28px;bottom:20px;z-index:18;font:12px sans-serif;letter-spacing:.13em;color:#f3eddb;opacity:0;transition:opacity .4s;pointer-events:none;text-shadow:0 2px 8px #000}
+#save-indicator.visible{opacity:.8}
+#hud.hud-enter{animation:hud-arrive .8s ease both}
+#hud #bars{left:30px;bottom:28px;width:190px;padding:12px 14px 8px;background:linear-gradient(90deg,#071a1cbc,#071a1c26);border-left:1px solid #c4ab7c6e;opacity:.64}
+#hud #bars .bar{height:5px;margin:7px 0;border:0;background:#0b1b20aa}
+#hud #health .fill{background:#d6867d}#hud #stamina .fill{background:#b7c39a}#hud #mana .fill{background:#8fc4ca}
+#hud #weapon{right:32px;bottom:40px;padding:9px 13px;border-right:1px solid #c4ab7c73;background:linear-gradient(270deg,#071a1ca1,transparent);font:13px sans-serif;letter-spacing:.08em;color:#f3eddbd9}
+#hud #zone{font-size:12px;letter-spacing:.25em;color:#f3eddbb0}
+#prompt{font:13px sans-serif;letter-spacing:.08em;background:#06151b66;border-bottom-color:#c4ab7c99}
+@keyframes title-breath{from{transform:scale(1);opacity:.55}to{transform:scale(1.025);opacity:.82}}
+@keyframes hud-arrive{from{opacity:0}to{opacity:1}}
+#load-veil{position:absolute;inset:0;z-index:19;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:linear-gradient(#061116ef,#07181de8),url('../assets/art/sekai-title-key-art.png') center/cover;opacity:0;pointer-events:none;transition:opacity .8s}
+#load-veil.visible{opacity:1;pointer-events:auto}
+#load-veil strong{font-size:48px;font-weight:400;letter-spacing:.22em;color:#f3eddb}
+#load-veil span{font:12px sans-serif;letter-spacing:.3em;color:#d3c7aa}
+#ability-wheel{position:absolute;left:50%;top:50%;width:245px;height:245px;transform:translate(-50%,-50%) scale(.93);border-radius:50%;border:1px solid #c4ab7c8c;background:radial-gradient(circle,#07191bc9 0 28%,#07191be8 29% 100%);box-shadow:0 15px 80px #0009;z-index:9;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s}
+#ability-wheel.visible{opacity:1;transform:translate(-50%,-50%) scale(1)}
+#ability-wheel span{position:absolute;width:90px;text-align:center;font:13px sans-serif;letter-spacing:.12em;color:#d9dfd8}
+#ability-wheel span:nth-child(1){left:77px;top:33px}#ability-wheel span:nth-child(2){left:10px;bottom:54px}#ability-wheel span:nth-child(3){right:10px;bottom:54px}
+#ability-wheel span.selected{color:#fff0c4;text-shadow:0 0 15px #c4ab7c}
+#ability-wheel small{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font:11px sans-serif;color:#d1c7a6;white-space:nowrap}
+#compass{position:absolute;left:50%;top:20px;transform:translateX(-50%);z-index:3;min-width:180px;padding:4px 18px;border-bottom:1px solid #f3eddb4d;background:linear-gradient(90deg,transparent,#071a1c5c,transparent);text-align:center;color:#f3eddbc4;font:11px sans-serif;letter-spacing:.28em;text-shadow:0 2px 8px #000}

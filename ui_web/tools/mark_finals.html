@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>SEKAI mark finals 2</title>
+    <link rel="stylesheet" href="../tokens/tokens.css" />
+    <style>
+      body {
+        margin: 0;
+        background: var(--sk-void);
+        color: var(--sk-text-2);
+        font-family: var(--sk-font-sans);
+        padding: 26px;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+      }
+      .cell {
+        border: 1px solid var(--sk-line-faint);
+        background: linear-gradient(180deg, rgba(22, 32, 42, 0.5), rgba(14, 20, 24, 0.15));
+        padding: 16px;
+      }
+      .sizes {
+        display: flex;
+        align-items: flex-end;
+        gap: 24px;
+        min-height: 165px;
+      }
+      .cap {
+        font-family: var(--sk-font-num);
+        font-size: 12px;
+        letter-spacing: 0.22em;
+        color: var(--sk-gold);
+        text-transform: uppercase;
+      }
+      .t {
+        font-size: 12px;
+        color: var(--sk-text-4);
+        margin-top: 6px;
+        line-height: 1.45;
+      }
+      .inline {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-top: 12px;
+        padding-top: 12px;
+        border-top: 1px solid var(--sk-line-faint);
+        font-family: var(--sk-font-serif);
+        font-size: 20px;
+        letter-spacing: 0.42em;
+        color: var(--sk-text);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="grid" id="g"></div>
+    <script type="module">
+      const T = 'var(--sk-text)';
+      const G = 'var(--sk-gold)';
+      const A = 'fill="none" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"';
+
+      const P = (r, d) => {
+        const a = (d * Math.PI) / 180;
+        return [64 + r * Math.cos(a), 64 - r * Math.sin(a)];
+      };
+      const f = (n) => n.toFixed(2);
+      const arc = (r, from, sweep) =>
+        `M ${f(P(r, from)[0])} ${f(P(r, from)[1])} A ${r} ${r} 0 ${sweep > 180 ? 1 : 0} 0 ${f(
+          P(r, from + sweep)[0]
+        )} ${f(P(r, from + sweep)[1])}`;
+      const seg = (r0, d0, r1, d1) =>
+        `M ${f(P(r0, d0)[0])} ${f(P(r0, d0)[1])} L ${f(P(r1, d1)[0])} ${f(P(r1, d1)[1])}`;
+      // 楔形：外宽内窄的一段短笔（更接近毛笔）
+      const wedge = (r0, d0, r1, d1, w) => {
+        const a = ((d1 - d0) * Math.PI) / 180;
+        const [x0, y0] = P(r0, d0);
+        const [x1, y1] = P(r1, d1);
+        const nx = Math.sin(a) * 0;
+        const px = Math.cos(((d0 + d1) / 2 / 180) * Math.PI) * 0;
+        // 垂直于笔画的单位向量
+        const dx = x1 - x0;
+        const dy = y1 - y0;
+        const L = Math.hypot(dx, dy) || 1;
+        const ux = -dy / L;
+        const uy = dx / L;
+        return (
+          `M ${f(x0 - ux * w)} ${f(y0 - uy * w)} L ${f(x1 - ux * w)} ${f(x1 - ux * w) === '' ? '' : ''}` +
+          `${f(x1 - ux * w * 0.35)} ${f(y1 - uy * w * 0.35)} ` +
+          `L ${f(x1 + ux * w * 0.35)} ${f(y1 + uy * w * 0.35)} ` +
+          `L ${f(x0 + ux * w)} ${f(y0 + uy * w)} Z`
+        );
+      };
+
+      const CAND = [
+        { id: 'A', arc: arc(40, 87, 302), gold: seg(53, 58, 31, 58), w: 2.0, note: '径向短笔停在缺口正中。' },
+        { id: 'A2', arc: arc(40, 87, 302), gold: seg(54, 70, 32, 46), w: 2.0, note: '短笔略斜，像手写。' },
+        { id: 'A3', arc: arc(40, 92, 292), gold: seg(55, 62, 30, 62), w: 2.2, note: '缺口更宽，短笔更长。开口读作"未合"。' },
+        { id: 'A4', arc: arc(40, 87, 302), gold: seg(50, 58, 32, 58), w: 3.0, note: '短笔更粗更短，像一记落笔。' },
+        { id: 'A5', arc: arc(40, 90, 296), gold: seg(56, 66, 34, 52), w: 2.4, note: '缺口更居中于右上，短笔沿缺口法线。' },
+        { id: 'A6', arc: arc(40, 87, 302), gold: seg(53, 58, 31, 58) + ' ' + seg(46, 196, 52, 196), w: 2.0, note: '主刻度 + 对侧极短一笔（破对称）。' },
+        { id: 'C', arc: arc(40, 196, 358), gold: '', w: 0, note: '一笔画完的圆（对照）。' },
+        { id: 'A7', arc: arc(40, 87, 302), gold: seg(51, 58, 33, 58), w: 1.6, note: '短笔最细，最安静。' },
+      ];
+
+      const render = (c, size, sw) => {
+        const goldScale = size / 128;
+        return `<svg width="${size}" height="${size}" viewBox="0 0 128 128" ${A}>
+          <path d="${c.arc}" stroke="${T}" stroke-width="${sw}"/>
+          ${c.gold ? `<path d="${c.gold}" stroke="${G}" stroke-width="${c.w * goldScale}" stroke-linecap="round"/>` : ''}
+        </svg>`;
+      };
+
+      document.getElementById('g').innerHTML = CAND.map(
+        (c) => `
+        <div class="cell">
+          <div class="sizes">
+            ${render(c, 140, 2.2)}
+            ${render(c, 52, 4.4)}
+            ${render(c, 26, 7.6)}
+            ${render(c, 16, 11)}
+          </div>
+          <div class="cap">${c.id}</div>
+          <div class="t">${c.note}</div>
+          <div class="inline">${render(c, 24, 8)} SEKAI</div>
+        </div>`
+      ).join('');
+
+      document.documentElement.dataset.ready = '1';
+    </script>
+  </body>
+</html>

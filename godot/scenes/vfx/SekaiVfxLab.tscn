@@ -1,0 +1,18 @@
+[gd_scene load_steps=2 format=3]
+
+; SEKAI VFX LAB — the room all eleven rule-breaking prototypes are watched in.
+;
+; It is deliberately SELF-CONTAINED: it does not mount CombatSandbox, it does not
+; touch the combat line, and it owns its own camera, light, sky and world. The
+; brief for this round is "用最少的系统依赖 / 用灰盒场景也能成立", and every
+; dependency removed is one fewer thing that can make a prototype unreadable for
+; a reason that has nothing to do with the rule it is breaking.
+;
+; Run it directly (the window is for looking at the world; the prototypes are
+; driven by `tools/vfx_lab_renderer.gd` for anything that is recorded):
+;   godot --path F:/SEKAI/godot res://scenes/vfx/SekaiVfxLab.tscn
+
+[ext_resource type="Script" path="res://scripts/vfx/vfx_lab.gd" id="1"]
+
+[node name="SekaiVfxLab" type="Node3D"]
+script = ExtResource("1")

@@ -1,0 +1,19 @@
+{
+  "installed": [
+    "SM_Route_GoldenRoute_South",
+    "SM_Route_GoldenRoute_Town",
+    "SM_Route_LowerMarketLoop",
+    "SM_Route_MarketEastLoop",
+    "SM_Route_RiversideStreet",
+    "SM_Route_UpperResidential",
+    "SM_Route_ChurchLane",
+    "SM_Route_DockTrack",
+    "SM_Plaza_MarketSquare",
+    "SM_Plaza_GuildForecourt",
+    "SM_Plaza_ChurchForecourt",
+    "SM_River_Continuous"
+  ],
+  "removed_actor_count": 0,
+  "remaining_actor_count": 238,
+  "terrain_nanite": false
+}

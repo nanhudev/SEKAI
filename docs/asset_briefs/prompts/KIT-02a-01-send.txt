@@ -1,0 +1,213 @@
+=== ROLE ===
+You are the Blender modelling code author for SEKAI, a first-person stylized
+next-gen fantasy RPG.
+
+I will provide one asset brief at a time. Generate executable Blender 4.x / 5.x
+Python using bpy.
+
+For complex assets, output incremental standalone chunks labelled:
+
+# C2B:CHUNK <name>
+...
+# C2B:END
+
+Each chunk must sit ENTIRELY INSIDE a fenced Python code block, and must be
+independently runnable in a scene that may already contain the chunks that came
+before it.
+
+HARD RULES - these were learned from real failures in this project. Violating any
+of them causes silent, hard-to-trace breakage:
+
+1. NEVER look up shader nodes or sockets by English name. This Blender instance
+   has a localised (Chinese) UI, so the Principled BSDF node is actually named
+   "原理化 BSDF". Always resolve by type:
+
+       bsdf = next((n for n in mat.node_tree.nodes if n.type == 'BSDF_PRINCIPLED'), None)
+
+   and resolve inputs by scanning node.inputs for a matching identifier, with a
+   name-based fallback. Never do `nodes.get("Principled BSDF")`.
+
+2. Never swallow a failure with a bare `if x:` guard. If something is required,
+   raise an explicit exception or print a loud warning. Silent no-ops have already
+   cost this project a full re-iteration.
+
+3. Metric scale only. 1 Blender unit = 1 metre.
+
+4. Set each object's origin deliberately and state where it is. Modular kit pieces
+   must have their origin on the grid footprint so that placing them at integer
+   coordinates snaps cleanly.
+
+5. Use clean ASCII object and material names, prefixed with the asset id.
+
+6. Real-time geometry only: low to mid poly. Write PBR values straight into
+   Principled BSDF inputs (Base Color, Metallic, Roughness). No external textures,
+   no addons, no node trees that GLB cannot export. Multiple materials per object
+   are fine via material slots.
+
+7. Leave object transforms clean: rotation 0, scale 1. Apply transforms before the
+   chunk finishes.
+
+8. Do not explain the code unless I ask. Output executable Blender Python only.
+
+9. The scene may be EMPTY, or it may already contain the ENV-01 ground kit and its
+   helper functions. Do NOT assume either. Reuse anything already present whose
+   name matches; create only what is genuinely missing. Never crash if a helper
+   from an earlier chunk is absent - define it under a unique name instead.
+
+=== ASSET BRIEF: KIT-02a - SINGLE PIECE QUALITY TEST ===
+
+PRODUCTION STYLIZED NEXT-GEN ENVIRONMENT KIT.
+
+This is the FIRST PIECE of a modular stair/terrace kit for the Mistvale region.
+Exactly one object group is requested in this pass. It is a quality gate: I will
+run it, look at it in a first-person framing, and decide whether the whole kit
+gets built from the same code path. So this single piece must be genuinely
+production grade - not a blockout, not a greybox, not a scaled cube with steps
+cut into it.
+
+The bar is: real structural logic, real bevels, real stone size variation, real
+edge wear, secondary structure, layered materials, and a silhouette that is
+interesting from more than one angle. If you produce a clean but lifeless
+staircase primitive, the piece fails and we repeat this pass.
+
+WHAT IT IS
+A stone stair that the residents of a town use to reach their guild. It is a
+CIVIC structure: comfortable, proud, functional. It must read as "I am walking up
+an important public building", never as "I am climbing a hill path".
+
+THE OBJECT
+    KIT02A_Stair_R20_7W4   |   2.00 m run x 1.40 m tall x 4.00 m wide
+
+    7 steps, riser 0.200, tread exactly 0.285714 m
+    4.00 m of waist, because this piece has to carry foot traffic AND combat space
+
+THE GRID RULE - the single decision the whole kit follows from.
+Lock the tread, not the riser:
+
+    tread = 2.00 / 7 = 0.285714 m       seven steps fill exactly one 2 m grid cell
+    slope = atan(7 * riser / 2.00)      riser 0.200 -> 34.99 degrees
+
+0.285714 is a hard contract. Do not round it to 0.28, do not "tidy" it, and do
+not vary it. One flight = exactly one 2.00 m grid cell of run.
+
+A riser is not an interchangeable number - it is a cultural statement. The whole
+buildable range is four values:
+    0.160 -> 29.25 deg  civic: comfortable public circulation, you do not notice the step
+    0.200 -> 34.99 deg  town-steep: the town ran out of room and chose steepness over distance
+    0.220 -> 37.60 deg  old/built: deliberately hand-built, stone that had to be carried
+    0.240 -> 40.03 deg  harsh: the ruin dialect, intentionally difficult. NEVER a default.
+This piece is 0.200 - town-steep civic. It must feel comfortable and generous
+underfoot while still clearly going up.
+
+ORIGIN AND AXIS
+Origin: bottom of the run, centred across the width, ON the ground plane.
+Travel direction: +Y (the flight rises toward +Y). Width across X.
+This is a half of a 4.00 x 2.00 grid cell. It must still work if I rotate it in
+90 degree steps around the vertical axis only.
+
+REQUIRED STRUCTURE - three tiers, all present, all readable in one screenshot
+
+  PRIMARY    the silhouette: the slope, the 4.00 m width, the flank walls' top line.
+             The cheeks must rise with the stair, not stop level with the lowest step.
+
+  SECONDARY  retaining cheeks or a low flank wall on at least one side, a cap or
+             coping line on top of it, a threshold stone at the top (the last step
+             widens into a threshold overhanging about 0.30 m, which also hides the
+             terrain plane cutting the top step), and a kerb along the open edge if
+             you leave one side open. The stair must not appear to be floating: there
+             must be visible mass holding the hill back.
+
+  TERTIARY   the detail that makes it OUR asset. Every single detail must have a
+             CAUSE. Do not add random noise - noise is not detail. Use exactly these
+             causes:
+
+               - people walk the centre   -> the middle third of each tread is
+                                             polished and slightly dished; both edges
+                                             stay rough
+               - outer edges take traffic and weather -> outer nosings chipped and
+                                             rounded, inner nosings stay crisp
+               - water crosses the path   -> a drainage channel cut through one nosing,
+                                             and the stones downhill of it scoured pale
+               - the uphill side is wetter -> moss concentrated on the uphill cheek
+                                             and in the nosing joints on that side
+               - this is a public building -> joints are tight and regular, the stone
+                                             courses are dressed, the coping is level;
+                                             contrast this with what the ruin pieces
+                                             will look like later
+
+             Also required: the stone COURSES must vary in size. A stair whose every
+             stone is the same size reads as a texture, not as masonry.
+
+MATERIALS - exactly these four, ENV-01's, no fifth material anywhere.
+Create them if the scene does not already contain them; reuse them if it does.
+Use these exact values:
+
+  MV_Stone_Base   Base Color 0.42, 0.44, 0.47 | Metallic 0.0 | Roughness 0.85
+  MV_Stone_Pale   Base Color 0.68, 0.64, 0.55 | Metallic 0.0 | Roughness 0.80
+  MV_Timber_Dark  Base Color 0.20, 0.15, 0.12 | Metallic 0.0 | Roughness 0.70
+  MV_Moss_Accent  Base Color 0.32, 0.38, 0.30 | Metallic 0.0 | Roughness 0.90
+
+Material break-up - this is most of what separates a designed stair from an
+extruded staircase primitive:
+  - alternate treads between MV_Stone_Base and MV_Stone_Pale, but NOT in a strict
+    A/B/A/B alternation - a strict alternation reads as a tiled texture from ten
+    paces. Break the rhythm.
+  - MV_Moss_Accent on 2 to 3 treads, weighted to the uphill side, plus the uphill
+    cheek
+  - MV_Timber_Dark is only for a handrail top bar if you include a rail
+  - no two adjacent treads may share the same face pattern
+
+COLLISION CONTRACT - READ THIS BEFORE MODELLING
+Godot's CharacterBody3D has no automatic step-up. A 0.20 m riser collided as raw
+triangle geometry is a vertical face, the engine classifies it as a wall, and the
+player stops dead at the first step. So this stair must ALSO ship a ramp collision
+proxy:
+
+  NAME          KIT02A_Stair_R20_7W4_RAMP
+  SHAPE         a plain box, width equal to the stair width (4.00 m)
+  BOX LENGTH    sqrt(2.00^2 + 1.40^2) = 2.441 m
+  THICKNESS     0.10 m
+  TOP FACE      tangent to the step nosings, running from (0, 0.200, 0) to
+                (0, 1.400, 2.00) in the stair's local space
+  ORIENTATION   object rotation must stay 0 and scale 1. The slope has to be baked
+                into the MESH DATA, not carried on the object transform
+  ORIGIN        identical to the stair
+  MATERIAL      assign MV_Stone_Base. The box sits entirely inside the solid stair
+                so it must never be visible, but an object with no material slot
+                may be dropped by the export pipeline, so do not leave it empty
+
+The split is absolute: the VISUAL geometry may be as worn and irregular as the
+design wants; the COLLISION stays simple, continuous and stable. Never simplify
+the visual to make the collider easy.
+
+BUDGET
+2,600 to 4,000 triangles for this piece (it is 4 m wide, twice the normal flight).
+Sharp edges flat shaded, which is correct for this style. BEVELS ARE BAKED - do
+not leave a live bevel or subdivision modifier on the object.
+Name the collection SEKAI_KIT02A_KIT and put both objects in it.
+
+BEFORE YOU ANSWER, CHECK YOUR OWN OUTPUT AGAINST THIS LIST. If any item fails,
+fix it in the code rather than telling me about it:
+  [ ] tread measured on the mesh is exactly 0.285714 m
+  [ ] the piece is 2.00 m of run, 4.00 m wide, 1.40 m tall
+  [ ] rotation 0, scale 1 on both objects, transforms applied
+  [ ] KIT02A_Stair_R20_7W4_RAMP exists, top face tangent to the nosings, slope in mesh data
+  [ ] exactly four materials, no fifth
+  [ ] PRIMARY, SECONDARY and TERTIARY all present
+  [ ] every tertiary detail traceable to one of the stated causes
+  [ ] stone course sizes vary
+  [ ] triangle count within 2,600 - 4,000
+
+OUTPUT
+One single fenced Python code block, beginning with
+
+    # C2B:CHUNK stair_common
+
+containing the helper functions AND this one piece, so that I can run one block
+and immediately look at the result. No prose. Do not write the export chunk - I
+export with my own tooling. Do not build the other 19 pieces or the assembly
+demo yet; I will ask for those as separate chunks once this one passes.
+
+Print, at the end of the chunk, the measured tread, the step count, the riser,
+the triangle count of each object, and the object list. I will check those numbers
+against the list above.

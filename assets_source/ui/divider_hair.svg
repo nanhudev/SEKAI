@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SEKAI · divider_hair
+     全宽 1px 细线。用于分组（设置行之间），不用于强调。
+     裁決：state
+     归属：UI 自用 / 面板分组
+     本文件由 ui_web/tools/emit_svg.mjs 从 ui_web/svg/library.js 生成。
+     不要直接改这里 —— 改库，然后重新运行 emitter。
+-->
+<svg width="400" height="1" viewBox="0 0 400 1"
+      xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" aria-hidden="true">
+    <path pathLength="1" d="M 0 0.5 H 400" stroke="#2C3A44" stroke-width="1" opacity="0.5"/>
+  </svg>

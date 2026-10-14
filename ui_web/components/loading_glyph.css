@@ -1,0 +1,90 @@
+/* ============================================================================
+   SEKAI · LOADING GLYPH —— 样式（PASS 05）
+   ----------------------------------------------------------------------------
+   只有一个运算符：一条被反复书写的 hairline。和 Main Menu 左下那条
+   「正在进入」短线**是同一条外汇 Lemma**（同色、同宽、同一条栅格起步），
+   区别只有两个：
+     · 它在**等待超过 3s** 之后才出现（components/loading_glyph.js 的策略）；
+     · 它是两笔不同相位 —— 一笔读完世界还在写，两笔才是"一直在写"。
+
+   位置：left 变体压在与 Logo / 菜单同一条对齐线（--sk-gutter），
+   center 变体用于 Launcher（那里 UI 已经退场，只剩标记）。
+   没有卡片、没有底色块、没有圆角 — 加任何一件就变成 Web loading widget。
+   ========================================================================= */
+
+.sk-load {
+  position: fixed;
+  z-index: var(--sk-z-content);
+  display: flex;
+  align-items: center;
+  gap: var(--sk-s3);
+  pointer-events: none;
+  opacity: 0;
+  /* 落在照片上的字需要同一层暗晕（见 .v2-stage 的 --v2-text-lift 说明）。
+     加载符号常常出现在 Key Art 的中景上 —— 没有这层，细线会被湿草地吃掉。 */
+  --sk-load-lift: 0 1px 10px rgba(6, 10, 16, 0.55);
+}
+
+.sk-load[hidden] {
+  display: none !important;
+}
+
+.sk-load--left {
+  left: var(--sk-gutter);
+  bottom: var(--sk-s5);
+}
+
+.sk-load--center {
+  left: 50%;
+  bottom: 14%;
+  transform: translateX(-50%);
+  flex-direction: column;
+  gap: var(--sk-s2);
+}
+
+.sk-load__label {
+  font-family: var(--sk-font-sans);
+  font-size: var(--sk-fs-small);
+  letter-spacing: var(--sk-track-body);
+  color: var(--sk-fg-meta);
+  text-shadow: var(--sk-load-lift);
+  white-space: nowrap;
+}
+
+.sk-load__strokes {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.sk-load__stroke {
+  position: relative;
+  display: block;
+  width: clamp(120px, 16vw, 240px);
+  height: 1px;
+  background: rgba(237, 228, 211, 0.18);
+  overflow: hidden;
+  box-shadow: var(--sk-load-lift);
+}
+
+/* 第二笔略短 —— 等长会读成"一根双线边框"，那是装饰词汇，不是书写。 */
+.sk-load__strokes > .sk-load__stroke:last-child {
+  width: clamp(88px, 12vw, 186px);
+}
+
+.sk-load__ink {
+  position: absolute;
+  inset: 0;
+  background: var(--sk-gold);
+  /* 起始状态：完全没被写出来。动画由 loading_glyph.js 用 clip-path 驱动。 */
+  clip-path: inset(0 100% 0 0);
+}
+
+/* reduced motion：不循环书写 —— 但等待依然要被看见。
+   维持装满但微弱的静态一笔（"有事在发生"），不靠动画重复来说话。 */
+@media (prefers-reduced-motion: reduce) {
+  .sk-load__ink {
+    clip-path: inset(0 0 0 0);
+    opacity: 0.55;
+  }
+}

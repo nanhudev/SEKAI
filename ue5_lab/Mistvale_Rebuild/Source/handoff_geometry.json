@@ -1,0 +1,57 @@
+{
+  "meshes": [
+    {
+      "name": "SM_Handoff_BridgeSouth",
+      "file": "F:\\SEKAI\\ue5_lab\\Mistvale_Rebuild\\Source\\SM_Handoff_BridgeSouth.obj"
+    },
+    {
+      "name": "SM_Handoff_BridgeNorth",
+      "file": "F:\\SEKAI\\ue5_lab\\Mistvale_Rebuild\\Source\\SM_Handoff_BridgeNorth.obj"
+    },
+    {
+      "name": "SM_Handoff_GuildChurch",
+      "file": "F:\\SEKAI\\ue5_lab\\Mistvale_Rebuild\\Source\\SM_Handoff_GuildChurch.obj"
+    }
+  ],
+  "spawn": [
+    600,
+    -31000,
+    157.6226806640625
+  ],
+  "bridge": [
+    [
+      "BridgeSouth",
+      [
+        [
+          0,
+          -119,
+          5.856006469726562
+        ],
+        [
+          0,
+          -102.0,
+          6.374397277832031
+        ]
+      ],
+      5.2,
+      false
+    ],
+    [
+      "BridgeNorth",
+      [
+        [
+          0,
+          -68.0,
+          6.374412536621094
+        ],
+        [
+          0,
+          -52,
+          7.863841857910156
+        ]
+      ],
+      5.2,
+      false
+    ]
+  ]
+}

@@ -1,0 +1,165 @@
+/* ============================================================================
+   SEKAI · MAIN MENU
+   ----------------------------------------------------------------------------
+   版式：与 Launcher 同一套 12 栅。品牌落在 3–9 列，菜单落在 3–5 列。
+   两块都左对齐 —— 这是"同一个游戏"最直接的证据。
+
+   §21：不要居中五个大矩形按钮。
+   §22：标题不是 <h1>，是一段被写出来的字标 + 一条金色短线。
+   §23：背景必须慢。
+   ========================================================================= */
+
+.sk-menu {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: 1fr auto auto;
+  background: var(--sk-void);
+}
+
+/* ===========================================================================
+   1. 品牌区
+   ========================================================================= */
+.sk-menu__brand {
+  grid-column: 3 / span 7;
+  grid-row: 1;
+  align-self: center;
+  z-index: var(--sk-z-content);
+  /* 品牌块在"上半区"的中心；菜单在下方独立成块 */
+  padding-bottom: var(--sk-s6);
+}
+
+.sk-menu__mark {
+  width: clamp(28px, 4.4vmin, 56px);
+  height: clamp(28px, 4.4vmin, 56px);
+}
+
+.sk-menu__mark svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.sk-menu__word {
+  margin: var(--sk-s5) 0 0;
+  font-family: var(--sk-font-serif);
+  font-size: var(--sk-fs-display);
+  font-weight: var(--sk-fw-light);
+  letter-spacing: var(--sk-track-wide);
+  line-height: var(--sk-lh-tight);
+  color: var(--sk-fg);
+  text-transform: uppercase;
+  margin-right: calc(-1 * var(--sk-track-wide));
+}
+
+.sk-letter {
+  display: inline-block;
+  will-change: clip-path;
+}
+
+.sk-menu__cn {
+  margin: var(--sk-s3) 0 0;
+  font-size: var(--sk-fs-head);
+  letter-spacing: var(--sk-track-title);
+  color: var(--sk-text-2);
+}
+
+.sk-menu__rule {
+  width: 48px;
+  height: 1px;
+  margin-top: var(--sk-s4);
+  background: linear-gradient(90deg, var(--sk-gold), rgba(201, 166, 92, 0.15));
+}
+
+.sk-menu__sub {
+  margin: var(--sk-s4) 0 0;
+  font-family: var(--sk-font-num);
+  font-size: var(--sk-fs-micro);
+  font-weight: var(--sk-fw-medium);
+  letter-spacing: var(--sk-track-wide);
+  color: var(--sk-text-3);
+  text-transform: uppercase;
+}
+
+/* ===========================================================================
+   2. 菜单
+   ========================================================================= */
+.sk-menu__nav {
+  grid-column: 3 / span 3;
+  grid-row: 2;
+  z-index: var(--sk-z-actions);
+  padding-bottom: var(--sk-s8);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sk-s2);
+  border-top: 1px solid var(--sk-line-faint);
+  padding-top: var(--sk-s5);
+}
+
+/* 焦点线：右端固定、左端推进。
+   用 WAAPI 书写（不是 CSS transition），因为出片时要能 seek。 */
+.sk-item__line path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+
+/* 未解锁 / 存档为空的项 */
+.sk-item.is-disabled .sk-item__en {
+  color: var(--sk-text-4);
+}
+
+/* ===========================================================================
+   3. 说明条（设置 / 退出未接入时）
+   ========================================================================= */
+.sk-menu__note {
+  grid-column: 3 / span 6;
+  grid-row: 2;
+  align-self: end;
+  z-index: var(--sk-z-actions);
+  margin: 0 0 var(--sk-s8) 0;
+  padding-left: var(--sk-s4);
+  border-left: 1px solid var(--sk-gold-line);
+  font-size: var(--sk-fs-small);
+  letter-spacing: var(--sk-track-body);
+  color: var(--sk-text-3);
+}
+
+/* ===========================================================================
+   4. 页脚
+   ========================================================================= */
+.sk-meta-bar {
+  grid-column: 1 / -1;
+  grid-row: 3;
+  z-index: var(--sk-z-actions);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: var(--sk-s5);
+  padding: 0 var(--sk-gutter) var(--sk-s5);
+}
+
+/* ===========================================================================
+   5. 窄窗
+   ========================================================================= */
+@media (max-width: 1100px) {
+  .sk-menu__brand {
+    grid-column: 2 / span 10;
+  }
+  .sk-menu__nav {
+    grid-column: 2 / span 5;
+  }
+  .sk-menu__note {
+    grid-column: 2 / span 10;
+  }
+}
+
+@media (max-width: 760px) {
+  .sk-menu__brand,
+  .sk-menu__nav,
+  .sk-menu__note {
+    grid-column: 1 / -1;
+    padding-left: var(--sk-gutter);
+    padding-right: var(--sk-gutter);
+  }
+}

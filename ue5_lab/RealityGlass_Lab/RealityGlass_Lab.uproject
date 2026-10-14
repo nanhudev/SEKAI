@@ -1,0 +1,15 @@
+{
+	"FileVersion": 3,
+	"EngineAssociation": "SEKAI_UE58",
+	"Category": "VFX Research",
+	"Description": "Reality Fragmentation Lab. UE5 is the fracture DESIGN / BAKE / REFERENCE tool only. The SEKAI runtime is Godot and stays Godot - nothing here ships.",
+	"Plugins": [
+		{ "Name": "GeometryScripting", "Enabled": true },
+		{ "Name": "PythonScriptPlugin", "Enabled": true },
+		{ "Name": "EditorScriptingUtilities", "Enabled": true },
+		{ "Name": "ChaosSolverPlugin", "Enabled": true },
+		{ "Name": "Fracture", "Enabled": true },
+		{ "Name": "ModelingToolsEditorMode", "Enabled": true },
+		{ "Name": "Niagara", "Enabled": true }
+	]
+}

@@ -1,0 +1,90 @@
+=== QUALITY PASS: KIT-02a single piece — WEAR IS NOT LEGIBLE ===
+
+The piece built cleanly and every number in your self-check passed. I ran it in
+Blender and rendered it from six angles including a first-person framing at eye
+height 1.62 m standing 1.7 m from the bottom step. Measured on the mesh:
+
+    dimensions      4.0000 x 2.0000 x 1.4000 m      correct
+    measured tread  0.285714285714 m                 correct
+    riser           0.200000 m                       correct
+    visual          3,424 triangles                  in budget
+    ramp            12 triangles                     correct
+    rotation        0, 0, 0                          correct
+    scale           1, 1, 1                          correct
+    materials       MV_Stone_Base, MV_Stone_Pale,
+                    MV_Timber_Dark, MV_Moss_Accent   correct, four, no fifth
+
+So this is not a numbers problem and nothing below is about dimensions.
+
+WHAT IS WRONG
+
+PRIMARY and SECONDARY are there and they read: the slope, the width, the stepped
+cheek, the threshold stone, the nosing chamfers, and the material break-up between
+base and pale stone all survive the render.
+
+TERTIARY is missing. At first-person distance the treads read as flat, clean
+planes with crisp straight edges - they look like newly cut blocks, not like a
+public building's stairs that people have walked on for a generation. Every
+detail cause I asked for either is not in the mesh or is too small to see at
+1.5 m, and the result reads "clean block kit" rather than "built stone".
+
+WHAT I WANT CHANGED - all of it on the VISUAL mesh only, no dimension, no count,
+no material, no origin, no rotation/scale change:
+
+1. THE CENTRE OF TRAFFIC IS WORN. On every tread the middle third should be
+   slightly dished and its surface broken up, while both edges stay rough and
+   flat. Right now every tread is a single flat plane edge to edge. This is the
+   single most important change: a dished centre line is what makes a stair look
+   walked on, and it is visible from 1.5 m.
+
+2. THE OUTER NOSINGS ARE DAMAGED, THE INNER ONES ARE CRISP. Break the front edge
+   of the upper-outer nosings: chipped, rounded, one corner missing outright on
+   two or three steps. The inner nosings must stay sharp so the asymmetry reads
+   as a cause and not as sloppiness. Do not damage both sides equally.
+
+3. ONE DRAINAGE CUT. Cut a shallow channel through one nosing and let it run back
+   down the tread, and make the two stones downstream of it read scoured - paler,
+   smoother, no moss. One is enough; two would read as a pattern.
+
+4. MOSS IN THE JOINTS, ON THE UPHILL SIDE. Moss must sit in the joint lines and
+   in the nosing joints on the uphill half of the width, not as green panels on
+   tread tops. In the render the moss currently reads as green rectangles laid on
+   top of steps, which looks like a decal. It should look like something that
+   grew in a gap because water sits there.
+
+5. STONE COURSES MUST VARY MORE. You did vary them, but the variation is even -
+   long-short-long-short. Make at least one course break with a genuinely short
+   stone (about 0.4 m of the 4.00 m width) and one with a long one (about 1.6 m),
+   so the joint rhythm cannot be predicted. A stair whose courses alternate on a
+   regular beat reads as a texture, not as masonry.
+
+6. THE CHEEK SHOULD READ AS COPING, NOT AS A RAMP. The flank wall's top follows
+   the nosing line, which is right, but it should do so in visible course steps
+   with a distinct cap course on top that overhangs very slightly, rather than as
+   one smooth stepped mass.
+
+HARD CONSTRAINTS - these must not change, and your self-checks must still pass:
+
+    tread exactly 0.285714 m, 7 steps, riser 0.200 m
+    overall 2.00 m run x 4.00 m wide x 1.40 m tall
+    origin: bottom of the run, centred across the width, on the ground plane
+    rotation 0, scale 1, transforms applied
+    KIT02A_Stair_R20_7W4_RAMP present, exactly 12 triangles, top face tangent to
+      the nosings, slope baked into mesh data, MV_Stone_Base assigned
+    exactly four materials, no fifth
+    triangle count stays between 2,600 and 4,000 (you are at 3,424, so there is
+      room for the wear geometry, but do not simply subdivide everything - add
+      geometry only where a cause puts it)
+
+TECHNIQUE NOTE
+Do not chase this with a noise texture or a random displacement - that will read
+as noise, which is exactly what the brief forbids. Each of the six items above is
+a specific operation on a specific part of a specific step. If you find yourself
+writing an RNG, you have taken the wrong route.
+
+OUTPUT
+Replace the whole chunk. One fenced Python code block beginning with
+    # C2B:CHUNK stair_common
+Keep the same two object names, the same collection, the same self-checks at the
+end, and keep printing the measured tread, step count, riser, triangle counts and
+object list. No prose.

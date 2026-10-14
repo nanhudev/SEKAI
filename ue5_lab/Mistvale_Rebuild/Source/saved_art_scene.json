@@ -1,0 +1,7437 @@
+[
+  {
+    "label": "ART_Graded_Terrain_Proxy",
+    "folder": "ART/Terrain_Graded",
+    "position_m": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      0.0,
+      0.0,
+      14.203770446777344
+    ],
+    "bounds_extent_m": [
+      252.0,
+      353.0,
+      16.737440490722655
+    ],
+    "mesh": "/Game/MistvaleArt/Terrain/SM_Mistvale_Terrain_Corrected.SM_Mistvale_Terrain_Corrected",
+    "materials": [
+      "M_Valley_Grass_01"
+    ]
+  },
+  {
+    "label": "MainStoneBridge_DECK",
+    "folder": "02_Bridges",
+    "position_m": [
+      0.0,
+      -84.93392362601196,
+      -0.0159644737711071
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      0.0,
+      -84.93392362601196,
+      4.349035774184215
+    ],
+    "bounds_extent_m": [
+      4.759324951171875,
+      19.425001220703123,
+      3.810003414154053
+    ],
+    "mesh": "/Game/MistvaleArchitecture/SM_Mistvale_StoneBridge.SM_Mistvale_StoneBridge",
+    "materials": [
+      "MV_Bridge_CreamLimestone",
+      "MV_Bridge_Paving",
+      "MV_Bridge_WetStone",
+      "MV_Bridge_ArchVoussoir",
+      "MV_Bridge_Coping"
+    ]
+  },
+  {
+    "label": "MainStoneBridge_SouthRamp",
+    "folder": "02_Bridges",
+    "position_m": [
+      0.0,
+      -108.93392362601196,
+      5.882810679602303
+    ],
+    "scale": [
+      7.0,
+      12.0,
+      0.32
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      2.3022875785827637
+    ],
+    "bounds_center_m": [
+      0.0,
+      -108.93392362601196,
+      5.882810679602303
+    ],
+    "bounds_extent_m": [
+      3.5,
+      6.0015842219283515,
+      0.4009009634099698
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "WorldGridMaterial"
+    ]
+  },
+  {
+    "label": "MainStoneBridge_NorthRamp",
+    "folder": "02_Bridges",
+    "position_m": [
+      0.0,
+      -60.93392362601197,
+      6.739737802066616
+    ],
+    "scale": [
+      7.0,
+      12.0,
+      0.32
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      -174.1409912109375
+    ],
+    "bounds_center_m": [
+      0.0,
+      -60.93392362601197,
+      6.739737802066616
+    ],
+    "bounds_extent_m": [
+      3.5,
+      5.984989560438635,
+      0.7716493888794116
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "WorldGridMaterial"
+    ]
+  },
+  {
+    "label": "SmallServiceBridge_DECK",
+    "folder": "02_Bridges",
+    "position_m": [
+      -132.0,
+      -98.10836897580788,
+      6.262287896866362
+    ],
+    "scale": [
+      3.2,
+      37.0,
+      0.7
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -132.0,
+      -98.10836897580788,
+      6.262287896866362
+    ],
+    "bounds_extent_m": [
+      1.6,
+      18.5,
+      0.35
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "SmallServiceBridge_PARAPET",
+    "folder": "02_Bridges",
+    "position_m": [
+      -133.3,
+      -98.10836897580788,
+      7.162287896866363
+    ],
+    "scale": [
+      0.45,
+      37.0,
+      1.1
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -133.3,
+      -98.10836897580788,
+      7.162287896866363
+    ],
+    "bounds_extent_m": [
+      0.225,
+      18.5,
+      0.55
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "SmallServiceBridge_PARAPET",
+    "folder": "02_Bridges",
+    "position_m": [
+      -130.7,
+      -98.10836897580788,
+      7.162287896866363
+    ],
+    "scale": [
+      0.45,
+      37.0,
+      1.1
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -130.7,
+      -98.10836897580788,
+      7.162287896866363
+    ],
+    "bounds_extent_m": [
+      0.225,
+      18.5,
+      0.55
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "SmallServiceBridge_SouthRamp",
+    "folder": "02_Bridges",
+    "position_m": [
+      -132.0,
+      -122.10836897580788,
+      5.460436283747043
+    ],
+    "scale": [
+      3.2,
+      12.0,
+      0.32
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      9.38659763336182
+    ],
+    "bounds_center_m": [
+      -132.0,
+      -122.10836897580788,
+      5.460436283747043
+    ],
+    "bounds_extent_m": [
+      1.6,
+      5.945757263798805,
+      1.1364287542237594
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "SmallServiceBridge_NorthRamp",
+    "folder": "02_Bridges",
+    "position_m": [
+      -132.0,
+      -74.10836897580788,
+      6.745770643187799
+    ],
+    "scale": [
+      3.2,
+      12.0,
+      0.32
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      -177.19967651367188
+    ],
+    "bounds_center_m": [
+      -132.0,
+      -74.10836897580788,
+      6.745770643187799
+    ],
+    "bounds_extent_m": [
+      1.6,
+      6.000652034580107,
+      0.4529413915794123
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "HERO_Guild_HorizontalHall",
+    "folder": "03_Hero",
+    "position_m": [
+      -55.0,
+      165.0,
+      16.7480649144404
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -56.24995971679687,
+      165.74999816894533,
+      26.85306349759121
+    ],
+    "bounds_extent_m": [
+      17.078529052734375,
+      13.150000610351562,
+      10.105000196146065
+    ],
+    "mesh": "/Game/MistvaleArchitecture/SM_Mistvale_Guild.SM_Mistvale_Guild",
+    "materials": [
+      "MV_Guild_WarmStone",
+      "MV_Guild_IvoryPlaster",
+      "MV_Guild_DarkOak",
+      "MV_Guild_SlateTeal",
+      "MV_Guild_RoofEdge",
+      "MV_Guild_AmberTrim",
+      "MV_Guild_Glass"
+    ]
+  },
+  {
+    "label": "HERO_Guild_TrainingYard",
+    "folder": "03_Hero",
+    "position_m": [
+      -82.0,
+      162.0,
+      16.73991593730918
+    ],
+    "scale": [
+      22.0,
+      19.0,
+      0.35
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -82.0,
+      162.0,
+      16.73991593730918
+    ],
+    "bounds_extent_m": [
+      11.0,
+      9.5,
+      0.175
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "HERO_Church_Nave",
+    "folder": "ART/Fab_SlavicLite/admin",
+    "position_m": [
+      115.43,
+      207.74,
+      21.242550208995677
+    ],
+    "scale": [
+      1.22,
+      1.22,
+      1.22
+    ],
+    "rotation": [
+      0.0,
+      89.99999999999999,
+      -0.0
+    ],
+    "bounds_center_m": [
+      115.47958372192383,
+      208.09701940307616,
+      27.69188548388276
+    ],
+    "bounds_extent_m": [
+      7.265942547607429,
+      12.59104224243165,
+      6.88304573097229
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Town_Building_Administrative__01a_LOD0.EA03_Town_Building_Administrative__01a_LOD0",
+    "materials": [
+      "M_House_Clay"
+    ]
+  },
+  {
+    "label": "HERO_Church_BellTower",
+    "folder": "ART/Landmarks",
+    "position_m": [
+      115.43,
+      224.74,
+      22.720074656574788
+    ],
+    "scale": [
+      1.05,
+      1.05,
+      2.05
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      115.42999855804443,
+      224.59589384460452,
+      32.81582330807931
+    ],
+    "bounds_extent_m": [
+      4.265297996521003,
+      4.617744781494148,
+      11.127541997909548
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_Tover_01a_LOD0.EA03_Village_Tover_01a_LOD0",
+    "materials": [
+      "M_House_Slate"
+    ]
+  },
+  {
+    "label": "HERO_MainInn",
+    "folder": "ART/Fab_SlavicLite/admin",
+    "position_m": [
+      38.99,
+      82.64,
+      14.434665221613072
+    ],
+    "scale": [
+      0.9108085848553849,
+      0.9108085848553849,
+      0.9108085848553849
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      39.25653798137846,
+      82.60298255770712,
+      19.249509430611287
+    ],
+    "bounds_extent_m": [
+      9.400024071052076,
+      5.424494138874466,
+      5.138637001411286
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Town_Building_Administrative__01a_LOD0.EA03_Town_Building_Administrative__01a_LOD0",
+    "materials": [
+      "M_House_Clay"
+    ]
+  },
+  {
+    "label": "HERO_Blacksmith",
+    "folder": "ART/Fab_SlavicLite/shed",
+    "position_m": [
+      -63.0,
+      65.0,
+      12.903291672846784
+    ],
+    "scale": [
+      1.0973419540229885,
+      1.0973419540229885,
+      1.0973419540229885
+    ],
+    "rotation": [
+      0.0,
+      89.99999999999999,
+      -0.0
+    ],
+    "bounds_center_m": [
+      -62.81768578332046,
+      64.37058256467184,
+      16.953117620657512
+    ],
+    "bounds_extent_m": [
+      4.422593152386026,
+      6.110237967282874,
+      4.049826206607513
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_Shed_01a_LOD0.EA03_Village_OutBuilding_Shed_01a_LOD0",
+    "materials": [
+      "M_House_Clay"
+    ]
+  },
+  {
+    "label": "HERO_DockWarehouse",
+    "folder": "ART/Fab_SlavicLite/wide_shed",
+    "position_m": [
+      -106.62,
+      -118.54,
+      5.070634272258597
+    ],
+    "scale": [
+      0.8520005179334456,
+      0.8520005179334456,
+      0.8520005179334456
+    ],
+    "rotation": [
+      0.0,
+      89.99999999999999,
+      -0.0
+    ],
+    "bounds_center_m": [
+      -106.62,
+      -118.53997347898778,
+      9.120972368030905
+    ],
+    "bounds_extent_m": [
+      10.42627001491588,
+      6.580000416015882,
+      4.0503376391975054
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_Shed_03b_LOD0.EA03_Village_OutBuilding_Shed_03b_LOD0",
+    "materials": [
+      "M_House_Slate"
+    ]
+  },
+  {
+    "label": "HERO_NorthGate_Left",
+    "folder": "ART/Fab_SlavicLite/tower",
+    "position_m": [
+      -9.0,
+      283.0,
+      24.769743431908072
+    ],
+    "scale": [
+      0.809945839487937,
+      0.809945839487937,
+      0.809945839487937
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -9.000001112291343,
+      282.88883982761223,
+      28.758528610835892
+    ],
+    "bounds_extent_m": [
+      3.2901527299603948,
+      3.5620220700840948,
+      4.396442119480062
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_Tover_01a_LOD0.EA03_Village_Tover_01a_LOD0",
+    "materials": [
+      "M_House_Clay"
+    ]
+  },
+  {
+    "label": "HERO_NorthGate_Right",
+    "folder": "ART/Fab_SlavicLite/tower",
+    "position_m": [
+      9.0,
+      283.0,
+      25.092037722221157
+    ],
+    "scale": [
+      0.809945839487937,
+      0.809945839487937,
+      0.809945839487937
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      8.999998887708657,
+      282.88883982761223,
+      29.080822901148977
+    ],
+    "bounds_extent_m": [
+      3.2901527299603948,
+      3.5620220700840948,
+      4.396442119480062
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_Tover_01a_LOD0.EA03_Village_Tover_01a_LOD0",
+    "materials": [
+      "M_House_Moss"
+    ]
+  },
+  {
+    "label": "HERO_NorthGate_Lintel",
+    "folder": "ART/Landmarks",
+    "position_m": [
+      0.0,
+      283.0,
+      24.59115241124161
+    ],
+    "scale": [
+      3.05,
+      1.65,
+      3.05
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -0.958711345672607,
+      283.1756051197052,
+      30.14704001649149
+    ],
+    "bounds_extent_m": [
+      6.612825695037841,
+      1.2704469394683837,
+      5.571184050023557
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Fence_RockGate_01a_LOD0.EA03_Fence_RockGate_01a_LOD0",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "MarketSquare_Well",
+    "folder": "04_Market",
+    "position_m": [
+      0.0,
+      100.0,
+      16.0
+    ],
+    "scale": [
+      3.0,
+      3.0,
+      2.0
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      0.0,
+      100.0,
+      16.0
+    ],
+    "bounds_extent_m": [
+      1.5,
+      1.5,
+      1.0
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "WorldGridMaterial"
+    ]
+  },
+  {
+    "label": "MarketStall_01",
+    "folder": "ART/Fab_SlavicLite/woodroof",
+    "position_m": [
+      12.0,
+      100.0,
+      15.055516337277508
+    ],
+    "scale": [
+      0.6177039041360648,
+      0.6177039041360648,
+      0.6177039041360648
+    ],
+    "rotation": [
+      0.0,
+      180.0,
+      -0.0
+    ],
+    "bounds_center_m": [
+      11.914599155209265,
+      100.06072105912016,
+      16.339479707153046
+    ],
+    "bounds_extent_m": [
+      1.5979985673371357,
+      0.9926556218357109,
+      1.2839634137949179
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_WoodRoof_01b_LOD0.EA03_Village_OutBuilding_WoodRoof_01b_LOD0",
+    "materials": [
+      "M_House_Russet"
+    ]
+  },
+  {
+    "label": "MarketStall_02",
+    "folder": "ART/Fab_SlavicLite/woodroof",
+    "position_m": [
+      8.485281374238571,
+      108.48528137423857,
+      15.256248479421467
+    ],
+    "scale": [
+      0.6177039041360648,
+      0.6177039041360648,
+      0.6177039041360648
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      8.570682219029308,
+      108.42456031511841,
+      16.540211849297005
+    ],
+    "bounds_extent_m": [
+      1.5979985673371357,
+      0.9926556218357109,
+      1.2839634137949179
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_WoodRoof_01b_LOD0.EA03_Village_OutBuilding_WoodRoof_01b_LOD0",
+    "materials": [
+      "M_House_Slate"
+    ]
+  },
+  {
+    "label": "MarketStall_03",
+    "folder": "ART/Fab_SlavicLite/woodroof",
+    "position_m": [
+      7.347880794884119e-16,
+      112.0,
+      15.34351633727751
+    ],
+    "scale": [
+      0.6177039041360648,
+      0.6177039041360648,
+      0.6177039041360648
+    ],
+    "rotation": [
+      0.0,
+      180.0,
+      -0.0
+    ],
+    "bounds_center_m": [
+      -0.0854008447907347,
+      112.06072105912016,
+      16.627479707153046
+    ],
+    "bounds_extent_m": [
+      1.5979985673371353,
+      0.9926556218357109,
+      1.2839634137949179
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_WoodRoof_01b_LOD0.EA03_Village_OutBuilding_WoodRoof_01b_LOD0",
+    "materials": [
+      "M_House_Moss"
+    ]
+  },
+  {
+    "label": "MarketStall_04",
+    "folder": "ART/Fab_SlavicLite/woodroof",
+    "position_m": [
+      -8.48528137423857,
+      108.48528137423857,
+      15.256248479421467
+    ],
+    "scale": [
+      0.6177039041360648,
+      0.6177039041360648,
+      0.6177039041360648
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -8.399880529447834,
+      108.42456031511841,
+      16.540211849297005
+    ],
+    "bounds_extent_m": [
+      1.5979985673371357,
+      0.9926556218357109,
+      1.2839634137949179
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_WoodRoof_01b_LOD0.EA03_Village_OutBuilding_WoodRoof_01b_LOD0",
+    "materials": [
+      "M_House_Clay"
+    ]
+  },
+  {
+    "label": "MarketStall_05",
+    "folder": "ART/Fab_SlavicLite/woodroof",
+    "position_m": [
+      -12.0,
+      100.0,
+      15.055516337277508
+    ],
+    "scale": [
+      0.6177039041360648,
+      0.6177039041360648,
+      0.6177039041360648
+    ],
+    "rotation": [
+      0.0,
+      180.0,
+      -0.0
+    ],
+    "bounds_center_m": [
+      -12.085400844790735,
+      100.06072105912016,
+      16.339479707153046
+    ],
+    "bounds_extent_m": [
+      1.5979985673371357,
+      0.9926556218357109,
+      1.2839634137949179
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_WoodRoof_01b_LOD0.EA03_Village_OutBuilding_WoodRoof_01b_LOD0",
+    "materials": [
+      "M_House_Russet"
+    ]
+  },
+  {
+    "label": "MarketStall_06",
+    "folder": "ART/Fab_SlavicLite/woodroof",
+    "position_m": [
+      -8.485281374238571,
+      91.51471862576143,
+      14.738292019181495
+    ],
+    "scale": [
+      0.6177039041360648,
+      0.6177039041360648,
+      0.6177039041360648
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -8.399880529447836,
+      91.45399756664128,
+      16.022255389057033
+    ],
+    "bounds_extent_m": [
+      1.5979985673371357,
+      0.9926556218357109,
+      1.2839634137949179
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_WoodRoof_01b_LOD0.EA03_Village_OutBuilding_WoodRoof_01b_LOD0",
+    "materials": [
+      "M_House_Slate"
+    ]
+  },
+  {
+    "label": "MarketStall_07",
+    "folder": "ART/Fab_SlavicLite/woodroof",
+    "position_m": [
+      -2.204364238465236e-15,
+      88.0,
+      14.54568174326031
+    ],
+    "scale": [
+      0.6177039041360648,
+      0.6177039041360648,
+      0.6177039041360648
+    ],
+    "rotation": [
+      0.0,
+      180.0,
+      -0.0
+    ],
+    "bounds_center_m": [
+      -0.08540084479073755,
+      88.06072105912016,
+      15.829645113135848
+    ],
+    "bounds_extent_m": [
+      1.5979985673371353,
+      0.9926556218357109,
+      1.2839634137949179
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_WoodRoof_01b_LOD0.EA03_Village_OutBuilding_WoodRoof_01b_LOD0",
+    "materials": [
+      "M_House_Moss"
+    ]
+  },
+  {
+    "label": "MarketStall_08",
+    "folder": "ART/Fab_SlavicLite/woodroof",
+    "position_m": [
+      8.485281374238568,
+      91.51471862576143,
+      14.738292019181495
+    ],
+    "scale": [
+      0.6177039041360648,
+      0.6177039041360648,
+      0.6177039041360648
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      8.570682219029305,
+      91.45399756664128,
+      16.022255389057033
+    ],
+    "bounds_extent_m": [
+      1.5979985673371357,
+      0.9926556218357109,
+      1.2839634137949179
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_WoodRoof_01b_LOD0.EA03_Village_OutBuilding_WoodRoof_01b_LOD0",
+    "materials": [
+      "M_House_Clay"
+    ]
+  },
+  {
+    "label": "LowerWestA_House_01",
+    "folder": "ART/Fab_SlavicLite/shed",
+    "position_m": [
+      -48.88773221143011,
+      -0.7616295552451178,
+      9.876421148749175
+    ],
+    "scale": [
+      0.7758620689655173,
+      0.7758620689655173,
+      0.7758620689655173
+    ],
+    "rotation": [
+      0.0,
+      0.16632264852523804,
+      -0.0
+    ],
+    "bounds_center_m": [
+      -49.33237796728993,
+      -0.8918238683806976,
+      12.739800542291295
+    ],
+    "bounds_extent_m": [
+      4.3292271610694115,
+      3.139467567506892,
+      2.8633795765211887
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_Shed_01a_LOD0.EA03_Village_OutBuilding_Shed_01a_LOD0",
+    "materials": [
+      "M_House_Russet"
+    ]
+  },
+  {
+    "label": "LowerWestA_House_02",
+    "folder": "ART/Fab_SlavicLite/cubby",
+    "position_m": [
+      -51.677103469283246,
+      10.933222982513353,
+      9.069544163470024
+    ],
+    "scale": [
+      1.045182362547632,
+      1.045182362547632,
+      1.045182362547632
+    ],
+    "rotation": [
+      0.0,
+      -2.6327459812164316,
+      0.0
+    ],
+    "bounds_center_m": [
+      -51.78867063365653,
+      10.954813738768177,
+      13.261873560655989
+    ],
+    "bounds_extent_m": [
+      4.8651603776069985,
+      4.051545533906344,
+      4.227108289939785
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_Cubby_01d_LOD0.EA03_Village_OutBuilding_Cubby_01d_LOD0",
+    "materials": [
+      "M_House_Slate"
+    ]
+  },
+  {
+    "label": "LowerWestA_House_03",
+    "folder": "ART/Fab_SlavicLite/pent",
+    "position_m": [
+      -53.48848496726806,
+      25.036526245933427,
+      9.214621438644244
+    ],
+    "scale": [
+      0.8326908249807249,
+      0.8326908249807249,
+      0.8326908249807249
+    ],
+    "rotation": [
+      0.0,
+      -3.9829406738281263,
+      0.0
+    ],
+    "bounds_center_m": [
+      -52.58974103708414,
+      25.18124821406483,
+      12.884645781786944
+    ],
+    "bounds_extent_m": [
+      4.14906879984127,
+      4.577717256778128,
+      3.67002482756976
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_PentHouse_01a_LOD0.EA03_Village_OutBuilding_PentHouse_01a_LOD0",
+    "materials": [
+      "M_House_Moss"
+    ]
+  },
+  {
+    "label": "LowerWestA_House_04",
+    "folder": "ART/Fab_SlavicLite/shed",
+    "position_m": [
+      -51.12031796793971,
+      36.79967561752398,
+      10.027675005338864
+    ],
+    "scale": [
+      0.8336434685522888,
+      0.8336434685522888,
+      0.8336434685522888
+    ],
+    "rotation": [
+      0.0,
+      -3.1412117481231694,
+      0.0
+    ],
+    "bounds_center_m": [
+      -51.605353368523474,
+      36.68758278573722,
+      13.10430115436084
+    ],
+    "bounds_extent_m": [
+      4.819041085179242,
+      3.6091296067615666,
+      3.0766263456281924
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_Shed_01a_LOD0.EA03_Village_OutBuilding_Shed_01a_LOD0",
+    "materials": [
+      "M_House_Clay"
+    ]
+  },
+  {
+    "label": "LowerWestA_House_05",
+    "folder": "ART/Fab_SlavicLite/cubby",
+    "position_m": [
+      -50.28528066749929,
+      46.757406152985894,
+      10.688442279854094
+    ],
+    "scale": [
+      0.961923847695391,
+      0.961923847695391,
+      0.961923847695391
+    ],
+    "rotation": [
+      0.0,
+      -0.5707861781120301,
+      0.0
+    ],
+    "bounds_center_m": [
+      -50.388608940238015,
+      46.77356969619203,
+      14.546813573757209
+    ],
+    "bounds_extent_m": [
+      4.354821527017239,
+      3.57696429453752,
+      3.8903797237572078
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_Cubby_01d_LOD0.EA03_Village_OutBuilding_Cubby_01d_LOD0",
+    "materials": [
+      "M_House_Russet"
+    ]
+  },
+  {
+    "label": "LowerWestA_House_06",
+    "folder": "ART/Fab_SlavicLite/shed",
+    "position_m": [
+      -55.89,
+      73.48,
+      13.352585077730785
+    ],
+    "scale": [
+      0.9051724137931035,
+      0.9051724137931035,
+      0.9051724137931035
+    ],
+    "rotation": [
+      0.0,
+      2.3137590885162362,
+      -0.0
+    ],
+    "bounds_center_m": [
+      -56.4026974624365,
+      73.30877506721382,
+      16.69319437019659
+    ],
+    "bounds_extent_m": [
+      5.18336716796015,
+      3.848603782798573,
+      3.340609505941386
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_Shed_01a_LOD0.EA03_Village_OutBuilding_Shed_01a_LOD0",
+    "materials": [
+      "M_House_Slate"
+    ]
+  },
+  {
+    "label": "LowerWestA_House_07",
+    "folder": "ART/Fab_SlavicLite/cubby",
+    "position_m": [
+      -46.35063988762622,
+      73.36614872487377,
+      13.389159359472202
+    ],
+    "scale": [
+      0.914534567229178,
+      0.914534567229178,
+      0.914534567229178
+    ],
+    "rotation": [
+      0.0,
+      3.9249780178070086,
+      -0.0
+    ],
+    "bounds_center_m": [
+      -46.4497799847821,
+      73.37376827812777,
+      17.05744758200992
+    ],
+    "bounds_extent_m": [
+      4.3273722349629224,
+      3.633242870222521,
+      3.698719753697311
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_Cubby_01d_LOD0.EA03_Village_OutBuilding_Cubby_01d_LOD0",
+    "materials": [
+      "M_House_Moss"
+    ]
+  },
+  {
+    "label": "LowerWestA_House_08",
+    "folder": "ART/Fab_SlavicLite/pent",
+    "position_m": [
+      -47.62108413410997,
+      84.12743138267979,
+      14.221628601695581
+    ],
+    "scale": [
+      0.7401696222050886,
+      0.7401696222050886,
+      0.7401696222050886
+    ],
+    "rotation": [
+      0.0,
+      3.3761715888977055,
+      -0.0
+    ],
+    "bounds_center_m": [
+      -46.84525863559364,
+      84.35734078165065,
+      17.483872462266874
+    ],
+    "bounds_extent_m": [
+      3.6498085316231665,
+      4.03544694036395,
+      3.2622442911731198
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_PentHouse_01a_LOD0.EA03_Village_OutBuilding_PentHouse_01a_LOD0",
+    "materials": [
+      "M_House_Clay"
+    ]
+  },
+  {
+    "label": "LowerWestB_House_01",
+    "folder": "ART/Fab_SlavicLite/cubby",
+    "position_m": [
+      -14.89,
+      0.42,
+      9.973531937648083
+    ],
+    "scale": [
+      0.8550434201736807,
+      0.8550434201736807,
+      0.8550434201736807
+    ],
+    "rotation": [
+      0.0,
+      0.16632264852523804,
+      -0.0
+    ],
+    "bounds_center_m": [
+      -14.982024586584927,
+      0.43318482360213695,
+      13.403195310006407
+    ],
+    "bounds_extent_m": [
+      3.8489513049407402,
+      3.152560745020559,
+      3.4581153100064057
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_Cubby_01d_LOD0.EA03_Village_OutBuilding_Cubby_01d_LOD0",
+    "materials": [
+      "M_House_Slate"
+    ]
+  },
+  {
+    "label": "LowerWestB_House_02",
+    "folder": "ART/Fab_SlavicLite/pent",
+    "position_m": [
+      -14.677103469283246,
+      11.433222982513353,
+      9.730248295992931
+    ],
+    "scale": [
+      0.7401696222050886,
+      0.7401696222050886,
+      0.7401696222050886
+    ],
+    "rotation": [
+      0.0,
+      -2.6327459812164316,
+      0.0
+    ],
+    "bounds_center_m": [
+      -13.881472992035794,
+      11.580653235712152,
+      12.992492156564222
+    ],
+    "bounds_extent_m": [
+      3.602383107634398,
+      3.9936200313374934,
+      3.2622442911731198
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_PentHouse_01a_LOD0.EA03_Village_OutBuilding_PentHouse_01a_LOD0",
+    "materials": [
+      "M_House_Moss"
+    ]
+  },
+  {
+    "label": "LowerWestB_House_03",
+    "folder": "ART/Fab_SlavicLite/shed",
+    "position_m": [
+      -16.48848496726806,
+      25.036526245933427,
+      9.082168131398062
+    ],
+    "scale": [
+      0.6896551724137931,
+      0.6896551724137931,
+      0.6896551724137931
+    ],
+    "rotation": [
+      0.0,
+      -3.9829406738281263,
+      0.0
+    ],
+    "bounds_center_m": [
+      -16.891063212140406,
+      24.949698946838094,
+      11.627394258991057
+    ],
+    "bounds_extent_m": [
+      4.023937431929228,
+      3.039523651253953,
+      2.545226290241057
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_Shed_01a_LOD0.EA03_Village_OutBuilding_Shed_01a_LOD0",
+    "materials": [
+      "M_House_Clay"
+    ]
+  },
+  {
+    "label": "LowerWestB_House_04",
+    "folder": "ART/Fab_SlavicLite/cubby",
+    "position_m": [
+      -14.120317967939705,
+      36.29967561752398,
+      10.02511142102918
+    ],
+    "scale": [
+      0.914534567229178,
+      0.914534567229178,
+      0.914534567229178
+    ],
+    "rotation": [
+      0.0,
+      -3.1412117481231694,
+      0.0
+    ],
+    "bounds_center_m": [
+      -14.21776774049555,
+      36.31943310432475,
+      13.693399643566899
+    ],
+    "bounds_extent_m": [
+      4.284959661743451,
+      3.5800014379399454,
+      3.698719753697312
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_Cubby_01d_LOD0.EA03_Village_OutBuilding_Cubby_01d_LOD0",
+    "materials": [
+      "M_House_Russet"
+    ]
+  },
+  {
+    "label": "LowerWestB_House_05",
+    "folder": "ART/Fab_SlavicLite/shed",
+    "position_m": [
+      -13.285280667499297,
+      45.757406152985894,
+      10.562925981398061
+    ],
+    "scale": [
+      0.6896551724137931,
+      0.6896551724137931,
+      0.6896551724137931
+    ],
+    "rotation": [
+      0.0,
+      -0.5707861781120301,
+      0.0
+    ],
+    "bounds_center_m": [
+      -13.681977432608171,
+      45.64677207295247,
+      13.108152108991057
+    ],
+    "bounds_extent_m": [
+      3.867648218482703,
+      2.817619470889913,
+      2.5452262902410574
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_Shed_01a_LOD0.EA03_Village_OutBuilding_Shed_01a_LOD0",
+    "materials": [
+      "M_House_Slate"
+    ]
+  },
+  {
+    "label": "LowerWestB_House_06",
+    "folder": "ART/Fab_SlavicLite/cubby",
+    "position_m": [
+      -12.23821263615186,
+      58.02052713414254,
+      11.803417925957099
+    ],
+    "scale": [
+      1.0153640614562458,
+      1.0153640614562458,
+      1.0153640614562458
+    ],
+    "rotation": [
+      0.0,
+      2.3137590885162362,
+      -0.0
+    ],
+    "bounds_center_m": [
+      -12.348001770974365,
+      58.03207830892171,
+      15.876143180632607
+    ],
+    "bounds_extent_m": [
+      4.70670694073684,
+      3.911491556582896,
+      4.106511930632608
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_Cubby_01d_LOD0.EA03_Village_OutBuilding_Cubby_01d_LOD0",
+    "materials": [
+      "M_House_Moss"
+    ]
+  },
+  {
+    "label": "LowerWestB_House_07",
+    "folder": "ART/Fab_SlavicLite/pent",
+    "position_m": [
+      -9.350639887626222,
+      71.36614872487377,
+      13.1220437955266
+    ],
+    "scale": [
+      0.6476484194294526,
+      0.6476484194294526,
+      0.6476484194294526
+    ],
+    "rotation": [
+      0.0,
+      3.9249780178070086,
+      -0.0
+    ],
+    "bounds_center_m": [
+      -8.673750597497452,
+      71.57381244599422,
+      15.976507173526478
+    ],
+    "bounds_extent_m": [
+      3.2238717079680477,
+      3.557652537331742,
+      2.8544637547764795
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_PentHouse_01a_LOD0.EA03_Village_OutBuilding_PentHouse_01a_LOD0",
+    "materials": [
+      "M_House_Clay"
+    ]
+  },
+  {
+    "label": "LowerEastA_House_01",
+    "folder": "ART/Fab_SlavicLite/pent",
+    "position_m": [
+      12.112267788569884,
+      -2.7616295552451176,
+      9.92041872265839
+    ],
+    "scale": [
+      0.6476484194294526,
+      0.6476484194294526,
+      0.6476484194294526
+    ],
+    "rotation": [
+      0.0,
+      0.16632264852523804,
+      -0.0
+    ],
+    "bounds_center_m": [
+      12.80131427184914,
+      -2.5987852245451597,
+      12.77488210065827
+    ],
+    "bounds_extent_m": [
+      3.0106505931784615,
+      3.368817786331275,
+      2.8544637547764795
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_PentHouse_01a_LOD0.EA03_Village_OutBuilding_PentHouse_01a_LOD0",
+    "materials": [
+      "M_House_Moss"
+    ]
+  },
+  {
+    "label": "LowerEastA_House_02",
+    "folder": "ART/Fab_SlavicLite/shed",
+    "position_m": [
+      11.122896530716757,
+      8.433222982513353,
+      10.136600213475583
+    ],
+    "scale": [
+      0.9051724137931035,
+      0.9051724137931035,
+      0.9051724137931035
+    ],
+    "rotation": [
+      0.0,
+      -2.6327459812164316,
+      0.0
+    ],
+    "bounds_center_m": [
+      10.59734456753336,
+      8.306843397174019,
+      13.477209505941389
+    ],
+    "bounds_extent_m": [
+      5.202447631404457,
+      3.8757618033374204,
+      3.3406095059413867
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_Shed_01a_LOD0.EA03_Village_OutBuilding_Shed_01a_LOD0",
+    "materials": [
+      "M_House_Clay"
+    ]
+  },
+  {
+    "label": "LowerEastA_House_03",
+    "folder": "ART/Fab_SlavicLite/cubby",
+    "position_m": [
+      11.111515032731939,
+      22.036526245933427,
+      9.477904028467112
+    ],
+    "scale": [
+      0.961923847695391,
+      0.961923847695391,
+      0.961923847695391
+    ],
+    "rotation": [
+      0.0,
+      -3.9829406738281263,
+      0.0
+    ],
+    "bounds_center_m": [
+      11.0093319617726,
+      22.05881104087221,
+      13.336275322370225
+    ],
+    "bounds_extent_m": [
+      4.554873059756144,
+      3.8256231408311443,
+      3.8903797237572078
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_Cubby_01d_LOD0.EA03_Village_OutBuilding_Cubby_01d_LOD0",
+    "materials": [
+      "M_House_Russet"
+    ]
+  },
+  {
+    "label": "LowerEastA_House_04",
+    "folder": "ART/Fab_SlavicLite/pent",
+    "position_m": [
+      9.879682032060295,
+      33.29967561752398,
+      9.828414010846195
+    ],
+    "scale": [
+      0.6476484194294526,
+      0.6476484194294526,
+      0.6476484194294526
+    ],
+    "rotation": [
+      0.0,
+      -3.1412117481231694,
+      0.0
+    ],
+    "bounds_center_m": [
+      10.576976081993083,
+      33.422493938995004,
+      12.682877388846073
+    ],
+    "bounds_extent_m": [
+      3.180525031392824,
+      3.5195130537420756,
+      2.8544637547764795
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_PentHouse_01a_LOD0.EA03_Village_OutBuilding_PentHouse_01a_LOD0",
+    "materials": [
+      "M_House_Slate"
+    ]
+  },
+  {
+    "label": "LowerEastA_House_05",
+    "folder": "ART/Fab_SlavicLite/shed",
+    "position_m": [
+      12.514719332500704,
+      42.757406152985894,
+      10.29118253297907
+    ],
+    "scale": [
+      0.7758620689655173,
+      0.7758620689655173,
+      0.7758620689655173
+    ],
+    "rotation": [
+      0.0,
+      -0.5707861781120301,
+      0.0
+    ],
+    "bounds_center_m": [
+      12.06843547175322,
+      42.63294281294829,
+      13.15456192652119
+    ],
+    "bounds_extent_m": [
+      4.351104245793042,
+      3.1698219047511587,
+      2.8633795765211905
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_Shed_01a_LOD0.EA03_Village_OutBuilding_Shed_01a_LOD0",
+    "materials": [
+      "M_House_Moss"
+    ]
+  },
+  {
+    "label": "LowerEastA_House_06",
+    "folder": "ART/Fab_SlavicLite/cubby",
+    "position_m": [
+      15.36178736384814,
+      55.02052713414254,
+      11.50064394941311
+    ],
+    "scale": [
+      1.122244488977956,
+      1.122244488977956,
+      1.122244488977956
+    ],
+    "rotation": [
+      0.0,
+      2.3137590885162362,
+      -0.0
+    ],
+    "bounds_center_m": [
+      15.24044147799169,
+      55.033294222056355,
+      16.00207712563341
+    ],
+    "bounds_extent_m": [
+      5.202149776603876,
+      4.3232275099074196,
+      4.538776344383409
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_Cubby_01d_LOD0.EA03_Village_OutBuilding_Cubby_01d_LOD0",
+    "materials": [
+      "M_House_Clay"
+    ]
+  },
+  {
+    "label": "LowerEastA_House_07",
+    "folder": "ART/Fab_SlavicLite/shed",
+    "position_m": [
+      14.649360112373778,
+      68.36614872487377,
+      12.82837613297907
+    ],
+    "scale": [
+      0.7758620689655173,
+      0.7758620689655173,
+      0.7758620689655173
+    ],
+    "rotation": [
+      0.0,
+      3.9249780178070086,
+      -0.0
+    ],
+    "bounds_center_m": [
+      14.214205516461067,
+      68.2070862056147,
+      15.69175552652119
+    ],
+    "bounds_extent_m": [
+      4.524075169399546,
+      3.415322186227022,
+      2.8633795765211905
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_Shed_01a_LOD0.EA03_Village_OutBuilding_Shed_01a_LOD0",
+    "materials": [
+      "M_House_Russet"
+    ]
+  },
+  {
+    "label": "LowerEastB_House_01",
+    "folder": "ART/Fab_SlavicLite/shed",
+    "position_m": [
+      53.11226778856989,
+      0.23837044475488234,
+      9.939800182979068
+    ],
+    "scale": [
+      0.7758620689655173,
+      0.7758620689655173,
+      0.7758620689655173
+    ],
+    "rotation": [
+      0.0,
+      0.16632264852523804,
+      -0.0
+    ],
+    "bounds_center_m": [
+      52.66762203271007,
+      0.1081761316193024,
+      12.803179576521188
+    ],
+    "bounds_extent_m": [
+      4.3292271610694115,
+      3.139467567506892,
+      2.8633795765211887
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_Shed_01a_LOD0.EA03_Village_OutBuilding_Shed_01a_LOD0",
+    "materials": [
+      "M_House_Clay"
+    ]
+  },
+  {
+    "label": "LowerEastB_House_02",
+    "folder": "ART/Fab_SlavicLite/cubby",
+    "position_m": [
+      52.12289653071675,
+      11.933222982513353,
+      10.255378892753821
+    ],
+    "scale": [
+      1.045182362547632,
+      1.045182362547632,
+      1.045182362547632
+    ],
+    "rotation": [
+      0.0,
+      -2.6327459812164316,
+      0.0
+    ],
+    "bounds_center_m": [
+      52.01132936634347,
+      11.954813738768177,
+      14.447708289939785
+    ],
+    "bounds_extent_m": [
+      4.8651603776069985,
+      4.051545533906344,
+      4.227108289939785
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_Cubby_01d_LOD0.EA03_Village_OutBuilding_Cubby_01d_LOD0",
+    "materials": [
+      "M_House_Russet"
+    ]
+  },
+  {
+    "label": "LowerEastB_House_03",
+    "folder": "ART/Fab_SlavicLite/pent",
+    "position_m": [
+      52.111515032731944,
+      26.036526245933427,
+      9.943850934172639
+    ],
+    "scale": [
+      0.8326908249807249,
+      0.8326908249807249,
+      0.8326908249807249
+    ],
+    "rotation": [
+      0.0,
+      -3.9829406738281263,
+      0.0
+    ],
+    "bounds_center_m": [
+      53.010258962915856,
+      26.18124821406483,
+      13.613875277315342
+    ],
+    "bounds_extent_m": [
+      4.14906879984127,
+      4.577717256778128,
+      3.67002482756976
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_PentHouse_01a_LOD0.EA03_Village_OutBuilding_PentHouse_01a_LOD0",
+    "materials": [
+      "M_House_Slate"
+    ]
+  },
+  {
+    "label": "LowerEastB_House_04",
+    "folder": "ART/Fab_SlavicLite/shed",
+    "position_m": [
+      50.87968203206029,
+      37.79967561752398,
+      10.109749294898057
+    ],
+    "scale": [
+      0.8336434685522888,
+      0.8336434685522888,
+      0.8336434685522888
+    ],
+    "rotation": [
+      0.0,
+      -3.1412117481231694,
+      0.0
+    ],
+    "bounds_center_m": [
+      50.394646631476526,
+      37.68758278573722,
+      13.186375443920033
+    ],
+    "bounds_extent_m": [
+      4.819041085179242,
+      3.6091296067615666,
+      3.0766263456281924
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_Shed_01a_LOD0.EA03_Village_OutBuilding_Shed_01a_LOD0",
+    "materials": [
+      "M_House_Moss"
+    ]
+  },
+  {
+    "label": "LowerEastB_House_05",
+    "folder": "ART/Fab_SlavicLite/cubby",
+    "position_m": [
+      53.5147193325007,
+      47.757406152985894,
+      10.783249686104092
+    ],
+    "scale": [
+      0.961923847695391,
+      0.961923847695391,
+      0.961923847695391
+    ],
+    "rotation": [
+      0.0,
+      -0.5707861781120301,
+      0.0
+    ],
+    "bounds_center_m": [
+      53.411391059761975,
+      47.77356969619203,
+      14.641620980007207
+    ],
+    "bounds_extent_m": [
+      4.354821527017239,
+      3.57696429453752,
+      3.8903797237572078
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_Cubby_01d_LOD0.EA03_Village_OutBuilding_Cubby_01d_LOD0",
+    "materials": [
+      "M_House_Clay"
+    ]
+  },
+  {
+    "label": "LowerEastB_House_06",
+    "folder": "ART/Fab_SlavicLite/shed",
+    "position_m": [
+      56.36178736384814,
+      60.52052713414254,
+      12.081832566209634
+    ],
+    "scale": [
+      0.9051724137931035,
+      0.9051724137931035,
+      0.9051724137931035
+    ],
+    "rotation": [
+      0.0,
+      2.3137590885162362,
+      -0.0
+    ],
+    "bounds_center_m": [
+      55.84908990141164,
+      60.34930220135635,
+      15.422441858675441
+    ],
+    "bounds_extent_m": [
+      5.18336716796015,
+      3.848603782798573,
+      3.340609505941386
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_Shed_01a_LOD0.EA03_Village_OutBuilding_Shed_01a_LOD0",
+    "materials": [
+      "M_House_Russet"
+    ]
+  },
+  {
+    "label": "LowerEastB_House_07",
+    "folder": "ART/Fab_SlavicLite/cubby",
+    "position_m": [
+      58.24,
+      72.11,
+      13.57488938445998
+    ],
+    "scale": [
+      0.914534567229178,
+      0.914534567229178,
+      0.914534567229178
+    ],
+    "rotation": [
+      0.0,
+      3.9249780178070086,
+      -0.0
+    ],
+    "bounds_center_m": [
+      58.14085990284412,
+      72.117619553254,
+      17.243177606997698
+    ],
+    "bounds_extent_m": [
+      4.3273722349629224,
+      3.633242870222521,
+      3.698719753697311
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_Cubby_01d_LOD0.EA03_Village_OutBuilding_Cubby_01d_LOD0",
+    "materials": [
+      "M_House_Slate"
+    ]
+  },
+  {
+    "label": "MarketWest_House_01",
+    "folder": "ART/Fab_SlavicLite/shed",
+    "position_m": [
+      -32.23,
+      81.51,
+      14.306252078938346
+    ],
+    "scale": [
+      0.7758620689655173,
+      0.7758620689655173,
+      0.7758620689655173
+    ],
+    "rotation": [
+      0.0,
+      0.16632264852523804,
+      -0.0
+    ],
+    "bounds_center_m": [
+      -32.674645755859814,
+      81.37980568686444,
+      17.169631472480468
+    ],
+    "bounds_extent_m": [
+      4.3292271610694115,
+      3.1394675675068946,
+      2.8633795765211905
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_Shed_01a_LOD0.EA03_Village_OutBuilding_Shed_01a_LOD0",
+    "materials": [
+      "M_House_Moss"
+    ]
+  },
+  {
+    "label": "MarketWest_House_02",
+    "folder": "ART/Fab_SlavicLite/cubby",
+    "position_m": [
+      -29.17,
+      89.61,
+      14.628854087459203
+    ],
+    "scale": [
+      1.122244488977956,
+      1.122244488977956,
+      1.122244488977956
+    ],
+    "rotation": [
+      0.0,
+      -2.6327459812164316,
+      0.0
+    ],
+    "bounds_center_m": [
+      -29.289793100089852,
+      89.6331826598765,
+      19.130287263679502
+    ],
+    "bounds_extent_m": [
+      5.22387251967672,
+      4.350269206788726,
+      4.538776344383409
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_Cubby_01d_LOD0.EA03_Village_OutBuilding_Cubby_01d_LOD0",
+    "materials": [
+      "M_House_Clay"
+    ]
+  },
+  {
+    "label": "MarketWest_House_03",
+    "folder": "ART/Fab_SlavicLite/pent",
+    "position_m": [
+      -31.46,
+      104.62,
+      15.26292359562516
+    ],
+    "scale": [
+      0.9323405632890904,
+      0.9323405632890904,
+      0.9323405632890904
+    ],
+    "rotation": [
+      0.0,
+      -3.9829406738281263,
+      0.0
+    ],
+    "bounds_center_m": [
+      -30.453701627324016,
+      104.78204112888005,
+      19.372146924043065
+    ],
+    "bounds_extent_m": [
+      4.645595971420416,
+      5.1255416268835505,
+      4.109223870817292
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_PentHouse_01a_LOD0.EA03_Village_OutBuilding_PentHouse_01a_LOD0",
+    "materials": [
+      "M_House_Russet"
+    ]
+  },
+  {
+    "label": "MarketWest_House_04",
+    "folder": "ART/Fab_SlavicLite/shed",
+    "position_m": [
+      -36.16,
+      115.64,
+      15.410360213475581
+    ],
+    "scale": [
+      0.9051724137931035,
+      0.9051724137931035,
+      0.9051724137931035
+    ],
+    "rotation": [
+      0.0,
+      -3.1412117481231694,
+      0.0
+    ],
+    "bounds_center_m": [
+      -36.686652796889234,
+      115.51828928919275,
+      18.750969505941388
+    ],
+    "bounds_extent_m": [
+      5.232528311911351,
+      3.918803038807255,
+      3.340609505941386
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_Shed_01a_LOD0.EA03_Village_OutBuilding_Shed_01a_LOD0",
+    "materials": [
+      "M_House_Slate"
+    ]
+  },
+  {
+    "label": "MarketWest_House_05",
+    "folder": "ART/Fab_SlavicLite/cubby",
+    "position_m": [
+      -26.285280667499293,
+      128.75740615298588,
+      15.758208429854092
+    ],
+    "scale": [
+      0.961923847695391,
+      0.961923847695391,
+      0.961923847695391
+    ],
+    "rotation": [
+      0.0,
+      -0.5707861781120301,
+      0.0
+    ],
+    "bounds_center_m": [
+      -26.38860894023802,
+      128.773569696192,
+      19.616579723757205
+    ],
+    "bounds_extent_m": [
+      4.354821527017239,
+      3.57696429453752,
+      3.8903797237572078
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_Cubby_01d_LOD0.EA03_Village_OutBuilding_Cubby_01d_LOD0",
+    "materials": [
+      "M_House_Moss"
+    ]
+  },
+  {
+    "label": "MarketEast_House_01",
+    "folder": "ART/Fab_SlavicLite/cubby",
+    "position_m": [
+      45.0,
+      62.0,
+      12.21237717985409
+    ],
+    "scale": [
+      0.961923847695391,
+      0.961923847695391,
+      0.961923847695391
+    ],
+    "rotation": [
+      0.0,
+      0.16632264852523804,
+      -0.0
+    ],
+    "bounds_center_m": [
+      44.89647234009196,
+      62.01483292655241,
+      16.070748473757206
+    ],
+    "bounds_extent_m": [
+      4.330070218058336,
+      3.5466308381481304,
+      3.8903797237572078
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_Cubby_01d_LOD0.EA03_Village_OutBuilding_Cubby_01d_LOD0",
+    "materials": [
+      "M_House_Russet"
+    ]
+  },
+  {
+    "label": "MarketEast_House_02",
+    "folder": "ART/Fab_SlavicLite/shed",
+    "position_m": [
+      68.0,
+      62.0,
+      12.278158514548839
+    ],
+    "scale": [
+      0.9051724137931035,
+      0.9051724137931035,
+      0.9051724137931035
+    ],
+    "rotation": [
+      0.0,
+      -2.6327459812164316,
+      0.0
+    ],
+    "bounds_center_m": [
+      67.4744480368166,
+      61.873620414660664,
+      15.618767807014644
+    ],
+    "bounds_extent_m": [
+      5.202447631404457,
+      3.875761803337418,
+      3.340609505941386
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_Shed_01a_LOD0.EA03_Village_OutBuilding_Shed_01a_LOD0",
+    "materials": [
+      "M_House_Slate"
+    ]
+  },
+  {
+    "label": "MarketEast_House_03",
+    "folder": "ART/Fab_SlavicLite/cubby",
+    "position_m": [
+      32.09,
+      102.59,
+      15.129168429854094
+    ],
+    "scale": [
+      0.961923847695391,
+      0.961923847695391,
+      0.961923847695391
+    ],
+    "rotation": [
+      0.0,
+      -3.9829406738281263,
+      0.0
+    ],
+    "bounds_center_m": [
+      31.987816929040665,
+      102.61228479493879,
+      18.98753972375721
+    ],
+    "bounds_extent_m": [
+      4.554873059756146,
+      3.8256231408311394,
+      3.8903797237572064
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_Cubby_01d_LOD0.EA03_Village_OutBuilding_Cubby_01d_LOD0",
+    "materials": [
+      "M_House_Moss"
+    ]
+  },
+  {
+    "label": "MarketEast_House_04",
+    "folder": "ART/Fab_SlavicLite/pent",
+    "position_m": [
+      31.89,
+      114.34,
+      15.465866596172464
+    ],
+    "scale": [
+      0.7401696222050886,
+      0.7401696222050886,
+      0.7401696222050886
+    ],
+    "rotation": [
+      0.0,
+      -3.1412117481231694,
+      0.0
+    ],
+    "bounds_center_m": [
+      32.68690748563747,
+      114.48036379596688,
+      18.728110456743753
+    ],
+    "bounds_extent_m": [
+      3.6348857501632255,
+      4.022300632848092,
+      3.2622442911731198
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_PentHouse_01a_LOD0.EA03_Village_OutBuilding_PentHouse_01a_LOD0",
+    "materials": [
+      "M_House_Clay"
+    ]
+  },
+  {
+    "label": "MarketEast_House_05",
+    "folder": "ART/Fab_SlavicLite/shed",
+    "position_m": [
+      32.99,
+      124.41,
+      15.620840182979068
+    ],
+    "scale": [
+      0.7758620689655173,
+      0.7758620689655173,
+      0.7758620689655173
+    ],
+    "rotation": [
+      0.0,
+      -0.5707861781120301,
+      0.0
+    ],
+    "bounds_center_m": [
+      32.54371613925252,
+      124.2855366599624,
+      18.484219576521188
+    ],
+    "bounds_extent_m": [
+      4.351104245793044,
+      3.169821904751152,
+      2.8633795765211905
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_Shed_01a_LOD0.EA03_Village_OutBuilding_Shed_01a_LOD0",
+    "materials": [
+      "M_House_Russet"
+    ]
+  },
+  {
+    "label": "UpperWest_House_01",
+    "folder": "ART/Fab_SlavicLite/cubby",
+    "position_m": [
+      -31.14,
+      191.97,
+      19.288917689041124
+    ],
+    "scale": [
+      0.961923847695391,
+      0.961923847695391,
+      0.961923847695391
+    ],
+    "rotation": [
+      0.0,
+      1.377573847770691,
+      -0.0
+    ],
+    "bounds_center_m": [
+      -31.243818076311,
+      191.9826411671624,
+      23.147288982944236
+    ],
+    "bounds_extent_m": [
+      4.403543846554207,
+      3.636936880457979,
+      3.8903797237572064
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_Cubby_01d_LOD0.EA03_Village_OutBuilding_Cubby_01d_LOD0",
+    "materials": [
+      "M_House_Moss"
+    ]
+  },
+  {
+    "label": "UpperWest_House_02",
+    "folder": "ART/Fab_SlavicLite/pent",
+    "position_m": [
+      -30.67,
+      200.63,
+      20.083465118512937
+    ],
+    "scale": [
+      0.9252120277563608,
+      0.9252120277563608,
+      0.9252120277563608
+    ],
+    "rotation": [
+      0.0,
+      -1.5885926485061646,
+      0.0
+    ],
+    "bounds_center_m": [
+      -29.678985306746917,
+      200.83238058843207,
+      24.16126994422705
+    ],
+    "bounds_extent_m": [
+      4.418438847219359,
+      4.91717471606291,
+      4.0778053639664
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_PentHouse_01a_LOD0.EA03_Village_OutBuilding_PentHouse_01a_LOD0",
+    "materials": [
+      "M_House_Clay"
+    ]
+  },
+  {
+    "label": "UpperWest_House_03",
+    "folder": "ART/Fab_SlavicLite/shed",
+    "position_m": [
+      -24.284345745140186,
+      210.76815415437235,
+      20.60237670078896
+    ],
+    "scale": [
+      0.7758620689655173,
+      0.7758620689655173,
+      0.7758620689655173
+    ],
+    "rotation": [
+      0.0,
+      -3.6805121898651123,
+      0.0
+    ],
+    "bounds_center_m": [
+      -24.736724368639674,
+      210.6680842369261,
+      23.465756094331077
+    ],
+    "bounds_extent_m": [
+      4.511985242541855,
+      3.3978146287619895,
+      2.8633795765211882
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_Shed_01a_LOD0.EA03_Village_OutBuilding_Shed_01a_LOD0",
+    "materials": [
+      "M_House_Russet"
+    ]
+  },
+  {
+    "label": "UpperWest_House_04",
+    "folder": "ART/Fab_SlavicLite/cubby",
+    "position_m": [
+      -22.529186466745013,
+      223.89903314424708,
+      21.892573868031945
+    ],
+    "scale": [
+      1.122244488977956,
+      1.122244488977956,
+      1.122244488977956
+    ],
+    "rotation": [
+      0.0,
+      -3.746942996978761,
+      0.0
+    ],
+    "bounds_center_m": [
+      -22.648506125893142,
+      223.92454081934423,
+      26.394007044252245
+    ],
+    "bounds_extent_m": [
+      5.298473552042451,
+      4.443660330840539,
+      4.538776344383409
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_Cubby_01d_LOD0.EA03_Village_OutBuilding_Cubby_01d_LOD0",
+    "materials": [
+      "M_House_Slate"
+    ]
+  },
+  {
+    "label": "UpperWest_House_05",
+    "folder": "ART/Fab_SlavicLite/shed",
+    "position_m": [
+      -22.082145112810494,
+      233.87133040968126,
+      22.28315270680426
+    ],
+    "scale": [
+      0.7758620689655173,
+      0.7758620689655173,
+      0.7758620689655173
+    ],
+    "rotation": [
+      0.0,
+      -1.7513260841369631,
+      0.0
+    ],
+    "bounds_center_m": [
+      -22.530898544369798,
+      233.75608820803296,
+      25.146532100346377
+    ],
+    "bounds_extent_m": [
+      4.413714662493094,
+      3.2575106518177197,
+      2.8633795765211882
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_Shed_01a_LOD0.EA03_Village_OutBuilding_Shed_01a_LOD0",
+    "materials": [
+      "M_House_Moss"
+    ]
+  },
+  {
+    "label": "UpperWest_House_06",
+    "folder": "ART/Fab_SlavicLite/cubby",
+    "position_m": [
+      -20.984536228627825,
+      244.13412359234454,
+      22.530743168163113
+    ],
+    "scale": [
+      1.122244488977956,
+      1.122244488977956,
+      1.122244488977956
+    ],
+    "rotation": [
+      0.0,
+      1.2080944776535034,
+      -0.0
+    ],
+    "bounds_center_m": [
+      -21.105613163570506,
+      244.14922982857243,
+      27.032176344383412
+    ],
+    "bounds_extent_m": [
+      5.125611191640255,
+      4.2284644040513015,
+      4.538776344383409
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_Cubby_01d_LOD0.EA03_Village_OutBuilding_Cubby_01d_LOD0",
+    "materials": [
+      "M_House_Clay"
+    ]
+  },
+  {
+    "label": "UpperWest_House_07",
+    "folder": "ART/Fab_SlavicLite/pent",
+    "position_m": [
+      -17.62,
+      258.5,
+      23.148619336486934
+    ],
+    "scale": [
+      0.8326908249807249,
+      0.8326908249807249,
+      0.8326908249807249
+    ],
+    "rotation": [
+      0.0,
+      3.50266695022583,
+      -0.0
+    ],
+    "bounds_center_m": [
+      -16.747769473829248,
+      258.760574383465,
+      26.81864367962964
+    ],
+    "bounds_extent_m": [
+      4.115044249321797,
+      4.547808485180285,
+      3.6700248275697596
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_PentHouse_01a_LOD0.EA03_Village_OutBuilding_PentHouse_01a_LOD0",
+    "materials": [
+      "M_House_Russet"
+    ]
+  },
+  {
+    "label": "UpperEast_House_01",
+    "folder": "ART/Fab_SlavicLite/shed",
+    "position_m": [
+      20.929862361597653,
+      177.57696587933845,
+      17.870436443980687
+    ],
+    "scale": [
+      0.7758620689655173,
+      0.7758620689655173,
+      0.7758620689655173
+    ],
+    "rotation": [
+      0.0,
+      1.377573847770691,
+      -0.0
+    ],
+    "bounds_center_m": [
+      20.488068105695657,
+      177.43740140381192,
+      20.73381583752281
+    ],
+    "bounds_extent_m": [
+      4.394094015035503,
+      3.2298967385220747,
+      2.8633795765211882
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_Shed_01a_LOD0.EA03_Village_OutBuilding_Shed_01a_LOD0",
+    "materials": [
+      "M_House_Russet"
+    ]
+  },
+  {
+    "label": "UpperEast_House_02",
+    "folder": "ART/Fab_SlavicLite/cubby",
+    "position_m": [
+      19.827699948327908,
+      187.66071097722173,
+      18.4976390541798
+    ],
+    "scale": [
+      1.122244488977956,
+      1.122244488977956,
+      1.122244488977956
+    ],
+    "rotation": [
+      0.0,
+      -1.5885926485061646,
+      0.0
+    ],
+    "bounds_center_m": [
+      19.70750428458727,
+      187.68170680933272,
+      22.999072230400103
+    ],
+    "bounds_extent_m": [
+      5.152167673813708,
+      4.261255224847701,
+      4.538776344383409
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_Cubby_01d_LOD0.EA03_Village_OutBuilding_Cubby_01d_LOD0",
+    "materials": [
+      "M_House_Slate"
+    ]
+  },
+  {
+    "label": "UpperEast_House_03",
+    "folder": "ART/Fab_SlavicLite/pent",
+    "position_m": [
+      19.315654254859815,
+      200.76815415437235,
+      19.696196524005757
+    ],
+    "scale": [
+      0.9323405632890904,
+      0.9323405632890904,
+      0.9323405632890904
+    ],
+    "rotation": [
+      0.0,
+      -3.6805121898651123,
+      0.0
+    ],
+    "bounds_center_m": [
+      20.32108329970349,
+      200.93550461921726,
+      23.805419852423658
+    ],
+    "bounds_extent_m": [
+      4.6216445871903495,
+      5.104496056562893,
+      4.109223870817291
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_PentHouse_01a_LOD0.EA03_Village_OutBuilding_PentHouse_01a_LOD0",
+    "materials": [
+      "M_House_Moss"
+    ]
+  },
+  {
+    "label": "UpperEast_House_04",
+    "folder": "ART/Fab_SlavicLite/shed",
+    "position_m": [
+      17.470813533254987,
+      214.39903314424708,
+      21.088627590366805
+    ],
+    "scale": [
+      0.9051724137931035,
+      0.9051724137931035,
+      0.9051724137931035
+    ],
+    "rotation": [
+      0.0,
+      -3.746942996978761,
+      0.0
+    ],
+    "bounds_center_m": [
+      16.94290346513291,
+      214.28289690712958,
+      24.429236882832612
+    ],
+    "bounds_extent_m": [
+      5.267825126133442,
+      3.969674616076627,
+      3.3406095059413885
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_Shed_01a_LOD0.EA03_Village_OutBuilding_Shed_01a_LOD0",
+    "materials": [
+      "M_House_Clay"
+    ]
+  },
+  {
+    "label": "UpperEast_House_05",
+    "folder": "ART/Fab_SlavicLite/cubby",
+    "position_m": [
+      19.717854887189503,
+      224.87133040968126,
+      21.898770904257262
+    ],
+    "scale": [
+      0.961923847695391,
+      0.961923847695391,
+      0.961923847695391
+    ],
+    "rotation": [
+      0.0,
+      -1.7513260841369631,
+      0.0
+    ],
+    "bounds_center_m": [
+      19.614881562102763,
+      224.88961937894484,
+      25.757142198160377
+    ],
+    "bounds_extent_m": [
+      4.425819587567485,
+      3.664476070713863,
+      3.89037972375721
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_Cubby_01d_LOD0.EA03_Village_OutBuilding_Cubby_01d_LOD0",
+    "materials": [
+      "M_House_Russet"
+    ]
+  },
+  {
+    "label": "UpperEast_House_06",
+    "folder": "ART/Fab_SlavicLite/shed",
+    "position_m": [
+      22.615463771372177,
+      235.63412359234454,
+      22.2583548595167
+    ],
+    "scale": [
+      0.9051724137931035,
+      0.9051724137931035,
+      0.9051724137931035
+    ],
+    "rotation": [
+      0.0,
+      1.2080944776535034,
+      -0.0
+    ],
+    "bounds_center_m": [
+      22.09955776246432,
+      235.47282369907356,
+      25.598964151982504
+    ],
+    "bounds_extent_m": [
+      5.1159911733359795,
+      3.753551366582724,
+      3.3406095059413885
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_Shed_01a_LOD0.EA03_Village_OutBuilding_Shed_01a_LOD0",
+    "materials": [
+      "M_House_Slate"
+    ]
+  },
+  {
+    "label": "Riverside_House_01",
+    "folder": "ART/Fab_SlavicLite/pent",
+    "position_m": [
+      -175.0,
+      -152.65,
+      3.7276569875901817
+    ],
+    "scale": [
+      0.6476484194294526,
+      0.6476484194294526,
+      0.6476484194294526
+    ],
+    "rotation": [
+      0.0,
+      1.377573847770691,
+      -0.0
+    ],
+    "bounds_center_m": [
+      -174.3145498080564,
+      -152.47262647738432,
+      6.58212036559006
+    ],
+    "bounds_extent_m": [
+      3.0808221647090615,
+      3.431294035716564,
+      2.8544637547764795
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_PentHouse_01a_LOD0.EA03_Village_OutBuilding_PentHouse_01a_LOD0",
+    "materials": [
+      "M_House_Russet"
+    ]
+  },
+  {
+    "label": "Riverside_House_02",
+    "folder": "ART/Fab_SlavicLite/shed",
+    "position_m": [
+      -160.0,
+      -150.43,
+      3.469579795507349
+    ],
+    "scale": [
+      0.9051724137931035,
+      0.9051724137931035,
+      0.9051724137931035
+    ],
+    "rotation": [
+      0.0,
+      -1.5885926485061646,
+      0.0
+    ],
+    "bounds_center_m": [
+      -160.52316169164055,
+      -150.56593568330746,
+      6.810189087973156
+    ],
+    "bounds_extent_m": [
+      5.139393908325956,
+      3.7864217954062953,
+      3.340609505941387
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_Shed_01a_LOD0.EA03_Village_OutBuilding_Shed_01a_LOD0",
+    "materials": [
+      "M_House_Slate"
+    ]
+  },
+  {
+    "label": "Riverside_House_03",
+    "folder": "ART/Fab_SlavicLite/cubby",
+    "position_m": [
+      -145.0,
+      -148.2,
+      3.3446746048955776
+    ],
+    "scale": [
+      0.961923847695391,
+      0.961923847695391,
+      0.961923847695391
+    ],
+    "rotation": [
+      0.0,
+      -3.6805121898651123,
+      0.0
+    ],
+    "bounds_center_m": [
+      -145.10229927439934,
+      -148.1782548733388,
+      7.203045898798694
+    ],
+    "bounds_extent_m": [
+      4.537784204772816,
+      3.8041190681377883,
+      3.890379723757208
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_Cubby_01d_LOD0.EA03_Village_OutBuilding_Cubby_01d_LOD0",
+    "materials": [
+      "M_House_Moss"
+    ]
+  },
+  {
+    "label": "Riverside_House_04",
+    "folder": "ART/Fab_SlavicLite/pent",
+    "position_m": [
+      -130.0,
+      -145.98,
+      3.168663808536964
+    ],
+    "scale": [
+      0.6476484194294526,
+      0.6476484194294526,
+      0.6476484194294526
+    ],
+    "rotation": [
+      0.0,
+      -3.746942996978761,
+      0.0
+    ],
+    "bounds_center_m": [
+      -129.30144650535317,
+      -145.86456020063545,
+      6.0231271865368425
+    ],
+    "bounds_extent_m": [
+      3.2140780338243893,
+      3.5490472112659153,
+      2.8544637547764795
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_PentHouse_01a_LOD0.EA03_Village_OutBuilding_PentHouse_01a_LOD0",
+    "materials": [
+      "M_House_Clay"
+    ]
+  },
+  {
+    "label": "Riverside_House_05",
+    "folder": "ART/Fab_SlavicLite/shed",
+    "position_m": [
+      -115.0,
+      -143.8,
+      3.3103408461888146
+    ],
+    "scale": [
+      0.7758620689655173,
+      0.7758620689655173,
+      0.7758620689655173
+    ],
+    "rotation": [
+      0.0,
+      -1.7513260841369631,
+      0.0
+    ],
+    "bounds_center_m": [
+      -115.44875343155931,
+      -143.9152422016483,
+      6.173720239730935
+    ],
+    "bounds_extent_m": [
+      4.413714662493094,
+      3.2575106518177197,
+      2.863379576521189
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_Shed_01a_LOD0.EA03_Village_OutBuilding_Shed_01a_LOD0",
+    "materials": [
+      "M_House_Russet"
+    ]
+  },
+  {
+    "label": "Riverside_House_06",
+    "folder": "ART/Fab_SlavicLite/cubby",
+    "position_m": [
+      -85.0,
+      -139.6,
+      3.699005772467773
+    ],
+    "scale": [
+      1.122244488977956,
+      1.122244488977956,
+      1.122244488977956
+    ],
+    "rotation": [
+      0.0,
+      1.2080944776535034,
+      -0.0
+    ],
+    "bounds_center_m": [
+      -85.12107693494268,
+      -139.58489376377213,
+      8.200438948688072
+    ],
+    "bounds_extent_m": [
+      5.125611191640255,
+      4.2284644040513015,
+      4.5387763443834075
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_Cubby_01d_LOD0.EA03_Village_OutBuilding_Cubby_01d_LOD0",
+    "materials": [
+      "M_House_Slate"
+    ]
+  },
+  {
+    "label": "Riverside_House_07",
+    "folder": "ART/Fab_SlavicLite/shed",
+    "position_m": [
+      -70.0,
+      -137.5,
+      3.93515825932696
+    ],
+    "scale": [
+      0.7758620689655173,
+      0.7758620689655173,
+      0.7758620689655173
+    ],
+    "rotation": [
+      0.0,
+      3.50266695022583,
+      -0.0
+    ],
+    "bounds_center_m": [
+      -70.43631516999034,
+      -137.6558508255137,
+      6.798537652869079
+    ],
+    "bounds_extent_m": [
+      4.503138374775571,
+      3.3850392553183157,
+      2.863379576521189
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_Shed_01a_LOD0.EA03_Village_OutBuilding_Shed_01a_LOD0",
+    "materials": [
+      "M_House_Moss"
+    ]
+  },
+  {
+    "label": "Riverside_House_08",
+    "folder": "ART/Fab_SlavicLite/cubby",
+    "position_m": [
+      -55.0,
+      -135.57,
+      4.27058349955158
+    ],
+    "scale": [
+      1.045182362547632,
+      1.045182362547632,
+      1.045182362547632
+    ],
+    "rotation": [
+      0.0,
+      3.8696236610412615,
+      -0.0
+    ],
+    "bounds_center_m": [
+      -55.1132945023071,
+      -135.56118247943368,
+      8.462912896737544
+    ],
+    "bounds_extent_m": [
+      4.942175180562863,
+      4.1480055217700285,
+      4.227108289939784
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_Cubby_01d_LOD0.EA03_Village_OutBuilding_Cubby_01d_LOD0",
+    "materials": [
+      "M_House_Clay"
+    ]
+  },
+  {
+    "label": "Riverside_House_09",
+    "folder": "ART/Fab_SlavicLite/pent",
+    "position_m": [
+      -40.0,
+      -133.64,
+      4.5547574096438925
+    ],
+    "scale": [
+      0.8326908249807249,
+      0.8326908249807249,
+      0.8326908249807249
+    ],
+    "rotation": [
+      0.0,
+      2.107018232345581,
+      -0.0
+    ],
+    "bounds_center_m": [
+      -39.12168161112606,
+      -133.40074718837982,
+      8.224781752786594
+    ],
+    "bounds_extent_m": [
+      4.014538586999517,
+      4.4590894444689,
+      3.67002482756976
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_PentHouse_01a_LOD0.EA03_Village_OutBuilding_PentHouse_01a_LOD0",
+    "materials": [
+      "M_House_Russet"
+    ]
+  },
+  {
+    "label": "CornerBuilding_01",
+    "folder": "ART/Fab_SlavicLite/admin",
+    "position_m": [
+      -72.0,
+      96.0,
+      15.156561500571716
+    ],
+    "scale": [
+      0.6976406181871033,
+      0.6976406181871033,
+      0.6976406181871033
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -71.79584324830586,
+      95.97164621441398,
+      18.84452727767673
+    ],
+    "bounds_extent_m": [
+      7.200018437401595,
+      4.1549316808400185,
+      3.9359772776767294
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Town_Building_Administrative__01a_LOD0.EA03_Town_Building_Administrative__01a_LOD0",
+    "materials": [
+      "M_House_Clay"
+    ]
+  },
+  {
+    "label": "CornerBuilding_02",
+    "folder": "ART/Fab_SlavicLite/admin",
+    "position_m": [
+      67.0,
+      80.0,
+      14.130227400533604
+    ],
+    "scale": [
+      0.6511312436412965,
+      0.6511312436412965,
+      0.6511312436412965
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      67.1905463015812,
+      79.97353646678637,
+      17.572328792498283
+    ],
+    "bounds_extent_m": [
+      6.720017208241488,
+      3.877936235450684,
+      3.673578792498282
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Town_Building_Administrative__01a_LOD0.EA03_Town_Building_Administrative__01a_LOD0",
+    "materials": [
+      "M_House_Russet"
+    ]
+  },
+  {
+    "label": "CornerBuilding_03",
+    "folder": "ART/Fab_SlavicLite/admin",
+    "position_m": [
+      -70.0,
+      215.0,
+      21.191956741058743
+    ],
+    "scale": [
+      0.6511312436412965,
+      0.6511312436412965,
+      0.6511312436412965
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -69.8094536984188,
+      214.97353646678636,
+      24.634058133023423
+    ],
+    "bounds_extent_m": [
+      6.720017208241488,
+      3.8779362354506883,
+      3.6735787924982835
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Town_Building_Administrative__01a_LOD0.EA03_Town_Building_Administrative__01a_LOD0",
+    "materials": [
+      "M_House_Slate"
+    ]
+  },
+  {
+    "label": "CornerBuilding_04",
+    "folder": "ART/Fab_SlavicLite/admin",
+    "position_m": [
+      74.74,
+      227.82,
+      22.334472813511464
+    ],
+    "scale": [
+      0.6976406181871033,
+      0.6976406181871033,
+      0.6976406181871033
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      74.94415675169412,
+      227.79164621441396,
+      26.02243859061648
+    ],
+    "bounds_extent_m": [
+      7.2000184374015905,
+      4.1549316808400185,
+      3.9359772776767294
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Town_Building_Administrative__01a_LOD0.EA03_Town_Building_Administrative__01a_LOD0",
+    "materials": [
+      "M_House_Moss"
+    ]
+  },
+  {
+    "label": "CornerBuilding_05",
+    "folder": "ART/Fab_SlavicLite/admin",
+    "position_m": [
+      -133.0,
+      -155.0,
+      3.322866605746853
+    ],
+    "scale": [
+      0.8371687418245242,
+      0.8371687418245242,
+      0.8371687418245242
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -132.75501189796702,
+      -155.03402454270324,
+      7.748425538272873
+    ],
+    "bounds_extent_m": [
+      8.640022124881908,
+      4.985918017008025,
+      4.723172733212078
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Town_Building_Administrative__01a_LOD0.EA03_Town_Building_Administrative__01a_LOD0",
+    "materials": [
+      "M_House_Clay"
+    ]
+  },
+  {
+    "label": "CornerBuilding_06",
+    "folder": "ART/Fab_SlavicLite/admin",
+    "position_m": [
+      115.0,
+      -132.0,
+      6.6362924465233935
+    ],
+    "scale": [
+      0.7441499927329103,
+      0.7441499927329103,
+      0.7441499927329103
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      115.21776720180709,
+      -132.03024403795843,
+      10.570122608768743
+    ],
+    "bounds_extent_m": [
+      7.6800196665616935,
+      4.431927126229348,
+      4.198375762855179
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Town_Building_Administrative__01a_LOD0.EA03_Town_Building_Administrative__01a_LOD0",
+    "materials": [
+      "M_House_Russet"
+    ]
+  },
+  {
+    "label": "CornerBuilding_07",
+    "folder": "ART/Fab_SlavicLite/admin",
+    "position_m": [
+      -94.0,
+      22.0,
+      9.202221150533601
+    ],
+    "scale": [
+      0.6511312436412965,
+      0.6511312436412965,
+      0.6511312436412965
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -93.8094536984188,
+      21.97353646678637,
+      12.64432254249828
+    ],
+    "bounds_extent_m": [
+      6.7200172082414795,
+      3.8779362354506803,
+      3.6735787924982812
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Town_Building_Administrative__01a_LOD0.EA03_Town_Building_Administrative__01a_LOD0",
+    "materials": [
+      "M_House_Slate"
+    ]
+  },
+  {
+    "label": "CornerBuilding_08",
+    "folder": "ART/Fab_SlavicLite/admin",
+    "position_m": [
+      82.0,
+      38.0,
+      10.140178222322502
+    ],
+    "scale": [
+      0.6976406181871033,
+      0.6976406181871033,
+      0.6976406181871033
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      82.20415675169414,
+      37.971646214413965,
+      13.828143999427516
+    ],
+    "bounds_extent_m": [
+      7.200018437401595,
+      4.154931680840016,
+      3.9359772776767294
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Town_Building_Administrative__01a_LOD0.EA03_Town_Building_Administrative__01a_LOD0",
+    "materials": [
+      "M_House_Moss"
+    ]
+  },
+  {
+    "label": "InfillBuilding_01",
+    "folder": "ART/Fab_SlavicLite/cubby",
+    "position_m": [
+      -17.0,
+      -46.0,
+      8.775407485582027
+    ],
+    "scale": [
+      1.068804275217101,
+      1.068804275217101,
+      1.068804275217101
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -17.114982406218687,
+      -45.98318512024048,
+      13.062486701029933
+    ],
+    "bounds_extent_m": [
+      4.799810395530645,
+      3.9267842325275524,
+      4.322644137508007
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_Cubby_01d_LOD0.EA03_Village_OutBuilding_Cubby_01d_LOD0",
+    "materials": [
+      "M_House_Russet"
+    ]
+  },
+  {
+    "label": "InfillBuilding_02",
+    "folder": "ART/Fab_SlavicLite/pent",
+    "position_m": [
+      17.0,
+      -46.0,
+      8.106427819778963
+    ],
+    "scale": [
+      0.8326908249807249,
+      0.8326908249807249,
+      0.8326908249807249
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      17.886520952799728,
+      -45.793201304768814,
+      11.776452162921665
+    ],
+    "bounds_extent_m": [
+      3.85831186828378,
+      4.32015516388481,
+      3.67002482756976
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_PentHouse_01a_LOD0.EA03_Village_OutBuilding_PentHouse_01a_LOD0",
+    "materials": [
+      "M_House_Slate"
+    ]
+  },
+  {
+    "label": "InfillBuilding_03",
+    "folder": "ART/Fab_SlavicLite/shed",
+    "position_m": [
+      -19.0,
+      -24.0,
+      9.359000203310076
+    ],
+    "scale": [
+      0.8620689655172414,
+      0.8620689655172414,
+      0.8620689655172414
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -19.494468688964844,
+      -24.143225571204876,
+      12.54053286280132
+    ],
+    "bounds_extent_m": [
+      4.800186946474273,
+      3.4743775992557904,
+      3.181532862801321
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_Shed_01a_LOD0.EA03_Village_OutBuilding_Shed_01a_LOD0",
+    "materials": [
+      "M_House_Moss"
+    ]
+  },
+  {
+    "label": "InfillBuilding_04",
+    "folder": "ART/Fab_SlavicLite/cubby",
+    "position_m": [
+      19.0,
+      -24.0,
+      9.394564922060104
+    ],
+    "scale": [
+      1.068804275217101,
+      1.068804275217101,
+      1.068804275217101
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      18.885017593781313,
+      -23.98318512024048,
+      13.681644137508009
+    ],
+    "bounds_extent_m": [
+      4.799810395530645,
+      3.926784232527556,
+      4.322644137508007
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_Cubby_01d_LOD0.EA03_Village_OutBuilding_Cubby_01d_LOD0",
+    "materials": [
+      "M_House_Clay"
+    ]
+  },
+  {
+    "label": "InfillBuilding_05",
+    "folder": "ART/Fab_SlavicLite/pent",
+    "position_m": [
+      -32.0,
+      26.0,
+      9.126331680601831
+    ],
+    "scale": [
+      0.7401696222050886,
+      0.7401696222050886,
+      0.7401696222050886
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -31.211981375289128,
+      26.183821062427718,
+      12.388575541173122
+    ],
+    "bounds_extent_m": [
+      3.4296105495855818,
+      3.8401379234531623,
+      3.2622442911731198
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_PentHouse_01a_LOD0.EA03_Village_OutBuilding_PentHouse_01a_LOD0",
+    "materials": [
+      "M_House_Russet"
+    ]
+  },
+  {
+    "label": "InfillBuilding_06",
+    "folder": "ART/Fab_SlavicLite/cubby",
+    "position_m": [
+      31.0,
+      32.0,
+      9.515875918951886
+    ],
+    "scale": [
+      1.045182362547632,
+      1.045182362547632,
+      1.045182362547632
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      30.887558848921476,
+      32.01644324986391,
+      13.708205316137851
+    ],
+    "bounds_extent_m": [
+      4.693728576228227,
+      3.8399973844923805,
+      4.227108289939784
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_Cubby_01d_LOD0.EA03_Village_OutBuilding_Cubby_01d_LOD0",
+    "materials": [
+      "M_House_Slate"
+    ]
+  },
+  {
+    "label": "InfillBuilding_07",
+    "folder": "ART/Fab_SlavicLite/pent",
+    "position_m": [
+      -29.0,
+      -142.0,
+      4.353202935379933
+    ],
+    "scale": [
+      0.7401696222050886,
+      0.7401696222050886,
+      0.7401696222050886
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -28.211981375289128,
+      -141.8161789375723,
+      7.615446795951223
+    ],
+    "bounds_extent_m": [
+      3.4296105495855818,
+      3.8401379234531667,
+      3.2622442911731198
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_PentHouse_01a_LOD0.EA03_Village_OutBuilding_PentHouse_01a_LOD0",
+    "materials": [
+      "M_House_Moss"
+    ]
+  },
+  {
+    "label": "InfillBuilding_08",
+    "folder": "ART/Fab_SlavicLite/shed",
+    "position_m": [
+      29.0,
+      -142.0,
+      5.700797698531974
+    ],
+    "scale": [
+      0.8620689655172414,
+      0.8620689655172414,
+      0.8620689655172414
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      28.505531311035156,
+      -142.14322557120488,
+      8.882330358023218
+    ],
+    "bounds_extent_m": [
+      4.800186946474273,
+      3.474377599255786,
+      3.181532862801321
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_Shed_01a_LOD0.EA03_Village_OutBuilding_Shed_01a_LOD0",
+    "materials": [
+      "M_House_Clay"
+    ]
+  },
+  {
+    "label": "InfillBuilding_09",
+    "folder": "ART/Fab_SlavicLite/cubby",
+    "position_m": [
+      -16.0,
+      267.0,
+      23.366326192005914
+    ],
+    "scale": [
+      1.068804275217101,
+      1.068804275217101,
+      1.068804275217101
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -16.114982406218687,
+      267.0168148797595,
+      27.65340540745382
+    ],
+    "bounds_extent_m": [
+      4.799810395530645,
+      3.9267842325275706,
+      4.32264413750801
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_Cubby_01d_LOD0.EA03_Village_OutBuilding_Cubby_01d_LOD0",
+    "materials": [
+      "M_House_Russet"
+    ]
+  },
+  {
+    "label": "InfillBuilding_10",
+    "folder": "ART/Fab_SlavicLite/cubby",
+    "position_m": [
+      16.0,
+      267.0,
+      23.583934415530766
+    ],
+    "scale": [
+      1.068804275217101,
+      1.068804275217101,
+      1.068804275217101
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      15.885017593781313,
+      267.0168148797595,
+      27.87101363097867
+    ],
+    "bounds_extent_m": [
+      4.799810395530645,
+      3.9267842325275706,
+      4.32264413750801
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_Cubby_01d_LOD0.EA03_Village_OutBuilding_Cubby_01d_LOD0",
+    "materials": [
+      "M_House_Russet"
+    ]
+  },
+  {
+    "label": "InfillBuilding_11",
+    "folder": "ART/Fab_SlavicLite/pent",
+    "position_m": [
+      52.38,
+      185.37,
+      18.25089479710933
+    ],
+    "scale": [
+      0.8326908249807249,
+      0.8326908249807249,
+      0.8326908249807249
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      53.26652095279973,
+      185.5767986952312,
+      21.920919140252032
+    ],
+    "bounds_extent_m": [
+      3.8583118682837814,
+      4.32015516388481,
+      3.6700248275697596
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_PentHouse_01a_LOD0.EA03_Village_OutBuilding_PentHouse_01a_LOD0",
+    "materials": [
+      "M_House_Slate"
+    ]
+  },
+  {
+    "label": "InfillBuilding_12",
+    "folder": "ART/Fab_SlavicLite/shed",
+    "position_m": [
+      75.0,
+      237.0,
+      22.308403826350986
+    ],
+    "scale": [
+      0.8620689655172414,
+      0.8620689655172414,
+      0.8620689655172414
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      74.50553131103516,
+      236.85677442879512,
+      25.489936485842232
+    ],
+    "bounds_extent_m": [
+      4.800186946474278,
+      3.474377599255786,
+      3.1815328628013186
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Village_OutBuilding_Shed_01a_LOD0.EA03_Village_OutBuilding_Shed_01a_LOD0",
+    "materials": [
+      "M_House_Moss"
+    ]
+  },
+  {
+    "label": "ART_GuildFence_W_00",
+    "folder": "ART/Guild_Yard_Fence",
+    "position_m": [
+      -93.0,
+      154.5,
+      16.308
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "rotation": [
+      0.0,
+      89.99999999999999,
+      -0.0
+    ],
+    "bounds_center_m": [
+      -92.92208151817321,
+      154.3281201171875,
+      17.129806246568073
+    ],
+    "bounds_extent_m": [
+      0.3897325801849365,
+      1.89635498046875,
+      0.8218062717424732
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Fence_Cobble_01a_LOD0.EA03_Fence_Cobble_01a_LOD0",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_GuildFence_W_01",
+    "folder": "ART/Guild_Yard_Fence",
+    "position_m": [
+      -93.0,
+      158.2,
+      16.41338075473234
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "rotation": [
+      0.0,
+      89.99999999999999,
+      -0.0
+    ],
+    "bounds_center_m": [
+      -92.92208151817321,
+      158.02812011718748,
+      17.235187001300414
+    ],
+    "bounds_extent_m": [
+      0.3897325801849365,
+      1.89635498046875,
+      0.8218062717424732
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Fence_Cobble_01a_LOD0.EA03_Fence_Cobble_01a_LOD0",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_GuildFence_W_02",
+    "folder": "ART/Guild_Yard_Fence",
+    "position_m": [
+      -93.0,
+      161.9,
+      16.560396056177485
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "rotation": [
+      0.0,
+      89.99999999999999,
+      -0.0
+    ],
+    "bounds_center_m": [
+      -92.92208151817321,
+      161.7281201171875,
+      17.382202302745558
+    ],
+    "bounds_extent_m": [
+      0.3897325801849365,
+      1.89635498046875,
+      0.8218062717424732
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Fence_Cobble_01a_LOD0.EA03_Fence_Cobble_01a_LOD0",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_GuildFence_W_03",
+    "folder": "ART/Guild_Yard_Fence",
+    "position_m": [
+      -93.0,
+      165.6,
+      16.745503719926724
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "rotation": [
+      0.0,
+      89.99999999999999,
+      -0.0
+    ],
+    "bounds_center_m": [
+      -92.92208151817321,
+      165.4281201171875,
+      17.567309966494797
+    ],
+    "bounds_extent_m": [
+      0.3897325801849365,
+      1.89635498046875,
+      0.8218062717424732
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Fence_Cobble_01a_LOD0.EA03_Fence_Cobble_01a_LOD0",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_GuildFence_W_04",
+    "folder": "ART/Guild_Yard_Fence",
+    "position_m": [
+      -93.0,
+      169.3,
+      16.964744708324854
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "rotation": [
+      0.0,
+      89.99999999999999,
+      -0.0
+    ],
+    "bounds_center_m": [
+      -92.92208151817321,
+      169.1281201171875,
+      17.786550954892927
+    ],
+    "bounds_extent_m": [
+      0.3897325801849365,
+      1.89635498046875,
+      0.8218062717424732
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Fence_Cobble_01a_LOD0.EA03_Fence_Cobble_01a_LOD0",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_GuildFence_S_00",
+    "folder": "ART/Guild_Yard_Fence",
+    "position_m": [
+      -91.0,
+      152.5,
+      16.26
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -91.1718798828125,
+      152.42208151817323,
+      17.081806246568075
+    ],
+    "bounds_extent_m": [
+      1.89635498046875,
+      0.3897325801849365,
+      0.8218062717424732
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Fence_Cobble_01a_LOD0.EA03_Fence_Cobble_01a_LOD0",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_GuildFence_S_01",
+    "folder": "ART/Guild_Yard_Fence",
+    "position_m": [
+      -87.3,
+      152.5,
+      16.26
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -87.4718798828125,
+      152.42208151817323,
+      17.081806246568075
+    ],
+    "bounds_extent_m": [
+      1.89635498046875,
+      0.3897325801849365,
+      0.8218062717424732
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Fence_Cobble_01a_LOD0.EA03_Fence_Cobble_01a_LOD0",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_GuildFence_S_02",
+    "folder": "ART/Guild_Yard_Fence",
+    "position_m": [
+      -83.6,
+      152.5,
+      16.26
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -83.7718798828125,
+      152.42208151817323,
+      17.081806246568075
+    ],
+    "bounds_extent_m": [
+      1.89635498046875,
+      0.3897325801849365,
+      0.8218062717424732
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Fence_Cobble_01a_LOD0.EA03_Fence_Cobble_01a_LOD0",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_GuildFence_S_03",
+    "folder": "ART/Guild_Yard_Fence",
+    "position_m": [
+      -79.9,
+      152.5,
+      16.26
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -80.0718798828125,
+      152.42208151817323,
+      17.081806246568075
+    ],
+    "bounds_extent_m": [
+      1.8963549804687454,
+      0.3897325801849365,
+      0.8218062717424732
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Fence_Cobble_01a_LOD0.EA03_Fence_Cobble_01a_LOD0",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_GuildFence_S_04",
+    "folder": "ART/Guild_Yard_Fence",
+    "position_m": [
+      -76.2,
+      152.5,
+      16.26
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -76.3718798828125,
+      152.42208151817323,
+      17.081806246568075
+    ],
+    "bounds_extent_m": [
+      1.89635498046875,
+      0.3897325801849365,
+      0.8218062717424732
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Fence_Cobble_01a_LOD0.EA03_Fence_Cobble_01a_LOD0",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_GuildFence_S_05",
+    "folder": "ART/Guild_Yard_Fence",
+    "position_m": [
+      -72.5,
+      152.5,
+      16.26
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -72.6718798828125,
+      152.42208151817323,
+      17.081806246568075
+    ],
+    "bounds_extent_m": [
+      1.89635498046875,
+      0.3897325801849365,
+      0.8218062717424732
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Fence_Cobble_01a_LOD0.EA03_Fence_Cobble_01a_LOD0",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_GuildFence_N_00",
+    "folder": "ART/Guild_Yard_Fence",
+    "position_m": [
+      -91.0,
+      171.5,
+      17.109662527986973
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -91.1718798828125,
+      171.42208151817323,
+      17.931468774555047
+    ],
+    "bounds_extent_m": [
+      1.89635498046875,
+      0.3897325801849365,
+      0.8218062717424732
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Fence_Cobble_01a_LOD0.EA03_Fence_Cobble_01a_LOD0",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_GuildFence_N_01",
+    "folder": "ART/Guild_Yard_Fence",
+    "position_m": [
+      -87.3,
+      171.5,
+      17.109662527986973
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -87.4718798828125,
+      171.42208151817323,
+      17.931468774555047
+    ],
+    "bounds_extent_m": [
+      1.89635498046875,
+      0.3897325801849365,
+      0.8218062717424732
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Fence_Cobble_01a_LOD0.EA03_Fence_Cobble_01a_LOD0",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_GuildFence_N_02",
+    "folder": "ART/Guild_Yard_Fence",
+    "position_m": [
+      -83.6,
+      171.5,
+      17.109662527986973
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -83.7718798828125,
+      171.42208151817323,
+      17.931468774555047
+    ],
+    "bounds_extent_m": [
+      1.89635498046875,
+      0.3897325801849365,
+      0.8218062717424732
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Fence_Cobble_01a_LOD0.EA03_Fence_Cobble_01a_LOD0",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_GuildFence_N_03",
+    "folder": "ART/Guild_Yard_Fence",
+    "position_m": [
+      -79.9,
+      171.5,
+      17.109662527986973
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -80.0718798828125,
+      171.42208151817323,
+      17.931468774555047
+    ],
+    "bounds_extent_m": [
+      1.8963549804687454,
+      0.3897325801849365,
+      0.8218062717424732
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Fence_Cobble_01a_LOD0.EA03_Fence_Cobble_01a_LOD0",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_GuildFence_N_04",
+    "folder": "ART/Guild_Yard_Fence",
+    "position_m": [
+      -76.2,
+      171.5,
+      17.109662527986973
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -76.3718798828125,
+      171.42208151817323,
+      17.931468774555047
+    ],
+    "bounds_extent_m": [
+      1.89635498046875,
+      0.3897325801849365,
+      0.8218062717424732
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Fence_Cobble_01a_LOD0.EA03_Fence_Cobble_01a_LOD0",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_GuildFence_N_05",
+    "folder": "ART/Guild_Yard_Fence",
+    "position_m": [
+      -72.5,
+      171.5,
+      17.109662527986973
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -72.6718798828125,
+      171.42208151817323,
+      17.931468774555047
+    ],
+    "bounds_extent_m": [
+      1.89635498046875,
+      0.3897325801849365,
+      0.8218062717424732
+    ],
+    "mesh": "/Game/Fab/SlavicLite/EA03_Fence_Cobble_01a_LOD0.EA03_Fence_Cobble_01a_LOD0",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_HERO_Church_Nave",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      115.47958372192383,
+      208.09701940307616,
+      20.358839752910473
+    ],
+    "scale": [
+      13.224015436645521,
+      22.915696881225603,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      115.47958372192383,
+      208.09701940307616,
+      20.35883975291047
+    ],
+    "bounds_extent_m": [
+      6.612007718322766,
+      11.457848440612798,
+      0.44999999999999885
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_HERO_MainInn",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      39.25653798137846,
+      82.60298255770712,
+      13.660872429200001
+    ],
+    "scale": [
+      17.10804380931478,
+      9.872579332751528,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      39.25653798137846,
+      82.60298255770712,
+      13.660872429200001
+    ],
+    "bounds_extent_m": [
+      8.554021904657388,
+      4.93628966637576,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_HERO_Blacksmith",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      -62.81768578332046,
+      64.37058256467184,
+      12.453291414050002
+    ],
+    "scale": [
+      8.049119537342566,
+      11.120633100454832,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -62.81768578332046,
+      64.37058256467184,
+      12.453291414050002
+    ],
+    "bounds_extent_m": [
+      4.024559768671279,
+      5.560316550227417,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_HERO_DockWarehouse",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      -106.62,
+      -118.53997347898778,
+      4.620634728833399
+    ],
+    "scale": [
+      18.975811427146905,
+      11.975600757148905,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -106.62,
+      -118.53997347898778,
+      4.620634728833399
+    ],
+    "bounds_extent_m": [
+      9.487905713573454,
+      5.987800378574447,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_HERO_NorthGate_Left",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      -9.000001112291343,
+      282.88883982761223,
+      23.91208649135583
+    ],
+    "scale": [
+      5.988077968527919,
+      6.482880167553053,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -9.000001112291343,
+      282.88883982761223,
+      23.91208649135583
+    ],
+    "bounds_extent_m": [
+      2.9940389842639594,
+      3.2414400837765425,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_HERO_NorthGate_Right",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      8.999998887708657,
+      282.88883982761223,
+      24.234380781668914
+    ],
+    "scale": [
+      5.988077968527919,
+      6.482880167553053,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      8.999998887708657,
+      282.88883982761223,
+      24.234380781668914
+    ],
+    "bounds_extent_m": [
+      2.9940389842639594,
+      3.2414400837765425,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_LowerWestA_House_01",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      -49.33237796728993,
+      -0.8918238683806976,
+      9.426420965770108
+    ],
+    "scale": [
+      7.879193433146329,
+      5.713830972862543,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -49.33237796728993,
+      -0.8918238683806976,
+      9.426420965770108
+    ],
+    "bounds_extent_m": [
+      3.939596716573169,
+      2.856915486431271,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_LowerWestA_House_02",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      -51.78867063365653,
+      10.954813738768177,
+      8.584765270716204
+    ],
+    "scale": [
+      8.854591887244737,
+      7.373812871709546,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -51.78867063365653,
+      10.954813738768177,
+      8.584765270716204
+    ],
+    "bounds_extent_m": [
+      4.427295943622366,
+      3.6869064358547736,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_LowerWestA_House_03",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      -52.58974103708414,
+      25.18124821406483,
+      8.764620954217186
+    ],
+    "scale": [
+      7.551305215711112,
+      8.331445407336194,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -52.58974103708414,
+      25.18124821406483,
+      8.764620954217186
+    ],
+    "bounds_extent_m": [
+      3.7756526078555543,
+      4.165722703668098,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_LowerWestA_House_04",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      -51.605353368523474,
+      36.68758278573722,
+      9.577674808732649
+    ],
+    "scale": [
+      8.77065477502622,
+      6.568615884306052,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -51.605353368523474,
+      36.68758278573722,
+      9.577674808732649
+    ],
+    "bounds_extent_m": [
+      4.385327387513107,
+      3.2843079421530272,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_LowerWestA_House_05",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      -50.388608940238015,
+      46.77356969619203,
+      10.206433850000002
+    ],
+    "scale": [
+      7.925775179171375,
+      6.510075016058287,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -50.388608940238015,
+      46.77356969619203,
+      10.206433850000003
+    ],
+    "bounds_extent_m": [
+      3.962887589585689,
+      3.255037508029145,
+      0.45000000000000057
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_LowerWestA_House_06",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      -56.4026974624365,
+      73.30877506721382,
+      12.902584864255205
+    ],
+    "scale": [
+      9.433728245687474,
+      7.004458884693403,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -56.4026974624365,
+      73.30877506721382,
+      12.902584864255205
+    ],
+    "bounds_extent_m": [
+      4.716864122843735,
+      3.5022294423466973,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_LowerWestA_House_07",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      -46.4497799847821,
+      73.37376827812777,
+      12.908727828312612
+    ],
+    "scale": [
+      7.875817467632519,
+      6.612502023804988,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -46.4497799847821,
+      73.37376827812777,
+      12.908727828312612
+    ],
+    "bounds_extent_m": [
+      3.9379087338162573,
+      3.3062510119024955,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_LowerWestA_House_08",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      -46.84525863559364,
+      84.35734078165065,
+      13.77162817109375
+    ],
+    "scale": [
+      6.642651527554164,
+      7.3445134314623886,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -46.84525863559364,
+      84.35734078165065,
+      13.77162817109375
+    ],
+    "bounds_extent_m": [
+      3.321325763777086,
+      3.672256715731196,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_LowerWestB_House_01",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      -14.982024586584927,
+      0.43318482360213695,
+      9.495080000000002
+    ],
+    "scale": [
+      7.005091374992148,
+      5.737660555937417,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -14.982024586584927,
+      0.43318482360213695,
+      9.495080000000002
+    ],
+    "bounds_extent_m": [
+      3.5025456874960743,
+      2.8688302779687085,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_LowerWestB_House_02",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      -13.881472992035794,
+      11.580653235712152,
+      9.280247865391102
+    ],
+    "scale": [
+      6.556337255894604,
+      7.268388457034238,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -13.881472992035794,
+      11.580653235712152,
+      9.280247865391102
+    ],
+    "bounds_extent_m": [
+      3.2781686279473026,
+      3.6341942285171194,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_LowerWestB_House_03",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      -16.891063212140406,
+      24.949698946838094,
+      8.63216796875
+    ],
+    "scale": [
+      7.323566126111195,
+      5.531933045282194,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -16.891063212140406,
+      24.949698946838094,
+      8.63216796875
+    ],
+    "bounds_extent_m": [
+      3.661783063055598,
+      2.765966522641097,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_LowerWestB_House_04",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      -14.21776774049555,
+      36.31943310432475,
+      9.544679889869586
+    ],
+    "scale": [
+      7.798626584373081,
+      6.515602617050701,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -14.21776774049555,
+      36.31943310432475,
+      9.544679889869586
+    ],
+    "bounds_extent_m": [
+      3.8993132921865414,
+      3.25780130852535,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_LowerWestB_House_05",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      -13.681977432608171,
+      45.64677207295247,
+      10.11292581875
+    ],
+    "scale": [
+      7.039119757638519,
+      5.1280674370196415,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -13.681977432608171,
+      45.64677207295247,
+      10.11292581875
+    ],
+    "bounds_extent_m": [
+      3.5195598788192592,
+      2.5640337185098176,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_LowerWestB_House_06",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      -12.348001770974365,
+      58.03207830892171,
+      11.31963125
+    ],
+    "scale": [
+      8.56620663214105,
+      7.1189146329808715,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -12.348001770974365,
+      58.03207830892171,
+      11.31963125
+    ],
+    "bounds_extent_m": [
+      4.283103316070524,
+      3.559457316490434,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_LowerWestB_House_07",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      -8.673750597497452,
+      71.57381244599422,
+      12.67204341875
+    ],
+    "scale": [
+      5.867446508501847,
+      6.47492761794377,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -8.673750597497452,
+      71.57381244599422,
+      12.67204341875
+    ],
+    "bounds_extent_m": [
+      2.933723254250923,
+      3.237463808971888,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_LowerEastA_House_01",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      12.80131427184914,
+      -2.5987852245451597,
+      9.470418345881788
+    ],
+    "scale": [
+      5.479384079584801,
+      6.131248371122921,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      12.80131427184914,
+      -2.5987852245451597,
+      9.470418345881788
+    ],
+    "bounds_extent_m": [
+      2.7396920397924007,
+      3.065624185561461,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_LowerEastA_House_02",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      10.59734456753336,
+      8.306843397174019,
+      9.686600000000002
+    ],
+    "scale": [
+      9.468454689156111,
+      7.053886482074105,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      10.59734456753336,
+      8.306843397174019,
+      9.686600000000002
+    ],
+    "bounds_extent_m": [
+      4.734227344578056,
+      3.5269432410370536,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_LowerEastA_House_03",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      11.0093319617726,
+      22.05881104087221,
+      8.995895598613018
+    ],
+    "scale": [
+      8.289868968756181,
+      6.962634116312683,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      11.0093319617726,
+      22.05881104087221,
+      8.995895598613018
+    ],
+    "bounds_extent_m": [
+      4.144934484378091,
+      3.4813170581563417,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_LowerEastA_House_04",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      10.576976081993083,
+      33.422493938995004,
+      9.378413634069597
+    ],
+    "scale": [
+      5.7885555571349405,
+      6.405513757810578,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      10.576976081993083,
+      33.422493938995004,
+      9.378413634069597
+    ],
+    "bounds_extent_m": [
+      2.8942777785674707,
+      3.2027568789052885,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_LowerEastA_House_05",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      12.06843547175322,
+      42.63294281294829,
+      9.841182350000002
+    ],
+    "scale": [
+      7.9190097273433375,
+      5.769075866647109,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      12.06843547175322,
+      42.63294281294829,
+      9.841182350000004
+    ],
+    "bounds_extent_m": [
+      3.9595048636716683,
+      2.8845379333235543,
+      0.45000000000000057
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_LowerEastA_House_06",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      15.24044147799169,
+      55.033294222056355,
+      11.013300781250003
+    ],
+    "scale": [
+      9.467912593419054,
+      7.8682740680315035,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      15.24044147799169,
+      55.033294222056355,
+      11.013300781250003
+    ],
+    "bounds_extent_m": [
+      4.733956296709527,
+      3.934137034015748,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_LowerEastA_House_07",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      14.214205516461067,
+      68.2070862056147,
+      12.378375949999999
+    ],
+    "scale": [
+      8.233816808307173,
+      6.21588637893318,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      14.214205516461067,
+      68.2070862056147,
+      12.378375949999999
+    ],
+    "bounds_extent_m": [
+      4.1169084041535875,
+      3.107943189466587,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_LowerEastB_House_01",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      52.66762203271007,
+      0.1081761316193024,
+      9.4898
+    ],
+    "scale": [
+      7.879193433146329,
+      5.713830972862543,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      52.66762203271007,
+      0.1081761316193024,
+      9.4898
+    ],
+    "bounds_extent_m": [
+      3.939596716573169,
+      2.856915486431271,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_LowerEastB_House_02",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      52.01132936634347,
+      11.954813738768177,
+      9.770600000000002
+    ],
+    "scale": [
+      8.854591887244737,
+      7.373812871709546,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      52.01132936634347,
+      11.954813738768177,
+      9.770600000000002
+    ],
+    "bounds_extent_m": [
+      4.427295943622366,
+      3.6869064358547736,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_LowerEastB_House_03",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      53.010258962915856,
+      26.18124821406483,
+      9.493850449745583
+    ],
+    "scale": [
+      7.551305215711112,
+      8.331445407336194,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      53.010258962915856,
+      26.18124821406483,
+      9.493850449745583
+    ],
+    "bounds_extent_m": [
+      3.7756526078555543,
+      4.165722703668098,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_LowerEastB_House_04",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      50.394646631476526,
+      37.68758278573722,
+      9.659749098291842
+    ],
+    "scale": [
+      8.77065477502622,
+      6.568615884306052,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      50.394646631476526,
+      37.68758278573722,
+      9.659749098291842
+    ],
+    "bounds_extent_m": [
+      4.385327387513107,
+      3.2843079421530272,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_LowerEastB_House_05",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      53.411391059761975,
+      47.77356969619203,
+      10.301241256250002
+    ],
+    "scale": [
+      7.925775179171375,
+      6.510075016058287,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      53.411391059761975,
+      47.77356969619203,
+      10.301241256250002
+    ],
+    "bounds_extent_m": [
+      3.962887589585689,
+      3.255037508029145,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_LowerEastB_House_06",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      55.84908990141164,
+      60.34930220135635,
+      11.631832352734055
+    ],
+    "scale": [
+      9.433728245687474,
+      7.004458884693403,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      55.84908990141164,
+      60.34930220135635,
+      11.631832352734055
+    ],
+    "bounds_extent_m": [
+      4.716864122843735,
+      3.5022294423466973,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_LowerEastB_House_07",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      58.14085990284412,
+      72.117619553254,
+      13.09445785330039
+    ],
+    "scale": [
+      7.875817467632519,
+      6.612502023804988,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      58.14085990284412,
+      72.117619553254,
+      13.09445785330039
+    ],
+    "bounds_extent_m": [
+      3.9379087338162573,
+      3.3062510119024955,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_MarketWest_House_01",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      -32.674645755859814,
+      81.37980568686444,
+      13.85625189595928
+    ],
+    "scale": [
+      7.879193433146329,
+      5.7138309728625485,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -32.674645755859814,
+      81.37980568686444,
+      13.85625189595928
+    ],
+    "bounds_extent_m": [
+      3.9395967165731647,
+      2.856915486431271,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_MarketWest_House_02",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      -29.289793100089852,
+      89.6331826598765,
+      14.141510919296095
+    ],
+    "scale": [
+      9.507447985811632,
+      7.917489956355481,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -29.289793100089852,
+      89.6331826598765,
+      14.141510919296095
+    ],
+    "bounds_extent_m": [
+      4.753723992905816,
+      3.9587449781777466,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_MarketWest_House_03",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      -30.453701627324016,
+      104.78204112888005,
+      14.812923053225772
+    ],
+    "scale": [
+      8.454984667985158,
+      9.328485760928062,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -30.453701627324016,
+      104.78204112888005,
+      14.812923053225772
+    ],
+    "bounds_extent_m": [
+      4.227492333992577,
+      4.664242880464026,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_MarketWest_House_04",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      -36.686652796889234,
+      115.51828928919275,
+      14.960360000000001
+    ],
+    "scale": [
+      9.52320152767866,
+      7.132221530629204,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -36.686652796889234,
+      115.51828928919275,
+      14.960360000000001
+    ],
+    "bounds_extent_m": [
+      4.761600763839328,
+      3.5661107653146065,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_MarketWest_House_05",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      -26.38860894023802,
+      128.773569696192,
+      15.2762
+    ],
+    "scale": [
+      7.925775179171375,
+      6.510075016058287,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -26.38860894023802,
+      128.773569696192,
+      15.2762
+    ],
+    "bounds_extent_m": [
+      3.962887589585689,
+      3.255037508029145,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_MarketEast_House_01",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      44.89647234009196,
+      62.01483292655241,
+      11.73036875
+    ],
+    "scale": [
+      7.8807277968661715,
+      6.454868125429598,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      44.89647234009196,
+      62.01483292655241,
+      11.73036875
+    ],
+    "bounds_extent_m": [
+      3.9403638984330884,
+      3.227434062714801,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_MarketEast_House_02",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      67.4744480368166,
+      61.873620414660664,
+      11.828158301073259
+    ],
+    "scale": [
+      9.468454689156111,
+      7.053886482074101,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      67.4744480368166,
+      61.873620414660664,
+      11.828158301073259
+    ],
+    "bounds_extent_m": [
+      4.734227344578057,
+      3.526943241037052,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_MarketEast_House_03",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      31.987816929040665,
+      102.61228479493879,
+      14.64716
+    ],
+    "scale": [
+      8.289868968756187,
+      6.962634116312674,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      31.987816929040665,
+      102.61228479493879,
+      14.64716
+    ],
+    "bounds_extent_m": [
+      4.144934484378091,
+      3.481317058156328,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_MarketEast_House_04",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      32.68690748563747,
+      114.48036379596688,
+      15.015866165570634
+    ],
+    "scale": [
+      6.615492065297071,
+      7.320587151783527,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      32.68690748563747,
+      114.48036379596688,
+      15.015866165570634
+    ],
+    "bounds_extent_m": [
+      3.3077460326485335,
+      3.6602935758917554,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_MarketEast_House_05",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      32.54371613925252,
+      124.2855366599624,
+      15.170840000000004
+    ],
+    "scale": [
+      7.91900972734334,
+      5.769075866647097,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      32.54371613925252,
+      124.2855366599624,
+      15.170840000000004
+    ],
+    "bounds_extent_m": [
+      3.9595048636716683,
+      2.8845379333235543,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_UpperWest_House_01",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      -31.243818076311,
+      191.9826411671624,
+      18.806909259187034
+    ],
+    "scale": [
+      8.014449800728658,
+      6.619225122433522,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -31.243818076311,
+      191.9826411671624,
+      18.806909259187034
+    ],
+    "bounds_extent_m": [
+      4.007224900364326,
+      3.309612561216745,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_UpperWest_House_02",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      -29.678985306746917,
+      200.83238058843207,
+      19.633464580260654
+    ],
+    "scale": [
+      8.041558701939234,
+      8.949257983234496,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -29.678985306746917,
+      200.83238058843207,
+      19.633464580260654
+    ],
+    "bounds_extent_m": [
+      4.020779350969615,
+      4.474628991617246,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_UpperWest_House_03",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      -24.736724368639674,
+      210.6680842369261,
+      20.15237651780989
+    ],
+    "scale": [
+      8.211813141426177,
+      6.184022624346821,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -24.736724368639674,
+      210.6680842369261,
+      20.152376517809888
+    ],
+    "bounds_extent_m": [
+      4.105906570713087,
+      3.0920113121734176,
+      0.44999999999999885
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_UpperWest_House_04",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      -22.648506125893142,
+      223.92454081934423,
+      21.405230699868834
+    ],
+    "scale": [
+      9.643221864717262,
+      8.087461802129782,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -22.648506125893142,
+      223.92454081934423,
+      21.405230699868834
+    ],
+    "bounds_extent_m": [
+      4.821610932358631,
+      4.043730901064882,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_UpperWest_House_05",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      -22.530898544369798,
+      233.75608820803296,
+      21.833152523825188
+    ],
+    "scale": [
+      8.03296068573743,
+      5.9286693863082505,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -22.530898544369798,
+      233.75608820803296,
+      21.833152523825188
+    ],
+    "bounds_extent_m": [
+      4.016480342868714,
+      2.9643346931541235,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_UpperWest_House_06",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      -21.105613163570506,
+      244.14922982857243,
+      22.043400000000002
+    ],
+    "scale": [
+      9.328612368785265,
+      7.695805215373369,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -21.105613163570506,
+      244.14922982857243,
+      22.043400000000002
+    ],
+    "bounds_extent_m": [
+      4.664306184392632,
+      3.8479026076867013,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_UpperWest_House_07",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      -16.747769473829248,
+      258.760574383465,
+      22.698618852059877
+    ],
+    "scale": [
+      7.489380533765671,
+      8.277011443028119,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -16.747769473829248,
+      258.760574383465,
+      22.698618852059877
+    ],
+    "bounds_extent_m": [
+      3.7446902668828352,
+      4.138505721514048,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_UpperEast_House_01",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      20.488068105695657,
+      177.43740140381192,
+      17.42043626100162
+    ],
+    "scale": [
+      7.997251107364615,
+      5.878412064110176,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      20.488068105695657,
+      177.43740140381192,
+      17.42043626100162
+    ],
+    "bounds_extent_m": [
+      3.998625553682308,
+      2.939206032055081,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_UpperEast_House_02",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      19.70750428458727,
+      187.68170680933272,
+      18.010295886016692
+    ],
+    "scale": [
+      9.376945166340949,
+      7.755484509222816,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      19.70750428458727,
+      187.68170680933272,
+      18.010295886016692
+    ],
+    "bounds_extent_m": [
+      4.688472583170476,
+      3.877742254611403,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_UpperEast_House_03",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      20.32108329970349,
+      200.93550461921726,
+      19.246195981606363
+    ],
+    "scale": [
+      8.411393148686436,
+      9.290182822944466,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      20.32108329970349,
+      200.93550461921726,
+      19.246195981606363
+    ],
+    "bounds_extent_m": [
+      4.205696574343217,
+      4.64509141147224,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_UpperEast_House_04",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      16.94290346513291,
+      214.28289690712958,
+      20.638627376891225
+    ],
+    "scale": [
+      9.587441729562864,
+      7.224807801259462,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      16.94290346513291,
+      214.28289690712958,
+      20.638627376891225
+    ],
+    "bounds_extent_m": [
+      4.793720864781433,
+      3.612403900629724,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_UpperEast_House_05",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      19.614881562102763,
+      224.88961937894484,
+      21.416762474403175
+    ],
+    "scale": [
+      8.054991649372823,
+      6.669346448699231,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      19.614881562102763,
+      224.88961937894484,
+      21.416762474403175
+    ],
+    "bounds_extent_m": [
+      4.0274958246864125,
+      3.3346732243496082,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_UpperEast_House_06",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      22.09955776246432,
+      235.47282369907356,
+      21.808354646041117
+    ],
+    "scale": [
+      9.311103935471483,
+      6.831463487180558,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      22.09955776246432,
+      235.47282369907356,
+      21.808354646041117
+    ],
+    "bounds_extent_m": [
+      4.655551967735741,
+      3.415731743590295,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_Riverside_House_01",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      -174.3145498080564,
+      -152.47262647738432,
+      3.2776566108135814
+    ],
+    "scale": [
+      5.607096339770492,
+      6.244955145004147,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -174.3145498080564,
+      -152.47262647738432,
+      3.2776566108135814
+    ],
+    "bounds_extent_m": [
+      2.8035481698852527,
+      3.122477572502066,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_Riverside_House_02",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      -160.52316169164055,
+      -150.56593568330746,
+      3.0195795820317683
+    ],
+    "scale": [
+      9.35369691315324,
+      6.891287667639458,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -160.52316169164055,
+      -150.56593568330746,
+      3.0195795820317683
+    ],
+    "bounds_extent_m": [
+      4.676848456576627,
+      3.445643833819722,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_Riverside_House_03",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      -145.10229927439934,
+      -148.1782548733388,
+      2.8626661750414844
+    ],
+    "scale": [
+      8.258767252686525,
+      6.923496704010775,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -145.10229927439934,
+      -148.1782548733388,
+      2.8626661750414844
+    ],
+    "bounds_extent_m": [
+      4.129383626343261,
+      3.461748352005379,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_Riverside_House_04",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      -129.30144650535317,
+      -145.86456020063545,
+      2.718663431760362
+    ],
+    "scale": [
+      5.849622021560389,
+      6.459265924503966,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -129.30144650535317,
+      -145.86456020063545,
+      2.718663431760362
+    ],
+    "bounds_extent_m": [
+      2.924811010780195,
+      3.229632962251981,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_Riverside_House_05",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      -115.44875343155931,
+      -143.9152422016483,
+      2.8603406632097457
+    ],
+    "scale": [
+      8.03296068573743,
+      5.9286693863082505,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -115.44875343155931,
+      -143.9152422016483,
+      2.8603406632097457
+    ],
+    "bounds_extent_m": [
+      4.016480342868708,
+      2.9643346931541235,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_Riverside_House_06",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      -85.12107693494268,
+      -139.58489376377213,
+      3.211662604304665
+    ],
+    "scale": [
+      9.328612368785265,
+      7.695805215373369,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -85.12107693494268,
+      -139.58489376377213,
+      3.211662604304665
+    ],
+    "bounds_extent_m": [
+      4.664306184392631,
+      3.847902607686683,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_Riverside_House_07",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      -70.43631516999034,
+      -137.6558508255137,
+      3.48515807634789
+    ],
+    "scale": [
+      8.19571184209154,
+      6.160771444679335,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -70.43631516999034,
+      -137.6558508255137,
+      3.48515807634789
+    ],
+    "bounds_extent_m": [
+      4.097855921045775,
+      3.08038572233967,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_Riverside_House_08",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      -55.1132945023071,
+      -135.56118247943368,
+      3.78580460679776
+    ],
+    "scale": [
+      8.994758828624411,
+      7.549370049621452,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -55.1132945023071,
+      -135.56118247943368,
+      3.78580460679776
+    ],
+    "bounds_extent_m": [
+      4.497379414312209,
+      3.774685024810733,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_Riverside_House_09",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      -39.12168161112606,
+      -133.40074718837982,
+      4.104756925216836
+    ],
+    "scale": [
+      7.306460228339122,
+      8.115542788933398,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -39.12168161112606,
+      -133.40074718837982,
+      4.104756925216836
+    ],
+    "bounds_extent_m": [
+      3.65323011416956,
+      4.05777139446669,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_CornerBuilding_01",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      -71.79584324830586,
+      95.97164621441398,
+      14.458550000000002
+    ],
+    "scale": [
+      13.104033556070902,
+      7.561975659128834,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -71.79584324830586,
+      95.97164621441398,
+      14.458550000000002
+    ],
+    "bounds_extent_m": [
+      6.5520167780354495,
+      3.7809878295644195,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_CornerBuilding_02",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      67.1905463015812,
+      79.97353646678637,
+      13.44875
+    ],
+    "scale": [
+      12.230431318999509,
+      7.057843948520245,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      67.1905463015812,
+      79.97353646678637,
+      13.44875
+    ],
+    "bounds_extent_m": [
+      6.115215659499754,
+      3.52892197426012,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_CornerBuilding_03",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      -69.8094536984188,
+      214.97353646678636,
+      20.51047934052514
+    ],
+    "scale": [
+      12.230431318999509,
+      7.057843948520253,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -69.8094536984188,
+      214.97353646678636,
+      20.51047934052514
+    ],
+    "bounds_extent_m": [
+      6.115215659499754,
+      3.52892197426012,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_CornerBuilding_04",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      74.94415675169412,
+      227.79164621441396,
+      21.636461312939755
+    ],
+    "scale": [
+      13.104033556070895,
+      7.561975659128834,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      74.94415675169412,
+      227.79164621441396,
+      21.636461312939755
+    ],
+    "bounds_extent_m": [
+      6.5520167780354495,
+      3.7809878295644013,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_CornerBuilding_05",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      -132.75501189796702,
+      -155.03402454270324,
+      2.5752528050607935
+    ],
+    "scale": [
+      15.724840267285073,
+      9.074370790954607,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -132.75501189796702,
+      -155.03402454270324,
+      2.5752528050607935
+    ],
+    "bounds_extent_m": [
+      7.8624201336425354,
+      4.5371853954773,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_CornerBuilding_06",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      115.21776720180709,
+      -132.03024403795843,
+      5.921746845913565
+    ],
+    "scale": [
+      13.977635793142282,
+      8.066107369737413,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      115.21776720180709,
+      -132.03024403795843,
+      5.921746845913565
+    ],
+    "bounds_extent_m": [
+      6.988817896571145,
+      4.033053684868701,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_CornerBuilding_07",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      -93.8094536984188,
+      21.97353646678637,
+      8.520743750000001
+    ],
+    "scale": [
+      12.230431318999493,
+      7.057843948520238,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -93.8094536984188,
+      21.97353646678637,
+      8.520743750000001
+    ],
+    "bounds_extent_m": [
+      6.115215659499754,
+      3.52892197426012,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_CornerBuilding_08",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      82.20415675169414,
+      37.971646214413965,
+      9.442166721750787
+    ],
+    "scale": [
+      13.104033556070902,
+      7.561975659128829,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      82.20415675169414,
+      37.971646214413965,
+      9.442166721750787
+    ],
+    "bounds_extent_m": [
+      6.5520167780354495,
+      3.7809878295644124,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_InfillBuilding_01",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      -17.114982406218687,
+      -45.98318512024048,
+      8.289842563521924
+    ],
+    "scale": [
+      8.735654919865773,
+      7.146747303200145,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -17.114982406218687,
+      -45.98318512024048,
+      8.289842563521924
+    ],
+    "bounds_extent_m": [
+      4.367827459932887,
+      3.573373651600077,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_InfillBuilding_02",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      17.886520952799728,
+      -45.793201304768814,
+      7.656427335351906
+    ],
+    "scale": [
+      7.02212760027648,
+      7.862682398270355,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      17.886520952799728,
+      -45.793201304768814,
+      7.656427335351906
+    ],
+    "bounds_extent_m": [
+      3.51106380013824,
+      3.931341199135177,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_InfillBuilding_03",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      -19.494468688964844,
+      -24.143225571204876,
+      8.909
+    ],
+    "scale": [
+      8.736340242583177,
+      6.323367230645538,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -19.494468688964844,
+      -24.143225571204876,
+      8.909
+    ],
+    "bounds_extent_m": [
+      4.3681701212915875,
+      3.161683615322768,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_InfillBuilding_04",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      18.885017593781313,
+      -23.98318512024048,
+      8.909
+    ],
+    "scale": [
+      8.735654919865773,
+      7.146747303200152,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      18.885017593781313,
+      -23.98318512024048,
+      8.909
+    ],
+    "bounds_extent_m": [
+      4.367827459932887,
+      3.573373651600077,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_InfillBuilding_05",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      -31.211981375289128,
+      26.183821062427718,
+      8.676331250000002
+    ],
+    "scale": [
+      6.241891200245759,
+      6.989051020684756,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -31.211981375289128,
+      26.183821062427718,
+      8.676331250000002
+    ],
+    "bounds_extent_m": [
+      3.120945600122882,
+      3.494525510342378,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_InfillBuilding_06",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      30.887558848921476,
+      32.01644324986391,
+      9.031097026198065
+    ],
+    "scale": [
+      8.542586008735373,
+      6.988795239776133,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      30.887558848921476,
+      32.01644324986391,
+      9.031097026198065
+    ],
+    "bounds_extent_m": [
+      4.271293004367685,
+      3.494397619888068,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_InfillBuilding_07",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      -28.211981375289128,
+      -141.8161789375723,
+      3.903202504778103
+    ],
+    "scale": [
+      6.241891200245759,
+      6.989051020684764,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -28.211981375289128,
+      -141.8161789375723,
+      3.903202504778103
+    ],
+    "bounds_extent_m": [
+      3.120945600122882,
+      3.494525510342373,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_InfillBuilding_08",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      28.505531311035156,
+      -142.14322557120488,
+      5.250797495221897
+    ],
+    "scale": [
+      8.736340242583177,
+      6.32336723064553,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      28.505531311035156,
+      -142.14322557120488,
+      5.250797495221897
+    ],
+    "bounds_extent_m": [
+      4.368170121291587,
+      3.1616836153227634,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_InfillBuilding_09",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      -16.114982406218687,
+      267.0168148797595,
+      22.88076126994581
+    ],
+    "scale": [
+      8.735654919865773,
+      7.146747303200179,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -16.114982406218687,
+      267.0168148797595,
+      22.88076126994581
+    ],
+    "bounds_extent_m": [
+      4.367827459932887,
+      3.5733736516000865,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_InfillBuilding_10",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      15.885017593781313,
+      267.0168148797595,
+      23.098369493470667
+    ],
+    "scale": [
+      8.735654919865773,
+      7.146747303200179,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      15.885017593781313,
+      267.0168148797595,
+      23.098369493470667
+    ],
+    "bounds_extent_m": [
+      4.367827459932887,
+      3.5733736516000865,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_InfillBuilding_11",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      53.26652095279973,
+      185.5767986952312,
+      17.800894312682274
+    ],
+    "scale": [
+      7.022127600276482,
+      7.862682398270355,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      53.26652095279973,
+      185.5767986952312,
+      17.800894312682274
+    ],
+    "bounds_extent_m": [
+      3.511063800138245,
+      3.9313411991351677,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Foundation_InfillBuilding_12",
+    "folder": "ART/Building_Foundations",
+    "position_m": [
+      74.50553131103516,
+      236.85677442879512,
+      21.858403623040914
+    ],
+    "scale": [
+      8.736340242583186,
+      6.32336723064553,
+      0.9
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      74.50553131103516,
+      236.85677442879512,
+      21.858403623040914
+    ],
+    "bounds_extent_m": [
+      4.3681701212915955,
+      3.1616836153227634,
+      0.45
+    ],
+    "mesh": "/Engine/BasicShapes/Cube.Cube",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Surface_SM_Route_GoldenRoute_South",
+    "folder": "ART/GroundSurfaces",
+    "position_m": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -0.4999261474609375,
+      -217.335048828125,
+      3.1418874931335448
+    ],
+    "bounds_extent_m": [
+      9.09974609375,
+      102.695537109375,
+      2.7409665107727053
+    ],
+    "mesh": "/Game/MistvaleArt/GroundSurfaces/SM_Route_GoldenRoute_South.SM_Route_GoldenRoute_South",
+    "materials": [
+      "M_Town_Road_01"
+    ]
+  },
+  {
+    "label": "ART_Surface_SM_Route_GoldenRoute_Town",
+    "folder": "ART/GroundSurfaces",
+    "position_m": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -14.98959716796875,
+      137.17624755859376,
+      17.53707550048828
+    ],
+    "bounds_extent_m": [
+      17.58959716796875,
+      192.82375244140624,
+      9.894394226074219
+    ],
+    "mesh": "/Game/MistvaleArt/GroundSurfaces/SM_Route_GoldenRoute_Town.SM_Route_GoldenRoute_Town",
+    "materials": [
+      "M_Town_Road_01"
+    ]
+  },
+  {
+    "label": "ART_Surface_SM_Route_LowerMarketLoop",
+    "folder": "ART/GroundSurfaces",
+    "position_m": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -55.45485412597656,
+      87.75220336914063,
+      12.934437255859375
+    ],
+    "bounds_extent_m": [
+      36.08126892089844,
+      50.891488037109376,
+      3.0609130859375
+    ],
+    "mesh": "/Game/MistvaleArt/GroundSurfaces/SM_Route_LowerMarketLoop.SM_Route_LowerMarketLoop",
+    "materials": [
+      "M_Town_Road_01"
+    ]
+  },
+  {
+    "label": "ART_Surface_SM_Route_MarketEastLoop",
+    "folder": "ART/GroundSurfaces",
+    "position_m": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      48.497894287109375,
+      102.0032177734375,
+      14.507655639648437
+    ],
+    "bounds_extent_m": [
+      26.095758056640626,
+      31.5694482421875,
+      1.3633270263671875
+    ],
+    "mesh": "/Game/MistvaleArt/GroundSurfaces/SM_Route_MarketEastLoop.SM_Route_MarketEastLoop",
+    "materials": [
+      "M_Town_Road_01"
+    ]
+  },
+  {
+    "label": "ART_Surface_SM_Route_RiversideStreet",
+    "folder": "ART/GroundSurfaces",
+    "position_m": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -9.588681640625,
+      -126.99140625,
+      5.150959167480469
+    ],
+    "bounds_extent_m": [
+      164.645791015625,
+      15.591318359375,
+      1.3408511352539063
+    ],
+    "mesh": "/Game/MistvaleArt/GroundSurfaces/SM_Route_RiversideStreet.SM_Route_RiversideStreet",
+    "materials": [
+      "M_River_Track_01"
+    ]
+  },
+  {
+    "label": "ART_Surface_SM_Route_UpperResidential",
+    "folder": "ART/GroundSurfaces",
+    "position_m": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -1.562626953125,
+      206.969755859375,
+      19.829879760742188
+    ],
+    "bounds_extent_m": [
+      83.9355078125,
+      47.661201171875,
+      3.3463555908203126
+    ],
+    "mesh": "/Game/MistvaleArt/GroundSurfaces/SM_Route_UpperResidential.SM_Route_UpperResidential",
+    "materials": [
+      "M_Town_Road_01"
+    ]
+  },
+  {
+    "label": "ART_Surface_SM_Route_ChurchLane",
+    "folder": "ART/GroundSurfaces",
+    "position_m": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      56.43479827880859,
+      191.67998046875,
+      19.219775390625
+    ],
+    "bounds_extent_m": [
+      48.7656900024414,
+      28.0403125,
+      2.2697216796875
+    ],
+    "mesh": "/Game/MistvaleArt/GroundSurfaces/SM_Route_ChurchLane.SM_Route_ChurchLane",
+    "materials": [
+      "M_Town_Road_01"
+    ]
+  },
+  {
+    "label": "ART_Surface_SM_Route_DockTrack",
+    "folder": "ART/GroundSurfaces",
+    "position_m": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -112.5496728515625,
+      -95.4767529296875,
+      4.470168838500976
+    ],
+    "bounds_extent_m": [
+      46.0717529296875,
+      22.7217138671875,
+      2.4230458831787107
+    ],
+    "mesh": "/Game/MistvaleArt/GroundSurfaces/SM_Route_DockTrack.SM_Route_DockTrack",
+    "materials": [
+      "M_River_Track_01"
+    ]
+  },
+  {
+    "label": "ART_Surface_SM_Plaza_MarketSquare",
+    "folder": "ART/GroundSurfaces",
+    "position_m": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      0.0,
+      100.0,
+      14.821691284179687
+    ],
+    "bounds_extent_m": [
+      15.0,
+      16.0,
+      0.6551971435546875
+    ],
+    "mesh": "/Game/MistvaleArt/GroundSurfaces/SM_Plaza_MarketSquare.SM_Plaza_MarketSquare",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Surface_SM_Plaza_GuildForecourt",
+    "folder": "ART/GroundSurfaces",
+    "position_m": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      -30.0,
+      163.0,
+      17.093648071289063
+    ],
+    "bounds_extent_m": [
+      10.0,
+      17.0,
+      0.9050372314453125
+    ],
+    "mesh": "/Game/MistvaleArt/GroundSurfaces/SM_Plaza_GuildForecourt.SM_Plaza_GuildForecourt",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Surface_SM_Plaza_ChurchForecourt",
+    "folder": "ART/GroundSurfaces",
+    "position_m": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      104.0,
+      211.0,
+      20.609521484375
+    ],
+    "bounds_extent_m": [
+      5.0,
+      14.0,
+      1.4452783203125
+    ],
+    "mesh": "/Game/MistvaleArt/GroundSurfaces/SM_Plaza_ChurchForecourt.SM_Plaza_ChurchForecourt",
+    "materials": [
+      "M_Weathered_Stone_01"
+    ]
+  },
+  {
+    "label": "ART_Surface_SM_River_Continuous",
+    "folder": "ART/GroundSurfaces",
+    "position_m": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "bounds_center_m": [
+      0.0,
+      -84.1964306640625,
+      2.94
+    ],
+    "bounds_extent_m": [
+      250.0,
+      25.7407177734375,
+      0.0
+    ],
+    "mesh": "/Game/MistvaleArt/GroundSurfaces/SM_River_Continuous.SM_River_Continuous",
+    "materials": [
+      "M_River_Surface_Proxy_01"
+    ]
+  }
+]

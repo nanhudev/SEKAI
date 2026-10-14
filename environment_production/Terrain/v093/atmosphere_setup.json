@@ -1,0 +1,12 @@
+{
+  "cloud_material": "/Game/Environment/Village/Landscape/v093/Materials/M_Valley_Cumulus.M_Valley_Cumulus",
+  "trial": {
+    "cloud_layer_bottom_km": 0.65,
+    "cloud_layer_height_km": 1.8,
+    "haze_density": 0.004,
+    "note": "Art-directed native volume cloud banks; geometry/sun/exposure/cameras unchanged.",
+    "clone_engine_template": true,
+    "native_cumulus": true
+  },
+  "note": "Cloud and distance-haze additions; sun/exposure/cameras retained. Requires actual captures."
+}

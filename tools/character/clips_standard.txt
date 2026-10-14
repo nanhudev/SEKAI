@@ -1,0 +1,55 @@
+# SEKAI / CHARACTER LINE — curated clip set for placeholder characters
+#
+# Source: third_party/quaternius/universal_animation_library
+#         AnimationLibrary_Godot_Standard.glb (46 clips)
+#
+# This is the project default. `--clips all` also works, but the library's full
+# 46 includes clips we deliberately do NOT want baked into gameplay characters:
+#
+#   A_TPose           - a rest-pose check, not an animation.
+#   Pistol_* (6)      - no firearm exists in SEKAI; dead weight in every GLB.
+#   *_[RW]M           - ROOT-MOTION variants. They bake hip translation into the
+#                       clip, which then fights `external_velocity` as the single
+#                       carrier of movement. Keep them out of the character GLBs;
+#                       pull them individually if a root-motion system ever lands.
+#
+# Add/remove a line to change what every placeholder gets. One name per line, as
+# Godot shows it (Godot strips the `_Loop` suffix on import, so `Idle_Loop` here
+# arrives as `Idle` in the engine -- that is expected, not a mismatch).
+Crouch_Fwd_Loop
+Crouch_Idle_Loop
+Dance_Loop
+Death01
+Driving_Loop
+Fixing_Kneeling
+Hit_Chest
+Hit_Head
+Idle_Loop
+Idle_Talking_Loop
+Idle_Torch_Loop
+Interact
+Jog_Fwd_Loop
+Jump_Land
+Jump_Loop
+Jump_Start
+PickUp_Table
+Punch_Cross
+Punch_Enter
+Punch_Jab
+Push_Loop
+Roll
+Sitting_Enter
+Sitting_Exit
+Sitting_Idle_Loop
+Sitting_Talking_Loop
+Spell_Simple_Enter
+Spell_Simple_Exit
+Spell_Simple_Idle_Loop
+Spell_Simple_Shoot
+Sprint_Loop
+Swim_Fwd_Loop
+Swim_Idle_Loop
+Sword_Attack
+Sword_Idle
+Walk_Formal_Loop
+Walk_Loop

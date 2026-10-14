@@ -1,0 +1,7 @@
+level=/Game/Maps/Mistvale_Rebuild_Blockout
+residential_commercial_masses=81
+hero_masses=10
+market_stalls=8
+review_cameras=9
+river_reach=500m
+bridges=2

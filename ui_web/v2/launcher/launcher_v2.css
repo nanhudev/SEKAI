@@ -1,0 +1,64 @@
+/* ============================================================================
+   SEKAI · LAUNCHER V2 —— 只放这一页自己的东西
+   ----------------------------------------------------------------------------
+   零件在 ../ui_v2.css。这里只有一条：门没有世界，所以它不是 grid 舞台，
+   它是一张纯色卡片。
+   ========================================================================= */
+
+/* 门后面什么都没有 —— 这正是重点。
+   §8：「玩家双击 SEKAI，出现黑屏。一个非常简单的 SEKAI MARK。」
+   背景必须是纯色，且必须**正好是**交接帧那个 void（HANDOFF.bg = #060A10），
+   否则标记飞出去的那一刻会看到一次底色跳变。 */
+.v2-door-body {
+  background: var(--sk-void);
+}
+
+/* ---- PASS 04 · PART C：Launcher 的 Key Art 背景（?bg=a|b|c 才出现） -------
+   与主菜单同一张图，但 darker / more cropped / less information：
+     · brightness 压到 0.42 —— 它是天光，不是画面
+     · scale 1.14 + object-position 偏右上 —— 只给一个局部，信息更少
+     · 左侧一道纵深渐变，保证题签与「进入」可读
+   launch() 时 zoom 到 1.2 并整体淡到 void —— 交接帧合同不被破坏。 */
+.v2-keyart {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  display: none;
+  pointer-events: none;
+}
+
+.v2-keyart.is-on {
+  display: block;
+}
+
+.v2-keyart img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 62% 38%;
+  transform: scale(1.14);
+  filter: brightness(0.42) saturate(0.9);
+  user-select: none;
+}
+
+.v2-keyart::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(6, 10, 16, 0.72) 0%,
+    rgba(6, 10, 16, 0.34) 46%,
+    rgba(6, 10, 16, 0.5) 100%
+  );
+}
+
+.v2-door,
+.v2-door__meta,
+.v2-door__dev {
+  position: relative;
+  z-index: 1;
+}

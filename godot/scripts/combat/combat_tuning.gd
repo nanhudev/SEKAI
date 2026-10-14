@@ -1,0 +1,117 @@
+extends Resource
+class_name CombatTuning
+
+@export_group("Movement")
+@export var walk_speed := 5.0
+@export var sprint_speed := 8.0
+@export var jump_velocity := 5.2
+# §16 Walk. A fraction of the default pace rather than its own absolute speed, so
+# retuning the jog does not silently retune the walk into a different relationship.
+@export var walk_pace := 0.55
+
+# ONE RATE USED TO ANSWER ALL THREE QUESTIONS, AND IT IS WHY THEY ALL FAILED AT
+# ONCE: accelerating, stopping and reversing are different physical events, and
+# paying for one of them necessarily paid for the others. Entering a jog felt
+# dead because the same number had to also stop a sprint inside three metres.
+#
+# Each is a RESPONSE RATE (1/s) for an exponential approach rather than a raw
+# acceleration. Two reasons: the body arrives with its speed easing in instead
+# of snapping in a straight line, and `exp(-rate * dt)` is framerate independent
+# — which matters in this engine because hitstop scales delta.
+#
+# Measured with tests/movement_metrics.gd; the gate is that file's envelope.
+@export var jog_accel_rate := 12.0      # §17 jog enters immediately
+@export var sprint_accel_rate := 8.5    # §17 sprint builds over 0.2-0.45s
+
+# Stopping and braking are deliberately NOT exponential.
+#
+# Approaching a reversed target exponentially produces a rate proportional to
+# the whole gap — from +7.7 to -8 that is 220 m/s² on the first frame, which
+# spends the forward motion in 0.05s. The pivot then exists only on paper: the
+# body teleports to a stop and *then* runs back, and the total time still looks
+# healthy, so no gate that measures the whole reversal can see it. These two are
+# CONSTANT rates so there is a brake you can actually read, and the metric that
+# proves it is separate (see movement_metrics "arrest").
+@export var stop_accel := 26.0          # §18 a settle you can feel, not a slide
+@export var brake_accel := 45.0         # §19 the visible pivot
+
+# §26. Cost is paid against `normal.dot(direction)`, which is 0 on flat ground and
+# at most ±sin(slope) elsewhere, so these read as "how much of the tilt is felt"
+# rather than "how steep before something happens".
+@export var slope_up_cost := 0.7        # uphill is genuinely harder work
+@export var slope_down_gain := 0.25     # downhill keeps a little of what it earned
+
+@export_group("Timing")
+@export var input_buffer := 0.15
+@export var light_hitstop := 0.028
+@export var heavy_hitstop := 0.06
+# Legacy mirror of SwordGuardProfile.perfect_guard_window, kept so the old
+# guard tests and any external tooling still read a value. The live window is
+# per-style and lives in the moveset.
+@export var perfect_guard_window := 0.12
+@export var combo_window := 0.48
+# Hold Heavy: up to 0.8s of charge, translated into posture and hit reaction
+# rather than a flat damage multiplier.
+@export var heavy_charge_time := 0.8
+@export var heavy_tap_grace := 0.18
+# Incoming damage at or above this interrupts the player's own swing. Spamming
+# through an enemy heavy must not be a valid answer.
+@export var player_stagger_threshold := 20.0
+# How long a follow-up window survives the end of the move it belongs to, so
+# the player is never punished for watching their own animation.
+@export var followup_grace := 0.12
+# §28. Shattering is its own answer, and it belongs here rather than on a move
+# because no STYLE delivers it: the player's cut is ordinary, the frozen body is
+# what was extraordinary. The longest stop in the game, above even a heavy
+# connect — this is the one moment where the world should fully let go, because
+# a body coming apart is not a hit landing, it is a state ending.
+@export var shatter_hitstop := 0.105
+# Cooldown for style signatures that are short player-driven sequences (长风)
+# rather than full ceremonies (聚合斩, which times itself off the director).
+@export var signature_cooldown := 12.0
+
+@export_group("Camera")
+@export var light_camera_impulse := 0.015
+@export var heavy_camera_impulse := 0.04
+@export var shake_decay := 1.8
+
+@export_group("Resources")
+@export var max_stamina := 100.0
+@export var max_mana := 100.0
+@export var dodge_stamina_cost := 20.0
+# How long a dodge lasts, and how much of it the player is untouchable for.
+# Both were magic numbers buried in the controller, which is why the pose could
+# be authored as one offset and nobody noticed it never arrived: nothing else
+# knew how long the dodge was supposed to be either.
+@export var dodge_duration := 0.36
+@export var dodge_iframes := 0.20
+# The time the world spends noticing that a hit went through the space the
+# player had just left. Shorter than any hit that connects — the evade is a
+# near miss, not a blow.
+@export var evade_hitstop := 0.045
+
+@export_group("Targeting")
+# Anything a style may measure distance against joins this group (technical
+# dummy, future enemies, the wall-impact dummy). Membership is how Measure finds
+# an opponent without scanning the tree or the controller knowing what an enemy
+# is — the same reason the element rules live in data.
+const TARGET_GROUP := &"combat_target"
+# Things a chain may attach to that are NOT enemies and must never be measured as
+# one: a pillar, a ruin ring, a hook point. Separate from the group above on
+# purpose — a pillar that joined TARGET_GROUP would become a valid target for
+# 白蔷庭's Measure and for every sweep, which is not what a pillar is.
+const ANCHOR_GROUP := &"chain_anchor"
+# Physics props a weapon may move (crates). Hittable, never measured, and never a
+# wall — a crate that stopped a sweep would make 横缚 useless in a room with boxes.
+const PROP_GROUP := &"combat_prop"
+# The player registers in this group so anything that needs the player can find
+# them without being a sibling. A stage is free to own its own targets now (see
+# ChainLab), and a dummy that assumed `get_parent().get_node("Player")` could
+# only ever live in one scene.
+const PLAYER_GROUP := &"player"
+
+@export_group("Iaido Targeting")
+@export var iaido_range := 10.0
+@export var iaido_cone_degrees := 45.0
+@export var iaido_vertical_tolerance := 3.0
+@export var iaido_vertical_cone_degrees := 25.0

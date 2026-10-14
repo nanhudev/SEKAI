@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SEKAI · 世界之外</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="../tokens/tokens.css" />
+    <link rel="stylesheet" href="../motion/motion.css" />
+    <link rel="stylesheet" href="../components/components.css" />
+    <link rel="stylesheet" href="../components/scene.css" />
+    <link rel="stylesheet" href="main_menu.css" />
+  </head>
+
+  <body class="sk-menu">
+    <!-- 与 Launcher 同一段环境代码 —— 两层界面必须是同一个世界 -->
+    <div class="sk-bg" id="scene" aria-hidden="true"></div>
+    <div class="sk-runes" id="runes" aria-hidden="true"></div>
+
+    <main class="sk-menu__brand" id="brand">
+      <div class="sk-menu__mark" id="mark" aria-hidden="true"></div>
+      <h1 class="sk-menu__word" id="word"></h1>
+      <p class="sk-menu__cn sk-serif" id="wordCN"></p>
+      <div class="sk-menu__rule" id="rule"></div>
+      <p class="sk-menu__sub" id="subtitle"></p>
+    </main>
+
+    <!-- 菜单：左对齐单列。不是居中五个大矩形。 -->
+    <nav class="sk-menu__nav" id="nav" aria-label="主菜单"></nav>
+
+    <!-- 克制的说明条：设置 / 退出在本 PASS 未接入时用它，不弹模态框 -->
+    <p class="sk-menu__note" id="note" role="status" aria-live="polite" hidden></p>
+
+    <footer class="sk-meta-bar">
+      <span class="sk-meta" id="verLine"></span>
+      <span class="sk-meta" id="hintLine"></span>
+    </footer>
+
+    <div class="sk-cursor" id="cursor" hidden></div>
+
+    <script type="module" src="main_menu.js"></script>
+  </body>
+</html>

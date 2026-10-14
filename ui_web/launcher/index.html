@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SEKAI · 世界之外</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="../tokens/tokens.css" />
+    <link rel="stylesheet" href="../motion/motion.css" />
+    <link rel="stylesheet" href="../components/components.css" />
+    <link rel="stylesheet" href="../components/scene.css" />
+    <link rel="stylesheet" href="launcher.css" />
+  </head>
+
+  <body class="sk-launcher">
+    <!-- =====================================================================
+         环境层。与主菜单共用同一段代码（components/scene_bg.js），
+         所以两层界面天然是同一个世界。
+         ================================================================== -->
+    <div class="sk-bg" id="scene" aria-hidden="true"></div>
+
+    <!-- 书写规则线。与主菜单使用同一组 y 位置（0.10 / 0.88）。 -->
+    <div class="sk-runes" id="runes" aria-hidden="true"></div>
+
+    <!-- =====================================================================
+         主体
+         ================================================================== -->
+    <main class="sk-column">
+      <header class="sk-brand">
+        <div class="sk-brand__mark" id="mark" role="img" aria-label="SEKAI">
+          <!-- 开场那一记脉动：笔尖第一次触纸。由 JS 填充。 -->
+          <div class="sk-pulse" id="pulse" aria-hidden="true"></div>
+        </div>
+        <h1 class="sk-brand__word" id="word"></h1>
+        <p class="sk-brand__cn sk-serif" id="wordCN"></p>
+        <div class="sk-brand__rule" id="rule"></div>
+        <p class="sk-brand__sub" id="subtitle"></p>
+      </header>
+
+      <!-- 加载表现：不是进度条，是一条正在被写完的线 + 一圈正在画满的环 -->
+      <section class="sk-status" id="status" aria-live="polite">
+        <div class="sk-status__ring" id="ring"></div>
+        <div class="sk-status__meter">
+          <div class="sk-status__track"><i class="sk-status__write" id="loadLine"></i></div>
+          <div class="sk-status__label">
+            <span class="sk-status__cn" id="loadCN"></span>
+            <span class="sk-meta" id="loadEN"></span>
+          </div>
+        </div>
+      </section>
+
+      <section class="sk-actions" id="actions"></section>
+    </main>
+
+    <footer class="sk-footer">
+      <div class="sk-footer__left">
+        <span class="sk-meta" id="verLine"></span>
+        <span class="sk-dev" id="devBadge" hidden>DEV</span>
+      </div>
+      <div class="sk-footer__right">
+        <button class="sk-quiet" id="btnSkip" type="button" hidden>
+          <span id="skipCN"></span><span class="sk-quiet__en sk-meta" id="skipEN"></span>
+        </button>
+        <button class="sk-quiet" id="btnQuit" type="button">
+          <span>退出</span><span class="sk-quiet__en sk-meta">QUIT</span>
+        </button>
+      </div>
+    </footer>
+
+    <!-- =====================================================================
+         失败态（§44）。克制：一句话 + 英文。Developer Mode 才展开细节。
+         Launcher 绝不允许卡在无限 loading。
+         ================================================================== -->
+    <div class="sk-failure" id="failure" hidden>
+      <div class="sk-failure__box sk-cut">
+        <p class="sk-failure__cn sk-serif" id="failCN"></p>
+        <p class="sk-failure__en sk-meta" id="failEN"></p>
+        <pre class="sk-failure__detail" id="failDetail" hidden></pre>
+        <div class="sk-failure__row">
+          <button class="sk-btn sk-btn--quiet sk-cut" id="btnRetry" type="button">
+            <span class="sk-btn__main">重试</span>
+            <span class="sk-btn__sub">RETRY</span>
+          </button>
+          <button class="sk-btn sk-btn--quiet sk-cut" id="btnQuit2" type="button">
+            <span class="sk-btn__main">退出</span>
+            <span class="sk-btn__sub">QUIT</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="sk-cursor" id="cursor" hidden></div>
+
+    <script type="module" src="launcher.js"></script>
+  </body>
+</html>

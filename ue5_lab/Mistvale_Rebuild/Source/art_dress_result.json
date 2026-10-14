@@ -1,0 +1,12 @@
+{
+  "level": "/Game/Maps/L_Mistvale_Rebuild",
+  "actors": 669,
+  "changed": {
+    "terrain": 1,
+    "roads": 480,
+    "water": 50,
+    "stone": 6,
+    "fences": 17,
+    "landmarks": 2
+  }
+}

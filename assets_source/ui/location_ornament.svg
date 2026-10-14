@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SEKAI · location_ornament
+     ⚠ 只允许作为"地点标题被写出时的下划线"，必须与标题同一个 write 动画。单独/静态出现即为装饰，删。
+     裁決：state
+     归属：UI 自用 / 地点标题
+     本文件由 ui_web/tools/emit_svg.mjs 从 ui_web/svg/library.js 生成。
+     不要直接改这里 —— 改库，然后重新运行 emitter。
+-->
+<svg width="120" height="5" viewBox="0 0 120 5"
+    xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" aria-hidden="true">
+  <defs>
+    <!-- 同上：bbox 高为 0，必须 userSpaceOnUse -->
+    <linearGradient id="sklo" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="120" y2="0">
+      <stop offset="0%" stop-color="#C9A65C" stop-opacity="0"/>
+      <stop offset="50%" stop-color="#C9A65C" stop-opacity="1"/>
+      <stop offset="100%" stop-color="#C9A65C" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <path pathLength="1" d="M 0 2.5 H 120" stroke="url(#sklo)" stroke-width="1"/>
+</svg>

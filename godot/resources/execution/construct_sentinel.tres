@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="IaidoExecutionProfile" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/combat/iaido_execution_profile.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+enemy_id = &"lesser_ruin_sentinel"
+iaido_execution_supported = true
+execution_type = &"cleave"
+cuttable_region = &"full"
+fallback_execution = &"dissolve"
+preferred_cut_height = 0.55
+cut_material = &"construct"
+hold_separation_m = 0.022
+release_force = 0.34
+gravity_scale = 1.0
+tip_angle_deg = 26.0
+spin_deg_per_s = 34.0
+debris_count = 7

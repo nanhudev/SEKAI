@@ -1,0 +1,23 @@
+{
+  "file": "F:\\SEKAI\\assets_source\\characters\\lia\\06_export\\lia_v3.glb",
+  "size_bytes": 2009740,
+  "gltf_version": 2,
+  "meshes": 1,
+  "nodes": 25,
+  "skins": 1,
+  "materials": 1,
+  "animations": 1,
+  "joints": 23,
+  "mesh_primitives": 1,
+  "has_JOINTS_0": true,
+  "has_WEIGHTS_0": true,
+  "has_TEXCOORD_0": true,
+  "has_NORMAL": true,
+  "vertex_attributes": [
+    "JOINTS_0",
+    "NORMAL",
+    "POSITION",
+    "TEXCOORD_0",
+    "WEIGHTS_0"
+  ]
+}
